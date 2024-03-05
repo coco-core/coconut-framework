@@ -1,0 +1,26 @@
+{
+  "name": "decor-framework",
+  "version": "0.0.1",
+  "description": "构建现代web应用的基于装饰器的javascript框架",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jiangchenguang/decor-framework.git"
+  },
+  "author": "jiangchenguang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jiangchenguang/decor-framework/issues"
+  },
+  "homepage": "https://github.com/jiangchenguang/decor-framework#readme",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.6",
+    "decor-framework": "workspace:^",
+    "rollup": "^4.12.0",
+    "tslib": "^2.6.2"
+  }
+}
