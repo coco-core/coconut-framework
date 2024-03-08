@@ -1,9 +1,9 @@
 import {createVirtualDom} from "./component";
-import {createChild} from "./reconciler/dom";
-import {reconciler} from "./reconciler";
+import {createRoot} from "./dom";
+import Button from "./button";
 
-const root = document.getElementById("root");
+const root = createRoot(document.getElementById("root"));
 
-const App = createVirtualDom('div', { children: "hello decor!"});
+const App = createVirtualDom(Button, {});
 
-reconciler(null, App, root);
+root.render(App);
