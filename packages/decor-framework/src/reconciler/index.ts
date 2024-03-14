@@ -1,9 +1,9 @@
-import {VDom, VDomType} from "../component";
-import {Container} from "../dom";
-import * as domHandler from "../dom/node";
-import {updateElement} from "../dom/node";
+import { VDom, VDomType } from '../component';
+import { Container } from '../dom';
+import * as domHandler from '../dom/node';
+import { updateElement } from '../dom/node';
 
-function createComponent (vd: VDom, parentElm: HTMLElement): HTMLElement {
+function createComponent(vd: VDom, parentElm: HTMLElement): HTMLElement {
   const Constructor = vd.cons;
   vd.instance = new Constructor();
   const child = vd.instance.render();
@@ -16,10 +16,10 @@ function updateComponent(old: VDom, vd: VDom) {
   return reconcileChildren(old.props.children, [newChild]);
 }
 
-function doCreate (vd: VDom, parentElm: HTMLElement): HTMLElement {
+function doCreate(vd: VDom, parentElm: HTMLElement): HTMLElement {
   switch (vd.type) {
     case VDomType.Host:
-      const elm = vd.elm = domHandler.createElement(vd);
+      const elm = (vd.elm = domHandler.createElement(vd));
       const children = vd.props.children ?? [];
       for (let child of children) {
         doCreate(child, elm);
@@ -33,9 +33,9 @@ function doCreate (vd: VDom, parentElm: HTMLElement): HTMLElement {
   }
 }
 
-function doRemove (vd: VDom) {}
+function doRemove(vd: VDom) {}
 
-function reconcileChildren (olds: VDom[], news: VDom[]) {
+function reconcileChildren(olds: VDom[], news: VDom[]) {
   const len = Math.max(olds.length, news.length);
   for (let idx = 0; idx < len; idx++) {
     reconcile(olds[idx], news[idx], olds[idx].elm);
@@ -47,7 +47,7 @@ function reconcileChildren (olds: VDom[], news: VDom[]) {
 /*
  * 新老vd进行比较
  */
-function reconcile (old: VDom | null, vd: VDom | null, parentElm: HTMLElement) {
+function reconcile(old: VDom | null, vd: VDom | null, parentElm: HTMLElement) {
   if (old === null && vd === null) {
     // todo dev下输出错误
     return;
@@ -80,7 +80,7 @@ function reconcile (old: VDom | null, vd: VDom | null, parentElm: HTMLElement) {
 let _root;
 let _app;
 // 初始化渲染
-export function initRender (root: Container, app: VDom) {
+export function initRender(root: Container, app: VDom) {
   _root = root;
   _app = app;
   reconcile(null, app, root.elm);
@@ -88,6 +88,6 @@ export function initRender (root: Container, app: VDom) {
 }
 
 // 更新渲染
-export function updateRender () {
-  reconcile(_root.vdom, _app, _root.elm)
+export function updateRender() {
+  reconcile(_root.vdom, _app, _root.elm);
 }

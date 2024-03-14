@@ -8,7 +8,7 @@ var VDomType;
 })(VDomType || (VDomType = {}));
 // 构建一个虚拟dom对象，类似于react中createElement
 var createVirtualDom = function (component, props) {
-    var tag = typeof component === "string" ? component : undefined;
+    var tag = typeof component === 'string' ? component : undefined;
     var constructor = typeof component === 'function' ? component : undefined;
     return {
         type: tag ? VDomType.Host : VDomType.Component,
@@ -59,7 +59,7 @@ function doCreate(vd, parentElm) {
     var _a;
     switch (vd.type) {
         case VDomType.Host:
-            var elm = vd.elm = createElement(vd);
+            var elm = (vd.elm = createElement(vd));
             var children = (_a = vd.props.children) !== null && _a !== void 0 ? _a : [];
             for (var _i = 0, children_1 = children; _i < children_1.length; _i++) {
                 var child = children_1[_i];
@@ -130,7 +130,7 @@ var createContainer = function (elm) {
         elm: elm,
         render: function (vd) {
             initRender(container, vd);
-        }
+        },
     };
     return container;
 };
@@ -147,9 +147,9 @@ var Button = /** @class */ (function () {
         this.render = function () {
             return createVirtualDom('div', {
                 children: [
-                    createVirtualDom('span', { innerText: "hello decor!! ".concat(_this.count) })
+                    createVirtualDom('span', { innerText: "hello decor!! ".concat(_this.count) }),
                 ],
-                onClick: _this.handleClick
+                onClick: _this.handleClick,
             });
         };
     }

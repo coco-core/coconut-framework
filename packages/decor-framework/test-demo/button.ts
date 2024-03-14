@@ -1,5 +1,5 @@
-import {createVirtualDom} from "./component";
-import {updateRender} from "./reconciler";
+import { createVirtualDom } from '../src/component';
+import { updateRender } from '../src/reconciler';
 
 export default class Button {
   count: number = 22;
@@ -8,14 +8,14 @@ export default class Button {
     this.count++;
     console.log('=======handle click===========', this.count);
     updateRender();
-  }
+  };
 
   render = () => {
     return createVirtualDom('div', {
       children: [
-        createVirtualDom('span', {innerText: `hello decor!! ${this.count}`})
+        createVirtualDom('span', { innerText: `hello decor!! ${this.count}` }),
       ],
-      onClick: this.handleClick
+      onClick: this.handleClick,
     });
-  }
+  };
 }

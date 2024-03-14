@@ -12,7 +12,12 @@ export enum VDomType {
 interface VDomBase {
   type: VDomType;
   elm?: HTMLElement;
-  props: { children?: VDom[], onClick?: Function, innerText?: string, [key: string]: any };
+  props: {
+    children?: VDom[];
+    onClick?: Function;
+    innerText?: string;
+    [key: string]: any;
+  };
 }
 // 浏览器标签
 interface VDomHost {
@@ -26,10 +31,12 @@ interface VDomComponent {
 }
 export interface VDom extends VDomBase, VDomHost, VDomComponent {}
 
-
 // 构建一个虚拟dom对象，类似于react中createElement
-export const createVirtualDom = (component: string | typeof Component, props: Record<string, any>): VDom => {
-  const tag = typeof component === "string" ? component : undefined;
+export const createVirtualDom = (
+  component: string | typeof Component,
+  props: Record<string, any>,
+): VDom => {
+  const tag = typeof component === 'string' ? component : undefined;
   const constructor = typeof component === 'function' ? component : undefined;
 
   return {
@@ -37,5 +44,5 @@ export const createVirtualDom = (component: string | typeof Component, props: Re
     tag,
     cons: constructor,
     props,
-  }
-}
+  };
+};
