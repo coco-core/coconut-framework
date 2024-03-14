@@ -1,6 +1,6 @@
-import {createVirtualDom} from "./component";
-import {createContainer} from "./dom";
-import Button from "./button";
+import {createVirtualDom} from "../src/component";
+import {createContainer} from "../src/dom";
+import Button from "../src/button";
 
 const container = createContainer(document.getElementById("root"));
 
