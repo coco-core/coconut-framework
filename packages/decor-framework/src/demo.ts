@@ -1,9 +1,8 @@
 import {createVirtualDom} from "./component";
-import {createRoot} from "./dom";
+import {createContainer} from "./dom";
 import Button from "./button";
 
-const root = createRoot(document.getElementById("root"));
+const container = createContainer(document.getElementById("root"));
 
-const App = createVirtualDom(Button, {});
-
-root.render(App);
+const App = createVirtualDom(Button, {})
+container.render(App);

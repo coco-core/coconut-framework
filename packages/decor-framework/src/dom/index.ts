@@ -1,18 +1,20 @@
-import {VirtualDom} from "../component";
-import {reconciler} from "../reconciler";
+import {VDom} from "../component";
+import {initRender} from "../reconciler";
 
-export interface Root {
-  elm: Element,
-  render: (vd: VirtualDom) => void
+export interface Container {
+  elm: HTMLElement,
+  render: (vd: VDom) => void,
+  // 当前页面对应的vdom
+  vdom?: VDom,
 }
 
-export const createRoot = (elm: Element): Root => {
-  const root: Root = {
+export const createContainer = (elm: HTMLElement): Container => {
+  const container: Container = {
     elm,
-    render: (vd: VirtualDom) => {
-      reconciler(root, vd)
+    render: (vd: VDom) => {
+      initRender(container, vd)
     }
   };
 
-  return root;
+  return container;
 }
