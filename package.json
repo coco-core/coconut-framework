@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/jiangchenguang/decor-framework#readme",
   "devDependencies": {
+    "prettier": "3.2.5",
     "typescript": "^5.3.3"
   }
 }

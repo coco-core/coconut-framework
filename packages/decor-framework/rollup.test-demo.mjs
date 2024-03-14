@@ -1,10 +1,10 @@
-import typescript from '@rollup/plugin-typescript'
+import typescript from '@rollup/plugin-typescript';
 
 export default {
   input: './test-demo/index.ts',
   output: {
     file: './test-demo/bundle.js',
-    format: 'cjs'
+    format: 'cjs',
   },
-  plugins: [typescript()]
+  plugins: [typescript()],
 };
