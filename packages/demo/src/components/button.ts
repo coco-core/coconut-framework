@@ -1,12 +1,11 @@
-import { createVirtualDom } from '../src/component';
-import { updateRender } from '../src/reconciler';
+import { createVirtualDom } from 'decor-framework';
+import { updateRender } from 'decor-framework';
 
 export default class Button {
   count: number = 22;
 
   handleClick = () => {
     this.count++;
-    console.log('=======handle click===========', this.count);
     updateRender();
   };
 

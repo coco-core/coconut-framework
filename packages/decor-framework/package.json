@@ -2,11 +2,14 @@
   "name": "decor-framework",
   "version": "0.0.1",
   "description": "构建现代web应用的基于装饰器的javascript框架",
-  "main": "index.js",
+  "main": "./dist/decor-framework.cjs.js",
+  "types": "./dist/types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prettier": "prettier . --write",
-    "build:demo": "rollup -c ./rollup.test-demo.mjs"
+    "build:bundle": "rollup -c ./rollup.build.mjs",
+    "build:type": "tsc -b ./tsconfig.types.json",
+    "build": "pnpm run build:bundle && pnpm run build:type"
   },
   "repository": {
     "type": "git",
