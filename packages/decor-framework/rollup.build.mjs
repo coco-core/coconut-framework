@@ -1,9 +1,9 @@
 import typescript from '@rollup/plugin-typescript';
 
 export default {
-  input: './test-demo/index.ts',
+  input: './src/index.ts',
   output: {
-    file: './test-demo/bundle.js',
+    file: './dist/decor-framework.cjs.js',
     format: 'cjs',
   },
   plugins: [typescript()],

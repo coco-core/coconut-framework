@@ -1,0 +1,21 @@
+{
+  "name": "demo",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "decor-framework": "workspace:^"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
+  }
+}
