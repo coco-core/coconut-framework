@@ -1,10 +1,10 @@
-import { VDom, VDomType } from '../component';
+import { Component, DecorComponent, VDom, VDomType } from '../component';
 import { Container } from '../dom';
 import * as domHandler from '../dom/node';
 import { updateElement } from '../dom/node';
 
 function createComponent(vd: VDom, parentElm: HTMLElement): HTMLElement {
-  const Constructor = vd.cons;
+  const Constructor: DecorComponent = vd.tag as unknown as DecorComponent;
   vd.instance = new Constructor();
   const child = vd.instance.render();
   vd.props.children = [child];
@@ -19,7 +19,11 @@ function updateComponent(old: VDom, vd: VDom) {
 function doCreate(vd: VDom, parentElm: HTMLElement): HTMLElement {
   switch (vd.type) {
     case VDomType.Host:
-      const elm = (vd.elm = domHandler.createElement(vd));
+      const elm = (vd.elm = domHandler.createElement(
+        vd.tag as string,
+        vd.props.onClick,
+        vd.props.innerText,
+      ));
       const children = vd.props.children ?? [];
       for (let child of children) {
         doCreate(child, elm);
@@ -56,7 +60,7 @@ function reconcile(old: VDom | null, vd: VDom | null, parentElm: HTMLElement) {
   } else if (vd === null) {
     // doRemove(old);
   } else {
-    if (vd.type === old.type && vd.tag === old.tag && vd.cons === old.cons) {
+    if (vd.type === old.type && vd.tag === old.tag) {
       // update
       switch (old.type) {
         case VDomType.Host:

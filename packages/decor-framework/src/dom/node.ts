@@ -7,10 +7,11 @@ export const deleteChildren = (elm: Element) => {
   }
 };
 
-export const createElement = (vd: VDom) => {
-  const { tag, props } = vd;
-  const innerText = props.innerText;
-  const onClick = props.onClick;
+export const createElement = (
+  tag: string,
+  onClick?: Function,
+  innerText?: string,
+) => {
   const element = document.createElement(tag);
   if (innerText) {
     element.innerText = innerText;
