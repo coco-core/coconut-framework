@@ -64,7 +64,7 @@ function reconcile(old: VDom | null, vd: VDom | null, parentElm: HTMLElement) {
       // update
       switch (old.type) {
         case VDomType.Host:
-          updateElement(old, vd);
+          updateElement(old.elm, old.props.innerText, vd.props.innerText);
           if (old.props.children?.length && vd.props.children?.length) {
             reconcileChildren(old.props.children, vd.props.children);
           }
