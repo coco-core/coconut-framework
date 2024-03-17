@@ -1,39 +1,63 @@
-import { Component, DecorComponent, VDom, VDomType } from '../component';
+import { DecorComponent, VDom, VDomType } from '../component';
 import { Container } from '../dom';
 import * as domHandler from '../dom/node';
-import { updateElement } from '../dom/node';
 
-function createComponent(vd: VDom, parentElm: HTMLElement): HTMLElement {
+function doCreateComponent(vd: VDom, parentElm: HTMLElement) {
   const Constructor: DecorComponent = vd.tag as unknown as DecorComponent;
   vd.instance = new Constructor();
-  const child = vd.instance.render();
-  vd.props.children = [child];
-  return doCreate(child, parentElm);
+  const children = (vd.props.children = [vd.instance.render()]);
+  for (const child of children) {
+    doCreate(child, parentElm);
+  }
 }
 
-function updateComponent(old: VDom, vd: VDom) {
-  const newChild = old.instance.render();
-  return reconcileChildren(old.props.children, [newChild]);
+function doCreateHost(vd: VDom, parentElm: HTMLElement) {
+  const elm = (vd.elm = domHandler.createElement(
+    vd.tag as string,
+    vd.props.onClick,
+    vd.props.innerText,
+  ));
+  // 这里先挂载children，再挂载elm
+  const children = vd.props.children ?? [];
+  for (let child of children) {
+    doCreate(child, elm);
+  }
+  domHandler.appendChild(parentElm, elm);
 }
 
-function doCreate(vd: VDom, parentElm: HTMLElement): HTMLElement {
+function doCreate(vd: VDom, parentElm: HTMLElement) {
   switch (vd.type) {
     case VDomType.Host:
-      const elm = (vd.elm = domHandler.createElement(
-        vd.tag as string,
-        vd.props.onClick,
-        vd.props.innerText,
-      ));
-      const children = vd.props.children ?? [];
-      for (let child of children) {
-        doCreate(child, elm);
-      }
-      domHandler.appendChild(parentElm, elm);
-      return elm;
+      doCreateHost(vd, parentElm);
+      break;
     case VDomType.Component:
-      return createComponent(vd, parentElm);
+      doCreateComponent(vd, parentElm);
+      break;
     default:
-      throw new Error(`不知道的虚拟dom类型: ${vd.type}`);
+      throw new Error(`未定义的虚拟dom类型: ${vd.type}`);
+  }
+}
+
+function doUpdateHost(old: VDom, vd: VDom) {
+  domHandler.updateElement(old.elm, old.props.innerText, vd.props.innerText);
+  if (old.props.children?.length && vd.props.children?.length) {
+    reconcileChildren(old.props.children, vd.props.children);
+  }
+}
+
+function doUpdateComponent(old: VDom, vd: VDom) {
+  const newChild = (vd.props.children = [old.instance.render()]);
+  reconcileChildren(old.props.children, newChild);
+}
+
+function doUpdate(old: VDom, vd: VDom) {
+  switch (old.type) {
+    case VDomType.Host:
+      doUpdateHost(old, vd);
+      break;
+    case VDomType.Component:
+      doUpdateComponent(old, vd);
+      break;
   }
 }
 
@@ -61,18 +85,7 @@ function reconcile(old: VDom | null, vd: VDom | null, parentElm: HTMLElement) {
     // doRemove(old);
   } else {
     if (vd.type === old.type && vd.tag === old.tag) {
-      // update
-      switch (old.type) {
-        case VDomType.Host:
-          updateElement(old.elm, old.props.innerText, vd.props.innerText);
-          if (old.props.children?.length && vd.props.children?.length) {
-            reconcileChildren(old.props.children, vd.props.children);
-          }
-          break;
-        case VDomType.Component:
-          updateComponent(old, vd);
-          break;
-      }
+      doUpdate(old, vd);
     } else {
       // doRemove(old);
       // doCreate(vd);

@@ -22,7 +22,11 @@ export const createElement = (
   return element;
 };
 
-export function updateElement(elm: HTMLElement, oldInnerText: string, innerText: string) {
+export function updateElement(
+  elm: HTMLElement,
+  oldInnerText: string,
+  innerText: string,
+) {
   if (oldInnerText !== innerText) {
     elm.innerText = innerText;
   }
