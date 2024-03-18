@@ -46,7 +46,7 @@ function doUpdateHost(old: VDom, vd: VDom) {
 }
 
 function doUpdateComponent(old: VDom, vd: VDom) {
-  const newChild = (vd.props.children = [old.instance.render()]);
+  const newChild = [old.instance.render()];
   reconcileChildren(old.props.children, newChild);
 }
 
