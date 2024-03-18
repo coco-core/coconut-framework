@@ -5,8 +5,8 @@ export class Component {
 export type DecorComponent = typeof Component;
 
 export enum VDomType {
-  Host, // 浏览器标签
-  Component, // 自定义类组件
+  Host = 'h', // 浏览器标签
+  Component = 'c', // 自定义类组件
 }
 // 虚拟dom
 // 通用属性
