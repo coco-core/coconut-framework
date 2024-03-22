@@ -1,12 +1,12 @@
-import { createVirtualDom } from 'decor-framework';
-import { updateRender } from 'decor-framework';
+import { createVirtualDom, reactive } from 'decor-framework';
 
 export default class Button {
+
+  @reactive
   count: number = 22;
 
   handleClick = () => {
     this.count++;
-    updateRender();
   };
 
   render = () => {
