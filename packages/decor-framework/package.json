@@ -5,6 +5,7 @@
   "main": "./dist/decor-framework.cjs.js",
   "types": "./dist/types/index.d.ts",
   "scripts": {
+    "dev": "rollup -c ./rollup.build.mjs --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prettier": "prettier . --write",
     "build:bundle": "rollup -c ./rollup.build.mjs",
