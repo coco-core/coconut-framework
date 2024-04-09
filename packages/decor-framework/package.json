@@ -4,6 +4,10 @@
   "description": "构建现代web应用的基于装饰器的javascript框架",
   "main": "./dist/decor-framework.cjs.js",
   "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": "./dist/decor-framework.cjs.js",
+    "./jsx-runtime": "./dist/jsx-runtime.cjs.js"
+  },
   "scripts": {
     "dev": "rollup -c ./rollup.build.mjs --watch",
     "test": "echo \"Error: no test specified\" && exit 1",

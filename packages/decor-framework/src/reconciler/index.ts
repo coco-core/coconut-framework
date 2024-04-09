@@ -3,7 +3,7 @@ import { Container } from '../dom';
 import * as domHandler from '../dom/node';
 
 function doCreateComponent(vd: VDom, parentElm: HTMLElement) {
-  const Constructor: DecorComponent = vd.tag as unknown as DecorComponent;
+  const Constructor: DecorComponent = vd.type as unknown as DecorComponent;
   vd.instance = new Constructor();
   const children = (vd.props.children = [vd.instance.render()]);
   for (const child of children) {
@@ -19,18 +19,22 @@ function doCreateHost(vd: VDom, parentElm: HTMLElement) {
   ));
   // 这里先挂载children，再挂载elm
   const children = vd.props.children ?? [];
-  for (let child of children) {
-    doCreate(child, elm);
+  for (let child of Array.isArray(children) ? children : [children]) {
+    if (typeof child === "object") {
+      doCreate(child, elm);
+    } else {
+      elm.innerText = child;
+    }
   }
   domHandler.appendChild(parentElm, elm);
 }
 
 function doCreate(vd: VDom, parentElm: HTMLElement) {
-  switch (vd.type) {
-    case VDomType.Host:
+  switch (typeof vd.type) {
+    case "string":
       doCreateHost(vd, parentElm);
       break;
-    case VDomType.Component:
+    case "function":
       doCreateComponent(vd, parentElm);
       break;
     default:
@@ -39,9 +43,14 @@ function doCreate(vd: VDom, parentElm: HTMLElement) {
 }
 
 function doUpdateHost(old: VDom, vd: VDom) {
-  domHandler.updateElement(old.elm, old.props.innerText, vd.props.innerText);
-  if (old.props.children?.length && vd.props.children?.length) {
-    reconcileChildren(old.props.children, vd.props.children);
+  if (typeof vd.props.children === 'object') {
+    if (Array.isArray(old.props.children)) {
+      reconcileChildren(old.props.children, vd.props.children);
+    } else {
+      reconcileChildren([old.props.children], [vd.props.children]);
+    }
+  } else {
+    domHandler.updateElement(old.elm, old.props.children, vd.props.children);
   }
 }
 
@@ -51,11 +60,11 @@ function doUpdateComponent(old: VDom, vd: VDom) {
 }
 
 function doUpdate(old: VDom, vd: VDom) {
-  switch (old.type) {
-    case VDomType.Host:
+  switch (typeof old.type) {
+    case "string":
       doUpdateHost(old, vd);
       break;
-    case VDomType.Component:
+    case "function":
       doUpdateComponent(old, vd);
       break;
   }
@@ -84,7 +93,7 @@ function reconcile(old: VDom | null, vd: VDom | null, parentElm: HTMLElement) {
   } else if (vd === null) {
     // doRemove(old);
   } else {
-    if (vd.type === old.type && vd.tag === old.tag) {
+    if (vd.type === old.type) {
       doUpdate(old, vd);
     } else {
       // doRemove(old);
