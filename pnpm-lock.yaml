@@ -15,12 +15,12 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  packages/decor-framework:
+  packages/coconut-framework:
     devDependencies:
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
         version: 11.1.6(rollup@4.12.0)(tslib@2.6.2)(typescript@5.3.3)
-      decor-framework:
+      coconut-framework:
         specifier: workspace:^
         version: 'link:'
       rollup:
@@ -32,9 +32,9 @@ importers:
 
   packages/demo:
     dependencies:
-      decor-framework:
+      coconut-framework:
         specifier: workspace:^
-        version: link:../decor-framework
+        version: link:../coconut-framework
     devDependencies:
       '@babel/core':
         specifier: ^7.24.3

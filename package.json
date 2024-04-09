@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jiangchenguang/decor-framework.git"
+    "url": "git+https://github.com/jiangchenguang/coconut-framework.git"
   },
   "keywords": [
     "decorator",
@@ -19,9 +19,9 @@
   "author": "jiangchenguang",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jiangchenguang/decor-framework/issues"
+    "url": "https://github.com/jiangchenguang/coconut-framework/issues"
   },
-  "homepage": "https://github.com/jiangchenguang/decor-framework#readme",
+  "homepage": "https://github.com/jiangchenguang/coconut-framework#readme",
   "devDependencies": {
     "prettier": "3.2.5",
     "typescript": "^5.3.3"

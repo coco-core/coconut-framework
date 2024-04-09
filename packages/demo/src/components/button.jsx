@@ -1,4 +1,4 @@
-import { reactive } from 'decor-framework';
+import { reactive } from 'coconut-framework';
 
 export default class Button {
 
