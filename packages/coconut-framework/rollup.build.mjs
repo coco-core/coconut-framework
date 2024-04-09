@@ -4,7 +4,7 @@ export default [
   {
     input: './src/index.ts',
     output: {
-      file: './dist/decor-framework.cjs.js',
+      file: './dist/coconut-framework.cjs.js',
       format: 'cjs',
     },
     plugins: [typescript()],

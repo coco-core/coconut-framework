@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "decor-framework": "workspace:^"
+    "coconut-framework": "workspace:^"
   },
   "devDependencies": {
     "@babel/core": "^7.24.3",
