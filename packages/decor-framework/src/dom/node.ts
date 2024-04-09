@@ -1,5 +1,3 @@
-import { VDom } from '../component';
-
 export const deleteChildren = (elm: Element) => {
   const children = elm.children;
   for (let idx = children.length - 1; idx >= 0; idx--) {
@@ -7,10 +5,11 @@ export const deleteChildren = (elm: Element) => {
   }
 };
 
-export const createElement = (vd: VDom) => {
-  const { tag, props } = vd;
-  const innerText = props.innerText;
-  const onClick = props.onClick;
+export const createElement = (
+  tag: string,
+  onClick?: Function,
+  innerText?: string,
+) => {
   const element = document.createElement(tag);
   if (innerText) {
     element.innerText = innerText;
@@ -23,11 +22,13 @@ export const createElement = (vd: VDom) => {
   return element;
 };
 
-export function updateElement(old: VDom, newVd: VDom) {
-  const innerText = old.props.innerText;
-  const newInnerText = newVd.props.innerText;
-  if (innerText !== newInnerText) {
-    old.elm!.innerText = newInnerText;
+export function updateElement(
+  elm: HTMLElement,
+  oldInnerText: string,
+  innerText: string,
+) {
+  if (oldInnerText !== innerText) {
+    elm.innerText = innerText;
   }
 }
 
