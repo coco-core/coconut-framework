@@ -1,11 +1,11 @@
 {
-  "name": "coconut-framework",
+  "name": "coconut",
   "version": "0.0.1",
   "description": "构建现代web应用的基于装饰器的javascript框架",
-  "main": "./dist/coconut-framework.cjs.js",
+  "main": "./dist/coconut.cjs.js",
   "types": "./dist/types/index.d.ts",
   "exports": {
-    ".": "./dist/coconut-framework.cjs.js",
+    ".": "./dist/coconut.cjs.js",
     "./jsx-runtime": "./dist/jsx-runtime.cjs.js"
   },
   "scripts": {
@@ -16,19 +16,11 @@
     "build:type": "tsc -b ./tsconfig.types.json",
     "build": "pnpm run build:bundle && pnpm run build:type"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jiangchenguang/coconut-framework.git"
-  },
   "author": "jiangchenguang",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/jiangchenguang/coconut-framework/issues"
-  },
-  "homepage": "https://github.com/jiangchenguang/coconut-framework#readme",
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.6",
-    "coconut-framework": "workspace:^",
+    "coconut": "workspace:^",
     "rollup": "^4.12.0",
     "tslib": "^2.6.2"
   }
