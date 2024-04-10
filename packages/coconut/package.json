@@ -20,7 +20,6 @@
   "license": "ISC",
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.6",
-    "coconut": "workspace:^",
     "rollup": "^4.12.0",
     "tslib": "^2.6.2"
   }
