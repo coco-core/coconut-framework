@@ -1,4 +1,4 @@
-import {createContainer} from "coconut-framework";
+import {createContainer} from "coconut";
 import Button from "./components/button";
 
 const container = createContainer(document.getElementById("root"));
