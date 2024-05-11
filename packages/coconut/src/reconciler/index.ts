@@ -1,10 +1,13 @@
-import { DecorComponent, VDom, VDomType } from '../component';
+import {Component, DecorComponent, VDom, VDomType} from '../component';
 import { Container } from '../dom';
 import * as domHandler from '../dom/node';
+
+const insVdMap: Map<Component, VDom> = new Map();
 
 function doCreateComponent(vd: VDom, parentElm: HTMLElement) {
   const Constructor: DecorComponent = vd.type as unknown as DecorComponent;
   vd.instance = new Constructor();
+  insVdMap.set(vd.instance, vd);
   const children = (vd.props.children = [vd.instance.render()]);
   for (const child of children) {
     doCreate(child, parentElm);
@@ -13,7 +16,7 @@ function doCreateComponent(vd: VDom, parentElm: HTMLElement) {
 
 function doCreateHost(vd: VDom, parentElm: HTMLElement) {
   const elm = (vd.elm = domHandler.createElement(
-    vd.tag as string,
+    vd.type as string,
     vd.props.onClick,
     vd.props.innerText,
   ));
@@ -54,7 +57,7 @@ function doUpdateHost(old: VDom, vd: VDom) {
   }
 }
 
-function doUpdateComponent(old: VDom, vd: VDom) {
+function doUpdateComponent(old: VDom) {
   const newChild = [old.instance.render()];
   reconcileChildren(old.props.children, newChild);
 }
@@ -65,7 +68,7 @@ function doUpdate(old: VDom, vd: VDom) {
       doUpdateHost(old, vd);
       break;
     case "function":
-      doUpdateComponent(old, vd);
+      doUpdateComponent(old);
       break;
   }
 }
@@ -102,18 +105,15 @@ function reconcile(old: VDom | null, vd: VDom | null, parentElm: HTMLElement) {
   }
 }
 
-// todo先放在这里，后续删除
-let _root;
-let _app;
 // 初始化渲染
 export function initRender(root: Container, app: VDom) {
-  _root = root;
-  _app = app;
   reconcile(null, app, root.elm);
   root.vdom = app;
 }
 
 // 更新渲染
-export function updateRender() {
-  reconcile(_root.vdom, _app, _root.elm);
+export function updateRender(instance: Component) {
+  const vd = insVdMap.get(instance);
+  // todo 优化异步实现
+  setTimeout(() => doUpdateComponent(vd), 10)
 }

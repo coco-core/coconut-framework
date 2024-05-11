@@ -23,7 +23,7 @@ export const _factory = (cb: Function): ClassFieldDecorator => {
           },
           set(v: any): boolean {
             innerValue = v;
-            cb();
+            cb(this);
             return true;
           },
         });
@@ -35,4 +35,4 @@ export const _factory = (cb: Function): ClassFieldDecorator => {
   }
 }
 
-export const reactive = _factory(() => setTimeout(updateRender, 10));
+export const reactive = _factory(updateRender);
