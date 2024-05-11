@@ -1,4 +1,4 @@
-import {Component, DecorComponent, VDom, VDomType} from '../component';
+import {Component, DecorComponent, VDom } from '../component';
 import { Container } from '../dom';
 import * as domHandler from '../dom/node';
 

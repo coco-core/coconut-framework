@@ -4,10 +4,6 @@ export class Component {
 }
 export type DecorComponent = typeof Component;
 
-export enum VDomType {
-  Host = 'h', // 浏览器标签
-  Component = 'c', // 自定义类组件
-}
 // 虚拟dom
 // 通用属性
 interface VDomBase {
@@ -21,9 +17,7 @@ interface VDomBase {
     [key: string]: any;
   };
 }
-// VDomType.Host
 interface VDomHost {}
-// VDomType.Component
 interface VDomComponent {
   // 组件实例
   instance?: Component;
