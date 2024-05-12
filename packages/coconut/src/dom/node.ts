@@ -1,7 +1,9 @@
-export const deleteChildren = (elm: Element) => {
+export const deleteChildren = (elm: Element, child?: Element) => {
   const children = elm.children;
   for (let idx = children.length - 1; idx >= 0; idx--) {
-    elm.removeChild(children[idx]);
+    if (!child || (child && children[idx] === child)) {
+      elm.removeChild(child);
+    }
   }
 };
 

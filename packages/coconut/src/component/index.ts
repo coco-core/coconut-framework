@@ -1,15 +1,19 @@
-// 自定义组件基类
+// 自定义组件
 export class Component {
   render: () => VDom;
 }
 export type DecorComponent = typeof Component;
 
 // 虚拟dom
-// 通用属性
-interface VDomBase {
+export interface VDom {
   // jsx中组件的tag，按type的不同可能是浏览器标签或自定义组件类
   type: string | DecorComponent;
+  // 宿主组件对应html元素
   elm?: HTMLElement;
+  // 如果的浏览器标签，则是elm.parent
+  parentElm: HTMLElement;
+  // 自定义组件实例
+  instance?: Component;
   props: {
     children?: VDom[];
     onClick?: Function;
@@ -17,9 +21,3 @@ interface VDomBase {
     [key: string]: any;
   };
 }
-interface VDomHost {}
-interface VDomComponent {
-  // 组件实例
-  instance?: Component;
-}
-export interface VDom extends VDomBase, VDomHost, VDomComponent {}

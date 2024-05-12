@@ -1,6 +1,6 @@
 import {createContainer} from "coconut";
-import Button from "./components/button";
+import App from "./app";
 
 const container = createContainer(document.getElementById("root"));
 
-container.render(<Button />);
+container.render(<App />);
