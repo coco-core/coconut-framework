@@ -1,5 +1,5 @@
 // create vdom
-import { DecorComponent, VDom, VDomType } from "../component";
+import { DecorComponent, VDom, } from "../component";
 
 const h = (
   component: string | DecorComponent,

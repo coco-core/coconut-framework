@@ -1,81 +1,98 @@
-import { DecorComponent, VDom, VDomType } from '../component';
+import {Component, DecorComponent, VDom } from '../component';
 import { Container } from '../dom';
 import * as domHandler from '../dom/node';
 
-function doCreateComponent(vd: VDom, parentElm: HTMLElement) {
+// 组件实例 <===> vd
+const insVdMap: Map<Component, VDom> = new Map();
+
+function doCreateComponent(parent: HTMLElement, vd: VDom) {
   const Constructor: DecorComponent = vd.type as unknown as DecorComponent;
   vd.instance = new Constructor();
-  const children = (vd.props.children = [vd.instance.render()]);
-  for (const child of children) {
-    doCreate(child, parentElm);
-  }
+  insVdMap.set(vd.instance, vd);
+  const child = vd.instance.render();
+  vd.props.children = [child];
+  vd.elm = doCreate(parent, child);
+  return vd.elm;
 }
 
-function doCreateHost(vd: VDom, parentElm: HTMLElement) {
+function doCreateHost(parent: HTMLElement, vd: VDom) {
   const elm = (vd.elm = domHandler.createElement(
-    vd.tag as string,
+    vd.type as string,
     vd.props.onClick,
     vd.props.innerText,
   ));
-  // 这里先挂载children，再挂载elm
   const children = vd.props.children ?? [];
   for (let child of Array.isArray(children) ? children : [children]) {
     if (typeof child === "object") {
-      doCreate(child, elm);
+      const childElm = doCreate(elm, child);
+      if (childElm) {
+        domHandler.appendChild(elm, childElm);
+      }
     } else {
       elm.innerText = child;
     }
   }
-  domHandler.appendChild(parentElm, elm);
+  return elm;
 }
 
-function doCreate(vd: VDom, parentElm: HTMLElement) {
+function doCreate(parent: HTMLElement, vd: VDom): HTMLElement {
+  let elm: HTMLElement;
   switch (typeof vd.type) {
     case "string":
-      doCreateHost(vd, parentElm);
+      elm = doCreateHost(parent, vd);
       break;
     case "function":
-      doCreateComponent(vd, parentElm);
+      elm = doCreateComponent(parent, vd);
       break;
     default:
       throw new Error(`未定义的虚拟dom类型: ${vd.type}`);
   }
+  vd.parentElm = parent;
+  return elm;
 }
 
-function doUpdateHost(old: VDom, vd: VDom) {
+function doUpdateHost(parent: HTMLElement, old: VDom, vd: VDom) {
   if (typeof vd.props.children === 'object') {
     if (Array.isArray(old.props.children)) {
-      reconcileChildren(old.props.children, vd.props.children);
+      reconcileArray(parent, old.props.children, vd.props.children);
     } else {
-      reconcileChildren([old.props.children], [vd.props.children]);
+      reconcileArray(parent, [old.props.children], [vd.props.children]);
     }
   } else {
     domHandler.updateElement(old.elm, old.props.children, vd.props.children);
   }
 }
 
-function doUpdateComponent(old: VDom, vd: VDom) {
+function doUpdateComponent(parent: HTMLElement, old: VDom) {
   const newChild = [old.instance.render()];
-  reconcileChildren(old.props.children, newChild);
+  reconcileArray(parent, old.props.children, newChild);
+  old.props.children = newChild;
 }
 
-function doUpdate(old: VDom, vd: VDom) {
+function doUpdate(parent: HTMLElement, old: VDom, vd: VDom) {
   switch (typeof old.type) {
     case "string":
-      doUpdateHost(old, vd);
+      doUpdateHost(parent, old, vd);
       break;
     case "function":
-      doUpdateComponent(old, vd);
+      doUpdateComponent(parent, old);
       break;
   }
 }
 
-function doRemove(vd: VDom) {}
+function doRemove(vd: VDom) {
+  switch (typeof vd.type) {
+    case 'function':
+      insVdMap.delete(vd.instance);
+      domHandler.deleteChildren(vd.parentElm, vd.elm)
+      break;
+  }
+}
 
-function reconcileChildren(olds: VDom[], news: VDom[]) {
+function reconcileArray(parentElm: HTMLElement, olds: VDom[], news: VDom[]) {
   const len = Math.max(olds.length, news.length);
   for (let idx = 0; idx < len; idx++) {
-    reconcile(olds[idx], news[idx], olds[idx].elm);
+    reconcile(parentElm, olds[idx], news[idx]);
   }
 
   // todo 处理长度不一致的情况
@@ -84,17 +101,18 @@ function reconcileChildren(olds: VDom[], news: VDom[]) {
 /*
  * 新老vd进行比较
  */
-function reconcile(old: VDom | null, vd: VDom | null, parentElm: HTMLElement) {
-  if (old === null && vd === null) {
+function reconcile(parent: HTMLElement, old?: VDom | false, vd?: VDom | false) {
+  if (!old && !vd) {
     // todo dev下输出错误
     return;
-  } else if (old === null) {
-    doCreate(vd, parentElm);
-  } else if (vd === null) {
-    // doRemove(old);
+  } else if (!old) {
+    const elm = doCreate(parent, vd as VDom);
+    domHandler.appendChild(parent, elm);
+  } else if (!vd) {
+    doRemove(old);
   } else {
     if (vd.type === old.type) {
-      doUpdate(old, vd);
+      doUpdate(parent, old, vd);
     } else {
       // doRemove(old);
       // doCreate(vd);
@@ -102,18 +120,15 @@ function reconcile(old: VDom | null, vd: VDom | null, parentElm: HTMLElement) {
   }
 }
 
-// todo先放在这里，后续删除
-let _root;
-let _app;
 // 初始化渲染
 export function initRender(root: Container, app: VDom) {
-  _root = root;
-  _app = app;
-  reconcile(null, app, root.elm);
+  reconcile(root.elm, null, app);
   root.vdom = app;
 }
 
 // 更新渲染
-export function updateRender() {
-  reconcile(_root.vdom, _app, _root.elm);
+export function updateRender(instance: Component) {
+  const vd = insVdMap.get(instance);
+  // todo 优化异步实现
+  setTimeout(() => doUpdateComponent(vd.parentElm, vd), 10)
 }
