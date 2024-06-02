@@ -1,5 +1,6 @@
+export * from './ReactDomHostConfig.js'
 import { VDom } from '../component';
-import { initRender } from '../reconciler';
+import {initRender, flushSync, updateContainer, createContainer} from '../reconciler';
 
 export interface Container {
   elm: HTMLElement;
@@ -8,13 +9,28 @@ export interface Container {
   vdom?: VDom;
 }
 
-export const createContainer = (elm: HTMLElement): Container => {
-  const container: Container = {
-    elm,
-    render: (vd: VDom) => {
-      initRender(container, vd);
-    },
-  };
+function legacyCreateRootFromDOMContainer(container, children) {
+  const root = createContainer(container)
+  container._reactRootContainer = root;
+  flushSync(() => {
+    updateContainer(children, root, null, null);
+  })
+  return root;
+}
 
-  return container;
-};
+function legacyRenderSubtreeIntoContainer(
+  parentComponent,
+  children,
+  container,
+  callback,
+) {
+  const maybeRoot = container._reactRootContainer;
+  let root;
+  if (!maybeRoot) {
+    root = legacyCreateRootFromDOMContainer(container, children);
+  }
+}
+
+export function render(element, container) {
+  return legacyRenderSubtreeIntoContainer(null, element, container, null);
+}

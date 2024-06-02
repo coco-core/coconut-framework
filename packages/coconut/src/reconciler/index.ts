@@ -1,5 +1,7 @@
 import {Component, DecorComponent, VDom } from '../component';
 import { Container } from '../dom';
+import { flushSync, updateContainer, createContainer, } from './ReactFiberReconciler.js';
+import { finishQueuedConcurrentUpdates } from './ReactFiberConcurrentUpdate.js';
 import * as domHandler from '../dom/node';
 
 // 组件实例 <===> vd
@@ -132,3 +134,5 @@ export function updateRender(instance: Component) {
   // todo 优化异步实现
   setTimeout(() => doUpdateComponent(vd.parentElm, vd), 10)
 }
+
+export { flushSync, updateContainer, createContainer, finishQueuedConcurrentUpdates }
