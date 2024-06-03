@@ -1,3 +1,4 @@
+export * from './ReactDomComponent.js'
 export * from './ReactDomHostConfig.js'
 import { VDom } from '../component';
 import {initRender, flushSync, updateContainer, createContainer} from '../reconciler';
