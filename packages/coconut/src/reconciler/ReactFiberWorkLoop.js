@@ -80,6 +80,7 @@ function renderRootSync(root) {
   do {
     try {
       workLoopSync();
+      break;
     } catch (e) {
       console.error(e)
       break;
