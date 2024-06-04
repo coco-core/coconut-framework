@@ -127,6 +127,7 @@ function ChildReconciler(shouldTrackSideEffects) {
         } else {
           previousNewFiber.sibling = newFiber;
         }
+        previousNewFiber = newFiber;
       }
       return resultingFirstChild;
     }
