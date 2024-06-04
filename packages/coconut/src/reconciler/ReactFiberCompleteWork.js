@@ -1,4 +1,4 @@
-import {ClassComponent, HostComponent} from "./ReactWorkTags";
+import {ClassComponent, HostComponent, HostRoot} from "./ReactWorkTags";
 import {createInstance, finalizeInitialChildren} from "../dom";
 
 function appendAllChildren(parent, workInProgress) {}
@@ -9,6 +9,9 @@ function completeWork(
 ) {
   const newProps = workInProgress.pendingProps;
   switch (workInProgress.tag) {
+    case HostRoot: {
+      return null;
+    }
     case ClassComponent: {
       return null
     }
