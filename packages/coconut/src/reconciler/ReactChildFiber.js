@@ -1,5 +1,5 @@
 import {createFiberFromElement, createFiberFromText, createWorkInProgress} from "./ReactFiber";
-import {Placement} from "./ReactFiberFlags";
+import {Forked, Placement} from "./ReactFiberFlags";
 import {REACT_ELEMENT_TYPE} from "../shared/index";
 
 
@@ -45,6 +45,7 @@ function ChildReconciler(shouldTrackSideEffects) {
   function placeChild(newFiber, lastPlacedIndex, newIndex) {
     newFiber.index = newIndex;
     if (!shouldTrackSideEffects) {
+      newFiber.flags |= Forked;
       return lastPlacedIndex;
     }
     const current = newFiber.alternate;

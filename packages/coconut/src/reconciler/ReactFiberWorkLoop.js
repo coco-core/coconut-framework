@@ -5,6 +5,7 @@ import {unwindWork} from "./ReactFiberUnwindWork";
 import {flushSyncCallbacks, scheduleSyncCallback} from "./ReactFiberSyncTaskQueue";
 import {createWorkInProgress} from "./ReactFiber";
 import {finishQueuedConcurrentUpdates} from "./ReactFiberConcurrentUpdate";
+import {commitMutationEffects} from "./ReactFiberCommitWork";
 
 let workInProgressRoot = null;
 let workInProgress = null;
@@ -88,8 +89,23 @@ function renderRootSync(root) {
   } while (true)
 }
 
+function commitRootImpl(root) {
+
+  const finishedWork = root.finishedWork;
+
+  commitMutationEffects(root, finishedWork)
+}
+
+function commitRoot(root) {
+  commitRootImpl(root);
+}
+
 function performSyncWorkOnRoot(root) {
   renderRootSync(root)
+
+  const finishedWork = root.current.alternate;
+  root.finishedWork = finishedWork;
+  commitRoot(root)
   return null;
 }
 

@@ -22,7 +22,9 @@ function FiberNode(tag, pendingProps, key) {
   this.memoizedProps = null;
   this.memoizedState = null;
 
+  // effects
   this.flags = NoFlags;
+  this.subtreeFlags = NoFlags;
   this.deletions = null;
 
   this.alternate = null;
