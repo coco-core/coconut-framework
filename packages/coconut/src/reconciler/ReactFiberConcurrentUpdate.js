@@ -17,7 +17,7 @@ function markUpdateLaneFromFiberToRoot(sourceFiber) {
   }
 }
 
-export function pushConcurrentQueue(queue) {
+export function pushConcurrentUpdateQueue(queue) {
   if (concurrentQueues === null) {
     concurrentQueues = [queue];
   } else {
@@ -25,7 +25,7 @@ export function pushConcurrentQueue(queue) {
   }
 }
 
-export function finishQueuedConcurrentUpdates() {
+export function finishQueueingConcurrentUpdates() {
   if (concurrentQueues !== null) {
     for (let i = 0; i < concurrentQueues.length; i++) {
       const queue = concurrentQueues[i];
@@ -54,7 +54,7 @@ export function enqueueConcurrentClassUpdate(
   const interleaved = queue.interleaved;
   if (interleaved === null) {
     update.next = update
-    pushConcurrentQueue(queue)
+    pushConcurrentUpdateQueue(queue)
   } else {
     update.next = interleaved.next;
     interleaved.next = update;

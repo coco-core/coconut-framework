@@ -4,7 +4,7 @@ import {completeWork} from "./ReactFiberCompleteWork";
 import {unwindWork} from "./ReactFiberUnwindWork";
 import {flushSyncCallbacks, scheduleSyncCallback} from "./ReactFiberSyncTaskQueue";
 import {createWorkInProgress} from "./ReactFiber";
-import {finishQueuedConcurrentUpdates} from "./ReactFiberConcurrentUpdate";
+import {finishQueueingConcurrentUpdates} from "./ReactFiberConcurrentUpdate";
 import {commitMutationEffects} from "./ReactFiberCommitWork";
 
 let workInProgressRoot = null;
@@ -68,7 +68,7 @@ function prepareFreshStack(root) {
   workInProgress = rootWorkInProgress;
 
 
-  finishQueuedConcurrentUpdates();
+  finishQueueingConcurrentUpdates();
   return workInProgress
 }
 
