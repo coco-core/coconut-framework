@@ -19,6 +19,8 @@ function setInitialDOMProperties(
       } else if (typeof nextProp === 'number') {
         setTextContent(domElement, '' + nextProp);
       }
+    } else if (propKey === 'onClick') {
+      domElement.addEventListener('click', nextProp);
     }
   }
 }
