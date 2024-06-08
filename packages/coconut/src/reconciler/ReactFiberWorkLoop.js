@@ -37,7 +37,7 @@ function completeUnitOfWork(unitOfWork) {
       const next = unwindWork(current, completedWork);
 
       if (returnFiber !== null) {
-        returnFiber.flags != Incomplete;
+        returnFiber.flags |= Incomplete;
         returnFiber.deletions = null
       } else {
         workInProgress = null;
@@ -111,14 +111,16 @@ function performSyncWorkOnRoot(root) {
 
 function ensureRootIsScheduled(root) {
   scheduleSyncCallback(performSyncWorkOnRoot.bind(null, root))
-  flushSyncCallbacks();
 }
 
 export function flushSync(fn) {
-  if (fn) {
-    return fn();
+  try {
+    if (fn) {
+      return fn();
+    }
+  } finally {
+    flushSyncCallbacks();
   }
-  flushSyncCallbacks();
 }
 
 export function scheduleUpdateOnFiber(
