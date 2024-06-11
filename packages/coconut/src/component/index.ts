@@ -6,6 +6,7 @@ export type DecorComponent = typeof Component;
 
 // 虚拟dom
 export interface VDom {
+  $$typeof: string;
   // jsx中组件的tag，按type的不同可能是浏览器标签或自定义组件类
   type: string | DecorComponent;
   // 宿主组件对应html元素

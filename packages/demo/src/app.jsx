@@ -4,18 +4,16 @@ import Button from "./components/button";
 export default class App {
 
   @reactive
-  show = true;
+  count = true;
 
   handleClick = () => {
-    this.show = !this.show;
+    console.log('=======click!===========');
   };
 
   render = () => {
-    return <div>
-      <button onClick={this.handleClick}>click me</button>
-      {
-        this.show && <Button />
-      }
+    return <div className="app">
+      <h1 onClick={this.handleClick}>Welcome to My React App</h1>
+      <p>This React app is loaded from a CDN!</p>
     </div>
   }
 }
