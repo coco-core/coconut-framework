@@ -134,7 +134,7 @@ export function processUpdateQueue(
         if (pendingQueue === null) {
           break;
         } else {
-          console.log('=======todo===========', );
+          throw new Error('=======todo===========');
         }
       }
     } while (true)

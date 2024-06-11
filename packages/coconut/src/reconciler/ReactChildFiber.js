@@ -1,5 +1,5 @@
 import {createFiberFromElement, createFiberFromText, createWorkInProgress} from "./ReactFiber";
-import {Forked, Placement} from "./ReactFiberFlags";
+import {Deletion, Forked, Placement} from "./ReactFiberFlags";
 import {REACT_ELEMENT_TYPE} from "../shared/index";
 
 

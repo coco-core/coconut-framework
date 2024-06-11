@@ -92,8 +92,11 @@ function renderRootSync(root) {
 function commitRootImpl(root) {
 
   const finishedWork = root.finishedWork;
+  root.finishedWork = null;
 
   commitMutationEffects(root, finishedWork)
+
+  root.current = finishedWork;
 }
 
 function commitRoot(root) {
