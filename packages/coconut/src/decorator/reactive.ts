@@ -1,5 +1,3 @@
-import { updateRender } from '../reconciler';
-
 interface Context {
   kind: "field";
   name: string | symbol;
@@ -35,4 +33,6 @@ export const _factory = (cb: Function): ClassFieldDecorator => {
   }
 }
 
-export const reactive = _factory(updateRender);
+// todo
+const noop = () => {}
+export const reactive = _factory(noop);
