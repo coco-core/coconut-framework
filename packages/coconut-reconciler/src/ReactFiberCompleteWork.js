@@ -1,5 +1,5 @@
 import {ClassComponent, HostComponent, HostRoot} from "./ReactWorkTags";
-import {createInstance, finalizeInitialChildren} from "../dom";
+import {createInstance, finalizeInitialChildren} from "ReactFiberHostConfig";
 import {NoFlags} from "./ReactFiberFlags";
 
 function appendAllChildren(parent, workInProgress) {

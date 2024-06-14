@@ -1,11 +1,9 @@
-// create vdom
-import { DecorComponent, VDom, } from "../component";
-import { REACT_ELEMENT_TYPE } from "../shared/index.js";
+import { REACT_ELEMENT_TYPE } from "../../../shared/index.js";
 
 const h = (
-  component: string | DecorComponent,
-  props: Record<string, any>,
-): VDom => {
+  component,
+  props,
+) => {
   return {
     $$typeof: REACT_ELEMENT_TYPE,
     type: component,

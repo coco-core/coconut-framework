@@ -11,9 +11,9 @@ export default class App {
   };
 
   render = () => {
-    return <div className="app">
-      <h1 onClick={this.handleClick}>Welcome to My React App</h1>
+    return <section className="app">
+      <h1>Welcome to My React App</h1>
       <p>This React app is loaded from a CDN!</p>
-    </div>
+    </section>
   }
 }
