@@ -2,7 +2,7 @@ import {mountChildFibers, reconcileChildFibers} from "./ReactChildFiber";
 import {ClassComponent, HostComponent, HostRoot, HostText} from "./ReactWorkTags";
 import {constructClassInstance, mountClassInstance} from "./ReactFiberClassComponent";
 import {cloneUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
-import {shouldSetTextContent} from "../dom";
+import {shouldSetTextContent} from "ReactFiberHostConfig";
 
 export function reconcileChildren(
   current,

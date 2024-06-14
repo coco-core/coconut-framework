@@ -12,7 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "coconut": "workspace:^"
+    "coconut": "workspace:^",
+    "coconut-web": "workspace:^"
   },
   "devDependencies": {
     "@babel/core": "^7.24.3",

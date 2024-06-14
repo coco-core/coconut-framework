@@ -1,6 +1,6 @@
 import {createFiberFromElement, createFiberFromText, createWorkInProgress} from "./ReactFiber";
 import {Deletion, Forked, Placement} from "./ReactFiberFlags";
-import {REACT_ELEMENT_TYPE} from "../shared/index";
+import {REACT_ELEMENT_TYPE} from "../../shared/index";
 
 
 function ChildReconciler(shouldTrackSideEffects) {

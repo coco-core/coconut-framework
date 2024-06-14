@@ -1,14 +1,6 @@
 export * from './ReactDomComponent.js'
 export * from './ReactDomHostConfig.js'
-import { VDom } from '../component';
-import {initRender, flushSync, updateContainer, createContainer} from '../reconciler';
-
-export interface Container {
-  elm: HTMLElement;
-  render: (vd: VDom) => void;
-  // 当前页面对应的vdom
-  vdom?: VDom;
-}
+import {flushSync, updateContainer, createContainer} from 'coconut-reconciler';
 
 function legacyCreateRootFromDOMContainer(container, children) {
   const root = createContainer(container)
