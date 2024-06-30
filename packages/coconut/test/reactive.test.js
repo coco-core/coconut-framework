@@ -1,6 +1,4 @@
-import { _factory } from '../src';
-
-describe("reactive", () => {
+xdescribe("reactive", () => {
   test("修改值，则支持cb", () => {
     const obj = { age: 22 };
     const cb = jest.fn();

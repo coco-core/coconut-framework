@@ -1,10 +1,49 @@
-import {setInitialProperties} from "./ReactDomComponent";
+import {createTextNode, setInitialProperties, diffProperties, updateProperties} from "./ReactDomComponent";
 
 export function shouldSetTextContent(type, props) {
   return (
     typeof props.children === 'string' ||
     typeof props.children === 'number'
   );
+}
+
+export function prepareUpdate(
+  domElement,
+  type,
+  oldProps,
+  newProps
+) {
+  return diffProperties(
+    domElement,
+    type,
+    oldProps,
+    newProps
+  )
+}
+
+export function createTextInstance(
+  text
+) {
+  const textNode = createTextNode(text);
+  return textNode;
+}
+
+export function commitTextUpdate(
+  textInstance,
+  oldText,
+  newText
+) {
+  textInstance.nodeValue = newText;
+}
+
+export function commitUpdate(
+  domElement,
+  updatePayload,
+  type,
+  oldProps,
+  newProps
+) {
+  updateProperties(domElement, updatePayload, type, oldProps, newProps);
 }
 
 export function createInstance(type, props) {

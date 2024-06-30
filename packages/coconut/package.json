@@ -33,5 +33,8 @@
     "transform": {
       "\\.[jt]sx?$": "babel-jest"
     }
+  },
+  "dependencies": {
+    "@rollup/plugin-alias": "^5.1.0"
   }
 }

@@ -1,5 +1,6 @@
 import {ClassComponent, HostComponent, HostRoot, HostText} from "./ReactWorkTags";
-import {MutationMask, Placement} from "./ReactFiberFlags";
+import {MutationMask, Placement, Update} from "./ReactFiberFlags";
+import {commitTextUpdate, commitUpdate} from "ReactFiberHostConfig";
 
 
 function isHostParent(fiber) {
@@ -118,9 +119,31 @@ function commitMutationEffectsOnFiber(
   root
 ) {
   const current = finishedWork.alternate;
+  const flags = finishedWork.flags;
   switch (finishedWork.tag) {
     case HostComponent: {
+      recursivelyTraverseMutationEffects(root, finishedWork)
       commitReconciliationEffects(finishedWork)
+
+      // if (flags & Update) {
+      //   const instance = finishedWork.stateNode;
+      //   if (instance !== null) {
+      //     const newProps = finishedWork.memoizedProps;
+      //     const oldProps = current !== null ? current.memoizedProps : newProps;
+      //     const type = finishedWork.type;
+      //     const updatePayload = finishedWork.updateQueue;
+      //     finishedWork.updateQueue = null;
+      //     if (updatePayload !== null) {
+      //       commitUpdate(
+      //         instance,
+      //         updatePayload,
+      //         type,
+      //         oldProps,
+      //         newProps
+      //       )
+      //     }
+      //   }
+      // }
       return;
     }
     case HostRoot: {
@@ -131,7 +154,20 @@ function commitMutationEffectsOnFiber(
     case ClassComponent: {
       recursivelyTraverseMutationEffects(root, finishedWork)
       commitReconciliationEffects(finishedWork)
-      break
+      return
+    }
+    case HostText: {
+      recursivelyTraverseMutationEffects(root, finishedWork)
+      commitReconciliationEffects(finishedWork)
+
+      if (flags & Update) {
+        const textInstance = finishedWork.stateNode;
+        const newText = finishedWork.memoizedProps;
+        const oldText = current !== null ? current.memoizedProps : newText;
+
+        commitTextUpdate(textInstance, oldText, newText);
+      }
+      return;
     }
   }
 }

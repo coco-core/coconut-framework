@@ -2,9 +2,10 @@ import {enqueueConcurrentClassUpdate} from "./ReactFiberConcurrentUpdate";
 
 export const UpdateState = 0;
 
-export function createUpdate() {
+export function createUpdate(field) {
   const update = {
     tag: UpdateState,
+    field,
     payload: null
   }
   return update;
@@ -54,7 +55,7 @@ export function cloneUpdateQueue(
   }
 }
 
-function getStateFromUpdate(
+function getFieldStateFromUpdate(
   workInProgress,
   queue,
   update,
@@ -74,7 +75,7 @@ function getStateFromUpdate(
       if (partialState === null || partialState === undefined) {
         return prevState;
       }
-      return Object.assign({}, prevState, partialState);
+      return partialState;
     }
   }
 }
@@ -119,7 +120,7 @@ export function processUpdateQueue(
   }
 
   if (firstBaseUpdate !== null) {
-    let newState = queue.baseState;
+    let newState = queue.baseState || {};
 
     let newBaseState = null;
     let newFirstBaseUpdate = null;
@@ -127,7 +128,9 @@ export function processUpdateQueue(
 
     let update = firstBaseUpdate;
     do {
-      newState = getStateFromUpdate(workInProgress, queue, update, newState, props, instance);
+      const {field} = update;
+      const newFieldState = getFieldStateFromUpdate(workInProgress, queue, update, newState[field], props, instance);
+      Object.assign(newState, {[field]: newFieldState});
       update = update.next;
       if (update === null) {
         pendingQueue = queue.shared.pending;

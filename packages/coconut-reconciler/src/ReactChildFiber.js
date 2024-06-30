@@ -1,6 +1,7 @@
 import {createFiberFromElement, createFiberFromText, createWorkInProgress} from "./ReactFiber";
 import {Deletion, Forked, Placement} from "./ReactFiberFlags";
 import {REACT_ELEMENT_TYPE} from "../../shared/index";
+import {HostText} from "./ReactWorkTags";
 
 
 function ChildReconciler(shouldTrackSideEffects) {
@@ -74,6 +75,66 @@ function ChildReconciler(shouldTrackSideEffects) {
     return null
   }
 
+  function updateElement(
+    returnFiber,
+    current,
+    element
+  ) {
+    const elementType = element.type;
+    if (current !== null) {
+      if (current.elementType === elementType) {
+        const existing = useFiber(current, element.props);
+        existing.return = returnFiber;
+        return existing;
+      }
+    }
+  }
+
+  function updateTextNode(
+    returnFiber,
+    current,
+    textContent
+  ) {
+    if (current === null || current.tag !== HostText) {
+      const created = createFiberFromText(textContent)
+      created.return = returnFiber;
+      return created;
+    } else {
+      const existing = useFiber(current, textContent);
+      existing.return = returnFiber;
+      return existing;
+    }
+  }
+
+  function updateSlot(
+    returnFiber,
+    oldFiber,
+    newChild
+  ) {
+    const key = oldFiber !== null ? oldFiber.key : null;
+    if (
+      (typeof newChild === 'string' && newChild !== "") ||
+      typeof newChild === 'number'
+    ) {
+      if (key !== null) {
+        return null
+      }
+      return updateTextNode(returnFiber, oldFiber, '' + newChild);
+    }
+
+    if (typeof newChild === 'object' && newChild !== null) {
+      switch (newChild.$$typeof) {
+        case REACT_ELEMENT_TYPE: {
+          if (newChild.key === key) {
+            return updateElement(returnFiber, oldFiber, newChild);
+          } else {
+            return null;
+          }
+        }
+      }
+    }
+  }
+
   function reconcileSingleElement(
     returnFiber,
     currentFirstChild,
@@ -115,6 +176,30 @@ function ChildReconciler(shouldTrackSideEffects) {
     let lastPlacedIndex = 0;
     let newIdx = 0;
     let nextOldFiber = null;
+    for (; oldFiber !== null && newIdx < newChildren.length; newIdx++) {
+      if (oldFiber.index > newIdx) {
+        nextOldFiber = oldFiber;
+        oldFiber = null;
+      } else {
+        nextOldFiber = oldFiber.sibling;
+      }
+      const newFiber = updateSlot(
+        returnFiber,
+        oldFiber,
+        newChildren[newIdx]
+      )
+      if (newFiber === null) {
+        break;
+      }
+      lastPlacedIndex = placeChild(newFiber, lastPlacedIndex, newIdx);
+      if (previousNewFiber === null) {
+        resultingFirstChild = newFiber;
+      } else {
+        previousNewFiber.sibling = newFiber;
+      }
+      previousNewFiber = newFiber;
+      oldFiber = nextOldFiber;
+    }
 
     if (oldFiber === null) {
       for (; newIdx < newChildren.length; newIdx++){

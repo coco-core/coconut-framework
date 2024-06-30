@@ -15,8 +15,8 @@ export function updateContainer(
 ) {
   const current = container.current;
 
-  const update = createUpdate();
-  update.payload = { element }
+  const update = createUpdate('element');
+  update.payload = element
 
   const root = enqueueUpdate(current, update)
   if (root !== null) {
