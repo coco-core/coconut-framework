@@ -1,6 +1,6 @@
 import {mountChildFibers, reconcileChildFibers} from "./ReactChildFiber";
 import {ClassComponent, HostComponent, HostRoot, HostText} from "./ReactWorkTags";
-import {constructClassInstance, mountClassInstance} from "./ReactFiberClassComponent";
+import {constructClassInstance, mountClassInstance, updateClassInstance} from "./ReactFiberClassComponent";
 import {cloneUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {shouldSetTextContent} from "ReactFiberHostConfig";
 
@@ -59,6 +59,7 @@ function updateClassComponent(
     mountClassInstance(workInProgress, Component, nextProps);
     shouldUpdate = true;
   } else {
+    shouldUpdate = updateClassInstance(current, workInProgress, Component, nextProps);
   }
 
   const nextUnitOfWork = finishClassComponent(

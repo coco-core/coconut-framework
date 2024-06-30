@@ -14,7 +14,8 @@ export default [
     plugins: [
       alias({entries: [
           { find: 'coconut-reconciler', replacement: path.join(__dirname, '../coconut-reconciler/src/index.js') },
-          { find: 'ReactFiberHostConfig', replacement: path.join(__dirname, './src/ReactDomHostConfig.js') }
+          { find: 'ReactFiberHostConfig', replacement: path.join(__dirname, './src/ReactDomHostConfig.js') },
+          { find: 'shared', replacement: path.join(__dirname, '../shared') },
         ]
       }),
     ]

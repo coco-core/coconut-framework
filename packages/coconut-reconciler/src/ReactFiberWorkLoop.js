@@ -7,6 +7,12 @@ import {createWorkInProgress} from "./ReactFiber";
 import {finishQueueingConcurrentUpdates} from "./ReactFiberConcurrentUpdate";
 import {commitMutationEffects} from "./ReactFiberCommitWork";
 
+export const NoContext = /*             */ 0b000;
+const BatchedContext = /*               */ 0b001;
+const RenderContext = /*                */ 0b010;
+const CommitContext = /*                */ 0b100;
+
+let executionContext = NoContext;
 let workInProgressRoot = null;
 let workInProgress = null;
 
@@ -14,6 +20,8 @@ function performUnitOfWork(unitOfWork) {
   const current = unitOfWork.alternate;
   const next = beginWork(current, unitOfWork)
 
+
+  unitOfWork.memoizedProps = unitOfWork.pendingProps;
   if (next === null) {
     completeUnitOfWork(unitOfWork);
   } else {
@@ -74,6 +82,9 @@ function prepareFreshStack(root) {
 
 
 function renderRootSync(root) {
+  const prevExecutionContext = executionContext;
+  executionContext |= RenderContext;
+
   if (workInProgressRoot !== root) {
     prepareFreshStack(root);
   }
@@ -87,6 +98,10 @@ function renderRootSync(root) {
       break;
     }
   } while (true)
+
+  executionContext = prevExecutionContext;
+
+  workInProgressRoot = null;
 }
 
 function commitRootImpl(root) {
@@ -131,4 +146,8 @@ export function scheduleUpdateOnFiber(
   fiber
 ) {
   ensureRootIsScheduled(root)
+}
+
+export function isRenderPhase() {
+  return (executionContext & RenderContext) !== NoContext;
 }
