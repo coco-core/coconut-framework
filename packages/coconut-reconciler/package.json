@@ -2,7 +2,7 @@
   "name": "coconut-reconciler",
   "private": true,
   "version": "0.0.1",
-  "description": "调和算法，使用react的调和算法",
+  "description": "基于react调和算法，适配coconut的dsl",
   "main": "index.js",
   "files": [
     "dist"
