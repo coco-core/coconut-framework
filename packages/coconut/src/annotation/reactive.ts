@@ -23,12 +23,6 @@ function reactive (value, { kind, name, addInitializer }: Context) {
           return _value;
         },
         set(v: any): boolean {
-          /**
-           * react的setState只是安排一个updater，真正在beginWork中才会计算并设置state，
-           * 我们也是如此，但我们有2个难点：
-           * 1. 我们需要区分用户的赋值和coconut自己的赋值
-           * 2. 我们是多个state，react确定的一个
-           */
           if (isRenderPhase()) {
             // todo 应该是也有可能在触发的，可能还是需要新加一个变量
             _value = v;
