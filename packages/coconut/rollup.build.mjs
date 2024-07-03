@@ -1,5 +1,6 @@
 import typescript from '@rollup/plugin-typescript';
 import alias from "@rollup/plugin-alias";
+import replace from "rollup-plugin-replace";
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
@@ -13,6 +14,9 @@ export default [
       format: 'cjs',
     },
     plugins: [
+      replace({
+        __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
+      }),
       typescript(),
       alias({entries: [
           { find: 'coconut-reconciler', replacement: path.join(__dirname, '../coconut-reconciler/src/index.js') },
@@ -20,7 +24,7 @@ export default [
           { find: 'shared', replacement: path.join(__dirname, '../shared') },
           { find: 'ReactFiberHostConfig', replacement: path.join(__dirname, '../coconut-web/src/ReactDomHostConfig.js') }
         ]
-      }),
+      })
     ],
   }, {
     input: './src/jsx-runtime/index.ts',
@@ -28,5 +32,10 @@ export default [
       file: './dist/jsx-runtime.cjs.js',
       format: 'cjs',
     },
-    plugins: [typescript()],
+    plugins: [
+      replace({
+        __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),
+      }),
+      typescript()
+    ],
   }];
