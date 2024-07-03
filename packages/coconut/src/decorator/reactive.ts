@@ -15,12 +15,12 @@ function reactive (value, { kind, name, addInitializer }: Context) {
   if (kind === 'field') {
     addInitializer(function() {
       registerReactiveFields(this.constructor, name as string);
-      let innerValue: any = this[name];
+      let _value: any = this[name];
       Object.defineProperty(this, name, {
+        configurable: false,
         enumerable: true,
-        configurable: true,
         get: function () {
-          return innerValue;
+          return _value;
         },
         set(v: any): boolean {
           /**
@@ -31,7 +31,7 @@ function reactive (value, { kind, name, addInitializer }: Context) {
            */
           if (isRenderPhase()) {
             // todo 应该是也有可能在触发的，可能还是需要新加一个变量
-            innerValue = v;
+            _value = v;
           } else {
             classComponentUpdater.enqueueSetState(this, name, v)
           }
