@@ -1,9 +1,6 @@
-import { REACT_ELEMENT_TYPE } from "../../../shared/index.js";
+import { REACT_ELEMENT_TYPE } from '../../../shared/index.js';
 
-const h = (
-  component,
-  props,
-) => {
+const h = (component, props) => {
   return {
     $$typeof: REACT_ELEMENT_TYPE,
     type: component,
@@ -12,4 +9,4 @@ const h = (
 };
 
 export const jsx = h;
-export const jsxs = h
+export const jsxs = h;
