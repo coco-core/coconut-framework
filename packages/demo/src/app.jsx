@@ -1,5 +1,4 @@
-import { reactive } from "coconut";
-import Button from "./components/button";
+import { reactive, view } from "coconut";
 
 export default class App {
 
@@ -7,10 +6,10 @@ export default class App {
   count = 1;
 
   handleClick = () => {
-    console.log('=======click!===========');
     this.count += 1;
   };
 
+  @view
   render = () => {
     return <section className="app">
       <h1 onClick={this.handleClick}>我第{this.count}</h1>

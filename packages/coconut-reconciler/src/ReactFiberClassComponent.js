@@ -1,5 +1,5 @@
 import { get as getInstance, set as setInstance } from 'shared/ReactInstanceMap.js';
-import { getReactiveFields } from "shared/meta.js"
+import { getFields, MetaKeyReactive } from "shared/meta.js"
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {scheduleUpdateOnFiber} from "./ReactFiberWorkLoop";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
@@ -28,7 +28,7 @@ function adoptClassInstance(workInProgress, instance) {
 function constructClassInstance(workInProgress, ctor, props) {
   let instance = new ctor(props);
 
-  const fields = getReactiveFields(ctor);
+  const fields = getFields(ctor, MetaKeyReactive);
   workInProgress.memoizedState = fields.reduce((prev, field) => {
     prev[field] = instance[field];
     return prev;
@@ -61,7 +61,7 @@ function updateClassInstance(
   processUpdateQueue(workInProgress, newProps, instance);
   newState = workInProgress.memoizedState;
 
-  for (const field of getReactiveFields(ctor)) {
+  for (const field of getFields(ctor, MetaKeyReactive)) {
     instance[field] = newState[field]
   }
 

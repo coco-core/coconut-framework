@@ -1,5 +1,5 @@
 import { classComponentUpdater, isRenderPhase } from 'coconut-reconciler';
-import {registerReactiveFields} from "shared/meta.js";
+import {registerFields, MetaKeyReactive} from "shared/meta.js";
 
 interface Context {
   kind: "field";
@@ -14,7 +14,7 @@ type ClassFieldDecorator = (value: undefined, context: Context) => (initialValue
 function reactive (value, { kind, name, addInitializer }: Context) {
   if (kind === 'field') {
     addInitializer(function() {
-      registerReactiveFields(this.constructor, name as string);
+      registerFields(this.constructor, MetaKeyReactive, name as string);
       let _value: any = this[name];
       Object.defineProperty(this, name, {
         configurable: false,

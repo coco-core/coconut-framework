@@ -1,7 +1,8 @@
 // store Map<Function, Map<string, string[]>>
 const meta = new Map();
 
-const MetaKeyReactive = 'reactive';
+export const MetaKeyReactive = 'reactive';
+export const MetaKeyView = 'view';
 
 /*
 {
@@ -11,8 +12,8 @@ const MetaKeyReactive = 'reactive';
 }
  */
 
-// 注册一个reactive的field
-export const registerReactiveFields = (clz, field) => {
+// 注册一个注解
+export const registerFields = (clz, metaKey, field) => {
   let entity = meta.get(clz);
   if (!entity) {
     entity = new Map();
@@ -23,11 +24,11 @@ export const registerReactiveFields = (clz, field) => {
     annotations = [];
     entity.set(field, annotations);
   }
-  annotations.push(MetaKeyReactive);
+  annotations.push(metaKey);
 }
 
-// 获取一个类上所有定义了reactive的field
-export const getReactiveFields = (clz) => {
+// 获取一个类上指定metaKey的field
+export const getFields = (clz, metaKey) => {
   const fields = [];
   const entity = meta.get(clz);
   if (!entity) {
@@ -35,7 +36,7 @@ export const getReactiveFields = (clz) => {
   }
 
   for (const [key, value] of entity.entries()) {
-    if (value.indexOf(MetaKeyReactive) !== -1) {
+    if (value.indexOf(metaKey) !== -1) {
       fields.push(key)
     }
   }
