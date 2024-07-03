@@ -1,4 +1,4 @@
 import { render } from "coconut-web";
-export * from './decorator';
+export * from './annotation';
 
 export { render }

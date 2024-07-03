@@ -1,4 +1,4 @@
-import {registerFields, MetaKeyView} from "shared/meta.js";
+import {registerFields, getFields, MetaKeyView} from "shared/meta.js";
 
 interface Context {
   kind: "field";
@@ -13,6 +13,13 @@ type ClassFieldDecorator = (value: undefined, context: Context) => (initialValue
 function view (value, { kind, name, addInitializer }: Context) {
   if (kind === 'field') {
     addInitializer(function() {
+      if (__DEV__) {
+        const existed = getFields(this.constructor, MetaKeyView);
+        if (existed.length) {
+          console.error(`view不能用于多个函数，自动忽略名为 ${name as string} 的渲染函数`);
+          return;
+        }
+      }
       registerFields(this.constructor, MetaKeyView, name as string);
       return undefined;
     })
