@@ -1,5 +1,6 @@
-import { reactive, view } from "coconut";
+import { reactive, view, component } from "coconut";
 
+@component
 export default class App {
 
   @reactive

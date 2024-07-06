@@ -11,14 +11,22 @@ export const MetaKeyView = 'view';
   }
 }
  */
+// 注册一个类
+export const registerClz = (clz) => {
+  if (!meta.has(clz)) {
+    const entity = new Map();
+    meta.set(clz, entity)
+  }
+}
 
 // 注册一个注解
 export const registerFields = (clz, metaKey, field) => {
-  let entity = meta.get(clz);
-  if (!entity) {
-    entity = new Map();
-    meta.set(clz, entity)
+  if (__DEV__) {
+    if (!meta.has(clz)) {
+      console.error('不应该不存在clz', clz, "忘记添加@component了？")
+    }
   }
+  const entity = meta.get(clz);
   let annotations = entity.get(field);
   if (!annotations) {
     annotations = [];
