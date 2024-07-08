@@ -9,15 +9,12 @@ interface Context {
   private: boolean;
   addInitializer(initializer: () => void): void;
 }
-type ClassFieldDecorator = (
-  value: undefined,
-  context: Context,
-) => (initialValue: unknown) => unknown | void;
 
 function reactive(value, { kind, name, addInitializer }: Context) {
   if (kind === 'field') {
     addInitializer(function () {
       registerFields(this.constructor, MetaKeyReactive, name as string);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let _value: any = this[name];
       Object.defineProperty(this, name, {
         configurable: false,
@@ -25,6 +22,7 @@ function reactive(value, { kind, name, addInitializer }: Context) {
         get: function () {
           return _value;
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         set(v: any): boolean {
           if (isRenderPhase()) {
             // todo 应该是也有可能在触发的，可能还是需要新加一个变量

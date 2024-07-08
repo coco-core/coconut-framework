@@ -6,7 +6,7 @@ interface Context {
   addInitializer(initializer: () => void): void;
 }
 
-function component(value, { kind, name, addInitializer }: Context) {
+function component(value, { kind }: Context) {
   if (kind === 'class') {
     registerClz(value);
   } else {
