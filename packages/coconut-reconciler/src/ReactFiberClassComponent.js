@@ -1,5 +1,6 @@
 import { get as getInstance, set as setInstance } from 'shared/ReactInstanceMap.js';
 import { getFields, MetaKeyReactive } from "shared/meta.js"
+import { protoFunctionsBindThis } from "shared/class-component.js"
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {scheduleUpdateOnFiber} from "./ReactFiberWorkLoop";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
@@ -28,6 +29,7 @@ function adoptClassInstance(workInProgress, instance) {
 function constructClassInstance(workInProgress, ctor, props) {
   let instance = new ctor(props);
 
+  protoFunctionsBindThis(ctor, instance); // todo 移到其他地方，尽量保证reconciler与react-reconciler仓库保持一致
   const fields = getFields(ctor, MetaKeyReactive);
   workInProgress.memoizedState = fields.reduce((prev, field) => {
     prev[field] = instance[field];

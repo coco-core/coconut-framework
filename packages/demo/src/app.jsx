@@ -6,7 +6,7 @@ export default class App {
   @reactive
   count = 1;
 
-  handleClick = () => {
+  handleClick () {
     this.count += 1;
   };
 
