@@ -10,7 +10,7 @@ function component(value, { kind }: Context) {
   if (kind === 'class') {
     registerClz(value);
   } else {
-    throw new Error('reactive只能装饰类');
+    throw new Error('component只能装饰类');
   }
   return undefined;
 }
