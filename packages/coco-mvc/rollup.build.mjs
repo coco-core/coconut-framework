@@ -31,6 +31,10 @@ export default [
             find: 'coconut-web',
             replacement: path.join(__dirname, '../coconut-web/src/index.js'),
           },
+          {
+            find: 'coconut-ioc-container',
+            replacement: path.join(__dirname, '../coconut-ioc-container/src/index.js'),
+          },
           { find: 'shared', replacement: path.join(__dirname, '../shared') },
           {
             find: 'ReactFiberHostConfig',

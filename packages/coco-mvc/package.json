@@ -1,9 +1,12 @@
 {
-  "name": "coconut",
-  "version": "0.0.1",
-  "description": "构建现代web应用的基于装饰器的javascript框架",
+  "name": "coco-mvc",
+  "version": "0.0.1-demo1",
+  "description": "构建现代web应用的mvc框架",
   "main": "./dist/coconut.cjs.js",
   "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": "./dist/coconut.cjs.js",
     "./jsx-runtime": "./dist/jsx-runtime.cjs.js"
@@ -19,12 +22,14 @@
     "build": "pnpm run build:bundle && pnpm run build:type"
   },
   "author": "jiangchenguang",
-  "license": "ISC",
+  "homepage": "https://github.com/jiangchenguang/coconut-framework",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.24.3",
     "@babel/preset-env": "^7.24.4",
     "@babel/preset-typescript": "^7.24.1",
     "@eslint/js": "^9.6.0",
+    "@rollup/plugin-alias": "^5.1.0",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/eslint__js": "^8.42.3",
     "@types/jest": "^29.5.12",
@@ -39,8 +44,5 @@
     "transform": {
       "\\.[jt]sx?$": "babel-jest"
     }
-  },
-  "dependencies": {
-    "@rollup/plugin-alias": "^5.1.0"
   }
 }

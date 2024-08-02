@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "coconut": "workspace:^",
+    "coco-mvc": "workspace:^",
     "coconut-web": "workspace:^"
   },
   "devDependencies": {
