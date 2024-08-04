@@ -1,7 +1,7 @@
-import { reactive, view, component } from "coconut";
+import { reactive, view, component } from "coco-mvc";
 
 @component
-export default class App {
+class App {
 
   @reactive
   count = 1;
@@ -18,3 +18,5 @@ export default class App {
     </section>
   }
 }
+
+export default App

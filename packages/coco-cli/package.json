@@ -1,0 +1,22 @@
+{
+  "name": "coco-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "coco": "./bin/coco.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "20.0.0"
+  },
+  "dependencies": {
+    "webpack": "^5.90.3"
+  }
+}

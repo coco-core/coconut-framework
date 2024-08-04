@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.jsx',
+  entry: './src/.coco/index.jsx',
   module: {
     rules: [
       {

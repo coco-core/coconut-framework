@@ -10,12 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/jiangchenguang/coconut-framework.git"
   },
-  "keywords": [
-    "decorator",
-    "javascript",
-    "framework",
-    "typescript"
-  ],
+  "keywords": [],
   "author": "jiangchenguang",
   "license": "MIT",
   "bugs": {
