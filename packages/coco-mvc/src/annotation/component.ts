@@ -1,3 +1,4 @@
+// @ts-ignore
 import { registerClz } from 'shared/meta.js';
 
 interface Context {

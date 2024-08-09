@@ -1,6 +1,3 @@
-import Paths from "./paths";
-import Scanner from "./scanner";
-
 /**
  * ioc容器，具备如下能力：
  * 1. 扫描文件夹获取组件定义

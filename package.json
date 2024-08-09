@@ -1,9 +1,7 @@
 {
   "private": true,
-  "version": "0.0.1",
-  "description": "",
-  "main": "",
   "scripts": {
+    "build": "node ./scripts/rollup/build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,8 +17,13 @@
   "homepage": "https://github.com/jiangchenguang/coconut-framework#readme",
   "devDependencies": {
     "@eslint/eslintrc": "^3.1.0",
+    "@rollup/plugin-alias": "^5.1.0",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/node": "20.0.0",
     "eslint": "^9.6.0",
     "prettier": "3.2.5",
+    "rollup": "^4.12.0",
+    "rollup-plugin-replace": "^2.2.0",
     "typescript": "^5.3.3",
     "typescript-eslint": "^7.15.0"
   }

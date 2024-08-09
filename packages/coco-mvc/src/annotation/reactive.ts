@@ -1,4 +1,6 @@
+// @ts-ignore
 import { classComponentUpdater, isRenderPhase } from 'coconut-reconciler';
+// @ts-ignore
 import { registerFields, MetaKeyReactive } from 'shared/meta.js';
 
 interface Context {

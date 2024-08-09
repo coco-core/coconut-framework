@@ -5,14 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --config webpack.dev.config.js",
-    "build": "webpack --config webpack.prod.config.js"
+    "dev": "webpack --config webpack.dev.config.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "coco-cli": "workspace:*",
+    "@coco-fw/cli": "workspace:*",
     "coco-mvc": "workspace:*"
   },
   "devDependencies": {

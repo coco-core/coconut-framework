@@ -1,14 +1,12 @@
 {
-  "name": "coco-cli",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@coco-fw/cli",
+  "version": "0.0.1-demo1",
   "main": "index.js",
   "bin": {
-    "coco": "./bin/coco.js"
+    "coco": "bin/coco.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -18,5 +16,6 @@
   },
   "dependencies": {
     "webpack": "^5.90.3"
-  }
+  },
+  "description": ""
 }
