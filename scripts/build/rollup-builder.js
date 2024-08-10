@@ -1,15 +1,11 @@
-/**
- * 打包coco-cli和coco-mvc
- */
 const rollup = require('rollup');
-const typescript = require('@rollup/plugin-typescript');
-const aliasPlugin = require('@rollup/plugin-alias');
 const replace = require('rollup-plugin-replace');
-const {genRollupAliasConfig} = require('./alias');
-const buildTargets = require('./build-target') ;
+const typescript = require('@rollup/plugin-typescript');
+const alias = require('@rollup/plugin-alias');
+const aliasConfig = require('./alias').entries;
 
 function genRollupConfig (inputConfig) {
-  const {input, alias} = inputConfig
+  const { input } = inputConfig
 
   return {
     input,
@@ -18,14 +14,14 @@ function genRollupConfig (inputConfig) {
       typescript({compilerOptions: {
         "target": "es2015", "lib": ["dom", "es2015"]
       }}),
-      alias ? aliasPlugin(genRollupAliasConfig(alias)) : undefined
-    ].filter(Boolean)
+      alias(aliasConfig)
+    ]
   }
 }
 
-async function build() {
+async function build(targets) {
   try {
-    for (const { output, ...rest } of buildTargets) {
+    for (const { output, ...rest } of targets) {
       const rollupConfig = genRollupConfig(rest);
       const result = await rollup.rollup(rollupConfig)
       await result.write(output)
@@ -37,4 +33,4 @@ async function build() {
   }
 }
 
-build();
+module.exports.build = build;

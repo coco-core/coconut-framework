@@ -23,17 +23,17 @@ const pathMap = {
   [PACKAGE.SHARED]: shared,
 }
 
-function genRollupAliasConfig(alias) {
-  const entries = alias.map(name => {
-    return {
-      find: name,
-      replacement: pathMap[name],
-    }
-  })
-  return {
-    entries
-  }
-}
+const entries = [
+  [PACKAGE.RECONCILER],
+  [PACKAGE.WEB],
+  [PACKAGE.IOC_CONTAINER],
+  [PACKAGE.HOST_CONFIG],
+  [PACKAGE.SHARED],
+].map(name => ({
+  find: name,
+  replacement: pathMap[name],
+}))
 
-module.exports.PACKAGE = PACKAGE;
-module.exports.genRollupAliasConfig = genRollupAliasConfig;
+module.exports.entries = {
+  entries
+};
