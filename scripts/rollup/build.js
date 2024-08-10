@@ -5,42 +5,8 @@ const rollup = require('rollup');
 const typescript = require('@rollup/plugin-typescript');
 const aliasPlugin = require('@rollup/plugin-alias');
 const replace = require('rollup-plugin-replace');
-const path = require('node:path');
-const packages = path.join(__dirname, '../../packages');
-const cocoMvc = path.join(packages, './coco-mvc');
-const cocoMvcInput = path.join(cocoMvc, './src/index.ts');
-const cocoMvcFile = `${path.join(cocoMvc, './dist')}/coconut.cjs.js`;
-const jsxInput = path.join(cocoMvc, './src/jsx-runtime/index.ts');
-const jsxFile = `${path.join(cocoMvc, './dist')}/jsx-runtime.cjs.js`;
-const {PACKAGE, genRollupAliasConfig} = require('./alias');
-
-const bundles = [
-  [
-    {
-      input: cocoMvcInput,
-      alias: [
-        PACKAGE.RECONCILER,
-        PACKAGE.WEB,
-        PACKAGE.IOC_CONTAINER,
-        PACKAGE.HOST_CONFIG,
-        PACKAGE.SHARED
-      ],
-    },
-    {
-      file: cocoMvcFile,
-      format: 'cjs',
-    }
-  ],
-  [
-    {
-      input: jsxInput
-    },
-    {
-      file: jsxFile,
-      format: 'cjs',
-    }
-  ],
-]
+const {genRollupAliasConfig} = require('./alias');
+const buildTargets = require('./build-target') ;
 
 function genRollupConfig (inputConfig) {
   const {input, alias} = inputConfig
@@ -59,10 +25,10 @@ function genRollupConfig (inputConfig) {
 
 async function build() {
   try {
-    for (const [inputConfig, outputConfig] of bundles) {
-      const rollupConfig = genRollupConfig(inputConfig);
+    for (const { output, ...rest } of buildTargets) {
+      const rollupConfig = genRollupConfig(rest);
       const result = await rollup.rollup(rollupConfig)
-      await result.write(outputConfig)
+      await result.write(output)
       console.log('=======result===========', result);
     }
   } catch (e) {
