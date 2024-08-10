@@ -14,9 +14,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@types/node": "20.0.0"
-  },
   "dependencies": {
     "webpack": "^5.90.3"
   },
