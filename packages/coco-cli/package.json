@@ -1,10 +1,13 @@
 {
-  "name": "@coco-fw/cli",
+  "name": "@cocofw/cli",
   "version": "0.0.1-demo1",
   "main": "index.js",
   "bin": {
     "coco": "bin/coco.js"
   },
+  "files": [
+    "bin"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

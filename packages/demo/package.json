@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@coco-fw/cli": "workspace:*",
+    "@cocofw/cli": "workspace:*",
     "coco-mvc": "workspace:*"
   },
   "devDependencies": {
