@@ -7,7 +7,11 @@ const cocoMvcFile = `${path.join(cocoMvc, './dist')}/coconut.cjs.js`;
 const jsxInput = path.join(cocoMvc, './src/jsx-runtime/index.ts');
 const jsxFile = `${path.join(cocoMvc, './dist')}/jsx-runtime.cjs.js`;
 
-module.exports.rollupTarget = [
+const cocoCli = path.join(packages, './coco-cli');
+const cliSrc = path.join(cocoCli, './src');
+const cliDist = path.join(cocoCli, './dist');
+
+module.exports.rollupTargets = [
   {
     input: cocoMvcInput,
     output: {
@@ -24,6 +28,9 @@ module.exports.rollupTarget = [
   },
 ];
 
-module.exports.typescript = [
-
+module.exports.tsTargets = [
+  {
+    input: cliSrc,
+    output: cliDist
+  }
 ]

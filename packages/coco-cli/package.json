@@ -14,8 +14,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "description": "",
   "dependencies": {
     "webpack": "^5.90.3"
-  },
-  "description": ""
+  }
 }

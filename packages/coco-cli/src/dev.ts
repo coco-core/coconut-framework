@@ -53,7 +53,7 @@ render(<App />, container);
                   ["@babel/plugin-proposal-decorators", { "version": "2023-11" }],
                   ["@babel/plugin-transform-react-jsx", {
                     "runtime": "automatic",
-                    "importSource": "coconut"
+                    "importSource": "coco-mvc"
                   }]
                 ],
               },
