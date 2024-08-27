@@ -24,11 +24,11 @@ const pathMap = {
 }
 
 const entries = [
-  [PACKAGE.RECONCILER],
-  [PACKAGE.WEB],
-  [PACKAGE.IOC_CONTAINER],
-  [PACKAGE.HOST_CONFIG],
-  [PACKAGE.SHARED],
+  PACKAGE.RECONCILER,
+  PACKAGE.WEB,
+  PACKAGE.IOC_CONTAINER,
+  PACKAGE.HOST_CONFIG,
+  PACKAGE.SHARED,
 ].map(name => ({
   find: name,
   replacement: pathMap[name],

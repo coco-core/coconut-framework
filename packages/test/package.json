@@ -1,17 +1,11 @@
 {
-  "name": "demo",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --config webpack.dev.config.js"
-  },
+  "name": "test",
+  "private": true,
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cocofw/cli": "workspace:*",
+    "@cocofw/cli": "workspace:0.0.1-demo1",
     "coco-mvc": "workspace:*"
   },
   "devDependencies": {

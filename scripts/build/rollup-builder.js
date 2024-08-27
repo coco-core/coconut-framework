@@ -1,5 +1,6 @@
 const rollup = require('rollup');
 const replace = require('rollup-plugin-replace');
+const babel = require('@rollup/plugin-babel');
 const typescript = require('@rollup/plugin-typescript');
 const alias = require('@rollup/plugin-alias');
 const aliasConfig = require('./alias').entries;
@@ -11,6 +12,11 @@ function genRollupConfig (inputConfig) {
     input,
     plugins: [
       replace({ __DEV__: false }),
+      babel({
+        plugins: [
+          ["@babel/plugin-proposal-decorators", { version: "2023-11" }]
+        ]
+      }),
       typescript({compilerOptions: {
         "target": "es2015", "lib": ["dom", "es2015"]
       }}),
@@ -25,7 +31,6 @@ async function build(targets) {
       const rollupConfig = genRollupConfig(rest);
       const result = await rollup.rollup(rollupConfig)
       await result.write(output)
-      console.log('=======result===========', result);
     }
   } catch (e) {
     console.error('rollup rollup error', e);

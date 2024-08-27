@@ -1,21 +1,13 @@
-// @ts-ignore
 import { classComponentUpdater, isRenderPhase } from 'coconut-reconciler';
-// @ts-ignore
-import { registerFields, MetaKeyReactive } from 'shared/meta.js';
+import {addFieldAnnotation} from "../ioc-container/export.ts";
+import {Annotation} from "./index";
 
-interface Context {
-  kind: 'field';
-  name: string | symbol;
-  access: { get(): unknown; set(value: unknown): void };
-  static: boolean;
-  private: boolean;
-  addInitializer(initializer: () => void): void;
-}
+export class Reactive extends Annotation{}
 
-function reactive(value, { kind, name, addInitializer }: Context) {
+export default function component(value, { kind, name, addInitializer }: FieldContext) {
   if (kind === 'field') {
     addInitializer(function () {
-      registerFields(this.constructor, MetaKeyReactive, name as string);
+      addFieldAnnotation(this.constructor, name as string, new Reactive());
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let _value: any = this[name];
       Object.defineProperty(this, name, {
@@ -41,5 +33,3 @@ function reactive(value, { kind, name, addInitializer }: Context) {
   }
   return undefined;
 }
-
-export { reactive };

@@ -2,7 +2,7 @@
   "name": "coconut-reconciler",
   "private": true,
   "version": "0.0.1",
-  "description": "对应react-reconciler包，基于react调和算法，适配coconut的语法。",
+  "description": "和react-reconciler包保持同步，并适配coco-mvc的特性。",
   "main": "index.js",
   "files": [
     "dist"

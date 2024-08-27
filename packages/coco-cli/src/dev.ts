@@ -13,7 +13,6 @@ export const dev = () => {
   const paths = new Paths(cwd);
   // 1. scan
   const iocComponents = scan(paths)
-  console.log('=======components===========', iocComponents);
 
   // 2. write file
   if (fs.existsSync(paths.dotCocoFolder)) {

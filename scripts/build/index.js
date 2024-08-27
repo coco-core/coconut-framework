@@ -5,7 +5,7 @@ const compiler = require("./ts-compiler");
 
 
 async function buildAll () {
-  await Promise.all([build(rollupTargets),compiler(tsTargets)])
+  await Promise.all([build(rollupTargets), compiler(tsTargets)])
 }
 
 buildAll();

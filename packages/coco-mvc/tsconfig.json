@@ -1,7 +1,16 @@
 {
+  "extends": ["../../tsconfig.json"],
   "compilerOptions": {
     "target": "es2015",
     "lib": ["dom", "es2015"],
-    "moduleResolution": "NodeNext"
+    "moduleResolution": "Node16",
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "coconut-web": ["../coconut-web/src/index.js"],
+      "coconut-reconciler": ["../coconut-reconciler/src/index.js"],
+      "shared/*": ["../shared/*"],
+    }
   }
 }

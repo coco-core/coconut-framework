@@ -1,7 +1,7 @@
 {
   "name": "@cocofw/cli",
   "version": "0.0.1-demo1",
-  "main": "index.js",
+  "main": "dist/index.js",
   "bin": {
     "coco": "bin/coco.js"
   },

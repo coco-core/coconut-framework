@@ -1,35 +1,25 @@
-// @ts-ignore
-import { registerFields, getFields, MetaKeyView } from 'shared/meta.js';
+/**
+ * 视图层注解
+ */
+import {addClsAnnotation} from "../ioc-container/export";
+import {Component} from "./component";
+import scope from './scope';
 
-interface Context {
-  kind: 'field' | 'method';
-  name: string | symbol;
-  access: { get(): unknown; set(value: unknown): void };
-  static: boolean;
-  private: boolean;
-  addInitializer(initializer: () => void): void;
-}
-
-function view(value, { kind, name, addInitializer }: Context) {
-  if (kind === 'field' || kind === 'method') {
-    addInitializer(function () {
-      // todo
-      // if (__DEV__) {
-      //   const existed = getFields(this.constructor, MetaKeyView);
-      //   if (existed.length) {
-      //     console.error(
-      //       `view不能用于多个函数，自动忽略名为 ${name as string} 的渲染函数`,
-      //     );
-      //     return;
-      //   }
-      // }
-      registerFields(this.constructor, MetaKeyView, name as string);
-      return undefined;
-    });
-  } else {
-    throw new Error('view只能装饰类成员变量或者函数');
+@scope()
+export class View extends Component {
+  constructor(id?: string) {
+    super(id);
   }
-  return undefined;
 }
 
-export { view };
+// decorator
+export default function view(id?: string) {
+  return function (value, {kind}: ClassContext) {
+    if (kind === 'class') {
+      addClsAnnotation(value, View, id ?? value.prototype.constructor.name);
+    } else {
+      throw new Error(`${String(View)}只能装饰类`);
+    }
+    return value;
+  }
+}

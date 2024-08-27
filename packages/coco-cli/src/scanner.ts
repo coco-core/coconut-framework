@@ -7,6 +7,9 @@ import Paths from "./paths";
 
 function scanFolder (folderPath: string, fileExt: string, annotation: string) {
   const result = [];
+  if (!fs.existsSync(folderPath)) {
+    return result;
+  }
   const files = fs.readdirSync(folderPath);
   for (const file of files) {
     const filePath = path.join(folderPath, file);
@@ -35,6 +38,12 @@ export const scan = (paths: Paths) => {
       annotation: "@controller",
     },
     {
+      type: "component",
+      folderPath: paths.componentFolder,
+      fileExt: '.js',
+      annotation: "@component",
+    },
+    {
       type: "service",
       folderPath: paths.serviceFolder,
       fileExt: '.js',
@@ -47,7 +56,7 @@ export const scan = (paths: Paths) => {
       annotation: "@component",
     },
   ].reduce((prev, curr) => {
-    prev[curr.type] = scanFolder(curr.folderPath, curr.fileExt, curr.annotation);
+    prev.push(...scanFolder(curr.folderPath, curr.fileExt, curr.annotation));
     return prev;
-  }, {})
+  }, [])
 }

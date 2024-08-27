@@ -21,7 +21,7 @@ async function compiler (targets) {
       // compiler
       const source = fs.readFileSync(file, "utf-8");
       const result = transpileModule(source, {
-        compilerOptions: {module: "CommonJS"},
+        compilerOptions: {module: "node16"},
       });
 
       const {dir, name} = path.parse(file);

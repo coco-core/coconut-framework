@@ -26,6 +26,10 @@ class Paths {
   get serviceFolder() {
     return path.join(this.srcFolder, './service');
   }
+
+  get componentFolder() {
+    return path.join(this.srcFolder, './component');
+  }
 }
 
 export default Paths;

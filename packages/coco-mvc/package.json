@@ -8,14 +8,13 @@
     "dist"
   ],
   "exports": {
-    ".": "./dist/coconut.cjs.js",
+    ".": "./dist/coco-mvc.cjs.js",
     "./jsx-runtime": "./dist/jsx-runtime.cjs.js"
   },
   "scripts": {
     "dev": "rollup -c ./rollup.build.mjs --watch",
     "build:bundle-dev": "rollup -c ./rollup.build.mjs",
-    "build:bundle": "NODE_ENV=production rollup -c ./rollup.build.mjs",
-    "build:type": "tsc -b ./tsconfig.types.json"
+    "build:bundle": "NODE_ENV=production rollup -c ./rollup.build.mjs"
   },
   "author": "jiangchenguang",
   "homepage": "https://github.com/jiangchenguang/coconut-framework",
