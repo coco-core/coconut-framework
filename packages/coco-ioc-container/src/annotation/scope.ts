@@ -1,5 +1,5 @@
 import {addClsAnnotation} from "../ioc-container/export";
-import {Annotation} from "./index";
+import {Annotation} from "./export";
 
 export enum ScopeType {
   Singleton = 0,

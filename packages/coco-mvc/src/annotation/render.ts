@@ -1,5 +1,4 @@
-import {addFieldAnnotation, getFields} from "../ioc-container/export.ts";
-import {Annotation} from "./index";
+import {Annotation, addFieldAnnotation, getFields} from "coco-ioc-container";
 
 export class Render extends Annotation{
 }

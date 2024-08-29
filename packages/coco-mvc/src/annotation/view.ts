@@ -1,9 +1,7 @@
 /**
  * 视图层注解
  */
-import {addClsAnnotation} from "../ioc-container/export";
-import {Component} from "./component";
-import scope from './scope';
+import {Component, addClsAnnotation, scope} from "coco-ioc-container";
 
 @scope()
 export class View extends Component {

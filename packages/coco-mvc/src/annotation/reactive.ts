@@ -1,10 +1,9 @@
 import { classComponentUpdater, isRenderPhase } from 'coconut-reconciler';
-import {addFieldAnnotation} from "../ioc-container/export.ts";
-import {Annotation} from "./index";
+import {Annotation, addFieldAnnotation} from "coco-ioc-container";
 
 export class Reactive extends Annotation{}
 
-export default function component(value, { kind, name, addInitializer }: FieldContext) {
+export default function reactive(value, { kind, name, addInitializer }: FieldContext) {
   if (kind === 'field') {
     addInitializer(function () {
       addFieldAnnotation(this.constructor, name as string, new Reactive());

@@ -6,6 +6,7 @@ import IocComponent from "./ioc-component";
 export class Component<T> extends IocComponent<T>{
   constructor(clazz: Class<T>) {
     super();
+    // todo
     this.type = clazz
   }
 

@@ -1,7 +1,7 @@
 /**
  * 注解的运行时配置
  */
-import {Annotation, Component} from "../annotation/index";
+import {Annotation, Component} from "../annotation/export";
 
 type field = string;
 

@@ -1,5 +1,4 @@
-import {registerClsAnnotation} from "../ioc-container/index";
-import {Annotation} from "./index";
+import {Annotation} from "./export";
 
 export enum TargetType {
   Class,

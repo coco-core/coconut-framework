@@ -17,8 +17,10 @@ function genRollupConfig (inputConfig) {
           ["@babel/plugin-proposal-decorators", { version: "2023-11" }]
         ]
       }),
-      typescript({compilerOptions: {
-        "target": "es2015", "lib": ["dom", "es2015"]
+      typescript({
+        compilerOptions: {
+          "target": "es2015",
+          "lib": ["dom", "es2015"],
       }}),
       alias(aliasConfig)
     ]

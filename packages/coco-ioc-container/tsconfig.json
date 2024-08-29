@@ -7,11 +7,7 @@
     "allowImportingTsExtensions": true,
     "emitDeclarationOnly": true,
     "paths": {
-      "@/*": ["./src/*"],
-      "coco-ioc-container": ["../coco-ioc-container/src/index.ts"],
-      "coconut-web": ["../coconut-web/src/index.js"],
-      "coconut-reconciler": ["../coconut-reconciler/src/index.js"],
-      "shared/*": ["../shared/*"],
+      "@/*": ["./src/*"]
     }
   }
 }
