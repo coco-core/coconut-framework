@@ -2,19 +2,13 @@
   "name": "coco-mvc",
   "version": "0.0.1-demo1",
   "description": "构建现代web应用的mvc框架",
-  "main": "./dist/coconut.cjs.js",
-  "types": "./dist/types/index.d.ts",
+  "main": "./dist/coco-mvc.cjs.js",
   "files": [
     "dist"
   ],
   "exports": {
     ".": "./dist/coco-mvc.cjs.js",
     "./jsx-runtime": "./dist/jsx-runtime.cjs.js"
-  },
-  "scripts": {
-    "dev": "rollup -c ./rollup.build.mjs --watch",
-    "build:bundle-dev": "rollup -c ./rollup.build.mjs",
-    "build:bundle": "NODE_ENV=production rollup -c ./rollup.build.mjs"
   },
   "author": "jiangchenguang",
   "homepage": "https://github.com/jiangchenguang/coconut-framework",
