@@ -2,6 +2,7 @@
  * 视图层注解
  */
 import {Component, addClsAnnotation, scope} from "coco-ioc-container";
+import type {ClassContext} from "coco-ioc-container";
 
 @scope()
 export class View extends Component {

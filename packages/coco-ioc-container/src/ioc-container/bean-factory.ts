@@ -1,5 +1,6 @@
 import {isRegistered, getClsAnnotation} from "./annotation-runtime-config.ts";
 import {Scope, ScopeType} from "../annotation/export.ts";
+import type { Class } from './export'
 
 // todo 对于ioc组件仓库的抽象 可以通过id获取ioc组件
 const singletonInstances: Map<Class<any>, any> = new Map();

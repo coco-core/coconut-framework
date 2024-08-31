@@ -13,5 +13,15 @@ export {
   addClsAnnotation,
   addFieldAnnotation,
   forceClear_4test,
-  getFields
+  getFields,
+  IocComponent,
 } from "./ioc-container/export.ts";
+
+export type {
+  FieldContext,
+  ClassContext,
+} from './annotation/export.ts'
+
+export type {
+  Class
+} from './ioc-container/export.ts'

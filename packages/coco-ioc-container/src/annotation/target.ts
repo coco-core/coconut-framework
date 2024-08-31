@@ -1,4 +1,5 @@
 import {Annotation} from "./export";
+import type { ClassContext, FieldContext } from "@/annotation/export.ts";
 
 export enum TargetType {
   Class,

@@ -1,9 +1,10 @@
-import IocComponent from "./ioc-component";
+import {IocComponent} from "coco-ioc-container";
+import type { Class } from "coco-ioc-container";
 
 /**
  * 视图组件
  */
-export class Component<T> extends IocComponent<T>{
+export class View<T> extends IocComponent<T>{
   constructor(clazz: Class<T>) {
     super();
     // todo

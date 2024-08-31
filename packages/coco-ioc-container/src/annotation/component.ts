@@ -4,6 +4,7 @@
  */
 import {addClsAnnotation} from "../ioc-container/export";
 import Annotation from "./abs-annotation";
+import type { ClassContext } from "@/annotation/export.ts";
 
 export class Component extends Annotation{
   // todo 不是id

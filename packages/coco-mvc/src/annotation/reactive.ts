@@ -1,5 +1,6 @@
 import { classComponentUpdater, isRenderPhase } from 'coconut-reconciler';
 import {Annotation, addFieldAnnotation} from "coco-ioc-container";
+import type { FieldContext } from "coco-ioc-container";
 
 export class Reactive extends Annotation{}
 

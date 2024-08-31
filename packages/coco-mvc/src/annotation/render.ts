@@ -1,4 +1,5 @@
 import {Annotation, addFieldAnnotation, getFields} from "coco-ioc-container";
+import type {FieldContext} from "coco-ioc-container";
 
 export class Render extends Annotation{
 }

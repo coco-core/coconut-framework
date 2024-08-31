@@ -2,6 +2,7 @@
  * 注解的运行时配置
  */
 import {Annotation, Component} from "../annotation/export";
+import type { Class } from './export'
 
 type field = string;
 

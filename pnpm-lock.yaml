@@ -72,6 +72,8 @@ importers:
         specifier: ^5.90.3
         version: 5.90.3(webpack-cli@5.1.4)
 
+  packages/coco-ioc-container: {}
+
   packages/coco-mvc: {}
 
   packages/coconut-reconciler: {}

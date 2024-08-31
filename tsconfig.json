@@ -1,6 +1,12 @@
 {
   "compilerOptions": {
-    "typeRoots": ["types", "node_modules/@types"],
-    "esModuleInterop": true
-  },
+    "paths": {
+      "coconut-web": ["packages/coconut-web/src/index.js"],
+      "coconut-reconciler": ["packages/coconut-reconciler/src/index.js"],
+      "shared/*": ["packages/shared/*"]
+    },
+    "typeRoots": [
+      "types",
+    ]
+  }
 }

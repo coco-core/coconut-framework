@@ -1,5 +1,6 @@
 import {addClsAnnotation} from "../ioc-container/export";
 import {Annotation} from "./export";
+import type { ClassContext } from "@/annotation/export.ts";
 
 export enum ScopeType {
   Singleton = 0,
