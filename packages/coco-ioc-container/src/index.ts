@@ -7,6 +7,7 @@ export {
   scope,
   Scope,
   ScopeType,
+  genDecorator,
 } from './annotation/export.ts';
 export {
   getBean,

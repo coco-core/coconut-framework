@@ -1,22 +1,10 @@
-export interface ClassContext {
-  kind: 'class';
-  name: string | undefined;
-  addInitializer(initializer: () => void): void;
-}
-
-export interface FieldContext {
-  kind: 'field';
-  name: string | symbol;
-  access: { get(): unknown; set(value: unknown): void };
-  static: boolean;
-  private: boolean;
-  addInitializer(initializer: () => void): void;
-}
+export * from './decorator-context.ts';
 
 import {default as Annotation} from './abs-annotation';
 import {default as component, Component} from './component';
 import {default as scope, Scope, ScopeType} from './scope';
 import {default as target, Target} from './target';
+import genDecorator from "./decorator.ts";
 
 export {
   Annotation,
@@ -27,4 +15,5 @@ export {
   scope,
   Scope,
   ScopeType,
+  genDecorator,
 }

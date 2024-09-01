@@ -1,15 +1,12 @@
 /**
  * 视图层注解
  */
-import {Component, addClsAnnotation, scope} from "coco-ioc-container";
 import type {ClassContext} from "coco-ioc-container";
+import {addClsAnnotation, component, scope, ScopeType} from "coco-ioc-container";
 
-@scope()
-export class View extends Component {
-  constructor(id?: string) {
-    super(id);
-  }
-}
+@scope(ScopeType.Prototype)
+@component()
+export class View{}
 
 // decorator
 export default function view(id?: string) {

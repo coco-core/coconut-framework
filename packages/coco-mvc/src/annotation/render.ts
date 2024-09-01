@@ -17,7 +17,7 @@ export default function render(value, { kind, name, addInitializer }: FieldConte
           return;
         }
       }
-      addFieldAnnotation(this.constructor, name as string, new Render())
+      addFieldAnnotation(this.constructor, name as string, Render)
       return undefined;
     });
   } else {

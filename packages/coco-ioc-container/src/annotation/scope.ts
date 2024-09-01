@@ -1,26 +1,21 @@
-import {addClsAnnotation} from "../ioc-container/export";
-import {Annotation} from "./export";
-import type { ClassContext } from "@/annotation/export.ts";
+import {Annotation, genDecorator, target} from "./export";
+import {TargetType} from "../annotation/target.ts";
 
 export enum ScopeType {
   Singleton = 0,
   Prototype = 1
 }
 
+type DecoratorArg = ScopeType;
+
+@target(TargetType.Class)
 export class Scope extends Annotation {
   value: ScopeType;
 
-  constructor(value: ScopeType) {
-    super();
-    this.value = value;
+  postConstructor(arg: DecoratorArg) {
+    this.value = arg;
   }
 }
 
-export default function scope(type: ScopeType = ScopeType.Prototype) {
-  return function (value, {kind}: ClassContext) {
-    if (kind === "class") {
-      addClsAnnotation(value, Scope, type);
-    }
-    return undefined;
-  }
-}
+export default genDecorator<DecoratorArg>(Scope);
+

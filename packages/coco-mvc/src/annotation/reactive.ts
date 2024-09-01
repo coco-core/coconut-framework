@@ -7,7 +7,7 @@ export class Reactive extends Annotation{}
 export default function reactive(value, { kind, name, addInitializer }: FieldContext) {
   if (kind === 'field') {
     addInitializer(function () {
-      addFieldAnnotation(this.constructor, name as string, new Reactive());
+      addFieldAnnotation(this.constructor, name as string, Reactive);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let _value: any = this[name];
       Object.defineProperty(this, name, {

@@ -2,9 +2,9 @@
  * 注解的运行时配置
  */
 import {Annotation, Component} from "../annotation/export";
-import type { Class } from './export'
+import type {Class} from './export'
 
-type field = string;
+type FieldName = string | Symbol;
 
 const annotationRuntimeConfig: Map<
   Class<any>,
@@ -12,7 +12,7 @@ const annotationRuntimeConfig: Map<
     // 类
     classAnnotation: Annotation[]
     // 字段
-    fieldAnnotation: Map<field, Annotation[]>
+    fieldAnnotation: Map<FieldName, Annotation[]>
   }
 > = new Map();
 
@@ -25,20 +25,22 @@ function addClsAnnotation(component: Class<any>, AnnoCls: Class<Annotation>, arg
   if (!config) {
     config = {classAnnotation: [], fieldAnnotation: new Map()}
     annotationRuntimeConfig.set(component, config);
-  } else {
-    const {classAnnotation} = config;
-    if (__DEV__ && ifClsAnnotationExit(classAnnotation, AnnoCls)) {
-      console.warn(`${component}已经存在相同的注解【${AnnoCls}】，忽略`);
-      return
-    }
-    classAnnotation.push(new AnnoCls(args))
   }
+  const {classAnnotation} = config;
+  if (__DEV__ && ifClsAnnotationExit(classAnnotation, AnnoCls)) {
+    console.warn(`${component}已经存在相同的注解【${AnnoCls}】，忽略`);
+    return
+  }
+  const anno = new AnnoCls();
+  anno.postConstructor(args);
+  classAnnotation.push(anno)
 }
 
 function addFieldAnnotation(
   component: Class<any>,
-  fieldName: string,
-  annotation: Annotation,
+  fieldName: FieldName,
+  AnnoCls: Class<Annotation>,
+  args?: any,
 ) {
   if (__DEV__) {
     if (!annotationRuntimeConfig.has(component)) {
@@ -52,7 +54,9 @@ function addFieldAnnotation(
     fieldAnno = [];
     this.fieldAnnotation.set(fieldName, fieldAnno);
   }
-  fieldAnno.push(annotation);
+  const anno = new AnnoCls();
+  anno.postConstructor(args);
+  fieldAnno.push(anno);
 }
 
 function isRegistered(component: Class<any>) {
@@ -79,7 +83,7 @@ function getFields(component: Class<any>, Annotation: Class<any>) {
  * 例如Component注解有没有配置Scope注解
  * 因为注解B可能是注解A的注解的注解配置，所以需要递归查找
  */
-function getClsAnnotation(component: Class<Annotation>, AnnoCls: Class<Annotation>): Annotation | null {
+function getClsAnnotation(component: Class<any>, AnnoCls: Class<Annotation>): Annotation | null {
   const configs = annotationRuntimeConfig.get(component);
   if (configs && configs.classAnnotation.length) {
     for (const config of configs.classAnnotation) {
