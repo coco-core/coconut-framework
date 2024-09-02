@@ -8,7 +8,7 @@ let start;
 describe('ioc-container', () => {
 
   beforeEach(async () => {
-    build("packages/test/__test__/unit-test/ioc-container/app");
+    build("packages/test/__test__/unit-test/pkg-ioc-container/ioc-container/app");
     const {start: _s} = await import("./app/src/.coco/index");
     start = _s;
   })
