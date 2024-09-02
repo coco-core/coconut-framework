@@ -10,6 +10,7 @@ export {
   getBean,
   addClsAnnotation,
   addFieldAnnotation,
+  getClsAnnotation,
   forceClear_4test
 } from 'coco-ioc-container';
 export {

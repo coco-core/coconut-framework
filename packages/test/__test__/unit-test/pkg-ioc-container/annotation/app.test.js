@@ -1,4 +1,3 @@
-import {} from "coco-mvc";
 import { build } from "@cocofw/cli";
 
 let start;
