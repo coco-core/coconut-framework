@@ -1,9 +1,10 @@
-import {ClassContext, ContextKind, Target} from "../annotation/export.ts";
+import {Context, Decorator, KindClass, KindField, Target} from "../annotation/export.ts";
 import {addClsAnnotation, addFieldAnnotation, getClsAnnotation,} from "../ioc-container/annotation-runtime-config.ts";
 import {AnnotationCls} from "../annotation/abs-annotation.ts";
 import {FieldContext} from "../annotation/decorator-context.ts";
+import {TargetType} from "./target.ts";
 
-function assetsTarget(Annotation: AnnotationCls, context: ClassContext | FieldContext) {
+function assetsTarget(Annotation: AnnotationCls, context: Context) {
   if (!Annotation.ignoreTargetCheck) {
     const target = <Target>getClsAnnotation(Annotation, Target);
     if (!target) {
@@ -12,21 +13,21 @@ function assetsTarget(Annotation: AnnotationCls, context: ClassContext | FieldCo
       }
       return;
     }
-    if (!target.value.includes(context.kind)) {
+    if (!target.value.includes(context.kind as TargetType)) {
       throw new Error(`${Annotation.name}只能装饰${target.value}`);
     }
   }
 }
 
-function genDecorator<Arg>(
+function genDecorator<Arg, C extends Context>(
   Annotation: AnnotationCls,
   initializer?: any,
-) {
+): (arg: Arg) => Decorator {
   return function (arg: Arg){
-    return function (value, context: ClassContext | FieldContext) {
+    return function (value, context: C) {
       assetsTarget(Annotation, context);
       switch (context.kind) {
-        case ContextKind.class:
+        case KindClass:
           addClsAnnotation(value, Annotation, arg);
           break;
         default:
@@ -34,7 +35,7 @@ function genDecorator<Arg>(
       }
       context.addInitializer(function(){
         switch (context.kind) {
-          case ContextKind.field:
+          case KindField:
             addFieldAnnotation(this.constructor, (<FieldContext>context).name, Annotation, arg);
             break;
           default:

@@ -1,5 +1,5 @@
-import {Annotation, genDecorator, target} from "./export";
-import {TargetType} from "../annotation/target.ts";
+import {Annotation, ClassContext, genDecorator, target} from "./export";
+import {TargetType} from "./target.ts";
 
 export enum ScopeType {
   Singleton = 0,
@@ -17,5 +17,5 @@ export class Scope extends Annotation {
   }
 }
 
-export default genDecorator<DecoratorArg>(Scope);
+export default genDecorator<DecoratorArg, ClassContext>(Scope);
 

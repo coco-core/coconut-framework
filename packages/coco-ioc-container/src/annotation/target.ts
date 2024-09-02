@@ -1,10 +1,10 @@
-import {Annotation, ContextKind} from "./export";
+import { KindClass, KindField } from './decorator-context.ts';
+import {Annotation, Context} from "./export";
 import genDecorator from './decorator.ts'
 
-export enum TargetType {
-  Class = ContextKind.class,
-  Field = ContextKind.field,
-  Method = ContextKind.method
+export enum TargetType{
+  Class = KindClass,
+  Field = KindField
 }
 
 type DecoratorArg = TargetType | TargetType[]
@@ -20,4 +20,4 @@ export class Target extends Annotation{
   }
 }
 
-export default genDecorator<DecoratorArg>(Target)
+export default genDecorator<DecoratorArg, Context>(Target)
