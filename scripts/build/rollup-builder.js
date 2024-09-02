@@ -2,11 +2,11 @@ const rollup = require('rollup');
 const replace = require('rollup-plugin-replace');
 const babel = require('@rollup/plugin-babel');
 const typescript = require('@rollup/plugin-typescript');
-const alias = require('@rollup/plugin-alias');
-const aliasConfig = require('./alias').entries;
+const aliasPlugin = require('@rollup/plugin-alias');
+const genEntries = require('./rollup-alias').genEntries;
 
 function genRollupConfig (inputConfig) {
-  const { input } = inputConfig
+  const { input, alias } = inputConfig
 
   return {
     input,
@@ -22,7 +22,9 @@ function genRollupConfig (inputConfig) {
           "target": "es2015",
           "lib": ["dom", "es2015"],
       }}),
-      alias(aliasConfig)
+      aliasPlugin({
+        entries: genEntries(alias)
+      })
     ]
   }
 }

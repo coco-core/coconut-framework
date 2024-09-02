@@ -1,5 +1,5 @@
 const path = require('node:path');
-const {PACKAGE} = require("./alias");
+const { PACKAGE } = require("./rollup-alias");
 const packages = path.join(__dirname, '../../packages');
 const cocoMvc = path.join(packages, './coco-mvc');
 const cocoMvcInput = path.join(cocoMvc, './src/index.ts');
@@ -17,7 +17,14 @@ module.exports.rollupTargets = [
     output: {
       file: cocoMvcFile,
       format: 'cjs',
-    }
+    },
+    alias: [
+      PACKAGE.RECONCILER,
+      PACKAGE.WEB,
+      PACKAGE.SHARED,
+      PACKAGE.HOST_CONFIG,
+      PACKAGE.IOC_CONTAINER,
+    ]
   },
   {
     input: jsxInput,
