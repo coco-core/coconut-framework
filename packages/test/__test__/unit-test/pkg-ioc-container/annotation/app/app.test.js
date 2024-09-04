@@ -1,12 +1,13 @@
 import { build } from "@cocofw/cli";
+import {pkgPath, cocoIdxStr} from "../../../../helper/pkg-path";
 
 let start;
 let throwError;
 describe('annotation', () => {
   beforeEach(async () => {
     try {
-      build("packages/test/__test__/unit-test/pkg-ioc-container/annotation/app");
-      const {start: _s} = await import("./app/src/.coco/index");
+      build(pkgPath(__dirname));
+      const {start: _s} = await import(cocoIdxStr);
       start = _s;
     } catch (e) {
       throwError = true;

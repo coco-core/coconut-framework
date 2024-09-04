@@ -1,15 +1,16 @@
 import {getBean, forceClear_4test} from "coco-mvc";
 import { build } from "@cocofw/cli";
-import Button from "./app/src/component/Button";
-import Space from "./app/src/component/Space";
-import Single from "./app/src/component/Single";
+import Button from "./src/component/Button";
+import Space from "./src/component/Space";
+import Single from "./src/component/Single";
+import {pkgPath, cocoIdxStr} from "../../../../helper/pkg-path";
 
 let start;
 describe('ioc-container', () => {
 
   beforeEach(async () => {
-    build("packages/test/__test__/unit-test/pkg-ioc-container/ioc-container/app");
-    const {start: _s} = await import("./app/src/.coco/index");
+    build(pkgPath(__dirname));
+    const {start: _s} = await import(cocoIdxStr);
     start = _s;
   })
 

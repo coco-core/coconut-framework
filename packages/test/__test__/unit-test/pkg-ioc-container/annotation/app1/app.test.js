@@ -1,14 +1,15 @@
 import { getClsAnnotation, Component, Scope, ScopeType } from 'coco-mvc'
 import { build } from "@cocofw/cli";
-import Button from './app1/src/component/Button'
+import Button from './src/component/Button';
+import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path'
 
 let start;
 let throwError;
 describe('annotation', () => {
   beforeEach(async () => {
     try {
-      build("packages/test/__test__/unit-test/pkg-ioc-container/annotation/app1");
-      const {start: _s} = await import("./app1/src/.coco/index");
+      build(pkgPath(__dirname));
+      const {start: _s} = await import(cocoIdxStr);
       start = _s;
     } catch (e) {
       throwError = true;
