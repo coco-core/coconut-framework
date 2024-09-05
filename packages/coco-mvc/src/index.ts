@@ -16,8 +16,6 @@ export {
 export {
   reactive,
   Reactive,
-  view,
-  View,
   render,
   Render,
 } from './annotation/index';

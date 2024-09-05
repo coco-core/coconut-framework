@@ -85,6 +85,9 @@ function getFields(component: Class<any>, Annotation: Class<any>) {
  */
 function getClsAnnotation(component: Class<any>, AnnoCls: Class<Annotation>): Annotation | null {
   const configs = annotationRuntimeConfig.get(component);
+  if (!configs) {
+    throw new Error(`未注册的组件：${component}`);
+  }
   if (configs && configs.classAnnotation.length) {
     for (const config of configs.classAnnotation) {
       if (config instanceof AnnoCls) {

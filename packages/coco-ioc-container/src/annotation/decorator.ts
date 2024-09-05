@@ -3,6 +3,9 @@ import {addClsAnnotation, addFieldAnnotation, getClsAnnotation,} from "../ioc-co
 import {AnnotationCls} from "../annotation/abs-annotation.ts";
 import {FieldContext} from "../annotation/decorator-context.ts";
 import {TargetType} from "./target.ts";
+import {addDefinition} from "../ioc-container/bean-factory.ts";
+import {Component} from "./component.ts";
+import type {BeanName} from "./component.ts";
 
 function assetsTarget(Annotation: AnnotationCls, context: Context) {
   if (!Annotation.ignoreTargetCheck) {
@@ -19,16 +22,32 @@ function assetsTarget(Annotation: AnnotationCls, context: Context) {
   }
 }
 
-function genDecorator<Arg, C extends Context>(
+/**
+ * 由类名得到bean名称
+ * 第一个字母改为小写，其他不变
+ */
+function clsName2beanName(clsName: string) {
+  if (!clsName) {
+    if (__DEV__ && typeof clsName !== 'string') {
+      throw new Error(`不正常的clsName:[${clsName}]`)
+    }
+  }
+  return clsName[0].toLowerCase() + clsName.slice(1);
+}
+
+function genDecorator<UserParam, C extends Context>(
   Annotation: AnnotationCls,
   initializer?: any,
-): (arg: Arg) => Decorator {
-  return function (arg: Arg){
+): (userParam: UserParam) => Decorator {
+  return function (userParam: UserParam){
     return function (value, context: C) {
       assetsTarget(Annotation, context);
       switch (context.kind) {
         case KindClass:
-          addClsAnnotation(value, Annotation, arg);
+          addClsAnnotation(value, Annotation, userParam);
+          if (Annotation === Component) {
+            addDefinition(<BeanName>userParam ?? clsName2beanName(context.name), value);
+          }
           break;
         default:
           break;
@@ -36,7 +55,7 @@ function genDecorator<Arg, C extends Context>(
       context.addInitializer(function(){
         switch (context.kind) {
           case KindField:
-            addFieldAnnotation(this.constructor, (<FieldContext>context).name, Annotation, arg);
+            addFieldAnnotation(this.constructor, (<FieldContext>context).name, Annotation, userParam);
             break;
           default:
             return;
