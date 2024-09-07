@@ -1,5 +1,5 @@
 export {
-  Annotation,
+  Metadata,
   component,
   Component,
   target,
@@ -8,11 +8,11 @@ export {
   Scope,
   ScopeType,
   genDecorator,
-} from './annotation/export.ts';
+} from './metadata/export.ts';
 export {
   getBean,
-  addClsAnnotation,
-  addFieldAnnotation,
+  addClassMetadata,
+  addFieldMetadata,
   forceClear_4test,
   getClsAnnotation,
   getFields,
@@ -22,7 +22,7 @@ export {
 export type {
   FieldContext,
   ClassContext,
-} from './annotation/export.ts'
+} from './metadata/export.ts'
 
 export type {
   Class

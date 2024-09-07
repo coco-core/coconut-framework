@@ -1,13 +1,13 @@
 import { classComponentUpdater, isRenderPhase } from 'coconut-reconciler';
-import {Annotation, addFieldAnnotation} from "coco-ioc-container";
+import {Metadata, addFieldMetadata} from "coco-ioc-container";
 import type { FieldContext } from "coco-ioc-container";
 
-export class Reactive extends Annotation{}
+export class Reactive extends Metadata{}
 
 export default function reactive(value, { kind, name, addInitializer }: FieldContext) {
   if (kind === 'field') {
     addInitializer(function () {
-      addFieldAnnotation(this.constructor, name as string, Reactive);
+      addFieldMetadata(this.constructor, name as string, Reactive);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let _value: any = this[name];
       Object.defineProperty(this, name, {

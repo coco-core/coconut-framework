@@ -1,22 +1,22 @@
-import {Context, Decorator, KindClass, KindField, Target} from "../annotation/export.ts";
-import {addClsAnnotation, addFieldAnnotation, getClsAnnotation,} from "../ioc-container/annotation-runtime-config.ts";
-import {AnnotationCls} from "../annotation/abs-annotation.ts";
-import {FieldContext} from "../annotation/decorator-context.ts";
+import {Context, Decorator, KindClass, KindField, Target,} from "../metadata/export.ts";
+import {addClassMetadata, addFieldMetadata, getClsAnnotation,} from "../ioc-container/metadata-runtime-config.ts";
+import {MetadataClass} from "../metadata/metadata.ts";
+import {FieldContext} from "../metadata/decorator-context.ts";
 import {TargetType} from "./target.ts";
 import {addDefinition} from "../ioc-container/bean-factory.ts";
 import {Component} from "./component.ts";
 import type {BeanName} from "./component.ts";
 
-function assetsTarget(Annotation: AnnotationCls, context: Context) {
-  const target = <Target>getClsAnnotation(Annotation, Target);
+function assetsTarget(Metadata: MetadataClass, context: Context) {
+  const target = <Target>getClsAnnotation(Metadata, Target);
   if (!target) {
     if (__DEV__) {
-      console.warn(`${Annotation}需要添加target来确定装饰范围!!`);
+      console.warn(`${Metadata}需要添加target来确定装饰范围!!`);
     }
     return;
   }
   if (!target.value.includes(context.kind as TargetType)) {
-    throw new Error(`${Annotation.name}只能装饰${target.value}`);
+    throw new Error(`${Metadata.name}只能装饰${target.value}`);
   }
 }
 
@@ -33,19 +33,19 @@ function clsName2beanName(clsName: string) {
   return clsName[0].toLowerCase() + clsName.slice(1);
 }
 
-function genDecorator<UserParam, C extends Context>(Annotation: AnnotationCls, initializer?: any): (userParam: UserParam) => Decorator;
+function genDecorator<UserParam, C extends Context>(Metadata: MetadataClass, initializer?: any): (userParam: UserParam) => Decorator;
 function genDecorator<UserParam, C extends Context>(DecorateSelf: true, initializer?: any): (userParam: UserParam) => Decorator;
 function genDecorator<UserParam, C extends Context>(
-  AnnotationOrDecorateSelf: AnnotationCls | true,
+  MetadataOrDecorateSelf: MetadataClass | true,
   initializer?: any,
 ): (userParam: UserParam) => Decorator {
   return function (userParam: UserParam) {
     return function (value, context: C) {
-      const Annotation = AnnotationOrDecorateSelf === true ? value : AnnotationOrDecorateSelf;
+      const Metadata = MetadataOrDecorateSelf === true ? value : MetadataOrDecorateSelf;
       switch (context.kind) {
         case KindClass:
-          addClsAnnotation(value, Annotation, userParam);
-          if (Annotation === Component) {
+          addClassMetadata(value, Metadata, userParam);
+          if (Metadata === Component) {
             addDefinition(<BeanName>userParam ?? clsName2beanName(context.name), value);
           }
           break;
@@ -55,7 +55,7 @@ function genDecorator<UserParam, C extends Context>(
       context.addInitializer(function () {
         switch (context.kind) {
           case KindField:
-            addFieldAnnotation(this.constructor, (<FieldContext>context).name, Annotation, userParam);
+            addFieldMetadata(this.constructor, (<FieldContext>context).name, Metadata, userParam);
             break;
           default:
             return;

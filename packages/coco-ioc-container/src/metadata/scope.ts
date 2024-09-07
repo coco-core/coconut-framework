@@ -1,4 +1,4 @@
-import {Annotation, ClassContext, genDecorator, target} from "./export";
+import {Metadata, ClassContext, genDecorator, target} from "./export";
 import {TargetType} from "./target.ts";
 
 export enum ScopeType {
@@ -9,7 +9,7 @@ export enum ScopeType {
 type DecoratorArg = ScopeType;
 
 @target(TargetType.Class)
-export class Scope extends Annotation {
+export class Scope extends Metadata {
   value: ScopeType;
 
   postConstructor(arg: DecoratorArg) {

@@ -1,7 +1,7 @@
-import {Annotation, addFieldAnnotation, getFields} from "coco-ioc-container";
+import {Metadata, addFieldMetadata, getFields} from "coco-ioc-container";
 import type {FieldContext} from "coco-ioc-container";
 
-export class Render extends Annotation{
+export class Render extends Metadata{
 }
 
 // decorator
@@ -17,7 +17,7 @@ export default function render(value, { kind, name, addInitializer }: FieldConte
           return;
         }
       }
-      addFieldAnnotation(this.constructor, name as string, Render)
+      addFieldMetadata(this.constructor, name as string, Render)
       return undefined;
     });
   } else {

@@ -1,58 +1,58 @@
 /**
  * 注解的运行时配置
  */
-import {Annotation, Component} from "../annotation/export";
+import {Metadata, Component} from "../metadata/export";
 import type {Class} from './export'
 
 type FieldName = string | Symbol;
 
-const annotationRuntimeConfig: Map<
+const metadataRuntimeConfig: Map<
   Class<any>,
   {
     // 类
-    classAnnotation: Annotation[]
+    classMetadata: Metadata[]
     // 字段
-    fieldAnnotation: Map<FieldName, Annotation[]>
+    fieldMetadata: Map<FieldName, Metadata[]>
   }
 > = new Map();
 
-function ifClsAnnotationExit(exited: Annotation[], Anno: Class<Annotation>): boolean {
+function ifClsAnnotationExit(exited: Metadata[], Anno: Class<Metadata>): boolean {
   return exited.some(i => (i instanceof Anno));
 }
 
-function addClsAnnotation(component: Class<any>, AnnoCls: Class<Annotation>, args?: any) {
-  let config = annotationRuntimeConfig.get(component);
+function addClassMetadata(component: Class<any>, AnnoCls: Class<Metadata>, args?: any) {
+  let config = metadataRuntimeConfig.get(component);
   if (!config) {
-    config = {classAnnotation: [], fieldAnnotation: new Map()}
-    annotationRuntimeConfig.set(component, config);
+    config = {classMetadata: [], fieldMetadata: new Map()}
+    metadataRuntimeConfig.set(component, config);
   }
-  const {classAnnotation} = config;
-  if (__DEV__ && ifClsAnnotationExit(classAnnotation, AnnoCls)) {
+  const {classMetadata} = config;
+  if (__DEV__ && ifClsAnnotationExit(classMetadata, AnnoCls)) {
     console.warn(`${component}已经存在相同的注解【${AnnoCls}】，忽略`);
     return
   }
   const anno = new AnnoCls();
   anno.postConstructor(args);
-  classAnnotation.push(anno)
+  classMetadata.push(anno)
 }
 
-function addFieldAnnotation(
+function addFieldMetadata(
   component: Class<any>,
   fieldName: FieldName,
-  AnnoCls: Class<Annotation>,
+  AnnoCls: Class<Metadata>,
   args?: any,
 ) {
   if (__DEV__) {
-    if (!annotationRuntimeConfig.has(component)) {
+    if (!metadataRuntimeConfig.has(component)) {
       console.error('需要先给组件【', component, "】添加注解，字段注解才能生效")
       return;
     }
   }
-  const {fieldAnnotation} = annotationRuntimeConfig.get(component);
-  let fieldAnno = fieldAnnotation.get(fieldName);
+  const {fieldMetadata} = metadataRuntimeConfig.get(component);
+  let fieldAnno = fieldMetadata.get(fieldName);
   if (!fieldAnno) {
     fieldAnno = [];
-    this.fieldAnnotation.set(fieldName, fieldAnno);
+    this.fieldMetadata.set(fieldName, fieldAnno);
   }
   const anno = new AnnoCls();
   anno.postConstructor(args);
@@ -60,18 +60,18 @@ function addFieldAnnotation(
 }
 
 function isRegistered(component: Class<any>) {
-  return annotationRuntimeConfig.has(component);
+  return metadataRuntimeConfig.has(component);
 }
 
 // 找标记特定注解的所有字段
-function getFields(component: Class<any>, Annotation: Class<any>) {
-  const def = annotationRuntimeConfig.get(component);
+function getFields(component: Class<any>, Metadata: Class<any>) {
+  const def = metadataRuntimeConfig.get(component);
   if (!def) {
     return [];
   }
   const fields = []
-  for (const [key, value] of this.fieldAnnotation.entries()) {
-    if (value.find(i => i instanceof Annotation)) {
+  for (const [key, value] of this.fieldMetadata.entries()) {
+    if (value.find(i => i instanceof Metadata)) {
       fields.push(key)
     }
   }
@@ -83,13 +83,13 @@ function getFields(component: Class<any>, Annotation: Class<any>) {
  * 例如Component注解有没有配置Scope注解
  * 因为注解B可能是注解A的注解的注解配置，所以需要递归查找
  */
-function getClsAnnotation(component: Class<any>, AnnoCls: Class<Annotation>): Annotation | null {
-  const configs = annotationRuntimeConfig.get(component);
+function getClsAnnotation(component: Class<any>, AnnoCls: Class<Metadata>): Metadata | null {
+  const configs = metadataRuntimeConfig.get(component);
   if (!configs) {
     throw new Error(`未注册的组件：${component}`);
   }
-  if (configs && configs.classAnnotation.length) {
-    for (const config of configs.classAnnotation) {
+  if (configs && configs.classMetadata.length) {
+    for (const config of configs.classMetadata) {
       if (config instanceof AnnoCls) {
         // 找到，返回
         return config;
@@ -106,12 +106,12 @@ function getClsAnnotation(component: Class<any>, AnnoCls: Class<Annotation>): An
 }
 
 function forceClear_4test() {
-  annotationRuntimeConfig.clear();
+  metadataRuntimeConfig.clear();
 }
 
 export {
-  addClsAnnotation,
-  addFieldAnnotation,
+  addClassMetadata,
+  addFieldMetadata,
   getClsAnnotation,
   isRegistered,
   getFields,

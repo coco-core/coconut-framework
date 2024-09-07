@@ -8,8 +8,8 @@ export {
   Scope,
   ScopeType,
   getBean,
-  addClsAnnotation,
-  addFieldAnnotation,
+  addClassMetadata,
+  addFieldMetadata,
   getClsAnnotation,
   forceClear_4test
 } from 'coco-ioc-container';
