@@ -1,5 +1,5 @@
 import { KindClass, KindField } from './decorator-context.ts';
-import {Annotation, Context} from "./export";
+import {Annotation, Context, target} from "./export";
 import genDecorator from './decorator.ts'
 
 export enum TargetType{
@@ -9,9 +9,10 @@ export enum TargetType{
 
 type DecoratorArg = TargetType | TargetType[]
 
+export default genDecorator<DecoratorArg, Context>(true)
+
+@target(TargetType.Class)
 export class Target extends Annotation{
-  // 自身不用检查Target作用范围
-  static ignoreTargetCheck = true;
 
   value: TargetType[]
 
@@ -19,5 +20,3 @@ export class Target extends Annotation{
     this.value = Array.isArray(arg) ? arg : [arg];
   }
 }
-
-export default genDecorator<DecoratorArg, Context>(Target)

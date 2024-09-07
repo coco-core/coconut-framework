@@ -38,11 +38,10 @@ function getBean<T>(nameOrCls: Class<T> | string): T {
   if (!nameOrCls) {
     throw new Error("未定义的bean");
   }
-  if ((typeof nameOrCls === 'string' && !nameDefinitionMap.has(nameOrCls)) ||
-    (typeof nameOrCls !== 'string' && !clsDefinitionMap.has(nameOrCls))) {
+  const definition = typeof nameOrCls === 'string' ? nameDefinitionMap.get(nameOrCls) : clsDefinitionMap.get(nameOrCls);
+  if (!definition) {
     throw new Error("未定义的bean");
   }
-  const definition = typeof nameOrCls === 'string' ? nameDefinitionMap.get(nameOrCls) : clsDefinitionMap.get(nameOrCls);
   const cls = definition.cls;
   const scope: Scope = <Scope>getClsAnnotation(cls, Scope);
   const isSingleton = scope?.value === ScopeType.Singleton;

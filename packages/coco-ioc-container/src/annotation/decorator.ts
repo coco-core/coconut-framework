@@ -8,17 +8,15 @@ import {Component} from "./component.ts";
 import type {BeanName} from "./component.ts";
 
 function assetsTarget(Annotation: AnnotationCls, context: Context) {
-  if (!Annotation.ignoreTargetCheck) {
-    const target = <Target>getClsAnnotation(Annotation, Target);
-    if (!target) {
-      if (__DEV__) {
-        console.warn(`${Annotation}需要添加target来确定装饰范围!!`);
-      }
-      return;
+  const target = <Target>getClsAnnotation(Annotation, Target);
+  if (!target) {
+    if (__DEV__) {
+      console.warn(`${Annotation}需要添加target来确定装饰范围!!`);
     }
-    if (!target.value.includes(context.kind as TargetType)) {
-      throw new Error(`${Annotation.name}只能装饰${target.value}`);
-    }
+    return;
+  }
+  if (!target.value.includes(context.kind as TargetType)) {
+    throw new Error(`${Annotation.name}只能装饰${target.value}`);
   }
 }
 
@@ -35,13 +33,15 @@ function clsName2beanName(clsName: string) {
   return clsName[0].toLowerCase() + clsName.slice(1);
 }
 
+function genDecorator<UserParam, C extends Context>(Annotation: AnnotationCls, initializer?: any): (userParam: UserParam) => Decorator;
+function genDecorator<UserParam, C extends Context>(DecorateSelf: true, initializer?: any): (userParam: UserParam) => Decorator;
 function genDecorator<UserParam, C extends Context>(
-  Annotation: AnnotationCls,
+  AnnotationOrDecorateSelf: AnnotationCls | true,
   initializer?: any,
 ): (userParam: UserParam) => Decorator {
-  return function (userParam: UserParam){
+  return function (userParam: UserParam) {
     return function (value, context: C) {
-      assetsTarget(Annotation, context);
+      const Annotation = AnnotationOrDecorateSelf === true ? value : AnnotationOrDecorateSelf;
       switch (context.kind) {
         case KindClass:
           addClsAnnotation(value, Annotation, userParam);
@@ -52,7 +52,7 @@ function genDecorator<UserParam, C extends Context>(
         default:
           break;
       }
-      context.addInitializer(function(){
+      context.addInitializer(function () {
         switch (context.kind) {
           case KindField:
             addFieldAnnotation(this.constructor, (<FieldContext>context).name, Annotation, userParam);

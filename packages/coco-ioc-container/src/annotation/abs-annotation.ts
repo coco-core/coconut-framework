@@ -13,6 +13,4 @@ export default abstract class Annotation {
   postConstructor?(args?: any, target?: Class<any>) {}
 }
 
-export type AnnotationCls = Class<Annotation> & {
-  ignoreTargetCheck?: boolean
-}
+export type AnnotationCls = Class<Annotation> & {}
