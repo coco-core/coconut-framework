@@ -18,7 +18,7 @@ describe('annotation', () => {
     throwError = false;
   })
 
-  // todo
+  // todo 对target的校验
   xtest('component作用到field上会报错', async () => {
     expect(throwError).toBe(true);
   });
