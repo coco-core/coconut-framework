@@ -106,7 +106,7 @@ function getClsAnnotation(component: Class<any>, AnnoCls: Class<Metadata>): Meta
   return null;
 }
 
-function forceClear_4test() {
+function clear() {
   metadataRuntimeConfig.clear();
 }
 
@@ -116,5 +116,5 @@ export {
   getClsAnnotation,
   isRegistered,
   getFields,
-  forceClear_4test
+  clear,
 }

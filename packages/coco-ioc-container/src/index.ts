@@ -13,7 +13,6 @@ export {
   getBean,
   addClassMetadata,
   addFieldMetadata,
-  forceClear_4test,
   getClsAnnotation,
   getFields,
   IocComponent,
@@ -28,9 +27,9 @@ export type {
   Class
 } from './ioc-container/export.ts'
 
-import * as decorator from './__test/decorator.ts'
-let TEST = { decorator: {}};
+import * as testHelper from './_test_helper/index.ts'
+let _test_helper = {};
 if (__TEST__) {
-  TEST.decorator = decorator
+  _test_helper = testHelper
 }
-export { TEST }
+export { _test_helper }

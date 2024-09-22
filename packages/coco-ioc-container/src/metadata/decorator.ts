@@ -6,7 +6,7 @@ import {TargetType} from "./target.ts";
 import {addDefinition} from "../ioc-container/bean-factory.ts";
 import {Component} from "./component.ts";
 import type {BeanName} from "./component.ts";
-import {exec, apply} from "../__test/decorator.ts";
+import {exec, apply} from "../_test_helper/decorator.ts";
 import {lowercaseFirstLetter} from "../share/util.ts";
 
 function assetsTarget(Metadata: MetadataClass, context: Context) {

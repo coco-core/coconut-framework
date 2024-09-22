@@ -12,7 +12,6 @@ export {
   addFieldMetadata,
   getClsAnnotation,
   genDecorator,
-  forceClear_4test
 } from 'coco-ioc-container';
 export {
   reactive,
@@ -21,9 +20,11 @@ export {
   Render,
 } from './decorator/index';
 
-import {TEST as CONTAINER_TEST} from "coco-ioc-container";
-let TEST = {};
+import {_test_helper as iocContainerTestHelper} from "coco-ioc-container";
+let _test_helper = {
+  iocContainer: {}
+};
 if (__TEST__) {
-  TEST = CONTAINER_TEST
+  _test_helper.iocContainer = iocContainerTestHelper
 }
-export { TEST }
+export { _test_helper }

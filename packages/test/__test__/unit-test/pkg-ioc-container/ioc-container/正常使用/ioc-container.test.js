@@ -1,4 +1,4 @@
-import {getBean, forceClear_4test} from "coco-mvc";
+import {getBean} from "coco-mvc";
 import { build } from "@cocofw/cli";
 import Button from "./src/component/Button";
 import Single from "./src/component/Single";
