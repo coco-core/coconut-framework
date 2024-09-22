@@ -19,7 +19,7 @@ export {
   Reactive,
   render,
   Render,
-} from './annotation/index';
+} from './decorator/index';
 
 import {TEST as CONTAINER_TEST} from "coco-ioc-container";
 let TEST = {};

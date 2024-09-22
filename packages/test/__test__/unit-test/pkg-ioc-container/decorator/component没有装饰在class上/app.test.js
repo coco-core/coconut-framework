@@ -3,7 +3,7 @@ import {pkgPath, cocoIdxStr} from "../../../../helper/pkg-path";
 
 let start;
 let throwError;
-describe('annotation', () => {
+describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));

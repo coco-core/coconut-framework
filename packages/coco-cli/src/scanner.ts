@@ -5,7 +5,7 @@ import * as fs from "fs";
 import * as path from "path";
 import Paths from "./paths";
 
-function scanFolder (folderPath: string, fileExt: string, annotation: string) {
+function scanFolder (folderPath: string, fileExt: string, decorator: string) {
   const result = [];
   if (!fs.existsSync(folderPath)) {
     return result;
@@ -15,13 +15,13 @@ function scanFolder (folderPath: string, fileExt: string, annotation: string) {
     const filePath = path.join(folderPath, file);
     const stat = fs.statSync(filePath);
     if (stat.isDirectory()) {
-      const find = this.scanFolder(filePath, fileExt, annotation);
+      const find = this.scanFolder(filePath, fileExt, decorator);
       if (find.length) {
         result.push(...find);
       }
     } else if (stat.isFile() && path.extname(filePath) === fileExt) {
       const content = fs.readFileSync(filePath, "utf-8");
-      if (content.includes(annotation) && content.includes("export default")) {
+      if (content.includes(decorator) && content.includes("export default")) {
         // todo 需要校验export出来的class名称和注解的是否一致
         result.push(filePath);
       }
@@ -35,28 +35,28 @@ export const scan = (paths: Paths) => {
       type: "controller",
       folderPath: paths.controllerFolder,
       fileExt: '.js',
-      annotation: "@controller",
+      decorator: "@controller",
     },
     {
       type: "component",
       folderPath: paths.componentFolder,
       fileExt: '.js',
-      annotation: "@component",
+      decorator: "@component",
     },
     {
       type: "service",
       folderPath: paths.serviceFolder,
       fileExt: '.js',
-      annotation: "@service",
+      decorator: "@service",
     },
     {
       type: "page",
       folderPath: paths.pageFolder,
       fileExt: '.jsx',
-      annotation: "@component",
+      decorator: "@component",
     },
   ].reduce((prev, curr) => {
-    prev.push(...scanFolder(curr.folderPath, curr.fileExt, curr.annotation));
+    prev.push(...scanFolder(curr.folderPath, curr.fileExt, curr.decorator));
     return prev;
   }, [])
 }
