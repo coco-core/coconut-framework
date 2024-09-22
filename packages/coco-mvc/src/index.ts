@@ -11,6 +11,7 @@ export {
   addClassMetadata,
   addFieldMetadata,
   getClsAnnotation,
+  genDecorator,
   forceClear_4test
 } from 'coco-ioc-container';
 export {
@@ -19,3 +20,10 @@ export {
   render,
   Render,
 } from './annotation/index';
+
+import {TEST as CONTAINER_TEST} from "coco-ioc-container";
+let TEST = {};
+if (__TEST__) {
+  TEST = CONTAINER_TEST
+}
+export { TEST }

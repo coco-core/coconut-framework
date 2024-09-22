@@ -27,3 +27,10 @@ export type {
 export type {
   Class
 } from './ioc-container/export.ts'
+
+import * as decorator from './__test/decorator.ts'
+let TEST = { decorator: {}};
+if (__TEST__) {
+  TEST.decorator = decorator
+}
+export { TEST }

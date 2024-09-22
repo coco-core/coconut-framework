@@ -6,6 +6,8 @@ import {TargetType} from "./target.ts";
 import {addDefinition} from "../ioc-container/bean-factory.ts";
 import {Component} from "./component.ts";
 import type {BeanName} from "./component.ts";
+import {exec, apply} from "../__test/decorator.ts";
+import {lowercaseFirstLetter} from "../share/util.ts";
 
 function assetsTarget(Metadata: MetadataClass, context: Context) {
   const target = <Target>getClsAnnotation(Metadata, Target);
@@ -20,33 +22,42 @@ function assetsTarget(Metadata: MetadataClass, context: Context) {
   }
 }
 
-/**
- * 由类名得到bean名称
- * 第一个字母改为小写，其他不变
- */
-function clsName2beanName(clsName: string) {
-  if (!clsName) {
-    if (__DEV__ && typeof clsName !== 'string') {
-      throw new Error(`不正常的clsName:[${clsName}]`)
-    }
-  }
-  return clsName[0].toLowerCase() + clsName.slice(1);
-}
 
-function genDecorator<UserParam, C extends Context>(Metadata: MetadataClass, initializer?: any): (userParam: UserParam) => Decorator;
-function genDecorator<UserParam, C extends Context>(DecorateSelf: true, initializer?: any): (userParam: UserParam) => Decorator;
+
+interface Params {
+  /**
+   * 装饰器对应的元数据类
+   * 如果是装饰器类刚好又要装饰元数据本身，则传true
+   */
+  MetadataCls: MetadataClass | true,
+  /**
+   * 装饰器的名字
+   * 如果MetadataOrDecorateSelf是类，则可以不传，默认取其name，然后首字母小写，例如Target -> target
+   * 如果MetadataOrDecorateSelf是true，则需要自己指定
+    */
+  name?: string
+}
 function genDecorator<UserParam, C extends Context>(
-  MetadataOrDecorateSelf: MetadataClass | true,
-  initializer?: any,
+  {
+    MetadataCls,
+    name
+  }: Params
 ): (userParam: UserParam) => Decorator {
+  const decoratorName = MetadataCls === true ? name : lowercaseFirstLetter(MetadataCls.name);
   return function (userParam: UserParam) {
+    if (__TEST__) {
+      exec(decoratorName, userParam);
+    }
     return function (value, context: C) {
-      const Metadata = MetadataOrDecorateSelf === true ? value : MetadataOrDecorateSelf;
+      if (__TEST__) {
+        apply(decoratorName, userParam);
+      }
+      const Metadata = MetadataCls === true ? value : MetadataCls;
       switch (context.kind) {
         case KindClass:
           addClassMetadata(value, Metadata, userParam);
           if (Metadata === Component) {
-            addDefinition(<BeanName>userParam ?? clsName2beanName(context.name), value);
+            addDefinition(<BeanName>userParam ?? lowercaseFirstLetter(context.name), value);
           }
           break;
         default:
@@ -60,7 +71,6 @@ function genDecorator<UserParam, C extends Context>(
           default:
             return;
         }
-        initializer?.();
       })
       return undefined;
     }

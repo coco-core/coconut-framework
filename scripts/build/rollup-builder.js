@@ -11,7 +11,10 @@ function genRollupConfig (inputConfig) {
   return {
     input,
     plugins: [
-      replace({ __DEV__: false }),
+      replace({
+        __DEV__: false,
+        __TEST__: process.env.NODE_ENV === 'test',
+      }),
       babel({
         plugins: [
           ["@babel/plugin-proposal-decorators", { version: "2023-11" }]

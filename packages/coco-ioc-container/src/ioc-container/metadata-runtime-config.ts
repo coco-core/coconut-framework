@@ -10,6 +10,7 @@ const metadataRuntimeConfig: Map<
   Class<any>,
   {
     // 类
+    // todo 这里不用Metadata，还需要添加元数据的元数据
     classMetadata: Metadata[]
     // 字段
     fieldMetadata: Map<FieldName, Metadata[]>
@@ -32,7 +33,7 @@ function addClassMetadata(component: Class<any>, AnnoCls: Class<Metadata>, args?
     return
   }
   const anno = new AnnoCls();
-  anno.postConstructor(args);
+  anno.postConstructor?.(args);
   classMetadata.push(anno)
 }
 
@@ -52,10 +53,10 @@ function addFieldMetadata(
   let fieldAnno = fieldMetadata.get(fieldName);
   if (!fieldAnno) {
     fieldAnno = [];
-    this.fieldMetadata.set(fieldName, fieldAnno);
+    fieldMetadata.set(fieldName, fieldAnno);
   }
   const anno = new AnnoCls();
-  anno.postConstructor(args);
+  anno.postConstructor?.(args);
   fieldAnno.push(anno);
 }
 

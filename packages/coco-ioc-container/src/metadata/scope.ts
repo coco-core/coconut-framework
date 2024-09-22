@@ -17,5 +17,5 @@ export class Scope extends Metadata {
   }
 }
 
-export default genDecorator<DecoratorArg, ClassContext>(Scope);
+export default genDecorator<DecoratorArg, ClassContext>({MetadataCls: Scope});
 
