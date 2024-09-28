@@ -29,7 +29,7 @@ interface Params {
    * 装饰器对应的元数据类
    * 如果是装饰器类刚好又要装饰元数据本身，则传true
    */
-  MetadataCls: MetadataClass | true,
+  MetadataCls: MetadataClass,
   /**
    * 装饰器的名字
    * 如果MetadataOrDecorateSelf是类，则可以不传，默认取其name，然后首字母小写，例如Target -> target
@@ -43,7 +43,7 @@ function genDecorator<UserParam, C extends Context>(
     name
   }: Params
 ): (userParam: UserParam) => Decorator {
-  const decoratorName = MetadataCls === true ? name : lowercaseFirstLetter(MetadataCls.name);
+  const decoratorName = lowercaseFirstLetter(MetadataCls.name);
   return function (userParam: UserParam) {
     if (__TEST__) {
       exec(decoratorName, userParam);
@@ -52,11 +52,10 @@ function genDecorator<UserParam, C extends Context>(
       if (__TEST__) {
         apply(decoratorName, userParam);
       }
-      const Metadata = MetadataCls === true ? value : MetadataCls;
       switch (context.kind) {
         case KindClass:
-          addClassMetadata(value, Metadata, userParam);
-          if (Metadata === Component) {
+          addClassMetadata(value, MetadataCls, userParam);
+          if (MetadataCls === Component) {
             addDefinition(<BeanName>userParam ?? lowercaseFirstLetter(context.name), value);
           }
           break;
@@ -66,7 +65,7 @@ function genDecorator<UserParam, C extends Context>(
       context.addInitializer(function () {
         switch (context.kind) {
           case KindField:
-            addFieldMetadata(this.constructor, (<FieldContext>context).name, Metadata, userParam);
+            addFieldMetadata(this.constructor, (<FieldContext>context).name, MetadataCls, userParam);
             break;
           default:
             return;

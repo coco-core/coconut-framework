@@ -1,10 +1,12 @@
 /**
  * 注解的运行时配置
  */
-import {Metadata, Component} from "../metadata/export";
+import {Metadata, Component, component} from "../metadata/export";
 import type {Class} from './export'
 
 type FieldName = string | Symbol;
+
+type MetadataSet = Array<{ metadata: Metadata; dependencies?: MetadataSet; }>
 
 const metadataRuntimeConfig: Map<
   Class<any>,
@@ -21,15 +23,15 @@ function ifClsAnnotationExit(exited: Metadata[], Anno: Class<Metadata>): boolean
   return exited.some(i => (i instanceof Anno));
 }
 
-function addClassMetadata(component: Class<any>, AnnoCls: Class<Metadata>, args?: any) {
-  let config = metadataRuntimeConfig.get(component);
+function addClassMetadata(Component: Class<any>, AnnoCls: Class<Metadata>, args?: any) {
+  let config = metadataRuntimeConfig.get(Component);
   if (!config) {
     config = {classMetadata: [], fieldMetadata: new Map()}
-    metadataRuntimeConfig.set(component, config);
+    metadataRuntimeConfig.set(Component, config);
   }
   const {classMetadata} = config;
   if (__DEV__ && ifClsAnnotationExit(classMetadata, AnnoCls)) {
-    console.warn(`${component}已经存在相同的注解【${AnnoCls}】，忽略`);
+    console.warn(`${Component}已经存在相同的注解【${AnnoCls}】，忽略`);
     return
   }
   const anno = new AnnoCls();
@@ -110,6 +112,24 @@ function clear() {
   metadataRuntimeConfig.clear();
 }
 
+/**
+ * 获取元数据
+ */
+function getMetadata(Clazz?: Class<any>) {
+  const result: MetadataSet = []
+  if (Clazz && metadataRuntimeConfig.has(Clazz)) {
+    const { classMetadata} = metadataRuntimeConfig.get(Clazz);
+    for (const metadata of classMetadata) {
+      const dependencies = getMetadata(metadata.constructor);
+      result.push({
+        metadata,
+        dependencies,
+      })
+    }
+  }
+  return result;
+}
+
 export {
   addClassMetadata,
   addFieldMetadata,
@@ -117,4 +137,5 @@ export {
   isRegistered,
   getFields,
   clear,
+  getMetadata,
 }

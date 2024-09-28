@@ -1,3 +1,7 @@
+import {Class} from "../ioc-container/export.ts";
+import {getMetadata} from "../ioc-container/metadata-runtime-config.ts";
+import Metadata from "../metadata/metadata.ts";
+
 const order = [];
 function item (action: 'exec' | 'apply', name: string, params: any) {
   return `[${action}][${name}][${params}]`;
@@ -39,4 +43,47 @@ export function expectInOrder(list: {
     }
   }
   return true;
+}
+
+/**
+ * 期望特定的类的元信息收集正确的
+ * Clazz: 想要校验的类
+ * expectedMetadataList: Clazz上应该具备的所有元信息
+ */
+export function checkClassMetadataAsExpected(
+  Clazz: Class<any>,
+  expectedMetadataList: {
+    Metadata: Class<Metadata>,
+    fieldValues?: Record<string, any>,
+  }[]
+) {
+  if (!Clazz || expectedMetadataList.length === 0) {
+    return false;
+  }
+  const metadataList = getMetadata(Clazz)
+  // 长度不等，元信息肯定不一致
+  if (metadataList.length !== expectedMetadataList.length) {
+    return false;
+  }
+  const allExpected = Array.from(expectedMetadataList, _ => false);
+  for (const { metadata } of metadataList) {
+    const idx = expectedMetadataList.findIndex(i => i.Metadata === metadata.constructor);
+    if (idx !== -1) {
+      let isValueEqual = true;
+      const fieldValues = expectedMetadataList[idx].fieldValues;
+      if (fieldValues) {
+        for (const key of Object.keys(fieldValues)) {
+          // 暂时使用引用比较，后续有需要再扩展
+          if (metadata[key] !== fieldValues[key]) {
+            isValueEqual = false;
+            break;
+          }
+        }
+      }
+      if (isValueEqual) {
+        allExpected[idx] = true;
+      }
+    }
+  }
+  return allExpected.every(Boolean);
 }

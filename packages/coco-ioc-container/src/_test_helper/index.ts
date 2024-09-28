@@ -1,13 +1,15 @@
 import {
-  expectInOrder
+  expectInOrder,
+  checkClassMetadataAsExpected
 } from './decorator';
 
 import {
-  clear
+  getMetadata,
 } from "../ioc-container/metadata-runtime-config.ts";
 
 
 export {
   expectInOrder,
-  clear
+  checkClassMetadataAsExpected,
+  getMetadata,
 }
