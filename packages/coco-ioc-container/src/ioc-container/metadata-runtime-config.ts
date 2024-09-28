@@ -12,7 +12,6 @@ const metadataRuntimeConfig: Map<
   Class<any>,
   {
     // 类
-    // todo 这里不用Metadata，还需要添加元数据的元数据
     classMetadata: Metadata[]
     // 字段
     fieldMetadata: Map<FieldName, Metadata[]>
