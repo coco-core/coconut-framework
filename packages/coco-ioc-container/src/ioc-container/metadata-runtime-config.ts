@@ -19,62 +19,62 @@ const metadataRuntimeConfig: Map<
   }
 > = new Map();
 
-function ifClsAnnotationExit(exited: Metadata[], Anno: Class<Metadata>): boolean {
-  return exited.some(i => (i instanceof Anno));
+function existSameMetadata(exited: Metadata[], metadataCls: Class<Metadata>): boolean {
+  return exited.some(i => (i instanceof metadataCls));
 }
 
-function addClassMetadata(Component: Class<any>, AnnoCls: Class<Metadata>, args?: any) {
-  let config = metadataRuntimeConfig.get(Component);
+function addClassMetadata(Cls: Class<any>, MetadataCls: Class<Metadata>, args?: any) {
+  let config = metadataRuntimeConfig.get(Cls);
   if (!config) {
     config = {classMetadata: [], fieldMetadata: new Map()}
-    metadataRuntimeConfig.set(Component, config);
+    metadataRuntimeConfig.set(Cls, config);
   }
   const {classMetadata} = config;
-  if (__DEV__ && ifClsAnnotationExit(classMetadata, AnnoCls)) {
-    console.warn(`${Component}已经存在相同的注解【${AnnoCls}】，忽略`);
+  if (__DEV__ && existSameMetadata(classMetadata, MetadataCls)) {
+    console.warn(`${Cls}已经存在相同的注解【${MetadataCls}】，忽略`);
     return
   }
-  const anno = new AnnoCls();
+  const anno = new MetadataCls();
   anno.postConstructor?.(args);
   classMetadata.push(anno)
 }
 
 function addFieldMetadata(
-  component: Class<any>,
+  Cls: Class<any>,
   fieldName: FieldName,
-  AnnoCls: Class<Metadata>,
+  MetadataCls: Class<Metadata>,
   args?: any,
 ) {
   if (__DEV__) {
-    if (!metadataRuntimeConfig.has(component)) {
-      console.error('需要先给组件【', component, "】添加注解，字段注解才能生效")
+    if (!metadataRuntimeConfig.has(Cls)) {
+      console.error('需要先给组件【', Cls, "】添加注解，字段注解才能生效")
       return;
     }
   }
-  const {fieldMetadata} = metadataRuntimeConfig.get(component);
+  const {fieldMetadata} = metadataRuntimeConfig.get(Cls);
   let fieldAnno = fieldMetadata.get(fieldName);
   if (!fieldAnno) {
     fieldAnno = [];
     fieldMetadata.set(fieldName, fieldAnno);
   }
-  const anno = new AnnoCls();
+  const anno = new MetadataCls();
   anno.postConstructor?.(args);
   fieldAnno.push(anno);
 }
 
-function isRegistered(component: Class<any>) {
-  return metadataRuntimeConfig.has(component);
+function isRegistered(Cls: Class<any>) {
+  return metadataRuntimeConfig.has(Cls);
 }
 
 // 找标记特定注解的所有字段
-function getFields(component: Class<any>, Metadata: Class<any>) {
-  const def = metadataRuntimeConfig.get(component);
+function getFields(Cls: Class<any>, MetadataCls: Class<any>) {
+  const def = metadataRuntimeConfig.get(Cls);
   if (!def) {
     return [];
   }
   const fields = []
   for (const [key, value] of this.fieldMetadata.entries()) {
-    if (value.find(i => i instanceof Metadata)) {
+    if (value.find(i => i instanceof MetadataCls)) {
       fields.push(key)
     }
   }
@@ -86,19 +86,19 @@ function getFields(component: Class<any>, Metadata: Class<any>) {
  * 例如Component注解有没有配置Scope注解
  * 因为注解B可能是注解A的注解的注解配置，所以需要递归查找
  */
-function getClsAnnotation(component: Class<any>, AnnoCls: Class<Metadata>): Metadata | null {
-  const configs = metadataRuntimeConfig.get(component);
+function getClsAnnotation(Cls: Class<any>, MetadataCls: Class<Metadata>): Metadata | null {
+  const configs = metadataRuntimeConfig.get(Cls);
   if (!configs) {
-    throw new Error(`未注册的组件：${component}`);
+    throw new Error(`未注册的组件：${Cls}`);
   }
   if (configs && configs.classMetadata.length) {
     for (const config of configs.classMetadata) {
-      if (config instanceof AnnoCls) {
+      if (config instanceof MetadataCls) {
         // 找到，返回
         return config;
       }
       // 找到config对应的注解定义，看上面是否有AnnoCls
-      // const find = getClsAnnotation(config.constructor, AnnoCls);
+      // const find = getClsAnnotation(config.constructor, MetadataCls);
       // if (find) {
       //   return find;
       // }
@@ -115,10 +115,10 @@ function clear() {
 /**
  * 获取元数据
  */
-function getMetadata(Clazz?: Class<any>) {
+function getMetadata(Cls?: Class<any>) {
   const result: MetadataSet = []
-  if (Clazz && metadataRuntimeConfig.has(Clazz)) {
-    const { classMetadata} = metadataRuntimeConfig.get(Clazz);
+  if (Cls && metadataRuntimeConfig.has(Cls)) {
+    const { classMetadata} = metadataRuntimeConfig.get(Cls);
     for (const metadata of classMetadata) {
       const dependencies = getMetadata(metadata.constructor);
       result.push({
