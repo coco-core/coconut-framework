@@ -119,7 +119,7 @@ function getMetadata(Cls?: Class<any>) {
   if (Cls && metadataRuntimeConfig.has(Cls)) {
     const { classMetadata} = metadataRuntimeConfig.get(Cls);
     for (const metadata of classMetadata) {
-      const dependencies = getMetadata(metadata.constructor);
+      const dependencies = getMetadata(metadata.constructor as Class<any>);
       result.push({
         metadata,
         dependencies,
