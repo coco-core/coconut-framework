@@ -18,4 +18,4 @@ export class Target extends Metadata{
   }
 }
 
-export default genDecorator<DecoratorArg, Context>({ MetadataCls: Target, decoratorSelfParams: TargetType.Class })
+export default genDecorator<DecoratorArg, Context>(Target, TargetType.Class)

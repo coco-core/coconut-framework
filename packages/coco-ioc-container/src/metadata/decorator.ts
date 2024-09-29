@@ -23,19 +23,16 @@ function assetsTarget(Metadata: MetadataClass, context: Context) {
 }
 
 function genDecorator<UserParam, C extends Context>(
-  params: {
-    /**
-     * 装饰器对应的元数据类
-     */
-    MetadataCls: MetadataClass,
-    /**
-     * 有时候装饰器需要装饰在对应的元数据类上，就可以传入这个参数，这个参数会回传给postConstructor函数
-     * todo 最好还是改成@target()的形式
-     */
-    decoratorSelfParams?: UserParam
-  }
+  /**
+   * 装饰器对应的元数据类
+   */
+  MetadataCls: MetadataClass,
+  /**
+   * 如果你想自己装饰自己的话，就传入这个参数，这个参数会回传给postConstructor函数
+   * todo 最好还是改成@target()的形式
+   */
+  decoratorSelfParams?: UserParam
 ): (userParam: UserParam) => Decorator {
-  const {MetadataCls, decoratorSelfParams} = params;
   if (decoratorSelfParams) {
     addClassMetadata(MetadataCls, MetadataCls, decoratorSelfParams);
   }
