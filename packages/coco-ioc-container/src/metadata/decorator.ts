@@ -22,27 +22,23 @@ function assetsTarget(Metadata: MetadataClass, context: Context) {
   }
 }
 
-
-
-interface Params {
-  /**
-   * 装饰器对应的元数据类
-   * 如果是装饰器类刚好又要装饰元数据本身，则传true
-   */
-  MetadataCls: MetadataClass,
-  /**
-   * 装饰器的名字
-   * 如果MetadataOrDecorateSelf是类，则可以不传，默认取其name，然后首字母小写，例如Target -> target
-   * 如果MetadataOrDecorateSelf是true，则需要自己指定
-    */
-  name?: string
-}
 function genDecorator<UserParam, C extends Context>(
-  {
-    MetadataCls,
-    name
-  }: Params
+  params: {
+    /**
+     * 装饰器对应的元数据类
+     */
+    MetadataCls: MetadataClass,
+    /**
+     * 有时候装饰器需要装饰在对应的元数据类上，就可以传入这个参数，这个参数会回传给postConstructor函数
+     * todo 最好还是改成@target()的形式
+     */
+    decoratorSelfParams?: UserParam
+  }
 ): (userParam: UserParam) => Decorator {
+  const {MetadataCls, decoratorSelfParams} = params;
+  if (decoratorSelfParams) {
+    addClassMetadata(MetadataCls, MetadataCls, decoratorSelfParams);
+  }
   const decoratorName = lowercaseFirstLetter(MetadataCls.name);
   return function (userParam: UserParam) {
     if (__TEST__) {

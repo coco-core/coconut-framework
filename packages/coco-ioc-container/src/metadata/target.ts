@@ -9,7 +9,6 @@ export enum TargetType{
 
 type DecoratorArg = TargetType | TargetType[]
 
-// todo @target(TargetType.Class)
 export class Target extends Metadata{
 
   value: TargetType[]
@@ -19,4 +18,4 @@ export class Target extends Metadata{
   }
 }
 
-export default genDecorator<DecoratorArg, Context>({ MetadataCls: Target, name: 'target'})
+export default genDecorator<DecoratorArg, Context>({ MetadataCls: Target, decoratorSelfParams: TargetType.Class })

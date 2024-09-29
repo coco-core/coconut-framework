@@ -119,6 +119,10 @@ function getMetadata(Cls?: Class<any>) {
   if (Cls && metadataRuntimeConfig.has(Cls)) {
     const { classMetadata} = metadataRuntimeConfig.get(Cls);
     for (const metadata of classMetadata) {
+      if (metadata.constructor === Cls) {
+        // 自己装饰自己
+        continue;
+      }
       const dependencies = getMetadata(metadata.constructor as Class<any>);
       result.push({
         metadata,
@@ -129,6 +133,10 @@ function getMetadata(Cls?: Class<any>) {
   return result;
 }
 
+function getAllMetadata() {
+  return metadataRuntimeConfig;
+}
+
 export {
   addClassMetadata,
   addFieldMetadata,
@@ -137,4 +145,5 @@ export {
   getFields,
   clear,
   getMetadata,
+  getAllMetadata,
 }
