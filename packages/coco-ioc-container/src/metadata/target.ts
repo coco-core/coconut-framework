@@ -1,5 +1,5 @@
 import { KindClass, KindField } from './decorator-context.ts';
-import {Metadata, Context} from "./export";
+import {Metadata, Context, self} from "./export";
 import genDecorator from './decorator.ts'
 
 export enum TargetType{
@@ -9,6 +9,7 @@ export enum TargetType{
 
 type DecoratorArg = TargetType | TargetType[]
 
+@self(TargetType.Class)
 export class Target extends Metadata{
 
   value: TargetType[]
@@ -18,4 +19,4 @@ export class Target extends Metadata{
   }
 }
 
-export default genDecorator<DecoratorArg, Context>(Target, TargetType.Class)
+export default genDecorator<DecoratorArg, Context>(Target)

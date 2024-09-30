@@ -8,6 +8,7 @@ import {Component} from "./component.ts";
 import type {BeanName} from "./component.ts";
 import {exec, apply} from "../_test_helper/decorator.ts";
 import {lowercaseFirstLetter} from "../share/util.ts";
+import { Self } from "./self.ts";
 
 function assetsTarget(Metadata: MetadataClass, context: Context) {
   const target = <Target>getClsAnnotation(Metadata, Target);
@@ -23,19 +24,8 @@ function assetsTarget(Metadata: MetadataClass, context: Context) {
 }
 
 function genDecorator<UserParam, C extends Context>(
-  /**
-   * 装饰器对应的元数据类
-   */
   MetadataCls: MetadataClass,
-  /**
-   * 如果你想自己装饰自己的话，就传入这个参数，这个参数会回传给postConstructor函数
-   * todo 最好还是改成@target()的形式
-   */
-  decoratorSelfParams?: UserParam
 ): (userParam: UserParam) => Decorator {
-  if (decoratorSelfParams) {
-    addClassMetadata(MetadataCls, MetadataCls, decoratorSelfParams);
-  }
   const decoratorName = lowercaseFirstLetter(MetadataCls.name);
   return function (userParam: UserParam) {
     if (__TEST__) {
@@ -48,6 +38,9 @@ function genDecorator<UserParam, C extends Context>(
       switch (context.kind) {
         case KindClass:
           addClassMetadata(value, MetadataCls, userParam);
+          if (MetadataCls === Self) {
+            addClassMetadata(value, value, userParam);
+          }
           if (MetadataCls === Component) {
             addDefinition(<BeanName>userParam ?? lowercaseFirstLetter(context.name), value);
           }
