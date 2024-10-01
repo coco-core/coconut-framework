@@ -4,8 +4,6 @@ export {
   Component,
   target,
   Target,
-  self,
-  Self,
   scope,
   Scope,
   ScopeType,

@@ -4,7 +4,6 @@ import {default as Metadata} from './metadata';
 import {default as component, Component} from './component';
 import {default as scope, Scope, ScopeType} from './scope';
 import {default as target, Target} from './target';
-import {default as self, Self} from './self'
 import genDecorator from "./decorator.ts";
 
 export {
@@ -13,8 +12,6 @@ export {
   Component,
   target,
   Target,
-  self,
-  Self,
   scope,
   Scope,
   ScopeType,
