@@ -9,7 +9,7 @@ export enum TargetType{
 
 type DecoratorArg = TargetType | TargetType[]
 
-const {decorator: target, set } = genDecorator<DecoratorArg, Context>('target')
+const target = genDecorator<DecoratorArg, Context>('target')
 export default target;
 
 @target(TargetType.Class, true)
@@ -21,5 +21,3 @@ export class Target extends Metadata{
     this.value = Array.isArray(arg) ? arg : [arg];
   }
 }
-
-set(Target);

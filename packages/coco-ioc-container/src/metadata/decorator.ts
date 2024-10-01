@@ -30,34 +30,32 @@ function genDecorator<UserParam, C extends Context>(metadataCls: MetadataClass):
   (userParam: UserParam) => Decorator;
 /**
  * 适用于装饰器装饰自己元数据类的场景
- * @param metadataClsName 元信息类的名字，具体类通过set函数传入
+ * @param metadataClsName 元信息类的名字，具体元数据类在装饰器装饰自己的时候设置
  */
-function genDecorator<UserParam, C extends Context>(metadataClsName: string): {
+function genDecorator<UserParam, C extends Context>(metadataClsName: string):
   // 在装饰自己的时候需要置第二个参数为true
-  decorator: (userParam: UserParam, decorateSelf?: true) => Decorator
-  // 在定义元数据类之后调用
-  set: (metadataCls: MetadataClass) => void;
-};
+  (userParam: UserParam, decorateSelf?: true) => Decorator
 function genDecorator<UserParam, C extends Context>(
   metadataClsOrName: MetadataClass | string,
-) {
+): (userParam: UserParam, decorateSelf?: true) => Decorator {
   const decoratorName = typeof metadataClsOrName === 'string'
     ? metadataClsOrName
     : lowercaseFirstLetter(metadataClsOrName.name);
-  let metadataCls = (typeof metadataClsOrName !== 'string') ? metadataClsOrName : null;
+  let metadataCls = typeof metadataClsOrName !== 'string'
+    ? metadataClsOrName
+    : null;
 
-  function decoratorExp(userParam, decorateSelf) {
-    if (__TEST__) {
-      exec(decoratorName, userParam);
-    }
+  function decorator(userParam: UserParam, decorateSelf?: true) {
+    if (__TEST__) { exec(decoratorName, userParam); }
     return function (value, context: C) {
-      if (__TEST__) {
-        apply(decoratorName, userParam);
-      }
+      if (__TEST__) { apply(decoratorName, userParam); }
       switch (context.kind) {
         case KindClass:
           if (decorateSelf) {
-            addClassMetadata(value, value, userParam);
+            if (metadataCls === null) {
+              metadataCls = value;
+              addClassMetadata(value, value, userParam);
+            }
           } else {
             addClassMetadata(value, metadataCls, userParam);
           }
@@ -81,14 +79,7 @@ function genDecorator<UserParam, C extends Context>(
     }
   }
 
-  return typeof metadataClsOrName === 'string'
-    ? {
-      decorator: decoratorExp,
-      set: (cls: MetadataClass) => {
-        metadataCls = cls
-      }
-    }
-    : decoratorExp;
+  return decorator;
 }
 
 export default genDecorator;
