@@ -7,17 +7,12 @@ export enum TargetType{
   Field = KindField
 }
 
-type DecoratorArg = TargetType | TargetType[]
+type DecoratorArg = TargetType[]
 
 const target = genDecorator<DecoratorArg, Context>('target')
 export default target;
 
-@target(TargetType.Class, true)
+@target([TargetType.Class], true)
 export class Target extends Metadata{
-
   value: TargetType[]
-
-  postConstructor(arg: DecoratorArg) {
-    this.value = Array.isArray(arg) ? arg : [arg];
-  }
 }

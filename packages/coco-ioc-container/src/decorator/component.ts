@@ -8,7 +8,7 @@ import target, {TargetType} from "../decorator/target.ts";
 
 export type BeanName = string | undefined
 
-@target(TargetType.Class)
+@target([TargetType.Class])
 export class Component extends Metadata{}
 
 export default genDecorator<BeanName, ClassContext>(Component)

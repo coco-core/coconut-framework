@@ -1,8 +1,9 @@
 /**
  * 注解的运行时配置
  */
-import {Metadata, Component, component} from "../metadata/export";
+import {Metadata} from "../decorator/export";
 import type {Class} from './export'
+import {isPlainObject} from "../share/util.ts";
 
 type FieldName = string | Symbol;
 
@@ -22,6 +23,19 @@ function existSameMetadata(exited: Metadata[], metadataCls: Class<Metadata>): bo
   return exited.some(i => (i instanceof metadataCls));
 }
 
+function createMetadata(metadataCls: Class<Metadata>, args?: any): Metadata {
+  const metadata = new metadataCls();
+  if (isPlainObject(args)) {
+    for (const key of Object.keys(args)) {
+      metadata[key] = args[key];
+    }
+  } else {
+    metadata.value = args;
+  }
+  return metadata;
+}
+
+
 function addClassMetadata(Cls: Class<any>, MetadataCls: Class<Metadata>, args?: any) {
   let config = metadataRuntimeConfig.get(Cls);
   if (!config) {
@@ -33,9 +47,8 @@ function addClassMetadata(Cls: Class<any>, MetadataCls: Class<Metadata>, args?: 
     console.warn(`${Cls}已经存在相同的注解【${MetadataCls}】，忽略`);
     return
   }
-  const anno = new MetadataCls();
-  anno.postConstructor?.(args);
-  classMetadata.push(anno)
+  const metadata = createMetadata(MetadataCls, args);
+  classMetadata.push(metadata)
 }
 
 function addFieldMetadata(
@@ -51,14 +64,13 @@ function addFieldMetadata(
     }
   }
   const {fieldMetadata} = metadataRuntimeConfig.get(Cls);
-  let fieldAnno = fieldMetadata.get(fieldName);
-  if (!fieldAnno) {
-    fieldAnno = [];
-    fieldMetadata.set(fieldName, fieldAnno);
+  let fieldMetas = fieldMetadata.get(fieldName);
+  if (!fieldMetas) {
+    fieldMetas = [];
+    fieldMetadata.set(fieldName, fieldMetas);
   }
-  const anno = new MetadataCls();
-  anno.postConstructor?.(args);
-  fieldAnno.push(anno);
+  const metadata = createMetadata(MetadataCls, args);
+  fieldMetas.push(metadata);
 }
 
 function isRegistered(Cls: Class<any>) {

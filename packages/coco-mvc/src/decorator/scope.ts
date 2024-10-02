@@ -7,13 +7,9 @@ export enum ScopeType {
 
 type DecoratorArg = ScopeType;
 
-@target(TargetType.Class)
+@target([TargetType.Class])
 export class Scope extends Metadata {
   value: ScopeType;
-
-  postConstructor(arg: DecoratorArg) {
-    this.value = arg;
-  }
 }
 
 export default genDecorator<DecoratorArg, ClassContext>(Scope);
