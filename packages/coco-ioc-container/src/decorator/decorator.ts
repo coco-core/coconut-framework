@@ -1,7 +1,7 @@
-import {Context, Decorator, KindClass, KindField, Target,} from "../metadata/export.ts";
+import {Context, Decorator, KindClass, KindField, Target,} from "../decorator/export.ts";
 import {addClassMetadata, addFieldMetadata, getClsAnnotation,} from "../ioc-container/metadata-runtime-config.ts";
-import {MetadataClass} from "../metadata/metadata.ts";
-import {FieldContext} from "../metadata/decorator-context.ts";
+import {MetadataClass} from "../decorator/metadata.ts";
+import {FieldContext} from "../decorator/decorator-context.ts";
 import {TargetType} from "./target.ts";
 import {addDefinition} from "../ioc-container/bean-factory.ts";
 import {Component} from "./component.ts";

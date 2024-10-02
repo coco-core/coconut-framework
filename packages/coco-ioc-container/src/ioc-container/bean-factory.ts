@@ -1,5 +1,5 @@
 import {isRegistered, getClsAnnotation} from "./metadata-runtime-config.ts";
-import {Scope, ScopeType} from "../metadata/export.ts";
+import {Scope, ScopeType} from "../decorator/export.ts";
 import type { Class } from './export'
 import BeanDefinition from "./bean-definition.ts";
 

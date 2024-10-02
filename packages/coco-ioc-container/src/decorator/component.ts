@@ -4,7 +4,7 @@
  */
 import Metadata from "./metadata";
 import {ClassContext, genDecorator} from "./export.ts";
-import target, {TargetType} from "../metadata/target.ts";
+import target, {TargetType} from "../decorator/target.ts";
 
 export type BeanName = string | undefined
 

@@ -8,7 +8,7 @@ export {
   Scope,
   ScopeType,
   genDecorator,
-} from './metadata/export.ts';
+} from './decorator/export.ts';
 export {
   getBean,
   addClassMetadata,
@@ -21,7 +21,7 @@ export {
 export type {
   FieldContext,
   ClassContext,
-} from './metadata/export.ts'
+} from './decorator/export.ts'
 
 export type {
   Class
