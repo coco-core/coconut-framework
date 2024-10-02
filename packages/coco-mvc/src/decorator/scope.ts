@@ -1,5 +1,4 @@
-import {Metadata, ClassContext, genDecorator, target} from "./export";
-import {TargetType} from "./target.ts";
+import {Metadata, ClassContext, genDecorator, target, TargetType} from "coco-ioc-container";
 
 export enum ScopeType {
   Singleton = 0,

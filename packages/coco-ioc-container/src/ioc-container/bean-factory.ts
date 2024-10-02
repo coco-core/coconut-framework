@@ -1,10 +1,5 @@
-import {isRegistered, getClsAnnotation} from "./metadata-runtime-config.ts";
-import {Scope, ScopeType} from "../decorator/export.ts";
 import type { Class } from './export'
 import BeanDefinition from "./bean-definition.ts";
-
-// 单例实例集合
-const singletonInstances: Map<Class<any>, any> = new Map();
 
 const nameDefinitionMap: Map<string, BeanDefinition<any>> = new Map();
 const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
@@ -26,15 +21,17 @@ function addDefinition(name: string, cls: Class<any>) {
   clsDefinitionMap.set(cls, beanDefinition);
 }
 
+function getDefinition(nameOrCls: Class<any> | string) {
+  return typeof nameOrCls === 'string' ? nameDefinitionMap.get(nameOrCls) : clsDefinitionMap.get(nameOrCls);
+}
+
 /**
- * 获取Ioc组件实例
+ * 创建一个ioc组件实例
  * 支持通过class获取；支持通过name获取；
- * 如果ioc组件定义是单例，则先找缓存，有的话直接返回，否则实例化后缓存并返回
- * 如果定义是prototype，则实例化后直接返回
  */
-function getBean<T>(cls: Class<T>): T;
-function getBean<T>(name: string): T;
-function getBean<T>(nameOrCls: Class<T> | string): T {
+function createBean<T>(cls: Class<T>): T;
+function createBean<T>(name: string): T;
+function createBean<T>(nameOrCls: Class<T> | string): T {
   if (!nameOrCls) {
     throw new Error("未定义的bean");
   }
@@ -42,17 +39,7 @@ function getBean<T>(nameOrCls: Class<T> | string): T {
   if (!definition) {
     throw new Error("未定义的bean");
   }
-  const cls = definition.cls;
-  const scope: Scope = <Scope>getClsAnnotation(cls, Scope);
-  const isSingleton = scope?.value === ScopeType.Singleton;
-  if (isSingleton && singletonInstances.has(cls)) {
-    return singletonInstances.get(cls);
-  }
-  const bean = newBean(definition)
-  if (isSingleton) {
-    singletonInstances.set(cls, bean);
-  }
-  return bean;
+  return newBean(definition)
 }
 
 function newBean(beanDefinition: BeanDefinition<any>) {
@@ -60,4 +47,4 @@ function newBean(beanDefinition: BeanDefinition<any>) {
   return new cls();
 }
 
-export { getBean, addDefinition }
+export { createBean, addDefinition, getDefinition }

@@ -3,5 +3,5 @@ export interface Class<T> {
 }
 
 export { addClassMetadata, addFieldMetadata, getClsAnnotation, getFields, clear } from "./metadata-runtime-config.ts";
-export { getBean } from './bean-factory'
+export { createBean, getDefinition } from './bean-factory'
 export { default as IocComponent } from './ioc-component.ts';

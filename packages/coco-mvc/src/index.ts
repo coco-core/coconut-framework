@@ -4,10 +4,7 @@ export {
   Component,
   target,
   Target,
-  scope,
-  Scope,
-  ScopeType,
-  getBean,
+  TargetType,
   addClassMetadata,
   addFieldMetadata,
   getClsAnnotation,
@@ -18,7 +15,11 @@ export {
   Reactive,
   render,
   Render,
+  scope,
+  Scope,
+  ScopeType,
 } from './decorator/index';
+export { default as getBean } from './ioc-component/bean-factory.ts'
 
 import {_test_helper as iocContainerTestHelper} from "coco-ioc-container";
 let _test_helper = {

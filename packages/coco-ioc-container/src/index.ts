@@ -4,13 +4,12 @@ export {
   Component,
   target,
   Target,
-  scope,
-  Scope,
-  ScopeType,
+  TargetType,
   genDecorator,
 } from './decorator/export.ts';
 export {
-  getBean,
+  createBean,
+  getDefinition,
   addClassMetadata,
   addFieldMetadata,
   getClsAnnotation,
