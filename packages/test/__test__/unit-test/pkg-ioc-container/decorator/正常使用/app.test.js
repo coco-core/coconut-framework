@@ -1,7 +1,7 @@
-import { getClsAnnotation, Component, Scope, ScopeType } from 'coco-mvc'
-import { build } from "@cocofw/cli";
+import {_test_helper, Component, Scope, ScopeType, Target, TargetType} from 'coco-mvc'
+import {build} from "@cocofw/cli";
 import Button from './src/component/Button';
-import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path'
+import {pkgPath, cocoIdxStr} from '../../../../helper/pkg-path'
 
 let start;
 let throwError;
@@ -20,12 +20,33 @@ describe('decorator', () => {
     throwError = false;
   })
 
-  test('可以获取到注解的配置', async () => {
+  test('组件类的元数据正确', async () => {
     start();
-    const component = getClsAnnotation(Button, Component);
-    expect(component).toBeInstanceOf(Component);
-    const scope = getClsAnnotation(Button, Scope);
-    expect(scope).toBeInstanceOf(Scope);
-    expect(scope.value).toBe(ScopeType.Singleton);
+    const asExpected = _test_helper.iocContainer.checkClassMetadataAsExpected(
+      Button,
+      [
+        {Metadata: Component},
+        {Metadata: Scope, fieldValues: {value: ScopeType.Singleton}},
+      ]
+    )
+    expect(asExpected).toBe(true);
+  });
+
+  test('元数据的元数据配置正确 ', async () => {
+    start();
+    const target = _test_helper.iocContainer.checkClassMetadataAsExpected(
+      Target,
+      [
+        {Metadata: Target, fieldValues: {value: [TargetType.Class]}},
+      ]
+    )
+    expect(target).toEqual(true);
+    const component = _test_helper.iocContainer.checkClassMetadataAsExpected(
+      Component,
+      [
+        {Metadata: Target, fieldValues: {value: [TargetType.Class]}},
+      ]
+    )
+    expect(component).toEqual(true);
   });
 })

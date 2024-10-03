@@ -1,6 +1,7 @@
 import {Class} from "../ioc-container/export.ts";
 import {getMetadata} from "../ioc-container/metadata-runtime-config.ts";
 import Metadata from "../metadata/metadata.ts";
+import {isEqual} from "./is-equal.ts";
 
 const order = [];
 function item (action: 'exec' | 'apply', name: string, params: any) {
@@ -73,8 +74,7 @@ export function checkClassMetadataAsExpected(
       const fieldValues = expectedMetadataList[idx].fieldValues;
       if (fieldValues) {
         for (const key of Object.keys(fieldValues)) {
-          // 暂时使用引用比较，后续有需要再扩展
-          if (metadata[key] !== fieldValues[key]) {
+          if (!isEqual(metadata[key],fieldValues[key])) {
             isValueEqual = false;
             break;
           }
