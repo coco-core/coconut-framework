@@ -32,21 +32,22 @@ describe('decorator', () => {
     expect(asExpected).toBe(true);
   });
 
-  test('元数据的元数据配置正确 ', async () => {
+  test('所有元数据的元数据配置都正确 ', async () => {
     start();
-    const target = _test_helper.iocContainer.checkClassMetadataAsExpected(
-      Target,
-      [
-        {Metadata: Target, fieldValues: {value: [TargetType.Class]}},
-      ]
-    )
-    expect(target).toEqual(true);
-    const component = _test_helper.iocContainer.checkClassMetadataAsExpected(
-      Component,
-      [
-        {Metadata: Target, fieldValues: {value: [TargetType.Class]}},
-      ]
-    )
-    expect(component).toEqual(true);
+    const same = _test_helper.iocContainer.checkMetadataForMetadataAsExpected([
+      {
+        metadataCls: Target,
+        metaList: [{Metadata: Target, fieldValues: {value: [TargetType.Class]}}]
+      },
+      {
+        metadataCls: Component,
+        metaList: [{Metadata: Target, fieldValues: {value: [TargetType.Class]}}]
+      },
+      {
+        metadataCls: Scope,
+        metaList: [{Metadata: Target, fieldValues: {value: [TargetType.Class]}}]
+      }
+    ]);
+    expect(same).toEqual(true);
   });
 })

@@ -1,6 +1,7 @@
 import {
   expectInOrder,
-  checkClassMetadataAsExpected
+  checkClassMetadataAsExpected,
+  checkMetadataForMetadataAsExpected,
 } from './decorator';
 
 import {
@@ -12,6 +13,7 @@ import {
 export {
   expectInOrder,
   checkClassMetadataAsExpected,
+  checkMetadataForMetadataAsExpected,
   getMetadata,
   getAllMetadata,
 }

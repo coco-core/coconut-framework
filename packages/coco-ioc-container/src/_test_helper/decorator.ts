@@ -1,6 +1,6 @@
 import {Class} from "../ioc-container/export.ts";
-import {getMetadata} from "../ioc-container/metadata-runtime-config.ts";
-import Metadata from "../metadata/metadata.ts";
+import {getMetadata, getAllMetadata} from "../ioc-container/metadata-runtime-config.ts";
+import Metadata from "../decorator/metadata.ts";
 import {isEqual} from "./is-equal.ts";
 
 const order = [];
@@ -86,4 +86,26 @@ export function checkClassMetadataAsExpected(
     }
   }
   return allExpected.every(Boolean);
+}
+
+// 检查元数据的元数据是否正确
+export function checkMetadataForMetadataAsExpected(
+  expectedList: {
+    metadataCls: Class<Metadata>,
+    metaList: {
+      Metadata: Class<Metadata>,
+      fieldValues?: Record<string, any>,
+    }[]
+  }[]
+) {
+  const [metadataForMetadata] = getAllMetadata();
+  if (expectedList.length !== metadataForMetadata.size) {
+    return false;
+  }
+  for (const metadata of expectedList) {
+    if (!checkClassMetadataAsExpected(metadata.metadataCls, metadata.metaList)) {
+      return false;
+    }
+  }
+  return true;
 }
