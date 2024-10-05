@@ -26,8 +26,8 @@ export type {
 } from './ioc-container/export.ts'
 
 import * as testHelper from './_test_helper/index.ts'
-let _test_helper = {};
-if (__TEST__) {
-  _test_helper = testHelper
+let _test_helper = testHelper
+if (!__TEST__) {
+  _test_helper = {} as any;
 }
 export { _test_helper }
