@@ -1,6 +1,6 @@
 import {default as reactive, Reactive} from './reactive';
 import {default as render, Render} from './render';
-import {default as scope, Scope, Type} from './scope'
+import {default as scope, Scope} from './scope'
 
 
 export {
@@ -10,5 +10,4 @@ export {
   Render,
   scope,
   Scope,
-  Type,
 }
