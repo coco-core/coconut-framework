@@ -4,7 +4,6 @@ export {
   Component,
   target,
   Target,
-  TargetType,
   genDecorator,
 } from './decorator/export.ts';
 export {

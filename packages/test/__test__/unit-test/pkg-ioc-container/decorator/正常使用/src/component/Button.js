@@ -1,7 +1,7 @@
-import { component, scope, ScopeType } from 'coco-mvc';
+import { component, scope, Scope } from 'coco-mvc';
 
 
-@scope(ScopeType.Singleton)
+@scope(Scope.Type.Singleton)
 @component()
 class Button {
 }

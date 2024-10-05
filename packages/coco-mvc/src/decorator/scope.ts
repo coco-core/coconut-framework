@@ -1,16 +1,15 @@
-import {Metadata, ClassContext, genDecorator, target, TargetType} from "coco-ioc-container";
+import {Metadata, ClassContext, genDecorator, target, Target} from "coco-ioc-container";
 
-export enum ScopeType {
+enum Type {
   Singleton = 0,
   Prototype = 1
 }
 
-type DecoratorArg = ScopeType;
-
-@target([TargetType.Class])
+@target([Target.Type.Class])
 export class Scope extends Metadata {
-  value: ScopeType;
+  static Type = Type;
+  value: Type;
 }
 
-export default genDecorator<DecoratorArg, ClassContext>(Scope);
+export default genDecorator<Type, ClassContext>(Scope);
 

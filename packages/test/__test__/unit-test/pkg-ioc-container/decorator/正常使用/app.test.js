@@ -1,4 +1,4 @@
-import {_test_helper, Component, Scope, ScopeType, Target, TargetType} from 'coco-mvc'
+import {_test_helper, Component, Scope, Target} from 'coco-mvc'
 import {build} from "@cocofw/cli";
 import Button from './src/component/Button';
 import {pkgPath, cocoIdxStr} from '../../../../helper/pkg-path'
@@ -26,7 +26,7 @@ describe('decorator', () => {
       Button,
       [
         {Metadata: Component},
-        {Metadata: Scope, fieldValues: {value: ScopeType.Singleton}},
+        {Metadata: Scope, fieldValues: {value: Scope.Type.Singleton}},
       ]
     )
     expect(asExpected).toBe(true);
@@ -37,15 +37,15 @@ describe('decorator', () => {
     const same = _test_helper.iocContainer.checkMetadataForMetadataAsExpected([
       {
         metadataCls: Target,
-        metaList: [{Metadata: Target, fieldValues: {value: [TargetType.Class]}}]
+        metaList: [{Metadata: Target, fieldValues: {value: [Target.Type.Class]}}]
       },
       {
         metadataCls: Component,
-        metaList: [{Metadata: Target, fieldValues: {value: [TargetType.Class]}}]
+        metaList: [{Metadata: Target, fieldValues: {value: [Target.Type.Class]}}]
       },
       {
         metadataCls: Scope,
-        metaList: [{Metadata: Target, fieldValues: {value: [TargetType.Class]}}]
+        metaList: [{Metadata: Target, fieldValues: {value: [Target.Type.Class]}}]
       }
     ]);
     expect(same).toEqual(true);

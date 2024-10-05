@@ -2,7 +2,7 @@ export * from './decorator-context.ts';
 
 import {default as Metadata} from './metadata';
 import {default as component, Component} from './component';
-import {default as target, Target, TargetType} from './target';
+import {default as target, Target} from './target';
 import genDecorator from "./decorator.ts";
 
 export {
@@ -11,6 +11,5 @@ export {
   Component,
   target,
   Target,
-  TargetType,
   genDecorator,
 }

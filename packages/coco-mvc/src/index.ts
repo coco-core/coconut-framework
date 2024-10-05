@@ -4,7 +4,6 @@ export {
   Component,
   target,
   Target,
-  TargetType,
   addClassMetadata,
   addFieldMetadata,
   getClsMetadata,
@@ -17,7 +16,6 @@ export {
   Render,
   scope,
   Scope,
-  ScopeType,
 } from './decorator/index';
 export { default as getBean } from './ioc-component/bean-factory.ts'
 

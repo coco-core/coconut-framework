@@ -2,9 +2,9 @@
  * 视图层注解
  */
 import type {ClassContext} from "coco-ioc-container";
-import {addClassMetadata, component, scope, ScopeType} from "coco-ioc-container";
+import {addClassMetadata, component, scope, Scope} from "coco-ioc-container";
 
-@scope(ScopeType.Prototype)
+@scope(Scope.Type.Prototype)
 @component()
 export class View{}
 
