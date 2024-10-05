@@ -1,5 +1,6 @@
 export const KindClass = "class";
 export const KindField = "field";
+export const KindMethod = "method";
 
 export interface ClassContext {
   kind: typeof KindClass,
@@ -16,6 +17,15 @@ export interface FieldContext {
   addInitializer(initializer: () => void): void;
 }
 
-export type Context = ClassContext | FieldContext;
+export interface MethodContext {
+  kind: typeof KindMethod;
+  name: string | symbol;
+  access: { get(): unknown };
+  static: boolean;
+  private: boolean;
+  addInitializer(initializer: () => void): void;
+}
+
+export type Context = ClassContext | FieldContext | MethodContext;
 
 export type Decorator = (value: any, context: Context) => any;

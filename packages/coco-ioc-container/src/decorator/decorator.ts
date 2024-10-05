@@ -1,11 +1,11 @@
-import {Context, Decorator, KindClass, KindField, Target,} from "../decorator/export.ts";
-import {addClassMetadata, addFieldMetadata, getClsMetadata,} from "../ioc-container/metadata-runtime-config.ts";
+import {Context, Decorator, KindClass, KindField, KindMethod, MethodContext,} from "../decorator/export.ts";
+import {addClassMetadata, addFieldMetadata,} from "../ioc-container/metadata-runtime-config.ts";
 import {MetadataClass} from "./metadata.ts";
 import {FieldContext} from "./decorator-context.ts";
 import {addDefinition} from "../ioc-container/bean-factory.ts";
-import {Component} from "./component.ts";
 import type {BeanName} from "./component.ts";
-import {exec, apply} from "../_test_helper/decorator.ts";
+import {Component} from "./component.ts";
+import {apply, exec} from "../_test_helper/decorator.ts";
 import {lowercaseFirstLetter} from "../share/util.ts";
 
 /**
@@ -72,6 +72,9 @@ function genDecorator<UserParam, C extends Context>(
         switch (context.kind) {
           case KindField:
             addFieldMetadata(this.constructor, (<FieldContext>context).name, metadataCls, userParam);
+            break;
+          case KindMethod:
+            addFieldMetadata(this.constructor, (<MethodContext>context).name, metadataCls, userParam);
             break;
           default:
             return;
