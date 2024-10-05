@@ -8,7 +8,7 @@ import {Component} from "./component.ts";
 import {apply, exec} from "../_test_helper/decorator.ts";
 import {lowercaseFirstLetter} from "../share/util.ts";
 
-type Initializer = (ctx: Context) => void;
+type Initializer = (instance: any, ctx: Context) => void;
 interface Option {
   optional?: true,
   initializer?: Initializer;
@@ -77,7 +77,7 @@ function genDecorator<UserParam, C extends Context>(
             return;
         }
         if (initializer) {
-          initializer.call(this, context);
+          initializer(this, context);
         }
       })
       return undefined;

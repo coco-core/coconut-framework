@@ -4,10 +4,10 @@ import {Metadata, addFieldMetadata, target, Target, genDecorator, FieldContext} 
 @target([Target.Type.Field])
 export class Reactive extends Metadata{}
 
-function initializer(context: FieldContext) {
+function initializer(instance: any, context: FieldContext) {
   const name = context.name;
-  let _value: any = this[name];
-  Object.defineProperty(this, name, {
+  let _value: any = instance[name];
+  Object.defineProperty(instance, name, {
     configurable: false,
     enumerable: true,
     get: function () {
@@ -18,7 +18,7 @@ function initializer(context: FieldContext) {
         // todo 应该是也有可能在触发的，可能还是需要新加一个变量
         _value = v;
       } else {
-        classComponentUpdater.enqueueSetState(this, name, v);
+        classComponentUpdater.enqueueSetState(instance, name, v);
       }
       return true;
     },
