@@ -1,26 +1,12 @@
 import {Context, Decorator, KindClass, KindField, Target,} from "../decorator/export.ts";
-import {addClassMetadata, addFieldMetadata, getClsAnnotation,} from "../ioc-container/metadata-runtime-config.ts";
+import {addClassMetadata, addFieldMetadata, getClsMetadata,} from "../ioc-container/metadata-runtime-config.ts";
 import {MetadataClass} from "../decorator/metadata.ts";
 import {FieldContext} from "../decorator/decorator-context.ts";
-import {TargetType} from "./target.ts";
 import {addDefinition} from "../ioc-container/bean-factory.ts";
 import {Component} from "./component.ts";
 import type {BeanName} from "./component.ts";
 import {exec, apply} from "../_test_helper/decorator.ts";
 import {lowercaseFirstLetter} from "../share/util.ts";
-
-function assetsTarget(Metadata: MetadataClass, context: Context) {
-  const target = <Target>getClsAnnotation(Metadata, Target);
-  if (!target) {
-    if (__DEV__) {
-      console.warn(`${Metadata}需要添加target来确定装饰范围!!`);
-    }
-    return;
-  }
-  if (!target.value.includes(context.kind as TargetType)) {
-    throw new Error(`${Metadata.name}只能装饰${target.value}`);
-  }
-}
 
 /**
  * 适用于装饰器不装饰自己元数据类的场景

@@ -97,7 +97,7 @@ function getFields(Cls: Class<any>, MetadataCls: Class<any>) {
  * 例如Component注解有没有配置Scope注解
  * 因为注解B可能是注解A的注解的注解配置，所以需要递归查找
  */
-function getClsAnnotation(Cls: Class<any>, MetadataCls: Class<Metadata>): Metadata | null {
+function getClsMetadata(Cls: Class<any>, MetadataCls: Class<Metadata>): Metadata | null {
   const configs = metadataForBizClass.get(Cls);
   if (!configs) {
     throw new Error(`未注册的组件：${Cls}`);
@@ -109,7 +109,7 @@ function getClsAnnotation(Cls: Class<any>, MetadataCls: Class<Metadata>): Metada
         return config;
       }
       // 找到config对应的注解定义，看上面是否有AnnoCls
-      // const find = getClsAnnotation(config.constructor, MetadataCls);
+      // const find = getClsMetadata(config.constructor, MetadataCls);
       // if (find) {
       //   return find;
       // }
@@ -159,7 +159,7 @@ function getAllMetadata() {
 export {
   addClassMetadata,
   addFieldMetadata,
-  getClsAnnotation,
+  getClsMetadata,
   getFields,
   clear,
   getMetadata,

@@ -12,7 +12,7 @@ export {
   getDefinition,
   addClassMetadata,
   addFieldMetadata,
-  getClsAnnotation,
+  getClsMetadata,
   getFields,
   IocComponent,
 } from "./ioc-container/export.ts";

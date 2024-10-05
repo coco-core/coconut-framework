@@ -7,7 +7,7 @@ export {
   TargetType,
   addClassMetadata,
   addFieldMetadata,
-  getClsAnnotation,
+  getClsMetadata,
   genDecorator,
 } from 'coco-ioc-container';
 export {
