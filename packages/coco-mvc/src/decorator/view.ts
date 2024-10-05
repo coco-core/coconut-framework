@@ -1,21 +1,12 @@
 /**
  * 视图层注解
  */
-import type {ClassContext} from "coco-ioc-container";
-import {addClassMetadata, component, scope, Scope} from "coco-ioc-container";
+import {ClassContext, Metadata, genDecorator, component} from "coco-ioc-container";
+import scope, { Scope } from "./scope.ts";
+
 
 @scope(Scope.Type.Prototype)
 @component()
-export class View{}
+export class View extends Metadata{}
 
-// decorator
-export default function view(id?: string) {
-  return function (value, {kind}: ClassContext) {
-    if (kind === 'class') {
-      addClassMetadata(value, View, id ?? value.prototype.constructor.name);
-    } else {
-      throw new Error(`${String(View)}只能装饰类`);
-    }
-    return value;
-  }
-}
+export default genDecorator<string | void, ClassContext>(View);

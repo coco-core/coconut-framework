@@ -6,7 +6,7 @@ import Metadata from "./metadata";
 import {ClassContext, genDecorator} from "./export.ts";
 import target, {Target} from "../decorator/target.ts";
 
-export type BeanName = string | undefined
+export type BeanName = string | void
 
 @target([Target.Type.Class])
 export class Component extends Metadata{}
