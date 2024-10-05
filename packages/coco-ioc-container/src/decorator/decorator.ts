@@ -8,37 +8,34 @@ import {Component} from "./component.ts";
 import {apply, exec} from "../_test_helper/decorator.ts";
 import {lowercaseFirstLetter} from "../share/util.ts";
 
-/**
- * 适用于装饰器不装饰自己元数据类，且useParams是必填的场景
- * @param metadataCls
- */
-function genDecorator<UserParam, C extends Context>(metadataCls: MetadataClass):
-  (userParam: UserParam) => Decorator;
-/**
- * 适用于装饰器不装饰自己元数据类，且useParams是可选的场景
- * @param metadataCls
- * @param optional
- */
-function genDecorator<UserParam, C extends Context>(metadataCls: MetadataClass, optional: true):
-  (userParam?: UserParam) => Decorator;
-/**
- * 适用于装饰器装饰自己元数据类，且useParams是必填的场景
- * @param metadataClsName 元信息类的名字，具体元数据类在装饰器装饰自己的时候设置
- */
-function genDecorator<UserParam, C extends Context>(metadataClsName: string):
-  // 在装饰自己的时候需要置第二个参数为true
-  (userParam: UserParam, decorateSelf?: true) => Decorator
-/**
- * 适用于装饰器装饰自己元数据类，且useParams是可选的的场景
- * @param metadataClsName 元信息类的名字，具体元数据类在装饰器装饰自己的时候设置
- * @param optional
- */
-function genDecorator<UserParam, C extends Context>(metadataClsName: string, optional: true):
-// 在装饰自己的时候需要置第二个参数为true
-  (userParam?: UserParam, decorateSelf?: true) => Decorator
+type Initializer = (ctx: Context) => void;
+interface Option {
+  optional?: true,
+  initializer?: Initializer;
+}
+// 适用于装饰器不装饰自己元数据类，且useParams是必填的场景
+function genDecorator<UserParam, C extends Context>(
+  metadataCls: MetadataClass,
+  option?: { initializer?: Initializer}
+): (userParam: UserParam) => Decorator;
+// 适用于装饰器不装饰自己元数据类，且useParams是可选的场景
+function genDecorator<UserParam, C extends Context>(
+  metadataCls: MetadataClass,
+  option: { optional: true, initializer?: Initializer }
+): (userParam?: UserParam) => Decorator;
+// 适用于装饰器装饰自己元数据类，且useParams是必填的场景
+function genDecorator<UserParam, C extends Context>(
+  metadataClsName: string,
+  option?: { initializer?: Initializer}
+): (userParam: UserParam, decorateSelf?: true) => Decorator
+// 适用于装饰器装饰自己元数据类，且useParams是可选的的场景
+function genDecorator<UserParam, C extends Context>(
+  metadataClsName: string,
+  option: { optional: true, initializer?: Initializer }
+): (userParam?: UserParam, decorateSelf?: true) => Decorator
 function genDecorator<UserParam, C extends Context>(
   metadataClsOrName: MetadataClass | string,
-  optional?: true
+  { initializer }: Option = {}
 ): (userParam: UserParam, decorateSelf?: true) => Decorator {
   const decoratorName = typeof metadataClsOrName === 'string'
     ? metadataClsOrName
@@ -78,6 +75,9 @@ function genDecorator<UserParam, C extends Context>(
             break;
           default:
             return;
+        }
+        if (initializer) {
+          initializer.call(this, context);
         }
       })
       return undefined;

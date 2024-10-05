@@ -10,4 +10,4 @@ import scope, { Scope } from "./scope.ts";
 @component()
 export class View extends Metadata{}
 
-export default genDecorator<string, ClassContext>(View, true);
+export default genDecorator<string, ClassContext>(View, { optional: true });

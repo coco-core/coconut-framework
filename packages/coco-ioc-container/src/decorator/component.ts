@@ -11,4 +11,4 @@ export type BeanName = string
 @target([Target.Type.Class])
 export class Component extends Metadata{}
 
-export default genDecorator<BeanName, ClassContext>(Component, true)
+export default genDecorator<BeanName, ClassContext>(Component,  { optional: true })
