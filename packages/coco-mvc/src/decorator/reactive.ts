@@ -1,3 +1,4 @@
+// @ts-ignore todo fix it
 import { classComponentUpdater, isRenderPhase } from 'coconut-reconciler';
 import {Metadata, addFieldMetadata, target, Target, genDecorator, FieldContext} from "coco-ioc-container";
 
