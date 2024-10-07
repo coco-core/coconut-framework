@@ -1,6 +1,6 @@
 // @ts-ignore todo fix it
 import { classComponentUpdater, isRenderPhase } from 'coconut-reconciler';
-import {Metadata, addFieldMetadata, target, Target, genDecorator, FieldContext} from "coco-ioc-container";
+import {Metadata, target, Target, genDecorator, FieldContext} from "coco-ioc-container";
 
 @target([Target.Type.Field])
 export class Reactive extends Metadata{}

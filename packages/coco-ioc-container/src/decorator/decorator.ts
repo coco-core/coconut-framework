@@ -1,5 +1,9 @@
 import {Context, Decorator, KindClass, KindField, KindMethod, MethodContext,} from "../decorator/export.ts";
-import {addClassMetadata, addFieldMetadata, getClsMetadata,} from "../ioc-container/metadata-runtime-config.ts";
+import {
+  associateClassMetadata,
+  associateFieldMetadata,
+  getClsMetadata,
+} from "../ioc-container/metadata-runtime-config.ts";
 import {MetadataClass} from "./metadata.ts";
 import {FieldContext} from "./decorator-context.ts";
 import {addDefinition} from "../ioc-container/bean-factory.ts";
@@ -58,7 +62,9 @@ function genDecorator<UserParam, C extends Context>(
   let metadataCls = typeof metadataClsOrName !== 'string'
     ? metadataClsOrName
     : null;
-
+  if (typeof metadataClsOrName !== 'string') {
+    associateClassMetadata(metadataClsOrName);
+  }
   function decorator(userParam: UserParam, decorateSelf?: true) {
     if (__TEST__) {
       exec(decoratorName, userParam);
@@ -72,10 +78,10 @@ function genDecorator<UserParam, C extends Context>(
           if (decorateSelf) {
             if (metadataCls === null) {
               metadataCls = value;
-              addClassMetadata(value, value, userParam);
+              associateClassMetadata(value, value, userParam);
             }
           } else {
-            addClassMetadata(value, metadataCls, userParam);
+            associateClassMetadata(value, metadataCls, userParam);
           }
           if (isComponent(metadataCls)) {
             addDefinition(<BeanName>userParam ?? lowercaseFirstLetter(context.name), value);
@@ -87,10 +93,10 @@ function genDecorator<UserParam, C extends Context>(
       context.addInitializer(function () {
         switch (context.kind) {
           case KindField:
-            addFieldMetadata(this.constructor, (<FieldContext>context).name, metadataCls, userParam);
+            associateFieldMetadata(this.constructor, (<FieldContext>context).name, metadataCls, userParam);
             break;
           case KindMethod:
-            addFieldMetadata(this.constructor, (<MethodContext>context).name, metadataCls, userParam);
+            associateFieldMetadata(this.constructor, (<MethodContext>context).name, metadataCls, userParam);
             break;
           default:
             return;

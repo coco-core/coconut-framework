@@ -9,8 +9,8 @@ export {
 export {
   createBean,
   getDefinition,
-  addClassMetadata,
-  addFieldMetadata,
+  associateClassMetadata,
+  associateFieldMetadata,
   getClsMetadata,
   getFields,
   IocComponent,

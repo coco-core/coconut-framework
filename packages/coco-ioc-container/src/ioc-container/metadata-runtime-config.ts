@@ -33,7 +33,7 @@ function createMetadata(metadataCls: Class<Metadata>, args?: any): Metadata {
   return metadata;
 }
 
-function addClassMetadata(cls: Class<any>, MetadataCls: Class<Metadata>, args?: any) {
+function associateClassMetadata(cls: Class<any>, MetadataCls?: Class<Metadata>, args?: any) {
   let classMetadata: Metadata[];
   if (Object.getPrototypeOf(cls) === Metadata) {
     let config = metadataForMetadata.get(cls);
@@ -50,15 +50,17 @@ function addClassMetadata(cls: Class<any>, MetadataCls: Class<Metadata>, args?: 
     }
     classMetadata = config.classMetadata;
   }
-  if (__DEV__ && existSameMetadata(classMetadata, MetadataCls)) {
-    console.warn(`${cls}已经存在相同的注解【${MetadataCls}】，忽略`);
-    return
+  if (MetadataCls) {
+    if (__DEV__ && existSameMetadata(classMetadata, MetadataCls)) {
+      console.warn(`${cls}已经存在相同的注解【${MetadataCls}】，忽略`);
+      return
+    }
+    const metadata = createMetadata(MetadataCls, args);
+    classMetadata.push(metadata)
   }
-  const metadata = createMetadata(MetadataCls, args);
-  classMetadata.push(metadata)
 }
 
-function addFieldMetadata(
+function associateFieldMetadata(
   Cls: Class<any>,
   fieldName: FieldName,
   MetadataCls: Class<Metadata>,
@@ -106,9 +108,7 @@ function getClsMetadata(Cls: Class<any>, MetadataCls: Class<Metadata>): Metadata
       ? metadataForMetadata.get(Cls)
       : metadataForBizClass.get(Cls);
   if (!configs) {
-    // todo 只有被装饰的注解才会在这里，没有被装饰的注解会报错的，需要把全部注解都收集起来
-    // throw new Error(`未注册的组件：${Cls}`);
-    return null;
+    throw new Error(`未注册的组件：${Cls}`);
   }
   if (configs && configs.classMetadata.length) {
     for (const config of configs.classMetadata) {
@@ -165,8 +165,8 @@ function getAllMetadata() {
 }
 
 export {
-  addClassMetadata,
-  addFieldMetadata,
+  associateClassMetadata,
+  associateFieldMetadata,
   getClsMetadata,
   getFields,
   clear,
