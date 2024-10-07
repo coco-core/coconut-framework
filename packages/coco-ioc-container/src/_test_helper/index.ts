@@ -7,7 +7,7 @@ import {
 import {
   getMetadata,
   getAllMetadata,
-} from "../ioc-container/metadata-runtime-config.ts";
+} from "../ioc-container/metadata.ts";
 
 
 export {

@@ -3,7 +3,7 @@ import {
   associateClassMetadata,
   associateFieldMetadata,
   getClsMetadata,
-} from "../ioc-container/metadata-runtime-config.ts";
+} from "../ioc-container/metadata.ts";
 import {MetadataClass} from "./metadata.ts";
 import {FieldContext} from "./decorator-context.ts";
 import {addDefinition} from "../ioc-container/bean-factory.ts";
