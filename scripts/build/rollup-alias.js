@@ -2,6 +2,7 @@ const path = require("node:path");
 
 const packages = path.join(__dirname, '../../packages');
 // todo 和tsconfig.json.path放在一起维护
+const cocoMvc = path.join(packages, './coco-mvc/src/index.ts')
 const reconciler = path.join(packages, './coconut-reconciler/src/index.js')
 const web = path.join(packages, './coconut-web/src/index.js')
 const iocContainer = path.join(packages, './coco-ioc-container/src/index.js')
@@ -10,6 +11,7 @@ const shared = path.join(packages, './shared')
 const ReactFiberHostConfig = path.join(packages, './coconut-web/src/ReactDomHostConfig.js')
 
 const PACKAGE = {
+  COCO_MVC: 'coco-mvc',
   RECONCILER: 'coconut-reconciler',
   WEB: 'coconut-web',
   IOC_CONTAINER: 'coco-ioc-container',
@@ -18,6 +20,7 @@ const PACKAGE = {
 };
 
 const pathMap = {
+  [PACKAGE.COCO_MVC]: cocoMvc,
   [PACKAGE.RECONCILER]: reconciler,
   [PACKAGE.WEB]: web,
   [PACKAGE.IOC_CONTAINER]: iocContainer,

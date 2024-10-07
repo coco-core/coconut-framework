@@ -2,6 +2,7 @@ import { get as getInstance, set as setInstance } from 'shared/ReactInstanceMap.
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {scheduleUpdateOnFiber} from "./ReactFiberWorkLoop";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
+import {getBean} from "coco-mvc";
 
 const classComponentUpdater = {
   enqueueSetState(inst, field, payload, callback) {
@@ -25,9 +26,8 @@ function adoptClassInstance(workInProgress, instance) {
 }
 
 function constructClassInstance(workInProgress, ctor, props) {
-  // todo 从ioc容器中获取组件实例
-  const instance = null;
-  // todo 是放在这里还是coco-mvc呢？
+  const instance = getBean(ctor);
+  // todo 获取响应式field
   // const fields = getFields(ctor, null);
   // workInProgress.memoizedState = fields.reduce((prev, field) => {
   //   prev[field] = instance[field];

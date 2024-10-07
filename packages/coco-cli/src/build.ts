@@ -30,10 +30,15 @@ export default function build(projectPath: string) {
 }
 
 function appendExport(importStatements: string[]) {
+  // todo:11
+  const pre = `
+import { component } from "coco-mvc";
+`
+
   const append = `
 export function start() {}
   `
-  return importStatements.join('\n').concat(append)
+  return pre.concat(importStatements.join('\n')).concat(append)
 }
 
 export function clean(projectPath: string) {

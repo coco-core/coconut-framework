@@ -14,9 +14,7 @@ module.exports = {
     ]
   },
   moduleNameMapper: {
-    "coconut-web": "<rootDir>/packages/coconut-web/src/index.js",
-    "coconut-reconciler": "<rootDir>/packages/coconut-reconciler/src/index.js",
-    "ReactFiberHostConfig": "<rootDir>/packages/coconut-web/src/ReactDomHostConfig.js",
+    "coco-mvc": "<rootDir>/packages/coco-mvc/dist/coco-mvc.cjs.js"
   },
   setupFiles: ['<rootDir>/scripts/jest/setup.js'],
 };

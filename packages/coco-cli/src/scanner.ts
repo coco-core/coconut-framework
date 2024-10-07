@@ -50,10 +50,10 @@ export const scan = (paths: Paths) => {
       decorator: "@service",
     },
     {
-      type: "page",
-      folderPath: paths.pageFolder,
+      type: "view",
+      folderPath: paths.viewFolder,
       fileExt: '.jsx',
-      decorator: "@component",
+      decorator: "@view",
     },
   ].reduce((prev, curr) => {
     prev.push(...scanFolder(curr.folderPath, curr.fileExt, curr.decorator));

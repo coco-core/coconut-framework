@@ -19,6 +19,7 @@ module.exports.rollupTargets = [
       format: 'cjs',
     },
     alias: [
+      PACKAGE.COCO_MVC,
       PACKAGE.RECONCILER,
       PACKAGE.WEB,
       PACKAGE.SHARED,

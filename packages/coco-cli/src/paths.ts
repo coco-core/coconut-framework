@@ -15,8 +15,8 @@ class Paths {
     return path.join(this.srcFolder, '.coco');
   }
 
-  get pageFolder() {
-    return path.join(this.srcFolder, './page');
+  get viewFolder() {
+    return path.join(this.srcFolder, './view');
   }
 
   get controllerFolder() {

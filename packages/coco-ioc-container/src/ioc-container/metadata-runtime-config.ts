@@ -12,7 +12,10 @@ type MetadataSet = Array<{ metadata: Metadata; dependencies?: MetadataSet; }>
 // 元数据类的元数据
 const metadataForMetadata: Map<Class<Metadata>, { classMetadata: Metadata[] }> = new Map();
 // 业务类的元数据
-const metadataForBizClass: Map<Class<any>, { classMetadata: Metadata[], fieldMetadata: Map<FieldName, Metadata[]> }> = new Map();
+const metadataForBizClass: Map<Class<any>, {
+  classMetadata: Metadata[],
+  fieldMetadata: Map<FieldName, Metadata[]>
+}> = new Map();
 
 function existSameMetadata(exited: Metadata[], metadataCls: Class<Metadata>): boolean {
   return exited.some(i => (i instanceof metadataCls));
@@ -84,7 +87,7 @@ function getFields(Cls: Class<any>, MetadataCls: Class<any>) {
     return [];
   }
   const fields = []
-  for (const [key, value] of this.fieldMetadata.entries()) {
+  for (const [key, value] of def.fieldMetadata.entries()) {
     if (value.find(i => i instanceof MetadataCls)) {
       fields.push(key)
     }
@@ -98,9 +101,14 @@ function getFields(Cls: Class<any>, MetadataCls: Class<any>) {
  * 因为注解B可能是注解A的注解的注解配置，所以需要递归查找
  */
 function getClsMetadata(Cls: Class<any>, MetadataCls: Class<Metadata>): Metadata | null {
-  const configs = metadataForBizClass.get(Cls);
+  const configs =
+    Object.getPrototypeOf(Cls) === Metadata
+      ? metadataForMetadata.get(Cls)
+      : metadataForBizClass.get(Cls);
   if (!configs) {
-    throw new Error(`未注册的组件：${Cls}`);
+    // todo 只有被装饰的注解才会在这里，没有被装饰的注解会报错的，需要把全部注解都收集起来
+    // throw new Error(`未注册的组件：${Cls}`);
+    return null;
   }
   if (configs && configs.classMetadata.length) {
     for (const config of configs.classMetadata) {
