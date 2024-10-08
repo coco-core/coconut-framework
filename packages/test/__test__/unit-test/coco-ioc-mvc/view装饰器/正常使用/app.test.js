@@ -25,8 +25,6 @@ describe('decorator', () => {
   test('正常渲染一个组件', async () => {
     start();
     const container = render(Button)
-    await waitFor(() => {
-      expect(getByRole(container, 'button')).toBeTruthy();
-    })
+    expect(getByRole(container, 'button')).toBeTruthy();
   });
 })
