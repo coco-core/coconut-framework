@@ -25,6 +25,12 @@ describe('decorator', () => {
   test('正常渲染一个组件', async () => {
     start();
     const container = render(Button)
-    expect(getByRole(container, 'button')).toBeTruthy();
+    const button = getByRole(container, 'button')
+    expect(button).toBeTruthy();
+    expect(getByText(button, 'count:1')).toBeTruthy();
+    button.click();
+    await waitFor(() => {
+      expect(getByText(button, 'count:2')).toBeTruthy();
+    })
   });
 })

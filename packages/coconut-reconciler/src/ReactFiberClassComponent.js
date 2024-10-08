@@ -2,7 +2,7 @@ import { get as getInstance, set as setInstance } from 'shared/ReactInstanceMap.
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {scheduleUpdateOnFiber} from "./ReactFiberWorkLoop";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
-import {getBean} from "coco-mvc";
+import {getBean, getFields, Reactive} from "coco-mvc";
 
 const classComponentUpdater = {
   enqueueSetState(inst, field, payload, callback) {
@@ -27,12 +27,11 @@ function adoptClassInstance(workInProgress, instance) {
 
 function constructClassInstance(workInProgress, ctor, props) {
   const instance = getBean(ctor);
-  // todo 获取响应式field
-  // const fields = getFields(ctor, null);
-  // workInProgress.memoizedState = fields.reduce((prev, field) => {
-  //   prev[field] = instance[field];
-  //   return prev;
-  // }, {})
+  const fields = getFields(ctor, Reactive);
+  workInProgress.memoizedState = fields.reduce((prev, field) => {
+    prev[field] = instance[field];
+    return prev;
+  }, {})
   adoptClassInstance(workInProgress, instance);
 
   return instance;
@@ -61,10 +60,9 @@ function updateClassInstance(
   processUpdateQueue(workInProgress, newProps, instance);
   newState = workInProgress.memoizedState;
 
-  // todo
-  // for (const field of getFields(ctor, MetaKeyReactive)) {
-  //   instance[field] = newState[field]
-  // }
+  for (const field of getFields(ctor, Reactive)) {
+    instance[field] = newState[field]
+  }
 
   return true;
 }

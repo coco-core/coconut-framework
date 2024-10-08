@@ -30,7 +30,7 @@ function finishClassComponent(
   const instance = workInProgress.stateNode;
   const fields = getFields(workInProgress.type, Render);
   const render = instance[fields[0]];
-  const nextChildren = render();
+  const nextChildren = render.call(instance);
   reconcileChildren(current, workInProgress, nextChildren);
 
   return workInProgress.child;
