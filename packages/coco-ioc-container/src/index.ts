@@ -13,7 +13,6 @@ export {
   associateFieldMetadata,
   getClsMetadata,
   getFields,
-  IocComponent,
 } from "./ioc-container/export.ts";
 
 export type {
