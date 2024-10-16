@@ -10,4 +10,14 @@ import scope, { Scope } from "./scope.ts";
 @component()
 export class View extends Metadata{}
 
-export default genDecorator<string, ClassContext>(View, { optional: true });
+function postConstructor() {
+  const fns = Object.getOwnPropertyNames(this.constructor.prototype);
+  for (const fn of fns) {
+    if (fn === 'constructor') {
+      continue;
+    }
+    this[fn] = this[fn].bind(this);
+  }
+}
+
+export default genDecorator<string, ClassContext>(View, { optional: true, postConstructor });

@@ -6,7 +6,7 @@ class Button {
   @reactive()
   count = 1;
 
-  onClick = () => {
+  onClick() {
     this.count = 2;
   }
 

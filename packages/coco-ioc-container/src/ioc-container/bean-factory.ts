@@ -1,5 +1,5 @@
-import type { Class } from './export'
-import BeanDefinition from "./bean-definition.ts";
+import type {Class} from './export'
+import BeanDefinition, {doCreateBean, PostConstruct} from "./bean-definition.ts";
 
 const nameDefinitionMap: Map<string, BeanDefinition<any>> = new Map();
 const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
@@ -17,8 +17,24 @@ function addDefinition(name: string, cls: Class<any>) {
   const beanDefinition = new BeanDefinition();
   beanDefinition.name = name;
   beanDefinition.cls = cls;
+  beanDefinition.postConstruct = [];
   nameDefinitionMap.set(name, beanDefinition);
   clsDefinitionMap.set(cls, beanDefinition);
+}
+
+function addPostConstructor(cls: Class<any>, postConstructor: PostConstruct) {
+  const definition = clsDefinitionMap.get(cls);
+  if (!definition) {
+    if(__DEV__) {
+      throw new Error("没有对应的cls")
+    }
+  }
+  if (definition.postConstruct.find(i => i.fn === postConstructor.fn)) {
+    if(__DEV__) {
+      throw new Error("重复的postConstruct")
+    }
+  }
+  definition.postConstruct.push(postConstructor);
 }
 
 function getDefinition(nameOrCls: Class<any> | string) {
@@ -39,12 +55,7 @@ function createBean<T>(nameOrCls: Class<T> | string): T {
   if (!definition) {
     throw new Error("未定义的bean");
   }
-  return newBean(definition)
+  return doCreateBean(definition)
 }
 
-function newBean(beanDefinition: BeanDefinition<any>) {
-  const cls = beanDefinition.cls
-  return new cls();
-}
-
-export { createBean, addDefinition, getDefinition }
+export {createBean, addDefinition, addPostConstructor, getDefinition}

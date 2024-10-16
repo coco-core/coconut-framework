@@ -6,12 +6,19 @@ import {
 } from "../ioc-container/metadata.ts";
 import {MetadataClass} from "./metadata.ts";
 import {FieldContext} from "./decorator-context.ts";
-import {addDefinition} from "../ioc-container/bean-factory.ts";
+import {addDefinition, addPostConstructor} from "../ioc-container/bean-factory.ts";
 import type {BeanName} from "./component.ts";
 import {Component} from "./component.ts";
 import {apply, exec} from "../_test_helper/decorator.ts";
 import {lowercaseFirstLetter} from "../share/util.ts";
 import {Class} from "../ioc-container/export.ts";
+import {
+  ClassPostConstructFn,
+  genClassPostConstruct,
+  genFieldPostConstruct,
+  PostConstruct,
+  PostConstructFn
+} from "../ioc-container/bean-definition.ts";
 
 function isComponent(cls: Class<any>) {
   if (Component) {
@@ -25,36 +32,34 @@ function isComponent(cls: Class<any>) {
   }
 }
 
-type Initializer = (instance: any, ctx: Context) => void;
-
 interface Option {
   optional?: true,
-  initializer?: Initializer;
+  postConstructor?: PostConstructFn;
 }
 
 // 适用于装饰器不装饰自己元数据类，且useParams是必填的场景
 function genDecorator<UserParam, C extends Context>(
   metadataCls: MetadataClass,
-  option?: { initializer?: Initializer }
+  option?: { postConstructor?: PostConstructFn }
 ): (userParam: UserParam) => Decorator;
 // 适用于装饰器不装饰自己元数据类，且useParams是可选的场景
 function genDecorator<UserParam, C extends Context>(
   metadataCls: MetadataClass,
-  option: { optional: true, initializer?: Initializer }
+  option: { optional: true, postConstructor?: PostConstructFn }
 ): (userParam?: UserParam) => Decorator;
 // 适用于装饰器装饰自己元数据类，且useParams是必填的场景
 function genDecorator<UserParam, C extends Context>(
   metadataClsName: string,
-  option?: { initializer?: Initializer }
+  option?: { postConstructor?: PostConstructFn }
 ): (userParam: UserParam, decorateSelf?: true) => Decorator
 // 适用于装饰器装饰自己元数据类，且useParams是可选的的场景
 function genDecorator<UserParam, C extends Context>(
   metadataClsName: string,
-  option: { optional: true, initializer?: Initializer }
+  option: { optional: true, postConstructor?: PostConstructFn }
 ): (userParam?: UserParam, decorateSelf?: true) => Decorator
 function genDecorator<UserParam, C extends Context>(
   metadataClsOrName: MetadataClass | string,
-  {initializer}: Option = {}
+  {postConstructor}: Option = {}
 ): (userParam: UserParam, decorateSelf?: true) => Decorator {
   const decoratorName = typeof metadataClsOrName === 'string'
     ? metadataClsOrName
@@ -85,6 +90,9 @@ function genDecorator<UserParam, C extends Context>(
           }
           if (isComponent(metadataCls)) {
             addDefinition(<BeanName>userParam ?? lowercaseFirstLetter(context.name), value);
+            if (postConstructor) {
+              addPostConstructor(value, genClassPostConstruct(postConstructor as ClassPostConstructFn))
+            }
           }
           break;
         default:
@@ -98,11 +106,14 @@ function genDecorator<UserParam, C extends Context>(
           case KindMethod:
             associateFieldMetadata(this.constructor, (<MethodContext>context).name, metadataCls, userParam);
             break;
-          default:
-            return;
         }
-        if (initializer) {
-          initializer(this, context);
+        if (postConstructor) {
+          switch (context.kind) {
+            case KindField:
+              // todo 控制只能注册一次
+              addPostConstructor(this.constructor, genFieldPostConstruct(postConstructor, context.name));
+              break;
+          }
         }
       })
       return undefined;
