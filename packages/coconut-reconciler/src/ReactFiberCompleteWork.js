@@ -45,6 +45,10 @@ function appendAllChildren(parent, workInProgress) {
   while (node !== null) {
     if (node.tag === HostComponent || node.tag === HostText) {
       parent.appendChild(node.stateNode)
+    } else if (node.child !== null) {
+      node.child.return = node;
+      node = node.child;
+      continue;
     }
     if (node === workInProgress) {
       return;
