@@ -14,7 +14,7 @@ const classComponentUpdater = {
     if (root !== null) {
       scheduleUpdateOnFiber(root, fiber);
     }
-    console.warn("todo 这里先用同步刷新，后面再添加调度器")
+    // todo 这里先用同步刷新，后面再添加调度器
     flushSyncCallbacks();
   }
 }
