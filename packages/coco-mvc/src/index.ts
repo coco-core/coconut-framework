@@ -15,8 +15,6 @@ export {
 export {
   reactive,
   Reactive,
-  render,
-  Render,
   scope,
   Scope,
   view,

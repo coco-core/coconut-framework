@@ -4,7 +4,7 @@ import {constructClassInstance, mountClassInstance, updateClassInstance} from ".
 import {cloneUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {shouldSetTextContent} from "ReactFiberHostConfig";
 // todo reconciler最好不依赖coco-mvc，因为依赖的话，单元测试会很难做
-import { getFields, Render } from "coco-mvc"
+import { getFields, View } from "coco-mvc"
 
 export function reconcileChildren(
   current,
@@ -28,7 +28,7 @@ function finishClassComponent(
     return null;
   }
   const instance = workInProgress.stateNode;
-  const fields = getFields(workInProgress.type, Render);
+  const fields = getFields(workInProgress.type, View);
   const render = instance[fields[0]];
   const nextChildren = render.call(instance);
   reconcileChildren(current, workInProgress, nextChildren);

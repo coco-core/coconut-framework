@@ -1,10 +1,10 @@
-import { view, render, reactive } from 'coco-mvc';
+import { view } from 'coco-mvc';
 import Button from "./Button";
 
 @view()
 class App {
 
-  @render()
+  @view()
   fn () {
     return <h1>
       <Button />

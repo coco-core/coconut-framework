@@ -5,7 +5,7 @@ import {ClassContext, Metadata, genDecorator, component, target, Target} from "c
 import scope, { Scope } from "./scope.ts";
 
 
-@target([Target.Type.Class])
+@target([Target.Type.Class, Target.Type.Field, Target.Type.Method])
 @scope(Scope.Type.Prototype)
 @component()
 export class View extends Metadata{}
