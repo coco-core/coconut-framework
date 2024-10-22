@@ -3,7 +3,16 @@ import {ClassComponent, HostComponent, HostRoot, HostText} from "./ReactWorkTags
 import {constructClassInstance, mountClassInstance, updateClassInstance} from "./ReactFiberClassComponent";
 import {cloneUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {shouldSetTextContent} from "ReactFiberHostConfig";
-// todo reconciler最好不依赖coco-mvc，因为依赖的话，单元测试会很难做
+/**
+ *todo Circular dependency:
+ * packages/coco-mvc/src/index.ts ->
+ * packages/coconut-web/src/index.js ->
+ * packages/coconut-reconciler/src/index.js ->
+ * packages/coconut-reconciler/src/ReactFiberReconciler.js ->
+ * packages/coconut-reconciler/src/ReactFiberWorkLoop.js ->
+ * packages/coconut-reconciler/src/ReactFiberBeginWork.js ->
+ * packages/coco-mvc/src/index.ts
+ */
 import { getFields, View } from "coco-mvc"
 
 export function reconcileChildren(

@@ -1,6 +1,6 @@
-import { KindClass, KindField, KindMethod } from './decorator-context.ts';
-import {Metadata, Context} from "./export";
+import {Context, KindClass, KindField, KindMethod} from './decorator-context.ts';
 import genDecorator from './decorator.ts'
+import Metadata from "./metadata.ts";
 
 enum Type{
   Class = KindClass,

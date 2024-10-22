@@ -1,9 +1,8 @@
 /**
  * 注解的运行时配置
  */
-import {Metadata} from "../decorator/export";
-import type {Class} from './export'
 import {isPlainObject} from "../share/util.ts";
+import Metadata from "../decorator/metadata.ts";
 
 type FieldName = string | Symbol;
 

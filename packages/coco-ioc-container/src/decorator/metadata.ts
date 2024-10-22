@@ -1,7 +1,6 @@
 /**
  * 元信息基类
  */
-import {Class} from "../ioc-container/export.ts";
 export default abstract class Metadata {
   /**
    * value属性是元数据类默认保存的prop key

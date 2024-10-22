@@ -1,4 +1,3 @@
-import {Class} from "./export.ts";
 import {KindClass, KindField} from "../decorator/decorator-context.ts";
 
 export type ClassPostConstructFn = () => void;

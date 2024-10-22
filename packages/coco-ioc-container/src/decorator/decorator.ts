@@ -1,17 +1,23 @@
-import {Context, Decorator, KindClass, KindField, KindMethod, MethodContext,} from "../decorator/export.ts";
 import {
   associateClassMetadata,
   associateFieldMetadata,
   getClsMetadata,
 } from "../ioc-container/metadata.ts";
-import {MetadataClass} from "./metadata.ts";
-import {FieldContext} from "./decorator-context.ts";
+import type {MetadataClass} from "./metadata.ts";
+import {
+  Context,
+  Decorator,
+  FieldContext,
+  KindClass,
+  KindField,
+  KindMethod,
+} from "./decorator-context.ts";
+import type {MethodContext} from "./decorator-context.ts";
 import {addDefinition, addPostConstructor} from "../ioc-container/bean-factory.ts";
 import type {BeanName} from "./component.ts";
 import {Component} from "./component.ts";
 import {apply, exec} from "../_test_helper/decorator.ts";
 import {lowercaseFirstLetter} from "../share/util.ts";
-import {Class} from "../ioc-container/export.ts";
 import {
   ClassPostConstructFn,
   genClassPostConstruct,

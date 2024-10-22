@@ -1,11 +1,3 @@
-# 目录说明
-- coco-cli: 脚手架功能; 生成.coco文件夹
-- coco-mvc: 框架运行时
-- coco-reconciler: 和react-reconciler保持同步
-- coco-web: 和react-dom中的client保持同步
-- demo: mvp项目
-- shared: 和react-shared保持同步
-
 # todo
 [] 单元测试
 [] 让demo项目接近真实使用库的样子

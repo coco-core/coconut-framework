@@ -1,4 +1,3 @@
-import {Class} from "../ioc-container/export.ts";
 import {getMetadata, getAllMetadata} from "../ioc-container/metadata.ts";
 import Metadata from "../decorator/metadata.ts";
 import {isEqual} from "./is-equal.ts";

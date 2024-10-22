@@ -1,10 +1,11 @@
 /**
  * ioc组件
- * 只有ioc组件才能实例化，所以view等注解都需要继承Component类
+ * 只有ioc组件才能实例化，同时被component装饰的元数据对应的装饰器也可以被实例化
  */
 import Metadata from "./metadata";
-import {ClassContext, genDecorator} from "./export.ts";
-import target, {Target} from "../decorator/target.ts";
+import target, {Target} from "./target.ts";
+import genDecorator from "./decorator.ts";
+import {ClassContext} from "./decorator-context.ts";
 
 export type BeanName = string
 
