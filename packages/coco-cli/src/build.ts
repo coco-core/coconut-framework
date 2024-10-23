@@ -32,11 +32,13 @@ export default function build(projectPath: string) {
 function appendExport(importStatements: string[]) {
   // todo:11
   const pre = `
-import { component } from "coco-mvc";
+import { component, ApplicationContext } from "coco-mvc";
 `
 
   const append = `
-export function start() {}
+export function start() {
+  new ApplicationContext();
+}
   `
   return pre.concat(importStatements.join('\n')).concat(append)
 }

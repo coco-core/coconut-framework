@@ -11,6 +11,7 @@ export {
   genDecorator,
   getFields,
   Metadata,
+  ApplicationContext,
 } from 'coco-ioc-container';
 export {
   reactive,

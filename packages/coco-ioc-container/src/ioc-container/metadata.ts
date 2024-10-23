@@ -107,7 +107,10 @@ function getClsMetadata(Cls: Class<any>, MetadataCls: Class<Metadata>): Metadata
       ? metadataForMetadata.get(Cls)
       : metadataForBizClass.get(Cls);
   if (!configs) {
-    throw new Error(`未注册的组件：${Cls}`);
+    if (__TEST__) {
+      console.error(`未注册的组件：`, Cls, Object.getPrototypeOf(Cls), Metadata, metadataForMetadata, metadataForBizClass)
+    }
+    return null
   }
   if (configs && configs.classMetadata.length) {
     for (const config of configs.classMetadata) {

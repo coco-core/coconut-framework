@@ -1,9 +1,9 @@
 import {
   associateClassMetadata,
   associateFieldMetadata,
-  getClsMetadata,
 } from "../ioc-container/metadata.ts";
 import type {MetadataClass} from "./metadata.ts";
+import {tempAddClsPostConstruct} from "../ioc-container/application-context-start-helper.ts";
 import {
   Context,
   Decorator,
@@ -13,30 +13,14 @@ import {
   KindMethod,
 } from "./decorator-context.ts";
 import type {MethodContext} from "./decorator-context.ts";
-import {addDefinition, addPostConstructor} from "../ioc-container/bean-factory.ts";
+import {addPostConstructor} from "../ioc-container/bean-factory.ts";
 import type {BeanName} from "./component.ts";
-import {Component} from "./component.ts";
 import {apply, exec} from "../_test_helper/decorator.ts";
 import {lowercaseFirstLetter} from "../share/util.ts";
 import {
-  ClassPostConstructFn,
-  genClassPostConstruct,
   genFieldPostConstruct,
-  PostConstruct,
   PostConstructFn
 } from "../ioc-container/bean-definition.ts";
-
-function isComponent(cls: Class<any>) {
-  if (Component) {
-    /**
-     * todo:11 Component有可能未定义，例如定义Target的时候
-     * 需要配合coco-cli/src/build.ts appendExport函数一起修改
-      */
-    return (cls === Component) || getClsMetadata(cls, Component);
-  } else {
-    return false;
-  }
-}
 
 interface Option {
   optional?: true,
@@ -94,12 +78,7 @@ function genDecorator<UserParam, C extends Context>(
           } else {
             associateClassMetadata(value, metadataCls, userParam);
           }
-          if (isComponent(metadataCls)) {
-            addDefinition(<BeanName>userParam ?? lowercaseFirstLetter(context.name), value);
-            if (postConstructor) {
-              addPostConstructor(value, genClassPostConstruct(postConstructor as ClassPostConstructFn))
-            }
-          }
+          tempAddClsPostConstruct(value, <BeanName>userParam ?? lowercaseFirstLetter(context.name), postConstructor)
           break;
         default:
           break;

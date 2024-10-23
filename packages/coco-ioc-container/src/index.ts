@@ -13,16 +13,13 @@ export {
   associateFieldMetadata,
   getClsMetadata,
   getFields,
+  ApplicationContext,
 } from "./ioc-container/export.ts";
 
 export type {
   FieldContext,
   ClassContext,
 } from './decorator/export.ts'
-
-export type {
-  Class
-} from './ioc-container/export.ts'
 
 import * as testHelper from './_test_helper/index.ts'
 let _test_helper = testHelper

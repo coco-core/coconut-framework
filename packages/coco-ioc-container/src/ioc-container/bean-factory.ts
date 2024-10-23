@@ -1,5 +1,4 @@
-import type {Class} from './export'
-import BeanDefinition, {doCreateBean, PostConstruct} from "./bean-definition.ts";
+import BeanDefinition, {doCreateBean, PostConstruct, PostConstructFn} from "./bean-definition.ts";
 
 const nameDefinitionMap: Map<string, BeanDefinition<any>> = new Map();
 const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
