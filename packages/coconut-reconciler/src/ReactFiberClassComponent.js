@@ -1,8 +1,9 @@
 import { get as getInstance, set as setInstance } from 'shared/ReactInstanceMap.js';
-import { getFields, MetaKeyReactive } from "shared/meta.js"
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {scheduleUpdateOnFiber} from "./ReactFiberWorkLoop";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
+import { getFields } from "coco-ioc-container"
+import {getBean, Reactive} from "coco-mvc";
 
 const classComponentUpdater = {
   enqueueSetState(inst, field, payload, callback) {
@@ -14,7 +15,7 @@ const classComponentUpdater = {
     if (root !== null) {
       scheduleUpdateOnFiber(root, fiber);
     }
-    console.warn("todo 这里先用同步刷新，后面再添加调度器")
+    // todo 这里先用同步刷新，后面再添加调度器
     flushSyncCallbacks();
   }
 }
@@ -26,9 +27,8 @@ function adoptClassInstance(workInProgress, instance) {
 }
 
 function constructClassInstance(workInProgress, ctor, props) {
-  let instance = new ctor(props);
-
-  const fields = getFields(ctor, MetaKeyReactive);
+  const instance = getBean(ctor);
+  const fields = getFields(ctor, Reactive);
   workInProgress.memoizedState = fields.reduce((prev, field) => {
     prev[field] = instance[field];
     return prev;
@@ -61,7 +61,7 @@ function updateClassInstance(
   processUpdateQueue(workInProgress, newProps, instance);
   newState = workInProgress.memoizedState;
 
-  for (const field of getFields(ctor, MetaKeyReactive)) {
+  for (const field of getFields(ctor, Reactive)) {
     instance[field] = newState[field]
   }
 

@@ -2,7 +2,7 @@
   "name": "coconut-web",
   "private": true,
   "version": "0.0.1",
-  "description": "",
+  "description": "和react-web包保持同步",
   "main": "index.js",
   "exports": {
     ".": "./dist/coconut-web.cjs.js"
@@ -11,15 +11,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c ./rollup.build.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "@rollup/plugin-alias": "^5.1.0",
-    "@rollup/plugin-commonjs": "^26.0.1",
-    "@rollup/plugin-node-resolve": "^15.2.3"
-  }
+  "license": "MIT"
 }

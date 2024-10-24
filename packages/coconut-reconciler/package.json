@@ -2,20 +2,15 @@
   "name": "coconut-reconciler",
   "private": true,
   "version": "0.0.1",
-  "description": "基于react调和算法，适配coconut的dsl",
+  "description": "和react-reconciler包保持同步，并适配coco-mvc的特性。",
   "main": "index.js",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c ./rollup.build.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "@rollup/plugin-alias": "^5.1.0",
-    "rollup": "^4.12.0"
-  }
+  "license": "MIT"
 }

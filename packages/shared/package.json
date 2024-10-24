@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "description": "和react/packages/shared保持同步",
+  "name": "shared",
+  "version": "0.0.0"
+}

@@ -3,7 +3,8 @@ import {ClassComponent, HostComponent, HostRoot, HostText} from "./ReactWorkTags
 import {constructClassInstance, mountClassInstance, updateClassInstance} from "./ReactFiberClassComponent";
 import {cloneUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {shouldSetTextContent} from "ReactFiberHostConfig";
-import { getFields, MetaKeyView } from "shared/meta.js"
+import {getFields} from "coco-ioc-container"
+import { View } from "coco-mvc-decorator/view"
 
 export function reconcileChildren(
   current,
@@ -27,9 +28,9 @@ function finishClassComponent(
     return null;
   }
   const instance = workInProgress.stateNode;
-  const fields = getFields(workInProgress.type, MetaKeyView);
+  const fields = getFields(workInProgress.type, View);
   const render = instance[fields[0]];
-  const nextChildren = render();
+  const nextChildren = render.call(instance);
   reconcileChildren(current, workInProgress, nextChildren);
 
   return workInProgress.child;

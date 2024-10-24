@@ -1,0 +1,21 @@
+{
+  "name": "@cocofw/cli",
+  "version": "0.0.1-demo1",
+  "main": "dist/index.js",
+  "bin": {
+    "coco": "bin/coco.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "webpack": "^5.90.3"
+  }
+}

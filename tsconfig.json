@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "coconut-web": ["packages/coconut-web/src/index.js"],
+      "coconut-reconciler": ["packages/coconut-reconciler/src/index.js"],
+      "shared/*": ["packages/shared/*"]
+    },
+    "typeRoots": [
+      "types",
+    ]
+  }
+}
