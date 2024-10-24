@@ -2,7 +2,8 @@ import { get as getInstance, set as setInstance } from 'shared/ReactInstanceMap.
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {scheduleUpdateOnFiber} from "./ReactFiberWorkLoop";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
-import {getBean, getFields, Reactive} from "coco-mvc";
+import { getFields } from "coco-ioc-container"
+import {getBean, Reactive} from "coco-mvc";
 
 const classComponentUpdater = {
   enqueueSetState(inst, field, payload, callback) {
