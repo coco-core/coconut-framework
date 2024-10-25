@@ -3,7 +3,7 @@ import {
   associateFieldMetadata,
 } from "../ioc-container/metadata.ts";
 import type {MetadataClass} from "./metadata.ts";
-import {tempAddClsPostConstruct} from "../ioc-container/application-context-start-helper.ts";
+import {callFieldPostConstruct, tempAddClsPostConstruct} from "./decorator-post-construct-helper.ts";
 import {
   Context,
   Decorator,
@@ -13,7 +13,6 @@ import {
   KindMethod,
 } from "./decorator-context.ts";
 import type {MethodContext} from "./decorator-context.ts";
-import {addPostConstructor} from "../ioc-container/bean-factory.ts";
 import type {BeanName} from "./component.ts";
 import {apply, exec} from "../_test_helper/decorator.ts";
 import {lowercaseFirstLetter} from "../share/util.ts";
@@ -96,7 +95,7 @@ function genDecorator<UserParam, C extends Context>(
           switch (context.kind) {
             case KindField:
               // todo 控制只能注册一次
-              addPostConstructor(this.constructor, genFieldPostConstruct(postConstructor, context.name));
+              callFieldPostConstruct(this.constructor, genFieldPostConstruct(postConstructor, context.name));
               break;
           }
         }

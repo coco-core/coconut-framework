@@ -1,8 +1,7 @@
 /**
  * 视图层注解
  */
-import {ClassContext, Metadata, genDecorator, component, target, Target} from "coco-ioc-container";
-import scope, { Scope } from "./scope.ts";
+import {ClassContext, Metadata, genDecorator, component, target, Target, scope, Scope} from "coco-ioc-container";
 
 
 @target([Target.Type.Class, Target.Type.Field, Target.Type.Method])

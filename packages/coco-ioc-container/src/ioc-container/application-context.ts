@@ -1,8 +1,7 @@
 import {addDefinition, addPostConstructor} from "./bean-factory.ts";
-import {BeanName, Component} from "../decorator/component.ts";
-import {lowercaseFirstLetter} from "../share/util.ts";
+import {Component} from "../decorator/component.ts";
 import {getAllMetadata, getClsMetadata} from "./metadata.ts";
-import { get, clear } from "./application-context-start-helper.ts"
+import { get, clear } from "../decorator/decorator-post-construct-helper.ts"
 import {ClassPostConstructFn, genClassPostConstruct} from "./bean-definition.ts";
 import type Metadata from "../decorator/metadata.ts";
 

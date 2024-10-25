@@ -2,12 +2,14 @@ export {
   Metadata,
   component,
   Component,
+  scope,
+  Scope,
   target,
   Target,
   genDecorator,
 } from './decorator/export.ts';
 export {
-  createBean,
+  getBean,
   getDefinition,
   associateClassMetadata,
   associateFieldMetadata,

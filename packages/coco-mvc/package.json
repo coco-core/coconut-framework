@@ -6,6 +6,10 @@
   "files": [
     "dist"
   ],
+  "keywords": [
+    "mvc",
+    "decorator"
+  ],
   "exports": {
     ".": "./dist/coco-mvc.cjs.js",
     "./jsx-runtime": "./dist/jsx-runtime.cjs.js"
