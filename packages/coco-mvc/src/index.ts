@@ -3,6 +3,8 @@ export { render as renderApp } from 'coconut-web';
 export {
   component,
   Component,
+  scope,
+  Scope,
   target,
   Target,
   associateClassMetadata,
@@ -10,18 +12,16 @@ export {
   getClsMetadata,
   genDecorator,
   getFields,
+  getBean,
   Metadata,
   ApplicationContext,
 } from 'coco-ioc-container';
 export {
   reactive,
   Reactive,
-  scope,
-  Scope,
   view,
   View,
 } from './decorator/index';
-export { default as getBean } from './ioc-component/bean-factory.ts'
 // todo 没有放在这里导出，会导致jest编译报错
 // TypeError: (0 , _jsxRuntime.jsx) is not a function
 //

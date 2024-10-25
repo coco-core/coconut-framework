@@ -1,4 +1,7 @@
 import BeanDefinition, {doCreateBean, PostConstruct, PostConstructFn} from "./bean-definition.ts";
+import {Scope} from "../decorator/scope.ts";
+import {getClsMetadata} from "./metadata.ts";
+import {registerFieldPostConstruct} from "../decorator/decorator-post-construct-helper.ts";
 
 const nameDefinitionMap: Map<string, BeanDefinition<any>> = new Map();
 const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
@@ -35,26 +38,33 @@ function addPostConstructor(cls: Class<any>, postConstructor: PostConstruct) {
   }
   definition.postConstruct.push(postConstructor);
 }
+registerFieldPostConstruct(addPostConstructor);
 
 function getDefinition(nameOrCls: Class<any> | string) {
   return typeof nameOrCls === 'string' ? nameDefinitionMap.get(nameOrCls) : clsDefinitionMap.get(nameOrCls);
 }
 
+// 单例实例集合
+const singletonInstances: Map<Class<any>, any> = new Map();
 /**
  * 创建一个ioc组件实例
  * 支持通过class获取；支持通过name获取；
  */
-function createBean<T>(cls: Class<T>): T;
-function createBean<T>(name: string): T;
-function createBean<T>(nameOrCls: Class<T> | string): T {
-  if (!nameOrCls) {
-    throw new Error("未定义的bean");
+function getBean<T>(cls: Class<T>): T;
+function getBean<T>(name: string): T;
+function getBean<T>(nameOrCls: Class<T> | string): T{
+  const definition = getDefinition(nameOrCls);
+  const cls = definition.cls;
+  const scope: Scope = <Scope>getClsMetadata(cls, Scope);
+  const isSingleton = scope?.value === Scope.Type.Singleton;
+  if (isSingleton && singletonInstances.has(cls)) {
+    return singletonInstances.get(cls);
   }
-  const definition = typeof nameOrCls === 'string' ? nameDefinitionMap.get(nameOrCls) : clsDefinitionMap.get(nameOrCls);
-  if (!definition) {
-    throw new Error("未定义的bean");
+  const bean = doCreateBean(definition)
+  if (isSingleton) {
+    singletonInstances.set(cls, bean);
   }
-  return doCreateBean(definition)
+  return bean;
 }
 
-export {createBean, addDefinition, addPostConstructor, getDefinition}
+export {getBean, addDefinition, addPostConstructor, getDefinition}
