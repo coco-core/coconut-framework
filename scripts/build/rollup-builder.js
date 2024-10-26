@@ -28,7 +28,12 @@ function genRollupConfig (inputConfig) {
       aliasPlugin({
         entries: genEntries(alias)
       })
-    ]
+    ],
+    onLog(level, log, handler) {
+      if (log.code === 'CIRCULAR_DEPENDENCY') {
+        throw new Error(log);
+      }
+    }
   }
 }
 
