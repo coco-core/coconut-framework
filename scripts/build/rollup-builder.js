@@ -1,5 +1,5 @@
 const rollup = require('rollup');
-const replace = require('rollup-plugin-replace');
+const replace = require('@rollup/plugin-replace');
 const babel = require('@rollup/plugin-babel');
 const typescript = require('@rollup/plugin-typescript');
 const aliasPlugin = require('@rollup/plugin-alias');
@@ -28,7 +28,12 @@ function genRollupConfig (inputConfig) {
       aliasPlugin({
         entries: genEntries(alias)
       })
-    ]
+    ],
+    onLog(level, log, handler) {
+      if (log.code === 'CIRCULAR_DEPENDENCY') {
+        throw new Error(log);
+      }
+    }
   }
 }
 

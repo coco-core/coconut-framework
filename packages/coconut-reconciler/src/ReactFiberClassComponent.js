@@ -1,6 +1,6 @@
 import { get as getInstance, set as setInstance } from 'shared/ReactInstanceMap.js';
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
-import {scheduleUpdateOnFiber} from "./ReactFiberWorkLoop";
+import {run} from "shared/scheduleUpdateOnFiber";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
 import {getFields, getBean} from "coco-ioc-container";
 import {Reactive} from "coco-mvc-decorator/reactive";
@@ -13,7 +13,7 @@ const classComponentUpdater = {
     update.payload = payload;
     const root = enqueueUpdate(fiber, update);
     if (root !== null) {
-      scheduleUpdateOnFiber(root, fiber);
+      run(root, fiber);
     }
     // todo 这里先用同步刷新，后面再添加调度器
     flushSyncCallbacks();

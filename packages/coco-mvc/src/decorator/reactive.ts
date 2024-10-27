@@ -1,6 +1,6 @@
 // @ts-ignore todo fix it
-import { classComponentUpdater, isRenderPhase } from 'coconut-reconciler';
-import {Metadata, target, Target, genDecorator, FieldContext} from "coco-ioc-container";
+import { get } from 'shared/decoratorPostConstructorFns';
+import {Metadata, target, Target, genDecorator} from "coco-ioc-container";
 
 @target([Target.Type.Field])
 export class Reactive extends Metadata{}
@@ -14,11 +14,11 @@ function postConstructor(name: string) {
       return _value;
     },
     set(v: any): boolean {
-      if (isRenderPhase()) {
+      if (get('isRenderPhase')?.()) {
         // todo 应该是也有可能在触发的，可能还是需要新加一个变量
         _value = v;
       } else {
-        classComponentUpdater.enqueueSetState(this, name, v);
+        get('enqueueSetState')?.(this, name, v);
       }
       return true;
     },

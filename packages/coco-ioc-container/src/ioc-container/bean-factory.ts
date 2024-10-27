@@ -38,6 +38,7 @@ function addPostConstructor(cls: Class<any>, postConstructor: PostConstruct) {
   }
   definition.postConstruct.push(postConstructor);
 }
+// todo:12 可以放在统一的地方
 registerFieldPostConstruct(addPostConstructor);
 
 function getDefinition(nameOrCls: Class<any> | string) {
