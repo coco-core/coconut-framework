@@ -94,6 +94,7 @@ function genDecorator<UserParam, C extends Context>(
         if (postConstructor) {
           switch (context.kind) {
             case KindField:
+            case KindMethod:
               // todo 控制只能注册一次
               callFieldPostConstruct(this.constructor, genFieldPostConstruct(postConstructor, context.name));
               break;

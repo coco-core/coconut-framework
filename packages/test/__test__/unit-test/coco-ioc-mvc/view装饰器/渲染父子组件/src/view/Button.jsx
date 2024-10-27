@@ -1,4 +1,4 @@
-import { view, reactive } from 'coco-mvc';
+import { view, reactive, bind } from 'coco-mvc';
 
 @view()
 class Button {
@@ -6,6 +6,7 @@ class Button {
   @reactive()
   count = 1;
 
+  @bind()
   onClick() {
     this.count = 2;
   }
