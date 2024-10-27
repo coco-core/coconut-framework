@@ -9,14 +9,4 @@ import {ClassContext, Metadata, genDecorator, component, target, Target, scope, 
 @component()
 export class View extends Metadata{}
 
-function postConstructor() {
-  const fns = Object.getOwnPropertyNames(this.constructor.prototype);
-  for (const fn of fns) {
-    if (fn === 'constructor') {
-      continue;
-    }
-    this[fn] = this[fn].bind(this);
-  }
-}
-
-export default genDecorator<string, ClassContext>(View, { optional: true, postConstructor });
+export default genDecorator<string, ClassContext>(View, { optional: true });

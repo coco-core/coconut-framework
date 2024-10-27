@@ -18,3 +18,10 @@ export function lowercaseFirstLetter(str: string) {
 export function isPlainObject(v: any) {
   return Object.prototype.toString.call(v) === '[object Object]';
 }
+
+/**
+ * 返回构造函数
+ */
+export function constructOf<T>(o: any): Class<T> {
+  return o.constructor;
+}

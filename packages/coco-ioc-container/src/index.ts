@@ -1,3 +1,8 @@
+import {register, NAME} from "shared/preventCircularDependency";
+import {addPostConstruct} from "./ioc-container/bean-factory.ts";
+
+register(NAME.addPostConstruct, addPostConstruct);
+
 export { default as Metadata } from "./decorator/metadata.ts";
 export { default as component, Component } from "./decorator/component.ts";
 export { default as scope, Scope } from "./decorator/scope.ts"
