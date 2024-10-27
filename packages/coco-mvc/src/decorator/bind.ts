@@ -6,8 +6,8 @@ import {Metadata, target, Target, genDecorator} from "coco-ioc-container";
 @target([Target.Type.Method])
 export class Bind extends Metadata{}
 
-function postConstructor(name: string) {
+function postConstruct(name: string) {
   this[name] = this[name].bind(this);
 }
 
-export default genDecorator(Bind, { postConstructor })
+export default genDecorator(Bind, { postConstruct })

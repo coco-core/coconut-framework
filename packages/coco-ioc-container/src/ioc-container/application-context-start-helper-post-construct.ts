@@ -7,7 +7,7 @@ export function tempAddClsPostConstruct(cls: Class<any>, name: string, fn: PostC
   if (!tempClsPostConstruct.has(cls)) {
     tempClsPostConstruct.set(cls, { name, fn });
   } else {
-    // 同一个装饰器装饰了不同的类，忽略
+    // 同一个装饰器装饰了不同的类，但fn是一样的，忽略
   }
 }
 
@@ -20,14 +20,14 @@ export function clear() {
 }
 
 // 作为decorator和bean-factory的共同底层，防止依赖循环
-let fieldPostConstruct: (cls: Class<any>, postConstructor: PostConstruct) => void;
-export function registerFieldPostConstruct(addPostConstructor: (cls: Class<any>, postConstructor: PostConstruct) => void) {
-  fieldPostConstruct = addPostConstructor;
+let fieldPostConstruct: (cls: Class<any>, postConstruct: PostConstruct) => void;
+export function registerFieldPostConstruct(addPostConstruct: (cls: Class<any>, postConstruct: PostConstruct) => void) {
+  fieldPostConstruct = addPostConstruct;
 }
 
-export function callFieldPostConstruct(cls: Class<any>, postConstructor: PostConstruct) {
+export function callFieldPostConstruct(cls: Class<any>, postConstruct: PostConstruct) {
   if (fieldPostConstruct) {
-    fieldPostConstruct(cls, postConstructor);
+    fieldPostConstruct(cls, postConstruct);
   } else if (__DEV__) {
     console.error("不应该走到这里")
   }

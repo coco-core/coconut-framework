@@ -35,7 +35,7 @@ export function genFieldPostConstruct(fn: FieldPostConstructFn, field: string): 
   return {kind: KindField, fn, field}
 }
 
-export function doCreateBean(beanDefinition: BeanDefinition<any>) {
+export function createBean(beanDefinition: BeanDefinition<any>) {
   const cls = beanDefinition.cls
   const bean = new cls();
   for (const pc of beanDefinition.postConstruct) {

@@ -1,7 +1,7 @@
-import BeanDefinition, {doCreateBean, PostConstruct, PostConstructFn} from "./bean-definition.ts";
+import BeanDefinition, {createBean, PostConstruct, PostConstructFn} from "./bean-definition.ts";
 import {Scope} from "../decorator/scope.ts";
 import {getClsMetadata} from "./metadata.ts";
-import {registerFieldPostConstruct} from "../decorator/decorator-post-construct-helper.ts";
+import {registerFieldPostConstruct} from "./application-context-start-helper-post-construct.ts";
 
 const nameDefinitionMap: Map<string, BeanDefinition<any>> = new Map();
 const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
@@ -24,22 +24,22 @@ function addDefinition(name: string, cls: Class<any>) {
   clsDefinitionMap.set(cls, beanDefinition);
 }
 
-function addPostConstructor(cls: Class<any>, postConstructor: PostConstruct) {
+function addPostConstruct(cls: Class<any>, postConstruct: PostConstruct) {
   const definition = clsDefinitionMap.get(cls);
   if (!definition) {
     if(__DEV__) {
       throw new Error("没有对应的cls")
     }
   }
-  if (definition.postConstruct.find(i => i.fn === postConstructor.fn)) {
+  if (definition.postConstruct.find(i => i.fn === postConstruct.fn)) {
     if(__DEV__) {
       throw new Error("重复的postConstruct")
     }
   }
-  definition.postConstruct.push(postConstructor);
+  definition.postConstruct.push(postConstruct);
 }
 // todo:12 可以放在统一的地方
-registerFieldPostConstruct(addPostConstructor);
+registerFieldPostConstruct(addPostConstruct);
 
 function getDefinition(nameOrCls: Class<any> | string) {
   return typeof nameOrCls === 'string' ? nameDefinitionMap.get(nameOrCls) : clsDefinitionMap.get(nameOrCls);
@@ -61,11 +61,11 @@ function getBean<T>(nameOrCls: Class<T> | string): T{
   if (isSingleton && singletonInstances.has(cls)) {
     return singletonInstances.get(cls);
   }
-  const bean = doCreateBean(definition)
+  const bean = createBean(definition)
   if (isSingleton) {
     singletonInstances.set(cls, bean);
   }
   return bean;
 }
 
-export {getBean, addDefinition, addPostConstructor, getDefinition}
+export {getBean, addDefinition, addPostConstruct, getDefinition}

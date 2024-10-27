@@ -5,7 +5,7 @@ import {Metadata, target, Target, genDecorator} from "coco-ioc-container";
 @target([Target.Type.Field])
 export class Reactive extends Metadata{}
 
-function postConstructor(name: string) {
+function postConstruct(name: string) {
   let _value: any = this[name];
   Object.defineProperty(this, name, {
     configurable: false,
@@ -25,4 +25,4 @@ function postConstructor(name: string) {
   });
 }
 
-export default genDecorator(Reactive, { postConstructor })
+export default genDecorator(Reactive, { postConstruct })
