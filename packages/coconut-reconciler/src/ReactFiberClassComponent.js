@@ -1,4 +1,3 @@
-import { get as getInstance, set as setInstance } from 'shared/ReactInstanceMap.js';
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {run} from "shared/scheduleUpdateOnFiber";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
@@ -7,7 +6,7 @@ import {Reactive} from "coco-mvc-decorator/reactive";
 
 const classComponentUpdater = {
   enqueueSetState(inst, field, payload, callback) {
-    const fiber = getInstance(inst)
+    const fiber = inst._reactInternals; // const fiber = getInstance(inst)
 
     const update = createUpdate(field);
     update.payload = payload;
@@ -23,7 +22,7 @@ const classComponentUpdater = {
 function adoptClassInstance(workInProgress, instance) {
   instance.updater = classComponentUpdater;
   workInProgress.stateNode = instance;
-  setInstance(instance, workInProgress);
+  instance._reactInternals = workInProgress; // setInstance(instance, workInProgress);
 }
 
 function constructClassInstance(workInProgress, ctor, props) {
