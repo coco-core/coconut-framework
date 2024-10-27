@@ -1,5 +1,5 @@
 const rollup = require('rollup');
-const replace = require('rollup-plugin-replace');
+const replace = require('@rollup/plugin-replace');
 const babel = require('@rollup/plugin-babel');
 const typescript = require('@rollup/plugin-typescript');
 const aliasPlugin = require('@rollup/plugin-alias');
