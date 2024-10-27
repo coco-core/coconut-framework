@@ -1,5 +1,5 @@
 // @ts-ignore todo fix it
-import { get } from 'shared/decoratorPostConstructorFns';
+import { get, NAME } from 'shared/preventCircularDependency';
 import {Metadata, target, Target, genDecorator} from "coco-ioc-container";
 
 @target([Target.Type.Field])
@@ -14,11 +14,11 @@ function postConstruct(name: string) {
       return _value;
     },
     set(v: any): boolean {
-      if (get('isRenderPhase')?.()) {
+      if (get(NAME.isRenderPhase)?.()) {
         // todo 应该是也有可能在触发的，可能还是需要新加一个变量
         _value = v;
       } else {
-        get('enqueueSetState')?.(this, name, v);
+        get(NAME.enqueueSetState)?.(this, name, v);
       }
       return true;
     },

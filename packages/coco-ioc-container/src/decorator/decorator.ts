@@ -3,7 +3,8 @@ import {
   associateFieldMetadata,
 } from "../ioc-container/metadata.ts";
 import type {MetadataClass} from "./metadata.ts";
-import {callFieldPostConstruct, tempAddClsPostConstruct} from "../ioc-container/application-context-start-helper-post-construct.ts";
+import {tempAddClsPostConstruct} from "../ioc-container/application-context-start-helper-post-construct.ts";
+import {get, NAME} from 'shared/preventCircularDependency';
 import {
   Context,
   Decorator,
@@ -96,7 +97,7 @@ function genDecorator<UserParam, C extends Context>(
             case KindField:
             case KindMethod:
               // todo 控制只能注册一次
-              callFieldPostConstruct(this.constructor, genFieldPostConstruct(postConstruct, context.name));
+              get(NAME.addPostConstruct)?.(this.constructor, genFieldPostConstruct(postConstruct, context.name));
               break;
           }
         }

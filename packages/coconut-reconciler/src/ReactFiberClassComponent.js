@@ -1,5 +1,5 @@
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
-import {run} from "shared/scheduleUpdateOnFiber";
+import {get, NAME} from "shared/preventCircularDependency";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
 import {getFields, getBean} from "coco-ioc-container";
 import {Reactive} from "coco-mvc-decorator/reactive";
@@ -12,7 +12,10 @@ const classComponentUpdater = {
     update.payload = payload;
     const root = enqueueUpdate(fiber, update);
     if (root !== null) {
-      run(root, fiber);
+      const scheduleUpdateOnFiber = get(NAME.scheduleUpdateOnFiber);
+      if (scheduleUpdateOnFiber) {
+        scheduleUpdateOnFiber(root, fiber);
+      }
     }
     // todo 这里先用同步刷新，后面再添加调度器
     flushSyncCallbacks();

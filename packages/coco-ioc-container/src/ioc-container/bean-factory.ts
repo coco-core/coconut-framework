@@ -1,7 +1,6 @@
 import BeanDefinition, {createBean, PostConstruct, PostConstructFn} from "./bean-definition.ts";
 import {Scope} from "../decorator/scope.ts";
 import {getClsMetadata} from "./metadata.ts";
-import {registerFieldPostConstruct} from "./application-context-start-helper-post-construct.ts";
 
 const nameDefinitionMap: Map<string, BeanDefinition<any>> = new Map();
 const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
@@ -38,8 +37,6 @@ function addPostConstruct(cls: Class<any>, postConstruct: PostConstruct) {
   }
   definition.postConstruct.push(postConstruct);
 }
-// todo:12 可以放在统一的地方
-registerFieldPostConstruct(addPostConstruct);
 
 function getDefinition(nameOrCls: Class<any> | string) {
   return typeof nameOrCls === 'string' ? nameDefinitionMap.get(nameOrCls) : clsDefinitionMap.get(nameOrCls);
