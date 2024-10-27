@@ -3,13 +3,13 @@ import { build } from "@cocofw/cli";
 import Space from "./src/component/Space";
 import {pkgPath, cocoIdxStr} from "../../../../helper/pkg-path";
 
-let start;
+let _ApplicationContext;
 describe('ioc-container', () => {
 
   beforeEach(async () => {
     build(pkgPath(__dirname));
-    const {start: _s} = await import(cocoIdxStr);
-    start = _s;
+    const { ApplicationContext } = await import(cocoIdxStr);
+    _ApplicationContext = ApplicationContext;
   })
 
   afterEach(async () => {
@@ -18,8 +18,8 @@ describe('ioc-container', () => {
   test('没有添加注解，则不能获取组件实例', async () => {
     let throwError = false;
     try {
-      start();
-      getBean(Space);
+      const context = new _ApplicationContext();
+      context.getBean(Space);
     } catch (e) {
       throwError = true;
     }

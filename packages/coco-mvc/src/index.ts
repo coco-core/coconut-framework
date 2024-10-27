@@ -12,7 +12,6 @@ export {
   getClsMetadata,
   genDecorator,
   getFields,
-  getBean,
   Metadata,
   ApplicationContext,
 } from 'coco-ioc-container';

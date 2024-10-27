@@ -3,14 +3,14 @@ import {build} from "@cocofw/cli";
 import Button from './src/component/Button';
 import {pkgPath, cocoIdxStr} from '../../../../helper/pkg-path'
 
-let start;
+let _ApplicationContext;
 let throwError;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const {start: _s} = await import(cocoIdxStr);
-      start = _s;
+      const { ApplicationContext } = await import(cocoIdxStr);
+      _ApplicationContext = ApplicationContext;
     } catch (e) {
       throwError = true;
     }
@@ -21,7 +21,7 @@ describe('decorator', () => {
   })
 
   test('组件类的元数据正确', async () => {
-    start();
+    const context = new _ApplicationContext();
     const asExpected = _test_helper.iocContainer.checkClassMetadataAsExpected(
       Button,
       [
@@ -33,7 +33,7 @@ describe('decorator', () => {
   });
 
   test('所有元数据的元数据配置都正确 ', async () => {
-    start();
+    const context = new _ApplicationContext();
     const target = _test_helper.iocContainer.checkClassMetadataAsExpected(
       Target,
       [{

@@ -1,4 +1,4 @@
-import {addDefinition, addPostConstruct} from "./bean-factory.ts";
+import {addDefinition, addPostConstruct, getBean} from "./bean-factory.ts";
 import {Component} from "../decorator/component.ts";
 import {getAllMetadata, getClsMetadata} from "./metadata.ts";
 import { get, clear } from "./application-context-start-helper-post-construct.ts"
@@ -11,6 +11,11 @@ class ApplicationContext {
 
   constructor() {
     this.initClassDefinitionPostConstruct();
+  }
+  public getBean<T>(cls: Class<T>): T;
+  public getBean<T>(name: string): T;
+  public getBean<T>(nameOrCls: Class<T> | string): T{
+    return getBean(nameOrCls);
   }
 
   private isComponent(metadata: Metadata[]) {

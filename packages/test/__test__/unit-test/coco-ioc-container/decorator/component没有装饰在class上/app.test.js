@@ -1,14 +1,14 @@
 import { build } from "@cocofw/cli";
 import {pkgPath, cocoIdxStr} from "../../../../helper/pkg-path";
 
-let start;
+let _ApplicationContext;
 let throwError;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const {start: _s} = await import(cocoIdxStr);
-      start = _s;
+      const { ApplicationContext } = await import(cocoIdxStr);
+      _ApplicationContext = ApplicationContext;
     } catch (e) {
       throwError = true;
     }

@@ -46,10 +46,8 @@ function getDefinition(nameOrCls: Class<any> | string) {
 const singletonInstances: Map<Class<any>, any> = new Map();
 /**
  * 创建一个ioc组件实例
- * 支持通过class获取；支持通过name获取；
+ * @param nameOrCls 通过class获取或通过name获取；
  */
-function getBean<T>(cls: Class<T>): T;
-function getBean<T>(name: string): T;
 function getBean<T>(nameOrCls: Class<T> | string): T{
   const definition = getDefinition(nameOrCls);
   const cls = definition.cls;
