@@ -1,4 +1,4 @@
-import {PostConstruct, PostConstructFn} from "../ioc-container/bean-definition.ts";
+import {PostConstructFn} from "../ioc-container/bean-definition.ts";
 
 // 临时保存类装饰器的postConstructFn函数的，在start的时候会挪到BeanDefinition的postConstruct中
 const tempClsPostConstruct: Map<Class<any>, { name: string, fn: PostConstructFn }> = new Map();
@@ -18,18 +18,3 @@ export function get() {
 export function clear() {
   tempClsPostConstruct.clear();
 }
-
-// 作为decorator和bean-factory的共同底层，防止依赖循环
-let fieldPostConstruct: (cls: Class<any>, postConstruct: PostConstruct) => void;
-export function registerFieldPostConstruct(addPostConstruct: (cls: Class<any>, postConstruct: PostConstruct) => void) {
-  fieldPostConstruct = addPostConstruct;
-}
-
-export function callFieldPostConstruct(cls: Class<any>, postConstruct: PostConstruct) {
-  if (fieldPostConstruct) {
-    fieldPostConstruct(cls, postConstruct);
-  } else if (__DEV__) {
-    console.error("不应该走到这里")
-  }
-}
-
