@@ -10,7 +10,7 @@ import {constructOf} from "../share/util.ts";
 class ApplicationContext {
 
   constructor() {
-    this.initClassPostConstruct();
+    this.initClassDefinitionPostConstruct();
   }
 
   private isComponent(metadata: Metadata[]) {
@@ -19,7 +19,11 @@ class ApplicationContext {
       return (Meta === Component) || getClsMetadata(Meta, Component);
     })
   }
-  private initClassPostConstruct() {
+
+  /**
+   * 类装饰对应的postConstruct已经收集到了，首先初始化beanDefinition中的PostConstruct里面去。
+   */
+  private initClassDefinitionPostConstruct() {
     const metadata = getAllMetadata()[1];
     for (const [cls, {name, fn}] of get().entries()) {
       if (metadata.has(cls) && this.isComponent(metadata.get(cls).classMetadata)) {
