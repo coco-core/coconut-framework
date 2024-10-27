@@ -4,6 +4,7 @@ import {getAllMetadata, getClsMetadata} from "./metadata.ts";
 import { get, clear } from "./application-context-start-helper-post-construct.ts"
 import {ClassPostConstructFn, genClassPostConstruct} from "./bean-definition.ts";
 import type Metadata from "../decorator/metadata.ts";
+import {constructOf} from "../share/util.ts";
 
 
 class ApplicationContext {
@@ -14,8 +15,7 @@ class ApplicationContext {
 
   private isComponent(metadata: Metadata[]) {
     return metadata.find(meta => {
-      // todo 获取构造函数能不能写得好看一点
-      const Meta = meta.constructor;
+      const Meta = constructOf<any>(meta);
       return (Meta === Component) || getClsMetadata(Meta, Component);
     })
   }
