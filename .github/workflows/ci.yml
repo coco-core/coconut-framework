@@ -2,8 +2,8 @@ name: CI
 
 on:
   push:
-    branches:
-      - '0.1.0'
+    tags:
+      - '^\d+\.\d+\..+$'
 
 jobs:
   build:

@@ -1,7 +1,7 @@
 /**
  * 构建.coco文件夹
  */
-import fs from 'fs';
+import fs from "fs";
 import fse from 'fs-extra';
 import path from 'path';
 import Paths from './paths';
