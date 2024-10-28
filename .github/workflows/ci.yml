@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - '^\d+\.\d+\..+$'
+      - '0.1.0'
 
 jobs:
   build:
