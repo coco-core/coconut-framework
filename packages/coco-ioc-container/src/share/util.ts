@@ -4,7 +4,7 @@
 export function lowercaseFirstLetter(str: string) {
   if (!str) {
     if (__DEV__ && typeof str !== 'string') {
-      throw new Error(`请传入字符串:[${str}]`)
+      throw new Error(`请传入字符串:[${str}]`);
     }
     return str;
   }

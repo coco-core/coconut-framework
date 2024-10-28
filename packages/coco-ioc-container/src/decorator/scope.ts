@@ -1,11 +1,11 @@
-import target, {Target} from "./target.ts";
-import Metadata from "./metadata.ts";
-import genDecorator from "./decorator.ts";
-import {ClassContext} from "./decorator-context.ts";
+import target, { Target } from './target.ts';
+import Metadata from './metadata.ts';
+import genDecorator from './decorator.ts';
+import { ClassContext } from './decorator-context.ts';
 
 enum Type {
   Singleton = 0,
-  Prototype = 1
+  Prototype = 1,
 }
 
 @target([Target.Type.Class])
@@ -15,4 +15,3 @@ export class Scope extends Metadata {
 }
 
 export default genDecorator<Type, ClassContext>(Scope);
-

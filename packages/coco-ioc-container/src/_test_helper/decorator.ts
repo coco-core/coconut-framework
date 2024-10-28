@@ -1,16 +1,15 @@
-import {getMetadata, getAllMetadata} from "../ioc-container/metadata.ts";
-import Metadata from "../decorator/metadata.ts";
-import {isEqual} from "./is-equal.ts";
+import { getMetadata, getAllMetadata } from '../ioc-container/metadata.ts';
+import Metadata from '../decorator/metadata.ts';
+import { isEqual } from './is-equal.ts';
 
 const order = [];
-function item (action: 'exec' | 'apply', name: string, params: any) {
+function item(action: 'exec' | 'apply', name: string, params: any) {
   return `[${action}][${name}][${params}]`;
 }
 
 export function reset() {
   order.length = 0;
 }
-
 
 export function exec(decoratorName: string, params: any) {
   order.push(item('exec', decoratorName, params));
@@ -28,14 +27,16 @@ export function get() {
  * 期望list的每一项都存在于order中，且每一项的前后位置和order是一样的
  * @param list
  */
-export function expectInOrder(list: {
-  type: 'exec' | 'apply',
-  name: string,
-  params: any
-}[]) {
-  const index = list.map(i => {
+export function expectInOrder(
+  list: {
+    type: 'exec' | 'apply';
+    name: string;
+    params: any;
+  }[]
+) {
+  const index = list.map((i) => {
     return order.indexOf(item(i.type, i.name, i.params));
-  })
+  });
 
   for (let i = 1; i < index.length; i++) {
     if (index[i] <= index[i - 1]) {
@@ -53,27 +54,29 @@ export function expectInOrder(list: {
 export function checkClassMetadataAsExpected(
   Clazz: Class<any>,
   expectedMetadataList: {
-    Metadata: Class<Metadata>,
-    fieldValues?: Record<string, any>,
+    Metadata: Class<Metadata>;
+    fieldValues?: Record<string, any>;
   }[]
 ) {
   if (!Clazz || expectedMetadataList.length === 0) {
     return false;
   }
-  const metadataList = getMetadata(Clazz)
+  const metadataList = getMetadata(Clazz);
   // 长度不等，元信息肯定不一致
   if (metadataList.length !== expectedMetadataList.length) {
     return false;
   }
-  const allExpected = Array.from(expectedMetadataList, _ => false);
+  const allExpected = Array.from(expectedMetadataList, (_) => false);
   for (const { metadata } of metadataList) {
-    const idx = expectedMetadataList.findIndex(i => i.Metadata === metadata.constructor);
+    const idx = expectedMetadataList.findIndex(
+      (i) => i.Metadata === metadata.constructor
+    );
     if (idx !== -1) {
       let isValueEqual = true;
       const fieldValues = expectedMetadataList[idx].fieldValues;
       if (fieldValues) {
         for (const key of Object.keys(fieldValues)) {
-          if (!isEqual(metadata[key],fieldValues[key])) {
+          if (!isEqual(metadata[key], fieldValues[key])) {
             isValueEqual = false;
             break;
           }
@@ -90,11 +93,11 @@ export function checkClassMetadataAsExpected(
 // 检查元数据的元数据是否正确
 export function checkMetadataForMetadataAsExpected(
   expectedList: {
-    metadataCls: Class<Metadata>,
+    metadataCls: Class<Metadata>;
     metaList: {
-      Metadata: Class<Metadata>,
-      fieldValues?: Record<string, any>,
-    }[]
+      Metadata: Class<Metadata>;
+      fieldValues?: Record<string, any>;
+    }[];
   }[]
 ) {
   const [metadataForMetadata] = getAllMetadata();
@@ -102,7 +105,9 @@ export function checkMetadataForMetadataAsExpected(
     return false;
   }
   for (const metadata of expectedList) {
-    if (!checkClassMetadataAsExpected(metadata.metadataCls, metadata.metaList)) {
+    if (
+      !checkClassMetadataAsExpected(metadata.metadataCls, metadata.metaList)
+    ) {
       return false;
     }
   }

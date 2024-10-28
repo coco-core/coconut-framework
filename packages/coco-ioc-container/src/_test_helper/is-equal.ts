@@ -1,4 +1,3 @@
-
 export function isEqual(a: unknown, b: unknown) {
   if (
     typeof a === 'number' ||
@@ -9,10 +8,7 @@ export function isEqual(a: unknown, b: unknown) {
     return a === b;
   } else if (Array.isArray(a)) {
     // 浅比较
-    if (
-      !Array.isArray(b) ||
-      a.length !== b.length
-    ) {
+    if (!Array.isArray(b) || a.length !== b.length) {
       return false;
     }
     const sortedA = [...a].sort();
@@ -24,6 +20,6 @@ export function isEqual(a: unknown, b: unknown) {
     }
     return true;
   } else {
-    throw new Error('未实现的比较')
+    throw new Error('未实现的比较');
   }
 }

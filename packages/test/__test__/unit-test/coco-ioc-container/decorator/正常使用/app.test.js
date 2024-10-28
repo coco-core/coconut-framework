@@ -1,7 +1,7 @@
-import {_test_helper, Component, Scope, Target} from 'coco-mvc'
-import {build} from "@cocofw/cli";
+import { _test_helper, Component, Scope, Target } from 'coco-mvc';
+import { build } from '@cocofw/cli';
 import Button from './src/component/Button';
-import {pkgPath, cocoIdxStr} from '../../../../helper/pkg-path'
+import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 
 let _ApplicationContext;
 let throwError;
@@ -14,21 +14,21 @@ describe('decorator', () => {
     } catch (e) {
       throwError = true;
     }
-  })
+  });
 
   afterEach(async () => {
     throwError = false;
-  })
+  });
 
   test('组件类的元数据正确', async () => {
     const context = new _ApplicationContext();
     const asExpected = _test_helper.iocContainer.checkClassMetadataAsExpected(
       Button,
       [
-        {Metadata: Component},
-        {Metadata: Scope, fieldValues: {value: Scope.Type.Singleton}},
+        { Metadata: Component },
+        { Metadata: Scope, fieldValues: { value: Scope.Type.Singleton } },
       ]
-    )
+    );
     expect(asExpected).toBe(true);
   });
 
@@ -36,17 +36,23 @@ describe('decorator', () => {
     const context = new _ApplicationContext();
     const target = _test_helper.iocContainer.checkClassMetadataAsExpected(
       Target,
-      [{
-        Metadata: Target, fieldValues: {value: [Target.Type.Class]}
-      }]
+      [
+        {
+          Metadata: Target,
+          fieldValues: { value: [Target.Type.Class] },
+        },
+      ]
     );
     expect(target).toEqual(true);
     const component = _test_helper.iocContainer.checkClassMetadataAsExpected(
       Component,
-      [{
-        Metadata: Target, fieldValues: {value: [Target.Type.Class]}
-      }]
+      [
+        {
+          Metadata: Target,
+          fieldValues: { value: [Target.Type.Class] },
+        },
+      ]
     );
     expect(component).toEqual(true);
   });
-})
+});

@@ -2,7 +2,6 @@ import { view, reactive, bind } from 'coco-mvc';
 
 @view()
 class Button {
-
   @reactive()
   count = 1;
 
@@ -12,9 +11,9 @@ class Button {
   }
 
   @view()
-  h () {
-    return <button onClick={this.onClick}>count:{this.count}</button>
+  h() {
+    return <button onClick={this.onClick}>count:{this.count}</button>;
   }
 }
 
-export default Button
+export default Button;

@@ -2,9 +2,8 @@ import { component } from 'coco-mvc';
 
 @component()
 class ErrorButton {
-
   @component()
-  name
+  name;
 }
 
-export default ErrorButton
+export default ErrorButton;

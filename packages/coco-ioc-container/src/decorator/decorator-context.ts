@@ -1,9 +1,9 @@
-export const KindClass = "class";
-export const KindField = "field";
-export const KindMethod = "method";
+export const KindClass = 'class';
+export const KindField = 'field';
+export const KindMethod = 'method';
 
 export interface ClassContext {
-  kind: typeof KindClass,
+  kind: typeof KindClass;
   name: string | undefined;
   addInitializer(initializer: () => void): void;
 }

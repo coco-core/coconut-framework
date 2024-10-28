@@ -1,13 +1,13 @@
-import * as path from "path";
+import * as path from 'path';
 
 class Paths {
-  projectRoot = ''
+  projectRoot = '';
 
   constructor(projectPath: string) {
     this.projectRoot = projectPath;
   }
 
-  get srcFolder () {
+  get srcFolder() {
     return path.join(this.projectRoot, './src');
   }
 
