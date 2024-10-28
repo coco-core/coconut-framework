@@ -6,14 +6,14 @@ export const NAME = {
   isRenderPhase: 'isRenderPhase',
   enqueueSetState: 'enqueueSetState',
   scheduleUpdateOnFiber: 'scheduleUpdateOnFiber',
-  addPostConstruct: 'addPostConstruct'
-}
+  addPostConstruct: 'addPostConstruct',
+};
 
 export function register(name, fn) {
   if (!fns.has(name)) {
-    fns.set(name, fn)
+    fns.set(name, fn);
   } else if (__DEV__) {
-    console.warn("不应该重复注册函数", name, fn);
+    console.warn('不应该重复注册函数', name, fn);
   }
 }
 

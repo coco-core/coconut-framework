@@ -1,17 +1,16 @@
-import { build } from "@cocofw/cli";
-import Button from "./src/component/Button";
-import Single from "./src/component/Single";
-import VanButton from "./src/component/VanButton";
-import {pkgPath, cocoIdxStr} from "../../../../helper/pkg-path";
+import { build } from '@cocofw/cli';
+import Button from './src/component/Button';
+import Single from './src/component/Single';
+import VanButton from './src/component/VanButton';
+import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 
 let _ApplicationContext;
 describe('ioc-container', () => {
-
   beforeEach(async () => {
     build(pkgPath(__dirname));
     const { ApplicationContext } = await import(cocoIdxStr);
     _ApplicationContext = ApplicationContext;
-  })
+  });
 
   test('通过cls可以拿到实例', async () => {
     const context = new _ApplicationContext();
@@ -56,7 +55,7 @@ describe('ioc-container', () => {
     expect(bean1).toBeInstanceOf(Single);
     expect(bean2).toBeInstanceOf(Single);
     expect(bean1).toBe(bean2);
-  })
+  });
 
   test('单例模式每次获取到的都是一样的-2', async () => {
     const context = new _ApplicationContext();
@@ -65,5 +64,5 @@ describe('ioc-container', () => {
     expect(bean1).toBeInstanceOf(Single);
     expect(bean2).toBeInstanceOf(Single);
     expect(bean1).toBe(bean2);
-  })
-})
+  });
+});

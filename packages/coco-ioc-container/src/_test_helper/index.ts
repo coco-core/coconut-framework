@@ -4,11 +4,7 @@ import {
   checkMetadataForMetadataAsExpected,
 } from './decorator';
 
-import {
-  getMetadata,
-  getAllMetadata,
-} from "../ioc-container/metadata.ts";
-
+import { getMetadata, getAllMetadata } from '../ioc-container/metadata.ts';
 
 export {
   expectInOrder,
@@ -16,4 +12,4 @@ export {
   checkMetadataForMetadataAsExpected,
   getMetadata,
   getAllMetadata,
-}
+};

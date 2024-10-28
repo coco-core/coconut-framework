@@ -1,9 +1,9 @@
 // @ts-ignore todo fix it
 import { get, NAME } from 'shared/preventCircularDependency';
-import {Metadata, target, Target, genDecorator} from "coco-ioc-container";
+import { Metadata, target, Target, genDecorator } from 'coco-ioc-container';
 
 @target([Target.Type.Field])
-export class Reactive extends Metadata{}
+export class Reactive extends Metadata {}
 
 function postConstruct(name: string) {
   let _value: any = this[name];
@@ -25,4 +25,4 @@ function postConstruct(name: string) {
   });
 }
 
-export default genDecorator(Reactive, { postConstruct })
+export default genDecorator(Reactive, { postConstruct });

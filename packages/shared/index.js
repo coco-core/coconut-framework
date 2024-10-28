@@ -1,1 +1,1 @@
-export * from './ReactSymbols'
+export * from './ReactSymbols';

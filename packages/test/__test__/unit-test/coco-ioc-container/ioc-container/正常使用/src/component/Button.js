@@ -1,7 +1,6 @@
 import { component } from 'coco-mvc';
 
 @component()
-class Button {
-}
+class Button {}
 
-export default Button
+export default Button;

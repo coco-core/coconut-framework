@@ -1,0 +1,9 @@
+build
+**/dist
+**/node_modules
+coverage
+.github
+.DS_Store
+docs
+packages/coconut-reconciler
+packages/coconut-web

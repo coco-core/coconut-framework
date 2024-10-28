@@ -1,6 +1,10 @@
-import BeanDefinition, {createBean, PostConstruct, PostConstructFn} from "./bean-definition.ts";
-import {Scope} from "../decorator/scope.ts";
-import {getClsMetadata} from "./metadata.ts";
+import BeanDefinition, {
+  createBean,
+  PostConstruct,
+  PostConstructFn,
+} from './bean-definition.ts';
+import { Scope } from '../decorator/scope.ts';
+import { getClsMetadata } from './metadata.ts';
 
 const nameDefinitionMap: Map<string, BeanDefinition<any>> = new Map();
 const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
@@ -26,20 +30,22 @@ function addDefinition(name: string, cls: Class<any>) {
 function addPostConstruct(cls: Class<any>, postConstruct: PostConstruct) {
   const definition = clsDefinitionMap.get(cls);
   if (!definition) {
-    if(__DEV__) {
-      throw new Error("没有对应的cls")
+    if (__DEV__) {
+      throw new Error('没有对应的cls');
     }
   }
-  if (definition.postConstruct.find(i => i.fn === postConstruct.fn)) {
-    if(__DEV__) {
-      throw new Error("重复的postConstruct")
+  if (definition.postConstruct.find((i) => i.fn === postConstruct.fn)) {
+    if (__DEV__) {
+      throw new Error('重复的postConstruct');
     }
   }
   definition.postConstruct.push(postConstruct);
 }
 
 function getDefinition(nameOrCls: Class<any> | string) {
-  return typeof nameOrCls === 'string' ? nameDefinitionMap.get(nameOrCls) : clsDefinitionMap.get(nameOrCls);
+  return typeof nameOrCls === 'string'
+    ? nameDefinitionMap.get(nameOrCls)
+    : clsDefinitionMap.get(nameOrCls);
 }
 
 // 单例实例集合
@@ -48,7 +54,7 @@ const singletonInstances: Map<Class<any>, any> = new Map();
  * 创建一个ioc组件实例
  * @param nameOrCls 通过class获取或通过name获取；
  */
-function getBean<T>(nameOrCls: Class<T> | string): T{
+function getBean<T>(nameOrCls: Class<T> | string): T {
   const definition = getDefinition(nameOrCls);
   const cls = definition.cls;
   const scope: Scope = <Scope>getClsMetadata(cls, Scope);
@@ -56,11 +62,11 @@ function getBean<T>(nameOrCls: Class<T> | string): T{
   if (isSingleton && singletonInstances.has(cls)) {
     return singletonInstances.get(cls);
   }
-  const bean = createBean(definition)
+  const bean = createBean(definition);
   if (isSingleton) {
     singletonInstances.set(cls, bean);
   }
   return bean;
 }
 
-export {getBean, addDefinition, addPostConstruct, getDefinition}
+export { getBean, addDefinition, addPostConstruct, getDefinition };

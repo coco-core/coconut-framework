@@ -1,6 +1,5 @@
 import { component } from 'coco-mvc';
 
-class Space {
-}
+class Space {}
 
-export default Space
+export default Space;
