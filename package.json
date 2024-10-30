@@ -4,7 +4,7 @@
     "build": "node ./scripts/build/index.js",
     "build:test": "cross-env NODE_ENV=test node ./scripts/build/index.js",
     "jest": "jest -c ./scripts/jest/jest.config.js",
-    "prettier": "prettier",
+    "prettier": "prettier --write 'packages/**/*.*'",
     "prettier:check": "prettier --check 'packages/**/*.*'",
     "test": "pnpm run build:test && pnpm run jest"
   },

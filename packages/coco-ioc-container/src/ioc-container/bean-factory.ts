@@ -35,7 +35,7 @@ function addPostConstruct(cls: Class<any>, postConstruct: PostConstruct) {
     }
   }
   if (definition.postConstruct.find((i) => i.fn === postConstruct.fn)) {
-    if (__DEV__) {
+    if (__DEV__ || __TEST__) {
       throw new Error('重复的postConstruct');
     }
   }

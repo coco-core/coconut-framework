@@ -87,6 +87,8 @@ function genDecorator<UserParam, C extends Context>(
         default:
           break;
       }
+      // todo:11 优化一下写法
+      let runOnce = false;
       context.addInitializer(function () {
         switch (context.kind) {
           case KindField:
@@ -110,11 +112,13 @@ function genDecorator<UserParam, C extends Context>(
           switch (context.kind) {
             case KindField:
             case KindMethod:
-              // todo 控制只能注册一次
-              get(NAME.addPostConstruct)?.(
-                this.constructor,
-                genFieldPostConstruct(postConstruct, context.name)
-              );
+              if (!runOnce) {
+                runOnce = true;
+                get(NAME.addPostConstruct)?.(
+                  this.constructor,
+                  genFieldPostConstruct(postConstruct, context.name)
+                );
+              }
               break;
           }
         }
