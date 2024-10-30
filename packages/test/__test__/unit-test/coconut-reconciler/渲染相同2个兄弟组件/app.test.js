@@ -1,7 +1,8 @@
 import { build } from '@cocofw/cli';
 import App from './src/view/App';
-import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
-import { render } from '../../../../helper/render';
+// todo 优化成@/helper/pkg-path
+import { pkgPath, cocoIdxStr } from '../../../helper/pkg-path';
+import { render } from '../../../helper/render';
 import {
   getByLabelText,
   getByRole,
