@@ -3,7 +3,7 @@ import {
   associateFieldMetadata,
 } from '../ioc-container/metadata.ts';
 import type { MetadataClass } from './metadata.ts';
-import { tempAddClsPostConstruct } from '../ioc-container/application-context-start-helper-post-construct.ts';
+import { saveClsAndPostConstructTemporary } from '../ioc-container/application-context-start-helper-post-construct.ts';
 import { get, NAME } from 'shared/preventCircularDependency';
 import {
   Context,
@@ -78,7 +78,7 @@ function genDecorator<UserParam, C extends Context>(
           } else {
             associateClassMetadata(value, metadataCls, userParam);
           }
-          tempAddClsPostConstruct(
+          saveClsAndPostConstructTemporary(
             value,
             <BeanName>userParam ?? lowercaseFirstLetter(context.name),
             postConstruct

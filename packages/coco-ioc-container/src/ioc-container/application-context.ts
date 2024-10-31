@@ -14,7 +14,7 @@ import { constructOf } from '../share/util.ts';
 
 class ApplicationContext {
   constructor() {
-    this.initClassDefinitionPostConstruct();
+    this.initClassDefinition();
   }
   public getBean<T>(cls: Class<T>): T;
   public getBean<T>(name: string): T;
@@ -29,23 +29,20 @@ class ApplicationContext {
     });
   }
 
-  /**
-   * 类装饰对应的postConstruct已经收集到了，首先初始化beanDefinition中的PostConstruct里面去。
-   */
-  private initClassDefinitionPostConstruct() {
+  private initClassDefinition() {
     const metadata = getAllMetadata()[1];
-    for (const [cls, { name, fn }] of get().entries()) {
+    for (const [cls, { name, fns }] of get().entries()) {
       if (
         metadata.has(cls) &&
         this.isComponent(metadata.get(cls).classMetadata)
       ) {
         addDefinition(name, cls);
-        if (fn) {
+        fns.forEach((fn) => {
           addPostConstruct(
             cls,
             genClassPostConstruct(fn as ClassPostConstructFn)
           );
-        }
+        });
       }
     }
 

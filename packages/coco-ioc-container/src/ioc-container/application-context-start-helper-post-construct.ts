@@ -1,19 +1,27 @@
 import { PostConstructFn } from '../ioc-container/bean-definition.ts';
 
-// 临时保存类装饰器的postConstructFn函数的，在start的时候会挪到BeanDefinition的postConstruct中
+// 扫描时暂时保存所有被装饰的类，在容器启动时用来初始化beanDefinition
 const tempClsPostConstruct: Map<
   Class<any>,
-  { name: string; fn: PostConstructFn }
+  { name: string; fns: PostConstructFn[] }
 > = new Map();
 
-export function tempAddClsPostConstruct(
+export function saveClsAndPostConstructTemporary(
   cls: Class<any>,
   name: string,
-  fn: PostConstructFn
+  fn?: PostConstructFn
 ) {
   if (!tempClsPostConstruct.has(cls)) {
-    tempClsPostConstruct.set(cls, { name, fn });
+    tempClsPostConstruct.set(cls, { name, fns: [] });
+  }
+  const fns = tempClsPostConstruct.get(cls).fns;
+  if (!fn || typeof fn !== 'function') {
+    return;
+  }
+  if (!fns.find((i) => i === fn)) {
+    fns.push(fn);
   } else {
+    // ignore 同一个装饰器装饰了同一个类多次
     // todo:11 同一个装饰器装饰了不同的类，但fn是一样的，忽略
   }
 }
