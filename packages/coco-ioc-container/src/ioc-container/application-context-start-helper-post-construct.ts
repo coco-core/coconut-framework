@@ -22,7 +22,6 @@ export function saveClsAndPostConstructTemporary(
     fns.push(fn);
   } else {
     // ignore 同一个装饰器装饰了同一个类多次
-    // todo:11 同一个装饰器装饰了不同的类，但fn是一样的，忽略
   }
 }
 
