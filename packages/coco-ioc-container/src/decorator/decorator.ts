@@ -16,9 +16,10 @@ import {
 import type { MethodContext } from './decorator-context.ts';
 import type { BeanName } from './component.ts';
 import { apply, exec } from '../_test_helper/decorator.ts';
-import { lowercaseFirstLetter } from '../share/util.ts';
+import { lowercaseFirstLetter, once } from '../share/util.ts';
 import {
   genFieldPostConstruct,
+  PostConstruct,
   PostConstructFn,
 } from '../ioc-container/bean-definition.ts';
 
@@ -87,8 +88,7 @@ function genDecorator<UserParam, C extends Context>(
         default:
           break;
       }
-      // todo:11 优化一下写法
-      let runOnce = false;
+      const addPostConstructOnce = once<[Class<any>, PostConstruct], void>();
       context.addInitializer(function () {
         switch (context.kind) {
           case KindField:
@@ -112,13 +112,11 @@ function genDecorator<UserParam, C extends Context>(
           switch (context.kind) {
             case KindField:
             case KindMethod:
-              if (!runOnce) {
-                runOnce = true;
-                get(NAME.addPostConstruct)?.(
-                  this.constructor,
-                  genFieldPostConstruct(postConstruct, context.name)
-                );
-              }
+              addPostConstructOnce.fn = get(NAME.addPostConstruct);
+              addPostConstructOnce(
+                this.constructor,
+                genFieldPostConstruct(postConstruct, context.name)
+              );
               break;
           }
         }

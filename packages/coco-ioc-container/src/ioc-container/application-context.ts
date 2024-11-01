@@ -37,6 +37,7 @@ class ApplicationContext {
         this.isComponent(metadata.get(cls).classMetadata)
       ) {
         addDefinition(name, cls);
+        // todo 这里还需要递归检查fn对应的元信息是否有装饰器，如果有且装饰器也有postConstruct的话，也需要处理
         fns.forEach((fn) => {
           addPostConstruct(
             cls,
