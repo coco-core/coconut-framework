@@ -5,7 +5,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cocofw/cli": "workspace:*",
-    "coco-mvc": "workspace:*"
+    "@cocofw/cli": "workspace:*"
   }
 }

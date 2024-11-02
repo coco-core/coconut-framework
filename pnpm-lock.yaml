@@ -104,9 +104,6 @@ importers:
       '@cocofw/cli':
         specifier: workspace:*
         version: link:../coco-cli
-      coco-mvc:
-        specifier: workspace:*
-        version: link:../coco-mvc
 
 packages:
   /@ampproject/remapping@2.3.0:
