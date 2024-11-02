@@ -3,7 +3,7 @@ import {
   associateFieldMetadata,
 } from '../ioc-container/metadata.ts';
 import type { MetadataClass } from './metadata.ts';
-import { tempAddClsPostConstruct } from '../ioc-container/application-context-start-helper-post-construct.ts';
+import { saveClsAndPostConstructTemporary } from '../ioc-container/application-context-start-helper-post-construct.ts';
 import { get, NAME } from 'shared/preventCircularDependency';
 import {
   Context,
@@ -16,9 +16,10 @@ import {
 import type { MethodContext } from './decorator-context.ts';
 import type { BeanName } from './component.ts';
 import { apply, exec } from '../_test_helper/decorator.ts';
-import { lowercaseFirstLetter } from '../share/util.ts';
+import { lowercaseFirstLetter, once } from '../share/util.ts';
 import {
   genFieldPostConstruct,
+  PostConstruct,
   PostConstructFn,
 } from '../ioc-container/bean-definition.ts';
 
@@ -78,7 +79,7 @@ function genDecorator<UserParam, C extends Context>(
           } else {
             associateClassMetadata(value, metadataCls, userParam);
           }
-          tempAddClsPostConstruct(
+          saveClsAndPostConstructTemporary(
             value,
             <BeanName>userParam ?? lowercaseFirstLetter(context.name),
             postConstruct
@@ -87,6 +88,7 @@ function genDecorator<UserParam, C extends Context>(
         default:
           break;
       }
+      const addPostConstructOnce = once<[Class<any>, PostConstruct], void>();
       context.addInitializer(function () {
         switch (context.kind) {
           case KindField:
@@ -110,8 +112,8 @@ function genDecorator<UserParam, C extends Context>(
           switch (context.kind) {
             case KindField:
             case KindMethod:
-              // todo 控制只能注册一次
-              get(NAME.addPostConstruct)?.(
+              addPostConstructOnce.fn = get(NAME.addPostConstruct);
+              addPostConstructOnce(
                 this.constructor,
                 genFieldPostConstruct(postConstruct, context.name)
               );

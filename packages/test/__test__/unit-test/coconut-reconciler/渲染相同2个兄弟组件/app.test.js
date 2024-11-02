@@ -1,12 +1,13 @@
 import { build } from '@cocofw/cli';
 import App from './src/view/App';
-import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
-import { render } from '../../../../helper/render';
+// todo 优化成@/helper/pkg-path
+import { pkgPath, cocoIdxStr } from '../../../helper/pkg-path';
+import { render } from '../../../helper/render';
 import {
   getByLabelText,
   getByRole,
   getByText,
-  queryByTestId,
+  queryAllByRole,
   waitFor,
 } from '@testing-library/dom';
 
@@ -31,12 +32,17 @@ describe('decorator', () => {
     const context = new _ApplicationContext();
     const container = render(App);
     const header = getByRole(container, 'heading');
-    const button = getByRole(header, 'button');
-    expect(button).toBeTruthy();
-    expect(getByText(button, 'count:1')).toBeTruthy();
-    button.click();
-    await waitFor(() => {
-      expect(getByText(button, 'count:2')).toBeTruthy();
+    const buttons = queryAllByRole(header, 'button');
+    expect(buttons).toHaveLength(2);
+    expect(buttons[0].textContent).toBe('count:1');
+    expect(buttons[1].textContent).toBe('count:1');
+    buttons[0].click();
+    await waitFor(async () => {
+      expect(buttons[0].textContent).toBe('count:2');
+      buttons[1].click();
+      await waitFor(() => {
+        expect(buttons[1].textContent).toBe('count:2');
+      });
     });
   });
 });
