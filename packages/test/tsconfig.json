@@ -1,0 +1,15 @@
+{
+  "extends": ["../../tsconfig.json"],
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "es2020",
+    "lib": ["dom", "es2015"],
+    "moduleResolution": "Node16",
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true,
+    "jsx": "preserve",
+    "paths": {
+      "coco-ioc-container": ["../coco-ioc-container/src/index.ts"]
+    }
+  }
+}
