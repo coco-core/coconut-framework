@@ -1,11 +1,13 @@
 import { register, NAME } from 'shared/preventCircularDependency';
 import { addPostConstruct } from './ioc-container/bean-factory.ts';
 
-register(NAME.addPostConstruct, addPostConstruct);
-
 export { default as Metadata } from './decorator/metadata.ts';
-export { default as component, Component } from './decorator/component.ts';
-export { default as scope, Scope } from './decorator/scope.ts';
+import { default as bean, Bean } from './decorator/bean.ts';
+export { bean, Bean };
+import { default as component, Component } from './decorator/component.ts';
+export { component, Component };
+import { default as scope, Scope } from './decorator/scope.ts';
+export { scope, Scope };
 export { default as target, Target } from './decorator/target.ts';
 export { default as genDecorator } from './decorator/decorator.ts';
 export { getBean } from './ioc-container/bean-factory.ts';
@@ -29,3 +31,8 @@ if (!__TEST__) {
   _test_helper = {} as any;
 }
 export { _test_helper };
+
+register(NAME.Bean, Bean);
+register(NAME.Scope, Scope);
+register(NAME.Component, Component);
+register(NAME.addPostConstruct, addPostConstruct);

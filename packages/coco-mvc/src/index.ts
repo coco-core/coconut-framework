@@ -1,6 +1,8 @@
 // @ts-ignore todo fix it
 export { render as renderApp } from 'coconut-web';
 export {
+  bean,
+  Bean,
   component,
   Component,
   scope,

@@ -21,7 +21,6 @@ export default function build(projectPath: string) {
   // 2. 生成.coco文件
   const importStatements = iocComponents.map((component) => {
     const defaultExport = path.basename(component, path.extname(component));
-    // import Button from "../controller/Button.js"
     const relative = path.relative(
       path.join(projectPath, 'src/.coco'),
       component

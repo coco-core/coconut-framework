@@ -7,6 +7,9 @@ export const NAME = {
   enqueueSetState: 'enqueueSetState',
   scheduleUpdateOnFiber: 'scheduleUpdateOnFiber',
   addPostConstruct: 'addPostConstruct',
+  Bean: 'Bean',
+  Scope: 'Scope',
+  Component: 'Component',
 };
 
 export function register(name, fn) {

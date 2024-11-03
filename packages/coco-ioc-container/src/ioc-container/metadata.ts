@@ -3,6 +3,7 @@
  */
 import { isPlainObject } from '../share/util.ts';
 import Metadata from '../decorator/metadata.ts';
+import { get, NAME } from 'shared/preventCircularDependency';
 
 type FieldName = string | Symbol;
 
@@ -190,8 +191,24 @@ function getAllMetadata() {
   return [metadataForMetadata, metadataForBizClass];
 }
 
+/**
+ * 为@bean的ioc组件添加component和scope元数据
+ * @param cls
+ * @param userParam
+ */
+function associateClsMetadataForAtBean(
+  cls: Class<any>,
+  userParam?: { scope?: any }
+) {
+  const Scope = get(NAME.Scope);
+  associateClassMetadata(cls, Scope, userParam?.scope);
+  const Component = get(NAME.Component);
+  associateClassMetadata(cls, Component, undefined);
+}
+
 export {
   associateClassMetadata,
+  associateClsMetadataForAtBean,
   associateFieldMetadata,
   getClsMetadata,
   getFields,
