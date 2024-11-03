@@ -1,10 +1,12 @@
 import {
   associateClassMetadata,
+  associateClsMetadataForAtBean,
   associateFieldMetadata,
 } from '../ioc-container/metadata.ts';
 import type { MetadataClass } from './metadata.ts';
 import { saveClsAndPostConstructTemporary } from '../ioc-container/application-context-start-helper-post-construct.ts';
 import { get, NAME } from 'shared/preventCircularDependency';
+import type { MethodContext } from './decorator-context.ts';
 import {
   Context,
   Decorator,
@@ -13,7 +15,6 @@ import {
   KindField,
   KindMethod,
 } from './decorator-context.ts';
-import type { MethodContext } from './decorator-context.ts';
 import type { BeanName } from './component.ts';
 import { apply, exec } from '../_test_helper/decorator.ts';
 import { lowercaseFirstLetter, once } from '../share/util.ts';
@@ -22,6 +23,8 @@ import {
   PostConstruct,
   PostConstructFn,
 } from '../ioc-container/bean-definition.ts';
+import { Bean } from './bean.ts';
+import type { Args } from './bean.ts';
 
 interface Option {
   optional?: true;
@@ -79,11 +82,21 @@ function genDecorator<UserParam, C extends Context>(
           } else {
             associateClassMetadata(value, metadataCls, userParam);
           }
+          // todo 和下面的postConstruct合并
           saveClsAndPostConstructTemporary(
             value,
-            <BeanName>userParam ?? lowercaseFirstLetter(context.name),
+            lowercaseFirstLetter(context.name),
             postConstruct
           );
+          break;
+        case KindMethod:
+          if (metadataCls === get(NAME.Bean)) {
+            associateClsMetadataForAtBean(userParam as Args, userParam);
+            saveClsAndPostConstructTemporary(
+              userParam as Args,
+              lowercaseFirstLetter((context as MethodContext).name)
+            );
+          }
           break;
         default:
           break;
