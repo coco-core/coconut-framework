@@ -102,20 +102,18 @@ function genDecorator<UserParam, C extends Context>(
           break;
       }
       const addPostConstructOnce = once<[Class<any>, PostConstruct], void>();
+      const associateFieldMetadataOnce = once<
+        [Class<any>, string, MetadataClass, any],
+        void
+      >();
       context.addInitializer(function () {
         switch (context.kind) {
           case KindField:
-            associateFieldMetadata(
-              this.constructor,
-              (<FieldContext>context).name,
-              metadataCls,
-              userParam
-            );
-            break;
           case KindMethod:
-            associateFieldMetadata(
+            associateFieldMetadataOnce.fn = associateFieldMetadata;
+            associateFieldMetadataOnce(
               this.constructor,
-              (<MethodContext>context).name,
+              context.name,
               metadataCls,
               userParam
             );

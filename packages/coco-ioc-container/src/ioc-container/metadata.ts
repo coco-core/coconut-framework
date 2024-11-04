@@ -91,6 +91,11 @@ function associateFieldMetadata(
     fieldMetas = [];
     fieldMetadata.set(fieldName, fieldMetas);
   }
+  if (fieldMetas.find((i) => i instanceof MetadataCls)) {
+    if (__TEST__) {
+      throw new Error('相同的Field装饰器装饰了2次!');
+    }
+  }
   const metadata = createMetadata(MetadataCls, args);
   fieldMetas.push(metadata);
 }
