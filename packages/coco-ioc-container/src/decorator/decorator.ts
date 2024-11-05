@@ -101,17 +101,11 @@ function genDecorator<UserParam, C extends Context>(
         default:
           break;
       }
-      const addPostConstructOnce = once<[Class<any>, PostConstruct], void>();
-      const associateFieldMetadataOnce = once<
-        [Class<any>, string, MetadataClass, any],
-        void
-      >();
-      context.addInitializer(function () {
+      const initializerOnce = once(function initializer() {
         switch (context.kind) {
           case KindField:
           case KindMethod:
-            associateFieldMetadataOnce.fn = associateFieldMetadata;
-            associateFieldMetadataOnce(
+            associateFieldMetadata(
               this.constructor,
               context.name,
               metadataCls,
@@ -123,14 +117,16 @@ function genDecorator<UserParam, C extends Context>(
           switch (context.kind) {
             case KindField:
             case KindMethod:
-              addPostConstructOnce.fn = get(NAME.addPostConstruct);
-              addPostConstructOnce(
+              get(NAME.addPostConstruct)?.(
                 this.constructor,
                 genFieldPostConstruct(postConstruct, context.name)
               );
               break;
           }
         }
+      });
+      context.addInitializer(function () {
+        initializerOnce(this);
       });
       return undefined;
     };
