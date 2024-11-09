@@ -24,6 +24,8 @@ import {
 } from '../decorator/decorator-context.ts';
 import { Bean } from '../decorator/bean.ts';
 import { Scope } from '../decorator/scope.ts';
+import type { Type } from '../decorator/scope.ts';
+import { isPlainObject } from '../share/util.ts';
 
 class ApplicationContext {
   constructor() {
@@ -122,24 +124,31 @@ class ApplicationContext {
   private recordDecoratedByAtBean() {
     // 处理@bean
     for (const [beDecoratedCls, params] of get().entries()) {
-      const param = params.find(
+      const beanDecorateParams = params.filter(
         (i) => i.metadataKind === KindMethod && i.metadataClass === Bean
       );
-      if (param) {
-        // todo 11 配置scope和component参数
-        recordDecoratorParams(param.metadataParam, {
+      beanDecorateParams.forEach(function (param) {
+        let targetCls: Class<any>;
+        let scope: Type;
+        if (isPlainObject(param.metadataParam)) {
+          targetCls = param.metadataParam.value;
+          scope = param.metadataParam.scope;
+        } else {
+          targetCls = param.metadataParam;
+        }
+        recordDecoratorParams(targetCls, {
           metadataKind: KindClass,
           metadataClass: Scope,
-          metadataParam: undefined,
+          metadataParam: scope,
           name: param.name,
         });
-        recordDecoratorParams(param.metadataParam, {
+        recordDecoratorParams(targetCls, {
           metadataKind: KindClass,
           metadataClass: Component,
           metadataParam: undefined,
           name: param.name,
         });
-      }
+      });
     }
   }
 }
