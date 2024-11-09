@@ -13,7 +13,7 @@ enum Type {
 @target([Target.Type.Class])
 export class Scope extends Metadata {
   static Type = Type;
-  value: Type;
+  value: Type = Type.Singleton;
 }
 
 export default genDecorator<Type, ClassContext>(Scope);
