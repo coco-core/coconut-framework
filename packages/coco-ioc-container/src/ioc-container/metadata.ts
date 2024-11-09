@@ -42,7 +42,7 @@ function createMetadata(metadataCls: Class<Metadata>, args?: any): Metadata {
   return metadata;
 }
 
-function associateClassMetadata(
+function addClassMetadata(
   cls: Class<any>,
   MetadataCls?: Class<Metadata>,
   args?: any
@@ -73,7 +73,7 @@ function associateClassMetadata(
   }
 }
 
-function associateFieldMetadata(
+function addFieldMethodMetadata(
   Cls: Class<any>,
   fieldName: FieldName,
   MetadataCls: Class<Metadata>,
@@ -196,25 +196,9 @@ function getAllMetadata() {
   return [metadataForMetadata, metadataForBizClass];
 }
 
-/**
- * 为@bean的ioc组件添加component和scope元数据
- * @param cls
- * @param userParam
- */
-function associateClsMetadataForAtBean(
-  cls: Class<any>,
-  userParam?: { scope?: any }
-) {
-  const Scope = get(NAME.Scope);
-  associateClassMetadata(cls, Scope, userParam?.scope);
-  const Component = get(NAME.Component);
-  associateClassMetadata(cls, Component, undefined);
-}
-
 export {
-  associateClassMetadata,
-  associateClsMetadataForAtBean,
-  associateFieldMetadata,
+  addClassMetadata,
+  addFieldMethodMetadata,
   getClsMetadata,
   getFields,
   clear,

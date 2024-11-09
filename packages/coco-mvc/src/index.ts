@@ -9,8 +9,6 @@ export {
   Scope,
   target,
   Target,
-  associateClassMetadata,
-  associateFieldMetadata,
   getClsMetadata,
   genDecorator,
   getFields,
