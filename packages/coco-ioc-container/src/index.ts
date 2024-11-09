@@ -12,8 +12,8 @@ export { default as target, Target } from './decorator/target.ts';
 export { default as genDecorator } from './decorator/decorator.ts';
 export { getBean } from './ioc-container/bean-factory.ts';
 export {
-  associateClassMetadata,
-  associateFieldMetadata,
+  addClassMetadata,
+  addFieldMethodMetadata,
   getClsMetadata,
   getFields,
 } from './ioc-container/metadata.ts';

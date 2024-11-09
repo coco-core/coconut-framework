@@ -26,6 +26,7 @@ export interface MethodContext {
   addInitializer(initializer: () => void): void;
 }
 
+export type Kind = typeof KindClass | typeof KindField | typeof KindMethod;
 export type Context = ClassContext | FieldContext | MethodContext;
 
 export type Decorator = (value: any, context: Context) => any;

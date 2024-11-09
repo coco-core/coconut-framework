@@ -30,12 +30,12 @@ function addDefinition(name: string, cls: Class<any>) {
 function addPostConstruct(cls: Class<any>, postConstruct: PostConstruct) {
   const definition = clsDefinitionMap.get(cls);
   if (!definition) {
-    if (__DEV__) {
+    if (__TEST__) {
       throw new Error('没有对应的cls');
     }
   }
   if (definition.postConstruct.find((i) => i.fn === postConstruct.fn)) {
-    if (__DEV__ || __TEST__) {
+    if (__TEST__) {
       throw new Error('重复的postConstruct');
     }
   }

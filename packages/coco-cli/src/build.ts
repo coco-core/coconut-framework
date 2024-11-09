@@ -29,18 +29,17 @@ export default function build(projectPath: string) {
   });
   fse.ensureDirSync(paths.dotCocoFolder);
   fs.writeFileSync(
-    path.join(paths.dotCocoFolder, 'index.js'),
+    path.join(paths.dotCocoFolder, 'index.ts'),
     appendExport(importStatements),
     { encoding: 'utf-8' }
   );
 }
 
 function appendExport(importStatements: string[]) {
-  const pre = `
-import { ApplicationContext } from "coco-mvc";
-`;
+  const pre = ``;
 
   const append = `
+import { ApplicationContext } from "coco-mvc";
 export { ApplicationContext };
   `;
   return pre.concat(importStatements.join('\n')).concat(append);

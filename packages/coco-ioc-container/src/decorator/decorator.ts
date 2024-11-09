@@ -1,33 +1,19 @@
-import {
-  associateClassMetadata,
-  associateClsMetadataForAtBean,
-  associateFieldMetadata,
-} from '../ioc-container/metadata.ts';
 import type { MetadataClass } from './metadata.ts';
-import { saveClsAndPostConstructTemporary } from '../ioc-container/application-context-start-helper-post-construct.ts';
-import { get, NAME } from 'shared/preventCircularDependency';
-import type { MethodContext } from './decorator-context.ts';
 import {
   Context,
   Decorator,
-  FieldContext,
   KindClass,
   KindField,
   KindMethod,
 } from './decorator-context.ts';
-import type { BeanName } from './component.ts';
 import { apply, exec } from '../_test_helper/decorator.ts';
 import { lowercaseFirstLetter, once } from '../share/util.ts';
-import {
-  genFieldPostConstruct,
-  PostConstruct,
-  PostConstructFn,
-} from '../ioc-container/bean-definition.ts';
-import { Bean } from './bean.ts';
-import type { Args } from './bean.ts';
+import { PostConstructFn } from '../ioc-container/bean-definition.ts';
+import { recordDecoratorParams } from '../ioc-container/decorator-params.ts';
 
 interface Option {
   optional?: true;
+  // 在实例化ioc组件后被调用
   postConstruct?: PostConstructFn;
 }
 
@@ -61,9 +47,7 @@ function genDecorator<UserParam, C extends Context>(
       : lowercaseFirstLetter(metadataClsOrName.name);
   let metadataCls =
     typeof metadataClsOrName !== 'string' ? metadataClsOrName : null;
-  if (typeof metadataClsOrName !== 'string') {
-    associateClassMetadata(metadataClsOrName);
-  }
+
   function decorator(userParam: UserParam, decorateSelf?: true) {
     if (__TEST__) {
       exec(decoratorName, userParam);
@@ -77,60 +61,49 @@ function genDecorator<UserParam, C extends Context>(
           if (decorateSelf) {
             if (metadataCls === null) {
               metadataCls = value;
-              associateClassMetadata(value, value, userParam);
+              recordDecoratorParams(value, {
+                metadataKind: KindClass,
+                metadataClass: value,
+                metadataParam: userParam,
+                name: lowercaseFirstLetter(context.name),
+                postConstruct,
+              });
             }
           } else {
-            associateClassMetadata(value, metadataCls, userParam);
+            recordDecoratorParams(value, {
+              metadataKind: KindClass,
+              metadataClass: metadataCls,
+              metadataParam: userParam,
+              name: lowercaseFirstLetter(context.name),
+              postConstruct,
+            });
           }
-          // todo 和下面的postConstruct合并
-          saveClsAndPostConstructTemporary(
-            value,
-            lowercaseFirstLetter(context.name),
-            postConstruct
-          );
           break;
         case KindMethod:
-          if (metadataCls === get(NAME.Bean)) {
-            associateClsMetadataForAtBean(userParam as Args, userParam);
-            saveClsAndPostConstructTemporary(
-              userParam as Args,
-              lowercaseFirstLetter((context as MethodContext).name)
-            );
-          }
-          break;
+        case KindField:
         default:
+          // ignore
           break;
       }
-      const addPostConstructOnce = once<[Class<any>, PostConstruct], void>();
-      const associateFieldMetadataOnce = once<
-        [Class<any>, string, MetadataClass, any],
-        void
-      >();
-      context.addInitializer(function () {
+      const initializerOnce = once(function initializer() {
         switch (context.kind) {
           case KindField:
           case KindMethod:
-            associateFieldMetadataOnce.fn = associateFieldMetadata;
-            associateFieldMetadataOnce(
-              this.constructor,
-              context.name,
-              metadataCls,
-              userParam
-            );
+            recordDecoratorParams(this.constructor, {
+              metadataKind: context.kind,
+              metadataClass: metadataCls,
+              metadataParam: userParam,
+              name: context.name,
+              postConstruct,
+            });
+            break;
+          case KindClass:
+            // ignore
             break;
         }
-        if (postConstruct) {
-          switch (context.kind) {
-            case KindField:
-            case KindMethod:
-              addPostConstructOnce.fn = get(NAME.addPostConstruct);
-              addPostConstructOnce(
-                this.constructor,
-                genFieldPostConstruct(postConstruct, context.name)
-              );
-              break;
-          }
-        }
+      });
+      context.addInitializer(function () {
+        initializerOnce(this);
       });
       return undefined;
     };

@@ -52,7 +52,7 @@ export const scan = (paths: Paths) => {
     {
       type: 'view',
       folderPath: paths.viewFolder,
-      fileExt: '.jsx',
+      fileExt: '.tsx',
       decorator: '@view',
     },
   ].reduce((prev, curr) => {
