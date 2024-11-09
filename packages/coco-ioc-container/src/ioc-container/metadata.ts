@@ -36,7 +36,7 @@ function createMetadata(metadataCls: Class<Metadata>, args?: any): Metadata {
     for (const key of Object.keys(args)) {
       metadata[key] = args[key];
     }
-  } else {
+  } else if (args !== undefined) {
     metadata.value = args;
   }
   return metadata;
