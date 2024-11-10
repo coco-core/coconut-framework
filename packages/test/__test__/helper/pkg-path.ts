@@ -1,5 +1,5 @@
 import * as process from 'node:process';
-import path from 'node:path';
+import * as path from 'node:path';
 
 /**
  * 返回每个单独项目相对于process.cwd的路径

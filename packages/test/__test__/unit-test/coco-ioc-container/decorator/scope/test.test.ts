@@ -1,6 +1,4 @@
-import { _test_helper, Component, Scope, Target } from 'coco-mvc';
 import { build } from '@cocofw/cli';
-import DefaultValue from './src/component/default-value.ts';
 import Single from './src/component/single.ts';
 import Prototype from './src/component/prototype.ts';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
@@ -24,8 +22,8 @@ describe('decorator', () => {
 
   test('默认singleton模式', async () => {
     const context = new _ApplicationContext();
-    const s1 = context.getBean(DefaultValue);
-    const s2 = context.getBean(DefaultValue);
+    const s1 = context.getBean('defaultValue');
+    const s2 = context.getBean('defaultValue');
     expect(s1 === s2).toBe(true);
   });
 

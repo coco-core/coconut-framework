@@ -24,7 +24,7 @@ export default function build(projectPath: string) {
       path.join(projectPath, 'src/.coco'),
       filePath
     );
-    return `import ${className} from '${relative}';`;
+    return `export { default as ${className} } from '${relative}';`;
   });
   fse.ensureDirSync(paths.dotCocoFolder);
   fs.writeFileSync(
