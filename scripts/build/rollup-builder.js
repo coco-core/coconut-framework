@@ -24,6 +24,8 @@ function genRollupConfig (inputConfig) {
         compilerOptions: {
           "target": "es2015",
           "lib": ["dom", "es2015"],
+          "declaration": true,
+          "declarationDir": "./types"
       }}),
       aliasPlugin({
         entries: genEntries(alias)
