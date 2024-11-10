@@ -122,7 +122,6 @@ class ApplicationContext {
 
   // 记录@bean的装饰器的类
   private recordDecoratedByAtBean() {
-    // 处理@bean
     for (const [beDecoratedCls, params] of get().entries()) {
       const beanDecorateParams = params.filter(
         (i) => i.metadataKind === KindMethod && i.metadataClass === Bean

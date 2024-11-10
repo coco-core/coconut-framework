@@ -1,4 +1,4 @@
-import type { PostConstructFn } from '../ioc-container/bean-definition.ts';
+import type { PostConstructFn } from './bean-definition.ts';
 import { Kind, KindClass } from '../decorator/decorator-context.ts';
 
 type BeDecoratedClass = Class<any>;
