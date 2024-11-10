@@ -30,7 +30,7 @@ import { isPlainObject } from '../share/util.ts';
 class ApplicationContext {
   constructor() {
     this.recordFieldOrMethodDecoratorParams();
-    this.recordDecoratedByAtBean();
+    this.recordAtBeanDecoratorParams();
     this.buildMetadata();
     this.buildBeanDefinition();
   }
@@ -120,9 +120,8 @@ class ApplicationContext {
     clear();
   }
 
-  // 记录@bean的装饰器的类
-  private recordDecoratedByAtBean() {
-    // 处理@bean
+  // 为@bean对应的类添加装饰器参数
+  private recordAtBeanDecoratorParams() {
     for (const [beDecoratedCls, params] of get().entries()) {
       const beanDecorateParams = params.filter(
         (i) => i.metadataKind === KindMethod && i.metadataClass === Bean

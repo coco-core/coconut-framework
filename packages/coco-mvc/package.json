@@ -14,6 +14,7 @@
     ".": "./dist/coco-mvc.cjs.js",
     "./jsx-runtime": "./dist/jsx-runtime.cjs.js"
   },
+  "types": "dist/types/coco-mvc/src/index.d.ts",
   "author": "jiangchenguang",
   "homepage": "https://github.com/jiangchenguang/coconut-framework",
   "license": "MIT"

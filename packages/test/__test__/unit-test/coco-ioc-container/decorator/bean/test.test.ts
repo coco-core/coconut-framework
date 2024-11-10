@@ -1,4 +1,3 @@
-import { _test_helper, Component, Scope, Target } from 'coco-mvc';
 import { build } from '@cocofw/cli';
 import Application from './src/component/application.ts';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
@@ -15,6 +14,7 @@ describe('decorator', () => {
       const { ApplicationContext } = await import(cocoIdxStr);
       _ApplicationContext = ApplicationContext;
     } catch (e) {
+      console.error(e);
       throwError = true;
     }
   });

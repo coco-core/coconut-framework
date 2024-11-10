@@ -2,6 +2,6 @@ import { component, scope, Scope } from 'coco-mvc';
 
 @component()
 @scope()
-class D {}
+class DefaultValue {}
 
-export default D;
+export default DefaultValue;
