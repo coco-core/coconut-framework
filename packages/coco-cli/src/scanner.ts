@@ -39,7 +39,7 @@ export const scan = (paths: Paths): ScanResult => {
     {
       type: 'controller',
       folderPath: paths.controllerFolder,
-      fileExt: '.js',
+      fileExt: '.ts',
       decorator: '@controller',
     },
     {
@@ -51,7 +51,7 @@ export const scan = (paths: Paths): ScanResult => {
     {
       type: 'service',
       folderPath: paths.serviceFolder,
-      fileExt: '.js',
+      fileExt: '.ts',
       decorator: '@service',
     },
     {
