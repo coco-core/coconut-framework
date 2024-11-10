@@ -19,13 +19,12 @@ export default function build(projectPath: string) {
   // 1. 扫描所有ioc组件
   const iocComponents = scan(paths);
   // 2. 生成.coco文件
-  const importStatements = iocComponents.map((component) => {
-    const defaultExport = path.basename(component, path.extname(component));
+  const importStatements = iocComponents.map(({ className, filePath }) => {
     const relative = path.relative(
       path.join(projectPath, 'src/.coco'),
-      component
+      filePath
     );
-    return `import ${defaultExport} from '${relative}';`;
+    return `import ${className} from '${relative}';`;
   });
   fse.ensureDirSync(paths.dotCocoFolder);
   fs.writeFileSync(

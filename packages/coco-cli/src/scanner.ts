@@ -5,8 +5,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import Paths from './paths';
 
+const RE_DEFAULT_EXPORT = /export\s+default\s+(\w+);?\s?/;
+
+type ScanResult = { className: string; filePath: string }[];
+
 function scanFolder(folderPath: string, fileExt: string, decorator: string) {
-  const result = [];
+  const result: ScanResult = [];
   if (!fs.existsSync(folderPath)) {
     return result;
   }
@@ -21,15 +25,16 @@ function scanFolder(folderPath: string, fileExt: string, decorator: string) {
       }
     } else if (stat.isFile() && path.extname(filePath) === fileExt) {
       const content = fs.readFileSync(filePath, 'utf-8');
-      if (content.includes(decorator) && content.includes('export default')) {
+      if (content.includes(decorator) && RE_DEFAULT_EXPORT.test(content)) {
         // todo 需要校验export出来的class名称和注解的是否一致
-        result.push(filePath);
+        const className = RE_DEFAULT_EXPORT.exec(content)[1];
+        result.push({ className, filePath });
       }
     }
   }
   return result;
 }
-export const scan = (paths: Paths) => {
+export const scan = (paths: Paths): ScanResult => {
   return [
     {
       type: 'controller',
@@ -40,7 +45,7 @@ export const scan = (paths: Paths) => {
     {
       type: 'component',
       folderPath: paths.componentFolder,
-      fileExt: '.js',
+      fileExt: '.ts',
       decorator: '@component',
     },
     {
