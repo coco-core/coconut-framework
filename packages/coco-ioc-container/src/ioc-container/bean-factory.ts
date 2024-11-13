@@ -58,11 +58,6 @@ function getBean<T>(nameOrCls: Class<T> | string): T {
   const definition = getDefinition(nameOrCls);
   if (!definition) {
     if (__TEST__) {
-      console.info(
-        clsDefinitionMap,
-        nameOrCls,
-        clsDefinitionMap.get(nameOrCls)
-      );
       throw new Error(`no findBean:${nameOrCls}`);
     }
   }
