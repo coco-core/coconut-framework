@@ -1,16 +1,17 @@
 import { _test_helper, Component, Scope, Target } from 'coco-mvc';
 import { build } from '@cocofw/cli';
-import Button from './src/component/Button';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 
 let _ApplicationContext;
+let Button;
 let throwError;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const { ApplicationContext } = await import(cocoIdxStr);
+      const { ApplicationContext, Button: _B } = await import(cocoIdxStr);
       _ApplicationContext = ApplicationContext;
+      Button = _B;
     } catch (e) {
       throwError = true;
     }
