@@ -15,6 +15,7 @@ describe('decorator', () => {
   });
 
   afterEach(async () => {
+    jest.resetModules();
     throwError = false;
   });
 

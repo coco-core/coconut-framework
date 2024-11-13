@@ -1,15 +1,21 @@
 import { build } from '@cocofw/cli';
-import Single from './src/component/single.ts';
-import Prototype from './src/component/prototype.ts';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 
 let _ApplicationContext;
 let throwError;
+let Single;
+let Prototype;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const { ApplicationContext } = await import(cocoIdxStr);
+      const {
+        ApplicationContext,
+        Single: _S,
+        Prototype: _P,
+      } = await import(cocoIdxStr);
+      Single = _S;
+      Prototype = _P;
       _ApplicationContext = ApplicationContext;
     } catch (e) {
       throwError = true;
@@ -17,6 +23,7 @@ describe('decorator', () => {
   });
 
   afterEach(async () => {
+    jest.resetModules();
     throwError = false;
   });
 

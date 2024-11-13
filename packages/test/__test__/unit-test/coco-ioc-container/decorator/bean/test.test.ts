@@ -1,16 +1,24 @@
 import { build } from '@cocofw/cli';
-import Application from './src/component/application.ts';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
-import Router from './src/component/router.ts';
-import Button from './src/component/button.ts';
-import Theme from './src/component/theme.ts';
 
 let _ApplicationContext;
 let throwError;
+let Application;
+let Router;
+let Button;
+let Theme;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
+      const { default: A } = await import('./src/component/application.ts');
+      Application = A;
+      const { default: R } = await import('./src/component/router.ts');
+      Router = R;
+      const { default: B } = await import('./src/component/button.ts');
+      Button = B;
+      const { default: T } = await import('./src/component/theme.ts');
+      Theme = T;
       const { ApplicationContext } = await import(cocoIdxStr);
       _ApplicationContext = ApplicationContext;
     } catch (e) {
@@ -20,6 +28,7 @@ describe('decorator', () => {
   });
 
   afterEach(async () => {
+    jest.resetModules();
     throwError = false;
   });
 
