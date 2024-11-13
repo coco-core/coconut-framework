@@ -1,5 +1,4 @@
 import { build } from '@cocofw/cli';
-import Button from './src/view/Button';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 import { render } from '../../../../helper/render';
 import {
@@ -12,18 +11,21 @@ import {
 
 let _ApplicationContext;
 let throwError;
+let Button;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const { ApplicationContext } = await import(cocoIdxStr);
+      const { ApplicationContext, Button: _Button } = await import(cocoIdxStr);
       _ApplicationContext = ApplicationContext;
+      Button = _Button;
     } catch (e) {
       throwError = true;
     }
   });
 
   afterEach(async () => {
+    jest.resetModules();
     throwError = false;
   });
 

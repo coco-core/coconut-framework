@@ -56,6 +56,11 @@ const singletonInstances: Map<Class<any>, any> = new Map();
  */
 function getBean<T>(nameOrCls: Class<T> | string): T {
   const definition = getDefinition(nameOrCls);
+  if (!definition) {
+    if (__TEST__) {
+      throw new Error(`no findBean:${nameOrCls}`);
+    }
+  }
   const cls = definition.cls;
   const scope: Scope = <Scope>getClsMetadata(cls, Scope);
   const isSingleton = scope?.value === Scope.Type.Singleton;
