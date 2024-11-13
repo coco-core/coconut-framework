@@ -1,15 +1,27 @@
 import { build } from '@cocofw/cli';
-import Button from './src/component/Button';
-import Single from './src/component/Single';
-import VanButton from './src/component/VanButton';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 
 let _ApplicationContext;
+let Button;
+let Single;
+let VanButton;
 describe('ioc-container', () => {
   beforeEach(async () => {
     build(pkgPath(__dirname));
-    const { ApplicationContext } = await import(cocoIdxStr);
+    const {
+      ApplicationContext,
+      Button: _Button,
+      Single: _Single,
+      VanButton: _VanButton,
+    } = await import(cocoIdxStr);
     _ApplicationContext = ApplicationContext;
+    Button = _Button;
+    Single = _Single;
+    VanButton = _VanButton;
+  });
+
+  afterEach(async () => {
+    jest.resetModules();
   });
 
   test('通过cls可以拿到实例', async () => {
