@@ -1,5 +1,4 @@
 import { build } from '@cocofw/cli';
-import App from './src/view/App';
 // todo 优化成@/helper/pkg-path
 import { pkgPath, cocoIdxStr } from '../../../helper/pkg-path';
 import { render } from '../../../helper/render';
@@ -13,12 +12,14 @@ import {
 
 let _ApplicationContext;
 let throwError;
+let App;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const { ApplicationContext } = await import(cocoIdxStr);
+      const { ApplicationContext, App: _App } = await import(cocoIdxStr);
       _ApplicationContext = ApplicationContext;
+      App = _App;
     } catch (e) {
       throwError = true;
     }
