@@ -5,6 +5,8 @@ export {
   Bean,
   component,
   Component,
+  configuration,
+  Configuration,
   scope,
   Scope,
   target,

@@ -26,6 +26,7 @@ import { Bean } from '../decorator/bean.ts';
 import { Scope } from '../decorator/scope.ts';
 import type { Type } from '../decorator/scope.ts';
 import { isPlainObject } from '../share/util.ts';
+import { Configuration } from '../decorator/configuration.ts';
 
 class ApplicationContext {
   constructor() {
@@ -123,6 +124,12 @@ class ApplicationContext {
   // 为@bean对应的类添加装饰器参数
   private recordAtBeanDecoratorParams() {
     for (const [beDecoratedCls, params] of get().entries()) {
+      const findConfigCls = params.find(
+        (i) => i.metadataKind === KindClass && i.metadataClass === Configuration
+      );
+      if (!findConfigCls) {
+        continue;
+      }
       const beanDecorateParams = params.filter(
         (i) => i.metadataKind === KindMethod && i.metadataClass === Bean
       );

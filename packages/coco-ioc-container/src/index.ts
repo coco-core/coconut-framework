@@ -6,6 +6,10 @@ import { default as bean, Bean } from './decorator/bean.ts';
 export { bean, Bean };
 import { default as component, Component } from './decorator/component.ts';
 export { component, Component };
+export {
+  default as configuration,
+  Configuration,
+} from './decorator/configuration.ts';
 import { default as scope, Scope } from './decorator/scope.ts';
 export { scope, Scope };
 export { default as target, Target } from './decorator/target.ts';

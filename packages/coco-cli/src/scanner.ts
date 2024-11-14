@@ -37,25 +37,31 @@ function scanFolder(folderPath: string, fileExt: string, decorator: string) {
 export const scan = (paths: Paths): ScanResult => {
   return [
     {
-      type: 'controller',
+      // 配置项
+      folderPath: paths.configFolder,
+      fileExt: '.ts',
+      decorator: '@configuration',
+    },
+    {
+      // 控制器
       folderPath: paths.controllerFolder,
       fileExt: '.ts',
       decorator: '@controller',
     },
     {
-      type: 'component',
+      // 通用组件
       folderPath: paths.componentFolder,
       fileExt: '.ts',
       decorator: '@component',
     },
     {
-      type: 'service',
+      // 服务
       folderPath: paths.serviceFolder,
       fileExt: '.ts',
       decorator: '@service',
     },
     {
-      type: 'view',
+      // 视图
       folderPath: paths.viewFolder,
       fileExt: '.tsx',
       decorator: '@view',
