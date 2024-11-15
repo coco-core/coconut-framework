@@ -26,6 +26,7 @@ import { Bean } from '../decorator/bean.ts';
 import { Scope } from '../decorator/scope.ts';
 import type { Type } from '../decorator/scope.ts';
 import { isPlainObject } from '../share/util.ts';
+import { Configuration } from '../decorator/configuration.ts';
 
 class ApplicationContext {
   constructor() {
@@ -74,12 +75,21 @@ class ApplicationContext {
     }
   }
 
-  private hasComponentDecorator(beDecoratedCls: Class<any>) {
+  /**
+   * 被装饰类是否被特定元数据类装饰；或者被特定元数据类的复合元数据装饰
+   * @param beDecoratedCls
+   * @param Target
+   * @private
+   */
+  private isDecoratedByOrCompoundDecorated(
+    beDecoratedCls: Class<any>,
+    Target: Class<any>
+  ) {
     const list = getClassAndClasClassDecorator(beDecoratedCls);
     return list.some(({ metadataClass, metadataMetadataClassList }) => {
       return (
-        metadataClass === Component ||
-        metadataMetadataClassList.find((i) => i === Component)
+        metadataClass === Target ||
+        metadataMetadataClassList.find((i) => i === Target)
       );
     });
   }
@@ -89,8 +99,8 @@ class ApplicationContext {
     // 处理@component和带有@component的元数据类
     for (const [beDecoratedCls, params] of get().entries()) {
       if (metadata.has(beDecoratedCls)) {
-        const needAddDefinition = this.hasComponentDecorator(beDecoratedCls);
-        if (needAddDefinition) {
+        if (this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Component)) {
+          // todo 13 这里需要忽略元数据类?
           const name = params.find((i) => i.metadataKind === KindClass).name;
           addDefinition(name, beDecoratedCls);
           params.forEach(({ metadataKind, postConstruct, name }) => {
@@ -123,6 +133,12 @@ class ApplicationContext {
   // 为@bean对应的类添加装饰器参数
   private recordAtBeanDecoratorParams() {
     for (const [beDecoratedCls, params] of get().entries()) {
+      if (
+        !this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Configuration)
+      ) {
+        continue;
+      }
+      // todo 13 这里需要忽略元数据类
       const beanDecorateParams = params.filter(
         (i) => i.metadataKind === KindMethod && i.metadataClass === Bean
       );

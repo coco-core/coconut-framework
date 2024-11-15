@@ -1,24 +1,24 @@
-import { component, bean, Scope } from 'coco-mvc';
+import { configuration, bean, Scope } from 'coco-mvc';
 import Router from './router.ts';
 import Button from './button.ts';
 import Theme from './theme.ts';
 
-@component()
-class Application {
+@configuration()
+class WebAppConfiguration {
   @bean(Router)
   router() {
     return new Router();
-  }
-
-  @bean({ value: Theme })
-  theme() {
-    return new Theme();
   }
 
   @bean({ value: Button, scope: Scope.Type.Prototype })
   button() {
     return new Button();
   }
+
+  @bean({ value: Theme })
+  theme() {
+    return new Theme();
+  }
 }
 
-export default Application;
+export default WebAppConfiguration;

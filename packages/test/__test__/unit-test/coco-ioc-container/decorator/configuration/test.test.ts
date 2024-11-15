@@ -10,11 +10,11 @@ describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const { default: R } = await import('./src/component/router.ts');
+      const { default: R } = await import('./src/config/router.ts');
       Router = R;
-      const { default: B } = await import('./src/component/button.ts');
+      const { default: B } = await import('./src/config/button.ts');
       Button = B;
-      const { default: T } = await import('./src/component/theme.ts');
+      const { default: T } = await import('./src/config/theme.ts');
       Theme = T;
       const { ApplicationContext } = await import(cocoIdxStr);
       _ApplicationContext = ApplicationContext;
