@@ -15,6 +15,10 @@ class Paths {
     return path.join(this.srcFolder, '.coco');
   }
 
+  get applicationFile() {
+    return path.join(this.srcFolder, 'application.ts');
+  }
+
   get viewFolder() {
     return path.join(this.srcFolder, './view');
   }

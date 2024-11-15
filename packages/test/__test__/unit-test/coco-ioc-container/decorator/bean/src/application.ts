@@ -1,9 +1,9 @@
-import { component, bean, Scope } from 'coco-mvc';
-import Router from './router.ts';
-import Button from './button.ts';
-import Theme from './theme.ts';
+import { bean, Scope, webApplication } from 'coco-mvc';
+import Router from './component/router.ts';
+import Button from './component/button.ts';
+import Theme from './component/theme.ts';
 
-@component()
+@webApplication()
 class Application {
   @bean(Router)
   router() {

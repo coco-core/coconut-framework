@@ -20,6 +20,10 @@ export {
 export { default as reactive, Reactive } from './decorator/reactive.ts';
 export { default as view, View } from './decorator/view.ts';
 export { default as bind, Bind } from './decorator/bind.ts';
+export {
+  default as webApplication,
+  WebApplication,
+} from './decorator/web-application.ts';
 
 // todo 没有放在这里导出，会导致jest编译报错
 // TypeError: (0 , _jsxRuntime.jsx) is not a function
