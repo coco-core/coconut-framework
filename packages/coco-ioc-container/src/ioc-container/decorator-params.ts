@@ -7,7 +7,8 @@ type params = {
   metadataKind: Kind;
   metadataClass: Class<any>;
   metadataParam: any;
-  name: string;
+  // todo 测试是否支持Symbol类型
+  name: string | Symbol;
   postConstruct?: PostConstructFn;
 };
 const decoratorParamMap: Map<BeDecoratedClass, params[]> = new Map();
