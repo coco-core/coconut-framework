@@ -7,7 +7,8 @@
     "allowImportingTsExtensions": true,
     "emitDeclarationOnly": true,
     "paths": {
-      "coco-ioc-container": ["../coco-ioc-container/src/index.ts"]
+      "coco-ioc-container": ["../coco-ioc-container/src/index.ts"],
+      "shared": ["../shared/index.ts"]
     }
   }
 }

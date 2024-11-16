@@ -1,4 +1,4 @@
-import { REACT_ELEMENT_TYPE } from 'shared/index.js';
+import { REACT_ELEMENT_TYPE } from 'shared';
 
 const h = (component, props) => {
   return {

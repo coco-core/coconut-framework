@@ -12,7 +12,7 @@ export const NAME = {
   Component: 'Component',
 };
 
-export function register(name, fn) {
+export function register(name: string, fn: Function) {
   if (!fns.has(name)) {
     fns.set(name, fn);
   } else if (__DEV__) {
@@ -20,7 +20,7 @@ export function register(name, fn) {
   }
 }
 
-export function get(name) {
+export function get(name: string) {
   if (NAME[name]) {
     return fns.get(name);
   }

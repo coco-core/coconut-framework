@@ -3,7 +3,6 @@
  */
 import { isPlainObject } from '../share/util.ts';
 import Metadata from '../decorator/metadata.ts';
-import { get, NAME } from 'shared/preventCircularDependency';
 
 type FieldName = string | Symbol;
 

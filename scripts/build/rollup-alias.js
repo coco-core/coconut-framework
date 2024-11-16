@@ -9,7 +9,7 @@ const reconciler = path.join(packages, './coconut-reconciler/src/index.js')
 const web = path.join(packages, './coconut-web/src/index.js')
 const iocContainer = path.join(packages, './coco-ioc-container/src/index.ts')
 // todo 支持@
-const shared = path.join(packages, './shared')
+const shared = path.join(packages, './shared/index.ts')
 const ReactFiberHostConfig = path.join(packages, './coconut-web/src/ReactDomHostConfig.js')
 
 const PACKAGE = {
