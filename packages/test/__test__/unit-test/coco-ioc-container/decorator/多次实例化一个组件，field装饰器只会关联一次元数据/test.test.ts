@@ -2,13 +2,13 @@ import { build } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 
 let _ApplicationContext;
-let Application;
+let UserInfo;
 describe('decorator', () => {
   beforeEach(async () => {
     build(pkgPath(__dirname));
-    const { ApplicationContext, Application: _A } = await import(cocoIdxStr);
+    const { ApplicationContext, UserInfo: _A } = await import(cocoIdxStr);
     _ApplicationContext = ApplicationContext;
-    Application = _A;
+    UserInfo = _A;
   });
 
   afterEach(async () => {
@@ -19,8 +19,8 @@ describe('decorator', () => {
     let throwError = false;
     try {
       const context = new _ApplicationContext();
-      context.getBean(Application);
-      context.getBean(Application);
+      context.getBean(UserInfo);
+      context.getBean(UserInfo);
     } catch (e) {
       throwError = true;
     }
