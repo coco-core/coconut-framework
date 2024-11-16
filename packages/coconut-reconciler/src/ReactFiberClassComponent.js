@@ -1,5 +1,5 @@
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
-import {get, NAME} from "shared/preventCircularDependency";
+import {get, NAME} from "shared";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
 import {getFields, getBean} from "coco-ioc-container";
 import {Reactive} from "coco-mvc-decorator/reactive";

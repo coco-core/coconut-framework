@@ -1,4 +1,4 @@
-import { register, NAME } from 'shared/preventCircularDependency';
+import { register, NAME } from 'shared';
 import { addPostConstruct } from './ioc-container/bean-factory.ts';
 
 export { default as Metadata } from './decorator/metadata.ts';

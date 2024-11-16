@@ -1,5 +1,5 @@
 // @ts-ignore todo fix it
-import { get, NAME } from 'shared/preventCircularDependency';
+import { get, NAME } from 'shared';
 import { Metadata, target, Target, genDecorator } from 'coco-ioc-container';
 
 @target([Target.Type.Field])
