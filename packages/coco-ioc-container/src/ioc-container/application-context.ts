@@ -77,15 +77,20 @@ class ApplicationContext {
 
   /**
    * 被装饰类是否被特定元数据类装饰；或者被特定元数据类的复合元数据装饰
-   * @param beDecoratedCls
+   * @param beDecoratedCls 被装饰的类
    * @param Target
+   * @param ignoreMetadataCls 是否忽略元数据的类，即之查找业务元数据类
    * @private
    */
   private isDecoratedByOrCompoundDecorated(
     beDecoratedCls: Class<any>,
-    Target: Class<any>
+    Target: Class<any>,
+    ignoreMetadataCls: boolean = true
   ) {
-    const list = getClassAndClasClassDecorator(beDecoratedCls);
+    const list = getClassAndClasClassDecorator(
+      beDecoratedCls,
+      ignoreMetadataCls
+    );
     return list.some(({ metadataClass, metadataMetadataClassList }) => {
       return (
         metadataClass === Target ||
@@ -100,7 +105,6 @@ class ApplicationContext {
     for (const [beDecoratedCls, params] of get().entries()) {
       if (metadata.has(beDecoratedCls)) {
         if (this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Component)) {
-          // todo 13 这里需要忽略元数据类?
           const name = params.find((i) => i.metadataKind === KindClass).name;
           addDefinition(name, beDecoratedCls);
           params.forEach(({ metadataKind, postConstruct, name }) => {
@@ -138,7 +142,6 @@ class ApplicationContext {
       ) {
         continue;
       }
-      // todo 13 这里需要忽略元数据类
       const beanDecorateParams = params.filter(
         (i) => i.metadataKind === KindMethod && i.metadataClass === Bean
       );

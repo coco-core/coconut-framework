@@ -1,5 +1,6 @@
 import type { PostConstructFn } from './bean-definition.ts';
 import { Kind, KindClass } from '../decorator/decorator-context.ts';
+import Metadata from '../decorator/metadata.ts';
 
 type BeDecoratedClass = Class<any>;
 type params = {
@@ -30,8 +31,12 @@ export function recordDecoratorParams(
 /**
  * 返回被装饰类的类装饰器以及类装饰器的类装饰器
  * @param cls
+ * @param ignoreMetadataCls
  */
-export function getClassAndClasClassDecorator(cls: BeDecoratedClass) {
+export function getClassAndClasClassDecorator(
+  cls: BeDecoratedClass,
+  ignoreMetadataCls: boolean = true
+) {
   const params = decoratorParamMap.get(cls);
   if (!params) {
     if (__TEST__) {
@@ -42,6 +47,9 @@ export function getClassAndClasClassDecorator(cls: BeDecoratedClass) {
     metadataClass: Class<any>;
     metadataMetadataClassList: Array<Class<any>>;
   }> = [];
+  if (ignoreMetadataCls && Object.getPrototypeOf(cls) === Metadata) {
+    return clsDecoratorList;
+  }
   params
     .filter((i) => i.metadataKind === KindClass)
     .forEach((i) => {
