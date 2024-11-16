@@ -2,9 +2,9 @@ import { component, bean } from 'coco-mvc';
 import validate from '../decorator/validate.ts';
 
 @component()
-class Application {
+class UserInfo {
   @validate()
   name: string = '';
 }
 
-export default Application;
+export default UserInfo;

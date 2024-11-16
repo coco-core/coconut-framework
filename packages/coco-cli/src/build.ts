@@ -9,9 +9,10 @@ import { scan } from './scanner';
 import * as process from 'node:process';
 
 export default function build(projectPath: string) {
-  const pkg = path.join(process.cwd(), projectPath, 'package.json');
-  if (!fs.existsSync(pkg)) {
-    throw new Error(`${pkg}好像不是一个项目文件夹`);
+  const appTsFile = 'application.ts';
+  const appFilePath = path.join(process.cwd(), projectPath, `src/${appTsFile}`);
+  if (!fs.existsSync(appFilePath)) {
+    throw new Error(`${projectPath}下没有${appTsFile}文件，忘记添加了？`);
   }
   clean(projectPath);
   const cwd = path.join(projectPath);
