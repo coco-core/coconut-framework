@@ -114,6 +114,19 @@ function getFields(Cls: Class<any>, MetadataCls: Class<any>) {
   return fields;
 }
 
+// 获取特定field的所有元数据
+function getFieldMetadata(
+  Cls: Class<any>,
+  field: string,
+  MetadataCls: Class<any>
+) {
+  const def = metadataForBizClass.get(Cls);
+  if (!def) {
+    return [];
+  }
+  return def.fieldMetadata.get(field).filter((i) => i instanceof MetadataCls);
+}
+
 /**
  * 注解A上有配置另一个注解B，有的话返回注解对象，没有返回null
  * 例如Component注解有没有配置Scope注解
@@ -200,6 +213,7 @@ export {
   addFieldMethodMetadata,
   getClsMetadata,
   getFields,
+  getFieldMetadata,
   clear,
   getMetadata,
   getAllMetadata,

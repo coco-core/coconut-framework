@@ -2,7 +2,7 @@ import { flushSync, updateContainer, createContainer, } from './ReactFiberReconc
 import { finishQueueingConcurrentUpdates } from './ReactFiberConcurrentUpdate.js';
 import { classComponentUpdater } from './ReactFiberClassComponent';
 import { isRenderPhase } from "./ReactFiberWorkLoop";
-import {register, NAME} from "shared/preventCircularDependency";
+import {register, NAME} from "shared";
 import { scheduleUpdateOnFiber } from "./ReactFiberWorkLoop";
 
 export function updateRender(instance) {

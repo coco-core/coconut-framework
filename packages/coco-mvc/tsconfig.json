@@ -5,10 +5,7 @@
     "lib": ["dom", "es2015"],
     "moduleResolution": "Node16",
     "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": true,
-    "paths": {
-      "coco-ioc-container": ["../coco-ioc-container/src/index.ts"],
-      "shared": ["../shared/index.ts"]
-    }
+    "emitDeclarationOnly": true
+    // 禁止放开 "paths": {}
   }
 }
