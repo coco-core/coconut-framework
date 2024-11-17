@@ -1,5 +1,5 @@
 import { view } from 'coco-mvc';
-import Button from './Button';
+import Button from './button';
 
 @view()
 class App {
