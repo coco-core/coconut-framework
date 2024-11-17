@@ -30,4 +30,4 @@ export interface MethodContext {
 export type Kind = typeof KindClass | typeof KindField | typeof KindMethod;
 export type Context = ClassContext | FieldContext | MethodContext;
 
-export type Decorator = (value: any, context: Context) => any;
+export type Decorator<C extends Context> = (value: any, context: C) => any;

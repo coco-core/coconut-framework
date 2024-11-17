@@ -1,4 +1,3 @@
-// @ts-ignore todo fix it
 import { get, NAME } from 'shared';
 import {
   Metadata,
@@ -6,6 +5,7 @@ import {
   Target,
   genDecorator,
   type ApplicationContext,
+  type FieldContext,
 } from 'coco-ioc-container';
 
 @target([Target.Type.Field])
@@ -35,4 +35,7 @@ function postConstruct(
   });
 }
 
-export default genDecorator(Reactive, { postConstruct });
+export default genDecorator<void, FieldContext>(Reactive, {
+  postConstruct,
+  optional: true,
+});

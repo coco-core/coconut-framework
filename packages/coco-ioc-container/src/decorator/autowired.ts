@@ -1,6 +1,6 @@
 import target, { Target } from './target.ts';
 import Metadata from './metadata.ts';
-import genDecorator from './decorator.ts';
+import genDecorator from './gen-decorator-exp.ts';
 import { FieldContext } from './decorator-context.ts';
 import type ApplicationContext from '../ioc-container/application-context.ts';
 

@@ -14,7 +14,7 @@ export {
 import { default as scope, Scope } from './decorator/scope.ts';
 export { scope, Scope };
 export { default as target, Target } from './decorator/target.ts';
-export { default as genDecorator } from './decorator/decorator.ts';
+export { default as genDecorator } from './decorator/gen-decorator-exp.ts';
 export { getBean } from './ioc-container/bean-factory.ts';
 export {
   addClassMetadata,
@@ -26,8 +26,9 @@ export { getDefinition } from './ioc-container/bean-factory.ts';
 export { default as ApplicationContext } from './ioc-container/application-context.ts';
 
 export type {
-  FieldContext,
   ClassContext,
+  FieldContext,
+  MethodContext,
 } from './decorator/decorator-context.ts';
 
 import * as testHelper from './_test_helper/index.ts';
