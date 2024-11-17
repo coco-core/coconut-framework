@@ -11,7 +11,7 @@ type params = {
   name: string | Symbol;
   postConstruct?: PostConstructFn;
 };
-const decoratorParamMap: Map<BeDecoratedClass, params[]> = new Map();
+const decoratorParamMap: Map<Class<any>, params[]> = new Map();
 
 /**
  * 记录装饰器参数
@@ -19,7 +19,7 @@ const decoratorParamMap: Map<BeDecoratedClass, params[]> = new Map();
  * @param params
  */
 export function recordDecoratorParams(
-  beDecoratedCls: BeDecoratedClass,
+  beDecoratedCls: Class<any>,
   params: params
 ) {
   if (!decoratorParamMap.has(beDecoratedCls)) {
@@ -31,24 +31,24 @@ export function recordDecoratorParams(
 
 /**
  * 返回被装饰类的类装饰器以及类装饰器的类装饰器
- * @param cls
+ * @param beDecoratedCls
  * @param ignoreMetadataCls
  */
 export function getClassAndClasClassDecorator(
-  cls: BeDecoratedClass,
+  beDecoratedCls: Class<any>,
   ignoreMetadataCls: boolean = true
 ) {
-  const params = decoratorParamMap.get(cls);
+  const params = decoratorParamMap.get(beDecoratedCls);
   if (!params) {
     if (__TEST__) {
-      throw new Error(`${cls.name} has no decorator params`);
+      throw new Error(`${beDecoratedCls.name} has no decorator params`);
     }
   }
   const clsDecoratorList: Array<{
     metadataClass: Class<any>;
     metadataMetadataClassList: Array<Class<any>>;
   }> = [];
-  if (ignoreMetadataCls && Object.getPrototypeOf(cls) === Metadata) {
+  if (ignoreMetadataCls && Object.getPrototypeOf(beDecoratedCls) === Metadata) {
     return clsDecoratorList;
   }
   params

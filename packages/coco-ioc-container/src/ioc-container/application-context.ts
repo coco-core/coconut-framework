@@ -32,13 +32,14 @@ class ApplicationContext {
   constructor() {
     this.recordFieldOrMethodDecoratorParams();
     this.recordAtBeanDecoratorParams();
+    // todo 参数校验
     this.buildMetadata();
     this.buildBeanDefinition();
   }
   public getBean<T>(cls: Class<T>): T;
   public getBean<T>(name: string): T;
   public getBean<T>(nameOrCls: Class<T> | string): T {
-    return getBean(nameOrCls);
+    return getBean(nameOrCls, this);
   }
 
   /**
@@ -107,25 +108,30 @@ class ApplicationContext {
         if (this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Component)) {
           const name = params.find((i) => i.metadataKind === KindClass).name;
           addDefinition(name, beDecoratedCls);
-          params.forEach(({ metadataKind, postConstruct, name }) => {
-            if (postConstruct) {
-              switch (metadataKind) {
-                case KindClass:
-                  addPostConstruct(
-                    beDecoratedCls,
-                    genClassPostConstruct(postConstruct as ClassPostConstructFn)
-                  );
-                  break;
-                case KindField:
-                case KindMethod:
-                  addPostConstruct(
-                    beDecoratedCls,
-                    genFieldPostConstruct(postConstruct, name)
-                  );
-                  break;
+          params.forEach(
+            ({ metadataClass, metadataKind, postConstruct, name }) => {
+              if (postConstruct) {
+                switch (metadataKind) {
+                  case KindClass:
+                    addPostConstruct(
+                      beDecoratedCls,
+                      genClassPostConstruct(
+                        metadataClass,
+                        postConstruct as ClassPostConstructFn
+                      )
+                    );
+                    break;
+                  case KindField:
+                  case KindMethod:
+                    addPostConstruct(
+                      beDecoratedCls,
+                      genFieldPostConstruct(metadataClass, postConstruct, name)
+                    );
+                    break;
+                }
               }
             }
-          });
+          );
         }
       }
     }

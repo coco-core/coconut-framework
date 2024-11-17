@@ -1,6 +1,7 @@
 import { register, NAME } from 'shared';
 import { addPostConstruct } from './ioc-container/bean-factory.ts';
 
+export { default as autowired, Autowired } from './decorator/autowired.ts';
 export { default as Metadata } from './decorator/metadata.ts';
 import { default as bean, Bean } from './decorator/bean.ts';
 export { bean, Bean };

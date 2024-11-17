@@ -1,12 +1,20 @@
 import BeanDefinition, {
   createBean,
+  FieldPostConstruct,
   PostConstruct,
   PostConstructFn,
 } from './bean-definition.ts';
 import { Scope } from '../decorator/scope.ts';
 import { getClsMetadata } from './metadata.ts';
+import type ApplicationContext from './application-context.ts';
+import {
+  type Kind,
+  KindClass,
+  KindField,
+  KindMethod,
+} from '../decorator/decorator-context.ts';
 
-const nameDefinitionMap: Map<string, BeanDefinition<any>> = new Map();
+const nameDefinitionMap: Map<string | Symbol, BeanDefinition<any>> = new Map();
 const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
 
 /**
@@ -14,7 +22,7 @@ const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
  * @param name
  * @param cls
  */
-function addDefinition(name: string, cls: Class<any>) {
+function addDefinition(name: string | Symbol, cls: Class<any>) {
   const exited = nameDefinitionMap.get(name);
   if (exited) {
     throw new Error(`存在同名的bean: [${exited.cls}] - [${cls}]`);
@@ -27,19 +35,33 @@ function addDefinition(name: string, cls: Class<any>) {
   clsDefinitionMap.set(cls, beanDefinition);
 }
 
-function addPostConstruct(cls: Class<any>, postConstruct: PostConstruct) {
+function addPostConstruct(cls: Class<any>, pc: PostConstruct) {
   const definition = clsDefinitionMap.get(cls);
   if (!definition) {
     if (__TEST__) {
       throw new Error('没有对应的cls');
     }
   }
-  if (definition.postConstruct.find((i) => i.fn === postConstruct.fn)) {
-    if (__TEST__) {
-      throw new Error('重复的postConstruct');
-    }
+  switch (pc.kind) {
+    case KindClass:
+      if (definition.postConstruct.find((i) => i.fn === pc.fn)) {
+        if (__TEST__) {
+          throw new Error('重复的postConstruct');
+        }
+      }
+      break;
+    case KindField:
+    case KindMethod:
+      const pcs = definition.postConstruct as FieldPostConstruct[];
+      const fieldPc = pc as FieldPostConstruct;
+      if (pcs.find((i) => i.fn === fieldPc.fn && i.field === fieldPc.field)) {
+        if (__TEST__) {
+          throw new Error('重复的postConstruct');
+        }
+      }
+      break;
   }
-  definition.postConstruct.push(postConstruct);
+  definition.postConstruct.push(pc);
 }
 
 function getDefinition(nameOrCls: Class<any> | string) {
@@ -53,8 +75,12 @@ const singletonInstances: Map<Class<any>, any> = new Map();
 /**
  * 创建一个ioc组件实例
  * @param nameOrCls 通过class获取或通过name获取；
+ * @param appCtx applicationContext实例；
  */
-function getBean<T>(nameOrCls: Class<T> | string): T {
+function getBean<T>(
+  nameOrCls: Class<T> | string,
+  appCtx: ApplicationContext
+): T {
   const definition = getDefinition(nameOrCls);
   if (!definition) {
     if (__TEST__) {
@@ -67,7 +93,7 @@ function getBean<T>(nameOrCls: Class<T> | string): T {
   if (isSingleton && singletonInstances.has(cls)) {
     return singletonInstances.get(cls);
   }
-  const bean = createBean(definition);
+  const bean = createBean(definition, appCtx);
   if (isSingleton) {
     singletonInstances.set(cls, bean);
   }

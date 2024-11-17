@@ -1,11 +1,21 @@
 // @ts-ignore todo fix it
 import { get, NAME } from 'shared';
-import { Metadata, target, Target, genDecorator } from 'coco-ioc-container';
+import {
+  Metadata,
+  target,
+  Target,
+  genDecorator,
+  type ApplicationContext,
+} from 'coco-ioc-container';
 
 @target([Target.Type.Field])
 export class Reactive extends Metadata {}
 
-function postConstruct(name: string) {
+function postConstruct(
+  metadata: Reactive,
+  appCtx: ApplicationContext,
+  name: string
+) {
   let _value: any = this[name];
   Object.defineProperty(this, name, {
     configurable: false,
