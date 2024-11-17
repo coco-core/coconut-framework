@@ -1,6 +1,7 @@
 import BeanDefinition, {
   createBean,
-  FieldPostConstruct,
+  type FieldPostConstruct,
+  type MethodPostConstruct,
   PostConstruct,
   PostConstructFn,
 } from './bean-definition.ts';
@@ -8,13 +9,12 @@ import { Scope } from '../decorator/scope.ts';
 import { getClsMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
 import {
-  type Kind,
   KindClass,
   KindField,
   KindMethod,
 } from '../decorator/decorator-context.ts';
 
-const nameDefinitionMap: Map<string | Symbol, BeanDefinition<any>> = new Map();
+const nameDefinitionMap: Map<string, BeanDefinition<any>> = new Map();
 const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
 
 /**
@@ -22,7 +22,7 @@ const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
  * @param name
  * @param cls
  */
-function addDefinition(name: string | Symbol, cls: Class<any>) {
+function addDefinition(name: string, cls: Class<any>) {
   const exited = nameDefinitionMap.get(name);
   if (exited) {
     throw new Error(`存在同名的bean: [${exited.cls}] - [${cls}]`);
@@ -50,8 +50,7 @@ function addPostConstruct(cls: Class<any>, pc: PostConstruct) {
         }
       }
       break;
-    case KindField:
-    case KindMethod:
+    case KindField: {
       const pcs = definition.postConstruct as FieldPostConstruct[];
       const fieldPc = pc as FieldPostConstruct;
       if (pcs.find((i) => i.fn === fieldPc.fn && i.field === fieldPc.field)) {
@@ -60,6 +59,17 @@ function addPostConstruct(cls: Class<any>, pc: PostConstruct) {
         }
       }
       break;
+    }
+    case KindMethod: {
+      const pcs = definition.postConstruct as MethodPostConstruct[];
+      const fieldPc = pc as MethodPostConstruct;
+      if (pcs.find((i) => i.fn === fieldPc.fn && i.field === fieldPc.field)) {
+        if (__TEST__) {
+          throw new Error('重复的postConstruct');
+        }
+      }
+      break;
+    }
   }
   definition.postConstruct.push(pc);
 }

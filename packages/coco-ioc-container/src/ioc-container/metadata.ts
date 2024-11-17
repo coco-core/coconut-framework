@@ -3,8 +3,7 @@
  */
 import { isPlainObject } from '../share/util.ts';
 import Metadata from '../decorator/metadata.ts';
-
-type FieldName = string | Symbol;
+import { type Field } from '../decorator/decorator-context.ts';
 
 type MetadataSet = Array<{ metadata: Metadata; dependencies?: MetadataSet }>;
 
@@ -18,7 +17,7 @@ const metadataForBizClass: Map<
   Class<any>,
   {
     classMetadata: Metadata[];
-    fieldMetadata: Map<FieldName, Metadata[]>;
+    fieldMetadata: Map<Field, Metadata[]>;
   }
 > = new Map();
 
@@ -74,7 +73,7 @@ function addClassMetadata(
 
 function addFieldMethodMetadata(
   Cls: Class<any>,
-  fieldName: FieldName,
+  fieldName: Field,
   MetadataCls: Class<Metadata>,
   args?: any
 ) {
@@ -117,7 +116,7 @@ function getFields(Cls: Class<any>, MetadataCls: Class<any>) {
 // 获取特定field的所有元数据
 function getFieldMetadata(
   Cls: Class<any>,
-  field: string,
+  field: Field,
   MetadataCls: Class<any>
 ) {
   const def = metadataForBizClass.get(Cls);

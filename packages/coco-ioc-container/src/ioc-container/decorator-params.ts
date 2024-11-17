@@ -1,5 +1,9 @@
 import type { PostConstructFn } from './bean-definition.ts';
-import { Kind, KindClass } from '../decorator/decorator-context.ts';
+import {
+  type Field,
+  type Kind,
+  KindClass,
+} from '../decorator/decorator-context.ts';
 import Metadata from '../decorator/metadata.ts';
 
 type BeDecoratedClass = Class<any>;
@@ -8,7 +12,7 @@ type params = {
   metadataClass: Class<any>;
   metadataParam: any;
   // todo 测试是否支持Symbol类型
-  name: string | Symbol;
+  name: Field;
   postConstruct?: PostConstructFn;
 };
 const decoratorParamMap: Map<Class<any>, params[]> = new Map();

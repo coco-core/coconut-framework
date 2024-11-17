@@ -1,6 +1,7 @@
 export const KindClass = 'class';
 export const KindField = 'field';
 export const KindMethod = 'method';
+export type Field = string | Symbol;
 
 export interface ClassContext {
   kind: typeof KindClass;
@@ -10,7 +11,7 @@ export interface ClassContext {
 
 export interface FieldContext {
   kind: typeof KindField;
-  name: string | symbol;
+  name: Field;
   access: { get(): unknown; set(value: unknown): void };
   static: boolean;
   private: boolean;
@@ -19,7 +20,7 @@ export interface FieldContext {
 
 export interface MethodContext {
   kind: typeof KindMethod;
-  name: string | symbol;
+  name: Field;
   access: { get(): unknown };
   static: boolean;
   private: boolean;

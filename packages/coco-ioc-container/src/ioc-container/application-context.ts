@@ -15,6 +15,7 @@ import {
   ClassPostConstructFn,
   genClassPostConstruct,
   genFieldPostConstruct,
+  genMethodPostConstruct,
 } from './bean-definition.ts';
 import Metadata from '../decorator/metadata.ts';
 import {
@@ -106,7 +107,8 @@ class ApplicationContext {
     for (const [beDecoratedCls, params] of get().entries()) {
       if (metadata.has(beDecoratedCls)) {
         if (this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Component)) {
-          const name = params.find((i) => i.metadataKind === KindClass).name;
+          const name = params.find((i) => i.metadataKind === KindClass)
+            .name as string;
           addDefinition(name, beDecoratedCls);
           params.forEach(
             ({ metadataClass, metadataKind, postConstruct, name }) => {
@@ -122,10 +124,15 @@ class ApplicationContext {
                     );
                     break;
                   case KindField:
-                  case KindMethod:
                     addPostConstruct(
                       beDecoratedCls,
                       genFieldPostConstruct(metadataClass, postConstruct, name)
+                    );
+                    break;
+                  case KindMethod:
+                    addPostConstruct(
+                      beDecoratedCls,
+                      genMethodPostConstruct(metadataClass, postConstruct, name)
                     );
                     break;
                 }
