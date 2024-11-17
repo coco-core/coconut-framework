@@ -1,4 +1,9 @@
-import { KindClass, KindField } from '../decorator/decorator-context.ts';
+import {
+  type Field,
+  KindClass,
+  KindField,
+  KindMethod,
+} from '../decorator/decorator-context.ts';
 import { getFieldMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
 import type { Metadata } from 'coco-ioc-container';
@@ -16,25 +21,45 @@ export type ClassPostConstructFn = () => void;
 export type FieldPostConstructFn = (
   metadata: Metadata,
   appCtx: ApplicationContext,
-  field: string
+  field: Field
 ) => void;
-export type PostConstructFn = ClassPostConstructFn | FieldPostConstructFn;
+export type MethodPostConstructFn = (
+  metadata: Metadata,
+  appCtx: ApplicationContext,
+  field: Field
+) => void;
+export type PostConstructFn =
+  | ClassPostConstructFn
+  | FieldPostConstructFn
+  | MethodPostConstructFn;
 
 export interface ClassPostConstruct {
   kind: typeof KindClass;
   metadataCls: Class<any>;
   fn: ClassPostConstructFn;
 }
+
 export interface FieldPostConstruct {
   kind: typeof KindField;
   metadataCls: Class<any>;
   fn: FieldPostConstructFn;
-  field: string;
+  field: Field;
 }
-export type PostConstruct = ClassPostConstruct | FieldPostConstruct;
+
+export interface MethodPostConstruct {
+  kind: typeof KindMethod;
+  metadataCls: Class<any>;
+  fn: MethodPostConstructFn;
+  field: Field;
+}
+
+export type PostConstruct =
+  | ClassPostConstruct
+  | FieldPostConstruct
+  | MethodPostConstruct;
 
 export default class BeanDefinition<T> {
-  name: string | Symbol;
+  name: Field;
 
   cls: Class<T>;
 
@@ -55,9 +80,17 @@ export function genClassPostConstruct(
 export function genFieldPostConstruct(
   metadataCls: Class<any>,
   fn: FieldPostConstructFn,
-  field: string
+  field: Field
 ): FieldPostConstruct {
   return { kind: KindField, metadataCls, fn, field };
+}
+
+export function genMethodPostConstruct(
+  metadataCls: Class<any>,
+  fn: MethodPostConstructFn,
+  field: Field
+): MethodPostConstruct {
+  return { kind: KindMethod, metadataCls, fn, field };
 }
 
 export function createBean(
@@ -72,6 +105,7 @@ export function createBean(
         pc.fn.call(bean);
         break;
       case KindField:
+      case KindMethod:
         const metadata = getFieldMetadata(cls, pc.field, pc.metadataCls);
         if (metadata.length === 1) {
           pc.fn.call(bean, metadata[0], appCtx, pc.field);
