@@ -21,26 +21,26 @@ interface Option {
 function genDecorator<UserParam, C extends Context>(
   metadataCls: MetadataClass,
   option?: { postConstruct?: PostConstructFn }
-): (userParam: UserParam) => Decorator;
+): (userParam: UserParam) => Decorator<C>;
 // 适用于装饰器不装饰自己元数据类，且useParams是可选的场景
 function genDecorator<UserParam, C extends Context>(
   metadataCls: MetadataClass,
   option: { optional: true; postConstruct?: PostConstructFn }
-): (userParam?: UserParam) => Decorator;
+): (userParam?: UserParam) => Decorator<C>;
 // 适用于装饰器装饰自己元数据类，且useParams是必填的场景
 function genDecorator<UserParam, C extends Context>(
   metadataClsName: string,
   option?: { postConstruct?: PostConstructFn }
-): (userParam: UserParam, decorateSelf?: true) => Decorator;
+): (userParam: UserParam, decorateSelf?: true) => Decorator<C>;
 // 适用于装饰器装饰自己元数据类，且useParams是可选的的场景
 function genDecorator<UserParam, C extends Context>(
   metadataClsName: string,
   option: { optional: true; postConstruct?: PostConstructFn }
-): (userParam?: UserParam, decorateSelf?: true) => Decorator;
+): (userParam?: UserParam, decorateSelf?: true) => Decorator<C>;
 function genDecorator<UserParam, C extends Context>(
   metadataClsOrName: MetadataClass | string,
   { postConstruct }: Option = {}
-): (userParam: UserParam, decorateSelf?: true) => Decorator {
+): (userParam: UserParam, decorateSelf?: true) => Decorator<C> {
   const decoratorName =
     typeof metadataClsOrName === 'string'
       ? metadataClsOrName
