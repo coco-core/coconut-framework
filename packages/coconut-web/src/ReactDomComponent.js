@@ -73,7 +73,10 @@ export function diffProperties(
       continue;
     }
     if (propKey === STYLE) {
-
+    } else if (propKey === CHILDREN) {
+      if (typeof nextProp === 'string' || typeof nextProp === 'number') {
+        (updatePayload = updatePayload || []).push(propKey, '' + nextProp);
+      }
     } else {
       (updatePayload = updatePayload || []).push(propKey, nextProp)
     }
