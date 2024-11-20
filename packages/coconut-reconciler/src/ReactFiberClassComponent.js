@@ -2,7 +2,6 @@ import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} 
 import {get, NAME} from "shared";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
 import {getFields, getBean} from "coco-ioc-container";
-import {Reactive} from "coco-mvc-decorator/reactive";
 
 const classComponentUpdater = {
   enqueueSetState(inst, field, payload, callback) {
@@ -30,7 +29,7 @@ function adoptClassInstance(workInProgress, instance) {
 
 function constructClassInstance(workInProgress, ctor, props) {
   const instance = getBean(ctor);
-  const fields = getFields(ctor, Reactive);
+  const fields = getFields(ctor, get(NAME.Reactive));
   workInProgress.memoizedState = fields.reduce((prev, field) => {
     prev[field] = instance[field];
     return prev;
@@ -63,7 +62,7 @@ function updateClassInstance(
   processUpdateQueue(workInProgress, newProps, instance);
   newState = workInProgress.memoizedState;
 
-  for (const field of getFields(ctor, Reactive)) {
+  for (const field of getFields(ctor, get(NAME.Reactive))) {
     instance[field] = newState[field]
   }
 

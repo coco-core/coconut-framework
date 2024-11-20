@@ -7,9 +7,12 @@ export const NAME = {
   enqueueSetState: 'enqueueSetState',
   scheduleUpdateOnFiber: 'scheduleUpdateOnFiber',
   addPostConstruct: 'addPostConstruct',
+  // todo 单独暴露出所有的Metadata
   Bean: 'Bean',
   Scope: 'Scope',
   Component: 'Component',
+  Reactive: 'Reactive',
+  View: 'View',
 };
 
 export function register(name: string, fn: Function) {
