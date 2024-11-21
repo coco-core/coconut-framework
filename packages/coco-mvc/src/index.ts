@@ -20,7 +20,7 @@ export {
   Metadata,
   ApplicationContext,
 } from 'coco-ioc-container';
-export { reactive, Reactive } from 'coco-reactive';
+export { reactive, Reactive, memoized, Memoized } from 'coco-reactive';
 import { default as view, View } from './decorator/view.ts';
 export { view, View };
 export { default as bind, Bind } from './decorator/bind.ts';
