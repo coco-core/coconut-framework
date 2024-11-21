@@ -1,3 +1,4 @@
+import { register, NAME } from 'shared';
 // @ts-ignore todo fix it
 export { render as renderApp } from 'coconut-web';
 export {
@@ -19,8 +20,9 @@ export {
   Metadata,
   ApplicationContext,
 } from 'coco-ioc-container';
-export { default as reactive, Reactive } from './decorator/reactive.ts';
-export { default as view, View } from './decorator/view.ts';
+export { reactive, Reactive, memoized, Memoized } from 'coco-reactive';
+import { default as view, View } from './decorator/view.ts';
+export { view, View };
 export { default as bind, Bind } from './decorator/bind.ts';
 export {
   default as webApplication,
@@ -37,6 +39,8 @@ export {
 //       10 |   return container
 //       11 | }
 export { jsx, jsxs } from './jsx-runtime/index.ts';
+
+register(NAME.View, View);
 
 import { _test_helper as iocContainerTestHelper } from 'coco-ioc-container';
 const _test_helper = {

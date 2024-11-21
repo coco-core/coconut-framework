@@ -1,0 +1,9 @@
+{
+  "name": "coco-reactive",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {},
+  "author": "jiangchenguang",
+  "homepage": "https://github.com/jiangchenguang/coconut-framework",
+  "license": "MIT"
+}

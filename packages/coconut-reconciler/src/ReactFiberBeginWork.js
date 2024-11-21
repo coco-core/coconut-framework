@@ -4,7 +4,7 @@ import {constructClassInstance, mountClassInstance, updateClassInstance} from ".
 import {cloneUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {shouldSetTextContent} from "ReactFiberHostConfig";
 import {getFields} from "coco-ioc-container"
-import { View } from "coco-mvc-decorator/view"
+import {get, NAME} from "shared";
 
 export function reconcileChildren(
   current,
@@ -28,7 +28,7 @@ function finishClassComponent(
     return null;
   }
   const instance = workInProgress.stateNode;
-  const fields = getFields(workInProgress.type, View);
+  const fields = getFields(workInProgress.type, get(NAME.View));
   const render = instance[fields[0]];
   const nextChildren = render.call(instance);
   reconcileChildren(current, workInProgress, nextChildren);

@@ -125,25 +125,25 @@ function commitMutationEffectsOnFiber(
       recursivelyTraverseMutationEffects(root, finishedWork)
       commitReconciliationEffects(finishedWork)
 
-      // if (flags & Update) {
-      //   const instance = finishedWork.stateNode;
-      //   if (instance !== null) {
-      //     const newProps = finishedWork.memoizedProps;
-      //     const oldProps = current !== null ? current.memoizedProps : newProps;
-      //     const type = finishedWork.type;
-      //     const updatePayload = finishedWork.updateQueue;
-      //     finishedWork.updateQueue = null;
-      //     if (updatePayload !== null) {
-      //       commitUpdate(
-      //         instance,
-      //         updatePayload,
-      //         type,
-      //         oldProps,
-      //         newProps
-      //       )
-      //     }
-      //   }
-      // }
+      if (flags & Update) {
+        const instance = finishedWork.stateNode;
+        if (instance !== null) {
+          const newProps = finishedWork.memoizedProps;
+          const oldProps = current !== null ? current.memoizedProps : newProps;
+          const type = finishedWork.type;
+          const updatePayload = finishedWork.updateQueue;
+          finishedWork.updateQueue = null;
+          if (updatePayload !== null) {
+            commitUpdate(
+              instance,
+              updatePayload,
+              type,
+              oldProps,
+              newProps
+            )
+          }
+        }
+      }
       return;
     }
     case HostRoot: {
