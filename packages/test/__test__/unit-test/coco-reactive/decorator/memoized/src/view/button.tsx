@@ -19,11 +19,11 @@ class Button {
   }
 
   @reactive()
-  name = 'zhangsan';
+  name = '张三';
 
   @bind()
   onClickName() {
-    this.name = 'lisi';
+    this.name = '李四';
   }
 
   @view()

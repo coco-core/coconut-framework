@@ -40,13 +40,13 @@ describe('decorator', () => {
     expect(buttons.length).toBe(2);
     expect(buttons[0]).toBeTruthy();
     expect(buttons[1]).toBeTruthy();
-    expect(getByText(container, 'zhangsan:1')).toBeTruthy();
+    expect(getByText(container, '张三:1')).toBeTruthy();
     buttons[0].click();
     await waitFor(async () => {
-      expect(getByText(container, 'zhangsan:2')).toBeTruthy();
+      expect(getByText(container, '张三:2')).toBeTruthy();
       buttons[1].click();
       await waitFor(() => {
-        expect(getByText(container, 'lisi:2')).toBeTruthy();
+        expect(getByText(container, '李四:2')).toBeTruthy();
         expect(memoizedFn).toHaveBeenCalledTimes(2);
       });
     });
