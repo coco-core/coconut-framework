@@ -5,19 +5,21 @@ import { decoratorName as a } from './src/decorator/a';
 import { decoratorName as b } from './src/decorator/b';
 import Button from './src/component/Button';
 
-let _ApplicationContext;
+let ApplicationContext;
 
 describe('field装饰器', () => {
   beforeEach(async () => {
     build(pkgPath(__dirname));
-    const { ApplicationContext } = await import(cocoIdxStr);
-    _ApplicationContext = ApplicationContext;
+    ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
   });
 
-  afterEach(async () => {});
+  afterEach(async () => {
+    _test_helper.iocContainer.clear();
+    jest.resetModules();
+  });
 
   test('多个装饰器执行顺序', async () => {
-    const context = new _ApplicationContext();
+    const context = new ApplicationContext();
     context.getBean(Button);
     const isExpected = _test_helper.iocContainer.expectInOrder([
       { type: 'exec', name: a },

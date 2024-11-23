@@ -1,20 +1,21 @@
 import { build } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
+import { _test_helper } from 'coco-mvc';
 
-let _ApplicationContext;
+let ApplicationContext;
 let throwError;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const { ApplicationContext } = await import(cocoIdxStr);
-      _ApplicationContext = ApplicationContext;
+      ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
     } catch (e) {
       throwError = true;
     }
   });
 
   afterEach(async () => {
+    _test_helper.iocContainer.clear();
     jest.resetModules();
     throwError = false;
   });

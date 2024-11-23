@@ -9,30 +9,33 @@ import {
   queryAllByRole,
   waitFor,
 } from '@testing-library/dom';
+import { _test_helper } from 'coco-mvc';
 
-let _ApplicationContext;
+let ApplicationContext;
 let throwError;
 let App;
+let renderApp;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const { ApplicationContext, App: _App } = await import(cocoIdxStr);
-      _ApplicationContext = ApplicationContext;
-      App = _App;
+      ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
+      App = (await import(cocoIdxStr)).App;
+      renderApp = (await import('coco-mvc')).renderApp;
     } catch (e) {
       throwError = true;
     }
   });
 
   afterEach(async () => {
+    _test_helper.iocContainer.clear();
     jest.resetModules();
     throwError = false;
   });
 
   test('正常渲染父子组件', async () => {
-    const context = new _ApplicationContext();
-    const container = render(App);
+    const context = new ApplicationContext();
+    const container = render(ApplicationContext, renderApp, App);
     const header = getByRole(container, 'heading');
     const buttons = queryAllByRole(header, 'button');
     expect(buttons).toHaveLength(2);

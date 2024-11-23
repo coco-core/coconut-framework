@@ -3,14 +3,19 @@ import { view, reactive, bind, memoized } from 'coco-mvc';
 const memoizedFn = jest.fn();
 
 @view()
-class Button {
+class Button1 {
   @reactive()
   count = 1;
 
   @memoized()
   score() {
     memoizedFn();
-    return `${this.count}`;
+    return `${this.count}分`;
+  }
+
+  @memoized()
+  myScore() {
+    return `张三：${this.score()}`;
   }
 
   @bind()
@@ -18,25 +23,16 @@ class Button {
     this.count = 2;
   }
 
-  @reactive()
-  name = '张三';
-
-  @bind()
-  onClickName() {
-    this.name = '李四';
-  }
-
   @view()
   h() {
     return (
       <div>
         <button onClick={this.onClick}>click to update count</button>
-        <button onClick={this.onClickName}>click to update name</button>
-        {this.name}:{this.score()}
+        {this.myScore()}
       </div>
     );
   }
 }
 
-export default Button;
+export default Button1;
 export { memoizedFn };
