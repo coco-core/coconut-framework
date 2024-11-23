@@ -7,7 +7,7 @@ import {
 } from './metadata.ts';
 import {
   get,
-  clear,
+  clear as clearDecoratorParams,
   getClassAndClasClassDecorator,
   recordDecoratorParams,
 } from './decorator-params.ts';
@@ -36,6 +36,8 @@ class ApplicationContext {
     // todo 参数校验
     this.buildMetadata();
     this.buildBeanDefinition();
+    // 清空装饰器参数记录 todo 是否可以挪到this.buildBeanDefinition的上面
+    clearDecoratorParams();
   }
   public getBean<T>(cls: Class<T>): T;
   public getBean<T>(name: string): T;
@@ -142,9 +144,6 @@ class ApplicationContext {
         }
       }
     }
-
-    // 释放引用
-    clear();
   }
 
   // 为@bean对应的类添加装饰器参数
