@@ -4,7 +4,7 @@ import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 
 import { getByText, queryAllByRole, waitFor } from '@testing-library/dom';
 
-let _ApplicationContext;
+let ApplicationContext;
 let throwError;
 let Button;
 let Button1;
@@ -14,19 +14,13 @@ describe('memoized', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const { ApplicationContext } = await import(cocoIdxStr);
-      _ApplicationContext = ApplicationContext;
-      const { default: _Button, memoizedFn: _memoizedFn } = await import(
-        './src/view/button.tsx'
-      );
-      memoizedFn = _memoizedFn;
-      Button = _Button;
-      const { default: _Button1 } = await import('./src/view/button1.tsx');
-      Button1 = _Button1;
+      ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
+      Button = (await import('./src/view/button.tsx')).default;
+      memoizedFn = (await import('./src/view/button.tsx')).memoizedFn;
+      Button1 = (await import('./src/view/button1.tsx')).default;
       // todo 这个render每次需要更新的，不然就是上次的render上下文，导致元数据，beanDefinition都被情况了
       // 把render和new ApplicationContext合并吧
-      const { render: _r } = await import('../../../../helper/render.tsx');
-      render = _r;
+      render = (await import('../../../../helper/render.tsx')).render;
     } catch (e) {
       throwError = true;
     }
@@ -40,7 +34,7 @@ describe('memoized', () => {
   });
 
   test('memoized直接依赖reactive，且可以缓存上次的值', async () => {
-    const context = new _ApplicationContext();
+    const context = new ApplicationContext();
     const container = render(Button);
     const buttons = queryAllByRole(container, 'button');
     expect(buttons.length).toBe(2);
@@ -59,7 +53,7 @@ describe('memoized', () => {
   });
 
   test('memoized a依赖reactive a，memoized b依赖memoized a，当reactive a更新时，memoized b也能更新', async () => {
-    const context = new _ApplicationContext();
+    const context = new ApplicationContext();
     const container = render(Button1);
     const buttons = queryAllByRole(container, 'button');
     expect(buttons.length).toBe(1);

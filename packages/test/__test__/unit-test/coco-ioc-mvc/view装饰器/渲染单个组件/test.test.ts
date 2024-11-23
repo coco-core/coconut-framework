@@ -9,16 +9,15 @@ import {
   waitFor,
 } from '@testing-library/dom';
 
-let _ApplicationContext;
+let ApplicationContext;
 let throwError;
 let Button;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const { ApplicationContext, Button: _Button } = await import(cocoIdxStr);
-      _ApplicationContext = ApplicationContext;
-      Button = _Button;
+      ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
+      Button = (await import(cocoIdxStr)).Button;
     } catch (e) {
       throwError = true;
     }
@@ -30,7 +29,7 @@ describe('decorator', () => {
   });
 
   test('正常渲染一个组件', async () => {
-    const context = new _ApplicationContext();
+    const context = new ApplicationContext();
     const container = render(Button);
     const button = getByRole(container, 'button');
     expect(button).toBeTruthy();

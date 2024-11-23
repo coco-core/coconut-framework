@@ -1,7 +1,7 @@
 import { build } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 
-let _ApplicationContext;
+let ApplicationContext;
 let throwError;
 let Router;
 let Route;
@@ -12,18 +12,12 @@ describe('autowired', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const { default: R } = await import('./src/component/router.ts');
-      Router = R;
-      const { default: R2 } = await import('./src/component/route.ts');
-      Route = R2;
-      const { default: T } = await import('./src/component/theme.ts');
-      Theme = T;
-      const { default: U } = await import('./src/view/user-info.tsx');
-      UserInfo = U;
-      const { default: B } = await import('./src/view/button.tsx');
-      Button = B;
-      const { ApplicationContext } = await import(cocoIdxStr);
-      _ApplicationContext = ApplicationContext;
+      Router = (await import('./src/component/router.ts')).default;
+      Route = (await import('./src/component/route.ts')).default;
+      Theme = (await import('./src/component/theme.ts')).default;
+      UserInfo = (await import('./src/view/user-info.tsx')).default;
+      Button = (await import('./src/view/button.tsx')).default;
+      ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
     } catch (e) {
       console.error(e);
       throwError = true;
@@ -36,7 +30,7 @@ describe('autowired', () => {
   });
 
   test('可以拿到注册的view组件，且拿到的实例也是不同的', async () => {
-    const context = new _ApplicationContext();
+    const context = new ApplicationContext();
     const userInfo1 = context.getBean(UserInfo);
     const userInfo2 = context.getBean(UserInfo);
     expect(userInfo1.button instanceof Button).toBe(true);
@@ -45,7 +39,7 @@ describe('autowired', () => {
   });
 
   test('可以拿到注册的view组件，且可以拿到单例组件', async () => {
-    const context = new _ApplicationContext();
+    const context = new ApplicationContext();
     const userInfo1 = context.getBean(UserInfo);
     const userInfo2 = context.getBean(UserInfo);
     expect(userInfo1.theme instanceof Theme).toBe(true);
@@ -53,7 +47,7 @@ describe('autowired', () => {
   });
 
   test('可以拿到@bean注册的组件，默认是单例组件', async () => {
-    const context = new _ApplicationContext();
+    const context = new ApplicationContext();
     const userInfo1 = context.getBean(UserInfo);
     const userInfo2 = context.getBean(UserInfo);
     expect(userInfo1.router instanceof Router).toBe(true);
@@ -61,7 +55,7 @@ describe('autowired', () => {
   });
 
   test('可以拿到@bean注册的组件，也支持每次返回新的实例', async () => {
-    const context = new _ApplicationContext();
+    const context = new ApplicationContext();
     const userInfo1 = context.getBean(UserInfo);
     const userInfo2 = context.getBean(UserInfo);
     expect(userInfo1.route instanceof Route).toBe(true);

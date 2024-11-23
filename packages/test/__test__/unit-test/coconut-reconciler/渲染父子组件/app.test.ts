@@ -9,16 +9,15 @@ import {
   waitFor,
 } from '@testing-library/dom';
 
-let _ApplicationContext;
+let ApplicationContext;
 let throwError;
 let App;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
-      const { ApplicationContext, App: _App } = await import(cocoIdxStr);
-      _ApplicationContext = ApplicationContext;
-      App = _App;
+      ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
+      App = (await import(cocoIdxStr)).App;
     } catch (e) {
       throwError = true;
     }
@@ -30,7 +29,7 @@ describe('decorator', () => {
   });
 
   test('正常渲染父子组件', async () => {
-    const context = new _ApplicationContext();
+    const context = new ApplicationContext();
     const container = render(App);
     const header = getByRole(container, 'heading');
     const button = getByRole(header, 'button');
