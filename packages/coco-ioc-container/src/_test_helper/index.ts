@@ -4,7 +4,12 @@ import {
   checkMetadataForMetadataAsExpected,
 } from './decorator';
 
-import { getMetadata, getAllMetadata } from '../ioc-container/metadata.ts';
+import {
+  getMetadata,
+  getAllMetadata,
+  clear as clearMetadata,
+} from '../ioc-container/metadata.ts';
+import { clear as clearBeanDefinition } from '../ioc-container/bean-factory.ts';
 
 export {
   expectInOrder,
@@ -12,4 +17,6 @@ export {
   checkMetadataForMetadataAsExpected,
   getMetadata,
   getAllMetadata,
+  clearMetadata,
+  clearBeanDefinition,
 };

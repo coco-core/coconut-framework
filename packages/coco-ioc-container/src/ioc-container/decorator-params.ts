@@ -6,7 +6,6 @@ import {
 } from '../decorator/decorator-context.ts';
 import Metadata from '../decorator/metadata.ts';
 
-type BeDecoratedClass = Class<any>;
 type params = {
   metadataKind: Kind;
   metadataClass: Class<any>;

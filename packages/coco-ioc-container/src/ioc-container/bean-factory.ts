@@ -110,4 +110,9 @@ function getBean<T>(
   return bean;
 }
 
-export { getBean, addDefinition, addPostConstruct, getDefinition };
+function clear() {
+  nameDefinitionMap.clear();
+  clsDefinitionMap.clear();
+}
+
+export { getBean, addDefinition, addPostConstruct, getDefinition, clear };

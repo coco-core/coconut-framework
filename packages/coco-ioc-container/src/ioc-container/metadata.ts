@@ -170,6 +170,7 @@ function getClsMetadata(
 }
 
 function clear() {
+  metadataForMetadata.clear();
   metadataForBizClass.clear();
 }
 
