@@ -31,7 +31,7 @@ export function expectInOrder(
   list: {
     type: 'exec' | 'apply';
     name: string;
-    params: any;
+    params?: any;
   }[]
 ) {
   const index = list.map((i) => {
