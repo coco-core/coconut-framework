@@ -94,7 +94,7 @@ function getBean<T>(
   const definition = getDefinition(nameOrCls);
   if (!definition) {
     if (__TEST__) {
-      throw new Error(`no findBean:${nameOrCls}`);
+      throw new Error(`can no find Bean:${nameOrCls}`);
     }
   }
   const cls = definition.cls;

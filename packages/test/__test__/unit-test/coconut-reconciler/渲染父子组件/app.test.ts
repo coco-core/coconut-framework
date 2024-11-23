@@ -12,12 +12,14 @@ import {
 let ApplicationContext;
 let throwError;
 let App;
+let renderApp;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
       App = (await import(cocoIdxStr)).App;
+      renderApp = (await import('coco-mvc')).renderApp;
     } catch (e) {
       throwError = true;
     }
@@ -29,8 +31,7 @@ describe('decorator', () => {
   });
 
   test('正常渲染父子组件', async () => {
-    const context = new ApplicationContext();
-    const container = render(App);
+    const container = render(ApplicationContext, renderApp, App);
     const header = getByRole(container, 'heading');
     const button = getByRole(header, 'button');
     expect(button).toBeTruthy();

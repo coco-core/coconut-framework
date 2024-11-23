@@ -1,15 +1,15 @@
 import { _test_helper } from 'coco-mvc';
 import { build } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
-
+import { render } from '../../../../helper/render';
 import { getByText, queryAllByRole, waitFor } from '@testing-library/dom';
 
 let ApplicationContext;
+let renderApp;
 let throwError;
 let Button;
 let Button1;
 let memoizedFn;
-let render;
 describe('memoized', () => {
   beforeEach(async () => {
     try {
@@ -18,9 +18,7 @@ describe('memoized', () => {
       Button = (await import('./src/view/button.tsx')).default;
       memoizedFn = (await import('./src/view/button.tsx')).memoizedFn;
       Button1 = (await import('./src/view/button1.tsx')).default;
-      // todo 这个render每次需要更新的，不然就是上次的render上下文，导致元数据，beanDefinition都被情况了
-      // 把render和new ApplicationContext合并吧
-      render = (await import('../../../../helper/render.tsx')).render;
+      renderApp = (await import('coco-mvc')).renderApp;
     } catch (e) {
       throwError = true;
     }
@@ -34,8 +32,7 @@ describe('memoized', () => {
   });
 
   test('memoized直接依赖reactive，且可以缓存上次的值', async () => {
-    const context = new ApplicationContext();
-    const container = render(Button);
+    const container = render(ApplicationContext, renderApp, Button);
     const buttons = queryAllByRole(container, 'button');
     expect(buttons.length).toBe(2);
     expect(buttons[0]).toBeTruthy();
@@ -53,8 +50,7 @@ describe('memoized', () => {
   });
 
   test('memoized a依赖reactive a，memoized b依赖memoized a，当reactive a更新时，memoized b也能更新', async () => {
-    const context = new ApplicationContext();
-    const container = render(Button1);
+    const container = render(ApplicationContext, renderApp, Button1);
     const buttons = queryAllByRole(container, 'button');
     expect(buttons.length).toBe(1);
     expect(buttons[0]).toBeTruthy();
