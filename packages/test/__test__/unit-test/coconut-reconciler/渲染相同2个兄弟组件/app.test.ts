@@ -9,6 +9,7 @@ import {
   queryAllByRole,
   waitFor,
 } from '@testing-library/dom';
+import { _test_helper } from 'coco-mvc';
 
 let ApplicationContext;
 let throwError;
@@ -27,6 +28,7 @@ describe('decorator', () => {
   });
 
   afterEach(async () => {
+    _test_helper.iocContainer.clear();
     jest.resetModules();
     throwError = false;
   });

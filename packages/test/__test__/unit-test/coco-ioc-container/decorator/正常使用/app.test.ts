@@ -17,7 +17,8 @@ describe('decorator', () => {
   });
 
   afterEach(async () => {
-    throwError = false;
+    _test_helper.iocContainer.clear();
+    jest.resetModules();
   });
 
   test('组件类的元数据正确', async () => {
@@ -30,10 +31,6 @@ describe('decorator', () => {
       ]
     );
     expect(asExpected).toBe(true);
-  });
-
-  test('所有元数据的元数据配置都正确 ', async () => {
-    const context = new ApplicationContext();
     const target = _test_helper.iocContainer.checkClassMetadataAsExpected(
       Target,
       [

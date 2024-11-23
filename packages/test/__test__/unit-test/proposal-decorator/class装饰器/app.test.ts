@@ -14,7 +14,10 @@ describe('class装饰器', () => {
     ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
   });
 
-  afterEach(async () => {});
+  afterEach(async () => {
+    _test_helper.iocContainer.clear();
+    jest.resetModules();
+  });
 
   test('一个类的多个类装饰器执行顺序', async () => {
     const context = new ApplicationContext();

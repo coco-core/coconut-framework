@@ -11,12 +11,16 @@ import {
 } from '../ioc-container/metadata.ts';
 import { clear as clearBeanDefinition } from '../ioc-container/bean-factory.ts';
 
+function clear() {
+  clearMetadata();
+  clearBeanDefinition();
+}
+
 export {
   expectInOrder,
   checkClassMetadataAsExpected,
   checkMetadataForMetadataAsExpected,
   getMetadata,
   getAllMetadata,
-  clearMetadata,
-  clearBeanDefinition,
+  clear,
 };

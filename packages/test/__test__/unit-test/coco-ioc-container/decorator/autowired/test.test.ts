@@ -1,5 +1,6 @@
 import { build } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
+import { _test_helper } from 'coco-mvc';
 
 let ApplicationContext;
 let throwError;
@@ -25,6 +26,7 @@ describe('autowired', () => {
   });
 
   afterEach(async () => {
+    _test_helper.iocContainer.clear();
     jest.resetModules();
     throwError = false;
   });

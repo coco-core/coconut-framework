@@ -13,7 +13,10 @@ describe('field装饰器', () => {
     ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
   });
 
-  afterEach(async () => {});
+  afterEach(async () => {
+    _test_helper.iocContainer.clear();
+    jest.resetModules();
+  });
 
   test('多个装饰器执行顺序', async () => {
     const context = new ApplicationContext();

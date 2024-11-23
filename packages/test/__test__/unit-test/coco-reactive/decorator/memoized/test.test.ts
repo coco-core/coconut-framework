@@ -25,8 +25,7 @@ describe('memoized', () => {
   });
 
   afterEach(async () => {
-    _test_helper.iocContainer.clearMetadata();
-    _test_helper.iocContainer.clearBeanDefinition();
+    _test_helper.iocContainer.clear();
     jest.resetModules();
     throwError = false;
   });

@@ -113,6 +113,7 @@ function getBean<T>(
 function clear() {
   nameDefinitionMap.clear();
   clsDefinitionMap.clear();
+  singletonInstances.clear();
 }
 
 export { getBean, addDefinition, addPostConstruct, getDefinition, clear };
