@@ -25,7 +25,7 @@ function postConstruct(
     enumerable: true,
     get: function () {
       if (Subscriber.Executing) {
-        publisher.addListener(Subscriber.Executing);
+        Subscriber.Executing.subscribe(publisher);
       }
       return _value;
     },
