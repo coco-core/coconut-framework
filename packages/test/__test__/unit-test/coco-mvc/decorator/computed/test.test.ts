@@ -33,7 +33,7 @@ describe('decorator', () => {
   });
 
   test('正常渲染一个组件', async () => {
-    const container = render(ApplicationContext, renderApp, Button);
+    const { container } = render(ApplicationContext, renderApp, Button);
     const button = getByRole(container, 'button');
     expect(button).toBeTruthy();
     expect(getByText(button, 'count:1')).toBeTruthy();

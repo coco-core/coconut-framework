@@ -7,6 +7,7 @@ export const NAME = {
   enqueueSetState: 'enqueueSetState',
   scheduleUpdateOnFiber: 'scheduleUpdateOnFiber',
   addPostConstruct: 'addPostConstruct',
+  applicationContext: 'applicationContext',
   // todo 单独暴露出所有的Metadata
   Bean: 'Bean',
   Scope: 'Scope',
@@ -15,7 +16,7 @@ export const NAME = {
   View: 'View',
 };
 
-export function register(name: string, fn: Function) {
+export function register(name: string, fn: any) {
   if (!fns.has(name)) {
     fns.set(name, fn);
   } else if (__DEV__) {

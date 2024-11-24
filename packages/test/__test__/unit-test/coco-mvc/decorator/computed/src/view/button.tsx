@@ -1,4 +1,4 @@
-import { view, reactive, bind, computed } from 'coco-mvc';
+import { view, reactive, bind } from 'coco-mvc';
 
 @view()
 class Button {

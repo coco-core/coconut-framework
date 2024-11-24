@@ -5,8 +5,8 @@ export function render(
   renderApp: any,
   ViewComponent: any
 ) {
-  new ApplicationContext();
   const container = document.createElement('div');
+  const ctx = new ApplicationContext();
   renderApp(<ViewComponent />, container);
-  return container;
+  return { container, ctx };
 }

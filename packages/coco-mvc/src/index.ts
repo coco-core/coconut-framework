@@ -14,7 +14,6 @@ export {
   Scope,
   target,
   Target,
-  getClsMetadata,
   genDecorator,
   getFields,
   Metadata,
@@ -24,6 +23,7 @@ export { reactive, Reactive, memoized, Memoized } from 'coco-reactive';
 import { default as view, View } from './decorator/view.ts';
 export { view, View };
 export { default as bind, Bind } from './decorator/bind.ts';
+export { default as store, Store } from './decorator/store.ts';
 export {
   default as webApplication,
   WebApplication,

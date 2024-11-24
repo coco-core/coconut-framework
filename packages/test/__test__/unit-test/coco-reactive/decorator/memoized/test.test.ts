@@ -31,7 +31,7 @@ describe('memoized', () => {
   });
 
   test('memoized直接依赖reactive，且可以缓存上次的值', async () => {
-    const container = render(ApplicationContext, renderApp, Button);
+    const { container } = render(ApplicationContext, renderApp, Button);
     const buttons = queryAllByRole(container, 'button');
     expect(buttons.length).toBe(2);
     expect(buttons[0]).toBeTruthy();
@@ -49,7 +49,7 @@ describe('memoized', () => {
   });
 
   test('memoized a依赖reactive a，memoized b依赖memoized a，当reactive a更新时，memoized b也能更新', async () => {
-    const container = render(ApplicationContext, renderApp, Button1);
+    const { container } = render(ApplicationContext, renderApp, Button1);
     const buttons = queryAllByRole(container, 'button');
     expect(buttons.length).toBe(1);
     expect(buttons[0]).toBeTruthy();

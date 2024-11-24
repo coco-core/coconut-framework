@@ -4,6 +4,8 @@
 import { isPlainObject } from '../share/util.ts';
 import Metadata from '../decorator/metadata.ts';
 import { type Field } from '../decorator/decorator-context.ts';
+import { get, NAME } from 'shared';
+import { type Scope } from '../decorator/scope.ts';
 
 type MetadataSet = Array<{ metadata: Metadata; dependencies?: MetadataSet }>;
 
@@ -127,14 +129,9 @@ function getFieldMetadata(
 }
 
 /**
- * 注解A上有配置另一个注解B，有的话返回注解对象，没有返回null
- * 例如Component注解有没有配置Scope注解
- * 因为注解B可能是注解A的注解的注解配置，所以需要递归查找
+ * 找到Cls上面的所有类元数据
  */
-function getClsMetadata(
-  Cls: Class<any>,
-  MetadataCls: Class<Metadata>
-): Metadata | null {
+function getClsMetadata(Cls: Class<any>): Metadata[] | null {
   const configs =
     Object.getPrototypeOf(Cls) === Metadata
       ? metadataForMetadata.get(Cls)
@@ -152,20 +149,35 @@ function getClsMetadata(
     }
     return null;
   }
-  if (configs && configs.classMetadata.length) {
-    for (const config of configs.classMetadata) {
-      if (config instanceof MetadataCls) {
-        // 找到，返回
-        return config;
+  return configs.classMetadata;
+}
+
+// 找类装饰器中是否包含scope装饰器
+// 找类装饰的装饰器是否包含component元数据，如果包含的话返回其对应的scope对象
+function findScopeMetadata(Cls: Class<any>): Scope | null {
+  const classMetadataList = getClsMetadata(Cls);
+  if (!classMetadataList) {
+    return null;
+  }
+  const scope = classMetadataList.find((i) => i instanceof get(NAME.Scope));
+  if (scope) {
+    return scope as Scope;
+  }
+  for (const metadata of classMetadataList) {
+    const metadataMetadataList = getClsMetadata(metadata.constructor);
+    // todo 所有的component都默认加一个scope对象，或者合并也行
+    if (
+      metadataMetadataList &&
+      metadataMetadataList.find((i) => i instanceof get(NAME.Component))
+    ) {
+      for (const scope of metadataMetadataList) {
+        if (scope instanceof get(NAME.Scope)) {
+          return scope as Scope;
+        }
       }
-      // 找到config对应的注解定义，看上面是否有AnnoCls
-      // const find = getClsMetadata(config.constructor, MetadataCls);
-      // if (find) {
-      //   return find;
-      // }
     }
   }
-  // 没有找到
+
   return null;
 }
 
@@ -211,7 +223,7 @@ function getAllMetadata() {
 export {
   addClassMetadata,
   addFieldMethodMetadata,
-  getClsMetadata,
+  findScopeMetadata,
   getFields,
   getFieldMetadata,
   clear,

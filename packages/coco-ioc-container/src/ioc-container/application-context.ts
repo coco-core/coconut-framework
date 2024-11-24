@@ -28,6 +28,7 @@ import { Scope } from '../decorator/scope.ts';
 import type { Type } from '../decorator/scope.ts';
 import { isPlainObject } from '../share/util.ts';
 import { Configuration } from '../decorator/configuration.ts';
+import { register, NAME } from 'shared';
 
 class ApplicationContext {
   constructor() {
@@ -38,6 +39,7 @@ class ApplicationContext {
     this.buildBeanDefinition();
     // 清空装饰器参数记录 todo 是否可以挪到this.buildBeanDefinition的上面
     clearDecoratorParams();
+    register(NAME.applicationContext, this);
   }
   public getBean<T>(cls: Class<T>): T;
   public getBean<T>(name: string): T;

@@ -14,6 +14,7 @@ import { clear as clearBeanDefinition } from '../ioc-container/bean-factory.ts';
 function clear() {
   clearMetadata();
   clearBeanDefinition();
+  // todo clear preventCircularDependency.ts
 }
 
 export {
