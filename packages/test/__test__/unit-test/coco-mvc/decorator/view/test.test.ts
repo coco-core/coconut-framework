@@ -1,6 +1,6 @@
 import { build } from '@cocofw/cli';
-import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
-import { render } from '../../../../helper/render';
+import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path.ts';
+import { render } from '../../../../helper/render.tsx';
 import {
   getByLabelText,
   getByRole,
@@ -14,7 +14,7 @@ let ApplicationContext;
 let throwError;
 let Button;
 let renderApp;
-describe('decorator', () => {
+describe('view', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
@@ -32,7 +32,7 @@ describe('decorator', () => {
     throwError = false;
   });
 
-  test('正常渲染一个组件', async () => {
+  test('可以扫描到view组件并渲染', async () => {
     const { container } = render(ApplicationContext, renderApp, Button);
     const button = getByRole(container, 'button');
     expect(button).toBeTruthy();
