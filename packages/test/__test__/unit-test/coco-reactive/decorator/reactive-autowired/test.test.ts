@@ -1,6 +1,6 @@
 import { build } from '@cocofw/cli';
-import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
-import { render } from '../../../../helper/render';
+import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path.ts';
+import { render } from '../../../../helper/render.tsx';
 import {
   getByLabelText,
   getByRole,
