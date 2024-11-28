@@ -13,6 +13,7 @@ export const NAME = {
   Scope: 'Scope',
   Component: 'Component',
   Reactive: 'Reactive',
+  ReactiveAutowired: 'ReactiveAutowired',
   View: 'View',
 };
 
