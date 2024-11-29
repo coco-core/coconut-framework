@@ -9,17 +9,18 @@ import {
   Scope,
   type ApplicationContext,
 } from 'coco-ioc-container';
-import Central from '../reactive-autowired/central.ts';
+import Remote from '../reactive-autowired/remote.ts';
 
 @target([Target.Type.Class])
 @scope(Scope.Type.Singleton)
 @component()
 export class Store extends Metadata {}
 
-export const sym_source = Symbol.for('source');
+export const sym_remote = Symbol.for('remote');
 
 function postConstruct(metadata: Store, appCtx: ApplicationContext) {
-  this[sym_source] = new Central(this.constructor);
+  // todo 放在ioc容器里面吧，没必要放在this上
+  this[sym_remote] = new Remote(this.constructor);
 }
 
 export default genDecorator<string, ClassContext>(Store, {

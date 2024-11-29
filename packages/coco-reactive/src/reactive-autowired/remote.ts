@@ -1,6 +1,6 @@
 import Local from './local.ts';
 
-class Central {
+class Remote {
   private readonly ctor: Class<any>;
   private readonly state: any;
 
@@ -37,4 +37,4 @@ class Central {
   }
 }
 
-export default Central;
+export default Remote;
