@@ -145,7 +145,7 @@ function getClsMetadata(Cls: Class<any>): Metadata[] | null {
       ? metadataForMetadata.get(Cls)
       : metadataForBizClass.get(Cls);
   if (!configs) {
-    if (__TEST__) {
+    if (__DEV__) {
       console.error(
         `未注册的组件：`,
         Cls,
