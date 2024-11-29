@@ -7,42 +7,42 @@ import {
   type ApplicationContext,
   type FieldContext,
 } from 'coco-ioc-container';
-import Publisher from '../memoized/publisher.ts';
-import Subscriber from '../memoized/subscriber.ts';
+import type Remote from '../reactive-autowired/remote.ts';
+import { sym_remote } from './store.ts';
 
 @target([Target.Type.Field])
-export class Reactive extends Metadata {}
+export class ReactiveAutowired extends Metadata {}
 
 function postConstruct(
-  metadata: Reactive,
+  metadata: ReactiveAutowired,
   appCtx: ApplicationContext,
   name: string
 ) {
-  let _value: any = this[name];
-  const publisher = new Publisher();
+  const enqueueUpdate = (v) => {
+    get(NAME.enqueueSetState)?.(this, name, v);
+  };
+  const cls: any = metadata.value;
+  const remote: Remote = appCtx.getBean(cls)[sym_remote];
+  remote.fork().setEnqueueUpdate(enqueueUpdate);
+  let _value: any = remote.pull();
   Object.defineProperty(this, name, {
     configurable: false,
     enumerable: true,
     get: function () {
-      if (Subscriber.Executing) {
-        Subscriber.Executing.subscribe(publisher);
-      }
       return _value;
     },
     set(v: any): boolean {
       if (get(NAME.isRenderPhase)?.()) {
-        // todo 应该是也有可能在触发的，可能还是需要新加一个变量
         _value = v;
       } else {
-        publisher.notify();
-        get(NAME.enqueueSetState)?.(this, name, v);
+        remote.push(v);
       }
       return true;
     },
   });
 }
 
-export default genDecorator<void, FieldContext>(Reactive, {
+export default genDecorator<void, FieldContext>(ReactiveAutowired, {
   postConstruct,
   optional: true,
 });

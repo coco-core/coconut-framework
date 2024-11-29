@@ -1,7 +1,15 @@
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {get, NAME} from "shared";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
-import {getFields, getBean} from "coco-ioc-container";
+// todo 这个应该也是通过applicationContext暴露
+import {getFields} from "coco-ioc-container";
+
+const getReactiveField = (ctor) => {
+  const fields = getFields(ctor, get(NAME.Reactive));
+  // todo: 如果还有其他的reactiveXXXX呢，优化一下
+  const autowiredFields = getFields(ctor, get(NAME.ReactiveAutowired));
+  return [...fields, ...autowiredFields];
+}
 
 const classComponentUpdater = {
   enqueueSetState(inst, field, payload, callback) {
@@ -28,8 +36,9 @@ function adoptClassInstance(workInProgress, instance) {
 }
 
 function constructClassInstance(workInProgress, ctor, props) {
-  const instance = getBean(ctor);
-  const fields = getFields(ctor, get(NAME.Reactive));
+  const appCtx = get(NAME.applicationContext);
+  const instance = appCtx.getBean(ctor);
+  const fields = getReactiveField(ctor);
   workInProgress.memoizedState = fields.reduce((prev, field) => {
     prev[field] = instance[field];
     return prev;
@@ -62,7 +71,7 @@ function updateClassInstance(
   processUpdateQueue(workInProgress, newProps, instance);
   newState = workInProgress.memoizedState;
 
-  for (const field of getFields(ctor, get(NAME.Reactive))) {
+  for (const field of getReactiveField(ctor)) {
     instance[field] = newState[field]
   }
 

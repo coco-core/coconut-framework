@@ -6,7 +6,7 @@ import BeanDefinition, {
   PostConstructFn,
 } from './bean-definition.ts';
 import { Scope } from '../decorator/scope.ts';
-import { getClsMetadata } from './metadata.ts';
+import { findScopeMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
 import {
   KindClass,
@@ -98,7 +98,7 @@ function getBean<T>(
     }
   }
   const cls = definition.cls;
-  const scope: Scope = <Scope>getClsMetadata(cls, Scope);
+  const scope = findScopeMetadata(cls);
   const isSingleton = scope?.value === Scope.Type.Singleton;
   if (isSingleton && singletonInstances.has(cls)) {
     return singletonInstances.get(cls);

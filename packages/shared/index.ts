@@ -1,3 +1,3 @@
 export * from './ReactSymbols';
 
-export { register, get, NAME } from './preventCircularDependency';
+export { register, get, clear, NAME } from './preventCircularDependency';

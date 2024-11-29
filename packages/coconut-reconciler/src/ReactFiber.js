@@ -59,7 +59,7 @@ export function createFiberFromTypeAndProps(
   } else if (typeof type === 'string') {
     fiberTag = HostComponent;
   } else {
-    throw new Error('Unknown component type: ' + typeof type);
+    throw new Error('Unknown component type: ' + type);
   }
   const fiber = createFiber(fiberTag, pendingProps, key);
   fiber.elementType = type;

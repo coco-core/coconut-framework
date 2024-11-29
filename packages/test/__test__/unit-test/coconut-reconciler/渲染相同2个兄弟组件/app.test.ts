@@ -35,7 +35,7 @@ describe('decorator', () => {
 
   test('正常渲染父子组件', async () => {
     const context = new ApplicationContext();
-    const container = render(ApplicationContext, renderApp, App);
+    const { container } = render(ApplicationContext, renderApp, App);
     const header = getByRole(container, 'heading');
     const buttons = queryAllByRole(header, 'button');
     expect(buttons).toHaveLength(2);

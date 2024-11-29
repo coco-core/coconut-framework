@@ -35,6 +35,10 @@ class Paths {
     return path.join(this.srcFolder, './service');
   }
 
+  get storeFolder() {
+    return path.join(this.srcFolder, './store');
+  }
+
   get componentFolder() {
     return path.join(this.srcFolder, './component');
   }

@@ -97,6 +97,13 @@ export const scan = (paths: Paths): ScanResult => {
       decorator: '@view',
     },
     {
+      // 共享数据
+      type: PATH_TYPE.FOLDER,
+      path: paths.storeFolder,
+      fileExt: '.ts',
+      decorator: '@store',
+    },
+    {
       type: PATH_TYPE.FILE,
       path: paths.applicationFile,
       fileExt: '.ts',

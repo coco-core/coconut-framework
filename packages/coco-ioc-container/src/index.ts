@@ -19,7 +19,6 @@ export { getBean } from './ioc-container/bean-factory.ts';
 export {
   addClassMetadata,
   addFieldMethodMetadata,
-  getClsMetadata,
   getFields,
 } from './ioc-container/metadata.ts';
 export { getDefinition } from './ioc-container/bean-factory.ts';

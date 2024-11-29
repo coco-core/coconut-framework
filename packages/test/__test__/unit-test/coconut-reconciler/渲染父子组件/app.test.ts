@@ -33,7 +33,7 @@ describe('decorator', () => {
   });
 
   test('正常渲染父子组件', async () => {
-    const container = render(ApplicationContext, renderApp, App);
+    const { container } = render(ApplicationContext, renderApp, App);
     const header = getByRole(container, 'heading');
     const button = getByRole(header, 'button');
     expect(button).toBeTruthy();
