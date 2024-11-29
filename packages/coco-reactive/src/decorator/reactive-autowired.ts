@@ -7,8 +7,8 @@ import {
   type ApplicationContext,
   type FieldContext,
 } from 'coco-ioc-container';
-import Duplicate from '../reactive-autowired/duplicate.ts';
-import type Source from '../reactive-autowired/source.ts';
+import type Central from '../reactive-autowired/central.ts';
+import { sym_source } from './store.ts';
 
 @target([Target.Type.Field])
 export class ReactiveAutowired extends Metadata {}
@@ -22,11 +22,9 @@ function postConstruct(
     get(NAME.enqueueSetState)?.(this, name, v);
   };
   const cls: any = metadata.value;
-  let _value: any = new cls();
-  // 获取cls对应的store
-  const source: Source = appCtx.getBean(cls)['source'];
-  const duplicate = new Duplicate(enqueueUpdate);
-  source.add(duplicate);
+  const central: Central = appCtx.getBean(cls)[sym_source];
+  central.fork().setEnqueueUpdate(enqueueUpdate);
+  let _value: any = central.pull();
   Object.defineProperty(this, name, {
     configurable: false,
     enumerable: true,
@@ -37,7 +35,7 @@ function postConstruct(
       if (get(NAME.isRenderPhase)?.()) {
         _value = v;
       } else {
-        source.enqueueAllDuplicateUpdate(v);
+        central.push(v);
       }
       return true;
     },
