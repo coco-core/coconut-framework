@@ -7,8 +7,8 @@ import {
   type ApplicationContext,
   type FieldContext,
 } from 'coco-ioc-container';
-import Publisher from '../reactive/publisher.ts';
-import Subscriber from '../reactive/subscriber.ts';
+import Publisher from '../memoized/publisher.ts';
+import Subscriber from '../memoized/subscriber.ts';
 
 @target([Target.Type.Field])
 export class Reactive extends Metadata {}
