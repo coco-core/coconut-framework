@@ -172,7 +172,9 @@ function findScopeMetadata(Cls: Class<any>): Scope | null {
     return scope as Scope;
   }
   for (const metadata of classMetadataList) {
-    const metadataMetadataList = getClsMetadata(metadata.constructor);
+    const metadataMetadataList = getClsMetadata(
+      <Class<any>>metadata.constructor
+    );
     // todo 所有的component都默认加一个scope对象，或者合并也行
     if (
       metadataMetadataList &&

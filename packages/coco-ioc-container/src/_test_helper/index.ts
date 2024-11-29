@@ -11,10 +11,12 @@ import {
 } from '../ioc-container/metadata.ts';
 import { clear as clearBeanDefinition } from '../ioc-container/bean-factory.ts';
 
+import { clear as clearPreventCircularDependency } from 'shared';
+
 function clear() {
   clearMetadata();
   clearBeanDefinition();
-  // todo clear preventCircularDependency.ts
+  clearPreventCircularDependency();
 }
 
 export {
