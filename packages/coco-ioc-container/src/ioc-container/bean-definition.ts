@@ -4,7 +4,7 @@ import {
   KindField,
   KindMethod,
 } from '../decorator/decorator-context.ts';
-import { getFieldMetadata } from './metadata.ts';
+import { getClassMetadata, getFieldMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
 import type { Metadata } from 'coco-ioc-container';
 
@@ -12,7 +12,10 @@ import type { Metadata } from 'coco-ioc-container';
  * @param metada 元数据实例对象
  * @param appCtx 全局的applicationContext对象
  */
-export type ClassPostConstructFn = () => void;
+export type ClassPostConstructFn = (
+  metadata: Metadata,
+  appCtx: ApplicationContext
+) => void;
 /**
  * @param metada 元数据实例对象
  * @param appCtx 全局的applicationContext对象
@@ -101,11 +104,19 @@ export function createBean(
   const bean = new cls();
   for (const pc of beanDefinition.postConstruct) {
     switch (pc.kind) {
-      case KindClass:
-        pc.fn.call(bean);
+      case KindClass: {
+        const metadata = getClassMetadata(cls, pc.metadataCls);
+        if (metadata.length === 1) {
+          pc.fn.call(bean, metadata[0], appCtx);
+        } else {
+          if (__TEST__) {
+            console.error('元数据应该只有一个', cls, pc.metadataCls);
+          }
+        }
         break;
+      }
       case KindField:
-      case KindMethod:
+      case KindMethod: {
         const metadata = getFieldMetadata(cls, pc.field, pc.metadataCls);
         if (metadata.length === 1) {
           pc.fn.call(bean, metadata[0], appCtx, pc.field);
@@ -115,6 +126,7 @@ export function createBean(
           }
         }
         break;
+      }
     }
   }
   return bean;

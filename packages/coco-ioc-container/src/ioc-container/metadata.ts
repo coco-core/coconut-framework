@@ -128,6 +128,14 @@ function getFieldMetadata(
   return def.fieldMetadata.get(field).filter((i) => i instanceof MetadataCls);
 }
 
+function getClassMetadata(Cls: Class<any>, MetadataCls: Class<any>) {
+  const def = metadataForBizClass.get(Cls);
+  if (!def) {
+    return [];
+  }
+  return def.classMetadata.filter((i) => i instanceof MetadataCls);
+}
+
 /**
  * 找到Cls上面的所有类元数据
  */
@@ -226,6 +234,7 @@ export {
   findScopeMetadata,
   getFields,
   getFieldMetadata,
+  getClassMetadata,
   clear,
   getMetadata,
   getAllMetadata,
