@@ -11,7 +11,7 @@ function postConstruct(
   name: string
 ) {
   const fn = this[name];
-  const subscriber = new Subscriber(fn, this);
+  const subscriber = new Subscriber(fn.bind(this));
   this[name] = subscriber.memoizedFn;
 }
 

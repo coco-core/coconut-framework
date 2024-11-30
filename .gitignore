@@ -135,3 +135,6 @@ dist
 # ide
 .idea
 .vscode
+
+# macos
+.DS_Store
