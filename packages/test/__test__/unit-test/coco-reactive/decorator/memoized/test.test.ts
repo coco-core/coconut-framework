@@ -8,8 +8,10 @@ let ApplicationContext;
 let renderApp;
 let throwError;
 let Button;
-let Button1;
 let memoizedFn;
+let Button1;
+let Button2;
+let memoizedFn2;
 describe('memoized', () => {
   beforeEach(async () => {
     try {
@@ -18,6 +20,8 @@ describe('memoized', () => {
       Button = (await import('./src/view/button.tsx')).default;
       memoizedFn = (await import('./src/view/button.tsx')).memoizedFn;
       Button1 = (await import('./src/view/button1.tsx')).default;
+      Button2 = (await import('./src/view/button2.tsx')).default;
+      memoizedFn2 = (await import('./src/view/button2.tsx')).memoizedFn;
       renderApp = (await import('coco-mvc')).renderApp;
     } catch (e) {
       throwError = true;
@@ -57,6 +61,38 @@ describe('memoized', () => {
     buttons[0].click();
     await waitFor(async () => {
       expect(getByText(container, '张三：2分')).toBeTruthy();
+    });
+  });
+
+  test('memoized先依赖reactive时，再不依赖reactive，然后修改reactive，memoized不会重新计算', async () => {
+    const { container } = render(ApplicationContext, renderApp, Button2);
+    const buttons = queryAllByRole(container, 'button');
+    expect(getByText(container, '张三:1分')).toBeTruthy();
+    expect(memoizedFn2).toHaveBeenCalledTimes(1);
+    buttons[1].click();
+    await waitFor(async () => {
+      expect(getByText(container, '张三1:1分')).toBeTruthy();
+      expect(memoizedFn2).toHaveBeenCalledTimes(2);
+      buttons[2].click();
+      await waitFor(async () => {
+        expect(getByText(container, '张三1:2分')).toBeTruthy();
+        expect(memoizedFn2).toHaveBeenCalledTimes(3);
+        buttons[0].click();
+        await waitFor(async () => {
+          expect(getByText(container, '2分')).toBeTruthy();
+          expect(memoizedFn2).toHaveBeenCalledTimes(4);
+          buttons[2].click();
+          await waitFor(async () => {
+            expect(getByText(container, '3分')).toBeTruthy();
+            expect(memoizedFn2).toHaveBeenCalledTimes(5);
+            buttons[1].click();
+            await waitFor(async () => {
+              expect(getByText(container, '3分')).toBeTruthy();
+              expect(memoizedFn2).toHaveBeenCalledTimes(5);
+            });
+          });
+        });
+      });
     });
   });
 });

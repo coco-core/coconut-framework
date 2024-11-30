@@ -47,7 +47,7 @@ export function customPostConstruct(hooks?: {
     };
     const initRtn = hooks?.init?.(metadata, appCtx, name, enqueueUpdate);
     let _value: any = hooks?.initValue ? hooks.initValue(initRtn) : this[name];
-    const publisher = new Publisher();
+    const publisher = new Publisher(name);
     Object.defineProperty(this, name, {
       configurable: false,
       enumerable: true,

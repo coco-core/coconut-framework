@@ -1,4 +1,5 @@
 import Publisher from './publisher.ts';
+import publisher from './publisher.ts';
 
 class Subscriber {
   static Executing: Subscriber;
@@ -17,15 +18,20 @@ class Subscriber {
   }
 
   subscribe = (publisher: Publisher) => {
-    if (this.publishers.indexOf(publisher) === -1) {
-      publisher.addListener(this);
-      this.publishers.push(publisher);
-    }
+    publisher.addListener(this);
+    this.publishers.push(publisher);
   };
 
   // **必须是field，绑定当前this对象**
   memoizedFn = () => {
     if (this.isDirty) {
+      {
+        // clear
+        for (const pub of this.publishers) {
+          pub.removeListener(this);
+        }
+        this.publishers = [];
+      }
       const childSubscriber = Subscriber.Executing;
       Subscriber.Executing = this;
 
