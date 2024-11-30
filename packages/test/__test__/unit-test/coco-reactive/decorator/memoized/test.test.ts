@@ -12,6 +12,9 @@ let memoizedFn;
 let Button1;
 let Button2;
 let memoizedFn2;
+let Button3;
+let memoizedFn31;
+let memoizedFn32;
 describe('memoized', () => {
   beforeEach(async () => {
     try {
@@ -22,6 +25,9 @@ describe('memoized', () => {
       Button1 = (await import('./src/view/button1.tsx')).default;
       Button2 = (await import('./src/view/button2.tsx')).default;
       memoizedFn2 = (await import('./src/view/button2.tsx')).memoizedFn;
+      Button3 = (await import('./src/view/button3.tsx')).default;
+      memoizedFn31 = (await import('./src/view/button3.tsx')).memoizedFn1;
+      memoizedFn32 = (await import('./src/view/button3.tsx')).memoizedFn2;
       renderApp = (await import('coco-mvc')).renderApp;
     } catch (e) {
       throwError = true;
@@ -64,7 +70,7 @@ describe('memoized', () => {
     });
   });
 
-  test('memoized先依赖reactive时，再不依赖reactive，然后修改reactive，memoized不会重新计算', async () => {
+  test('memoized取消依赖reactive时，再修改reactive，memoized不会重新计算', async () => {
     const { container } = render(ApplicationContext, renderApp, Button2);
     const buttons = queryAllByRole(container, 'button');
     expect(getByText(container, '张三:1分')).toBeTruthy();
@@ -89,6 +95,44 @@ describe('memoized', () => {
             await waitFor(async () => {
               expect(getByText(container, '3分')).toBeTruthy();
               expect(memoizedFn2).toHaveBeenCalledTimes(5);
+            });
+          });
+        });
+      });
+    });
+  });
+
+  test('memoized a 依赖memoized b, memoized b取消依赖reactive，再修改reactive，memoized a也不会重新计算', async () => {
+    const { container } = render(ApplicationContext, renderApp, Button3);
+    const buttons = queryAllByRole(container, 'button');
+    expect(getByText(container, '张三:1分')).toBeTruthy();
+    expect(memoizedFn31).toHaveBeenCalledTimes(1);
+    expect(memoizedFn32).toHaveBeenCalledTimes(1);
+    buttons[1].click();
+    await waitFor(async () => {
+      expect(getByText(container, '张三1:1分')).toBeTruthy();
+      expect(memoizedFn31).toHaveBeenCalledTimes(2);
+      expect(memoizedFn32).toHaveBeenCalledTimes(2);
+      buttons[2].click();
+      await waitFor(async () => {
+        expect(getByText(container, '张三1:2分')).toBeTruthy();
+        expect(memoizedFn31).toHaveBeenCalledTimes(3);
+        expect(memoizedFn32).toHaveBeenCalledTimes(3);
+        buttons[0].click();
+        await waitFor(async () => {
+          expect(getByText(container, '2分')).toBeTruthy();
+          expect(memoizedFn31).toHaveBeenCalledTimes(4);
+          expect(memoizedFn32).toHaveBeenCalledTimes(4);
+          buttons[2].click();
+          await waitFor(async () => {
+            expect(getByText(container, '3分')).toBeTruthy();
+            expect(memoizedFn31).toHaveBeenCalledTimes(5);
+            expect(memoizedFn32).toHaveBeenCalledTimes(5);
+            buttons[1].click();
+            await waitFor(async () => {
+              expect(getByText(container, '3分')).toBeTruthy();
+              expect(memoizedFn31).toHaveBeenCalledTimes(5);
+              expect(memoizedFn32).toHaveBeenCalledTimes(5);
             });
           });
         });
