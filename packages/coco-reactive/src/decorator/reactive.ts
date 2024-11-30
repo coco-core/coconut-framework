@@ -6,11 +6,16 @@ import {
   genDecorator,
   type ApplicationContext,
   type FieldContext,
+  type ClassContext,
 } from 'coco-ioc-container';
 import Publisher from '../memoized/publisher.ts';
 import Subscriber from '../memoized/subscriber.ts';
 
-@target([Target.Type.Field])
+/**
+ * 加在field表明是响应式
+ * 加在metadata上用于自定义reactive元数据
+ */
+@target([Target.Type.Field, Target.Type.Class])
 export class Reactive extends Metadata {}
 
 export function customPostConstruct(hooks?: {
@@ -71,7 +76,7 @@ export function customPostConstruct(hooks?: {
 
 const postConstruct = customPostConstruct();
 
-export default genDecorator<void, FieldContext>(Reactive, {
+export default genDecorator<void, FieldContext | ClassContext>(Reactive, {
   postConstruct,
   optional: true,
 });

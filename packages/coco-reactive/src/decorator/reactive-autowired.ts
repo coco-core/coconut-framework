@@ -7,8 +7,9 @@ import {
 } from 'coco-ioc-container';
 import Remote from '../reactive-autowired/remote.ts';
 import { sym_remote } from './store.ts';
-import { customPostConstruct } from './reactive.ts';
+import reactive, { customPostConstruct } from './reactive.ts';
 
+@reactive()
 @target([Target.Type.Field])
 export class ReactiveAutowired extends Metadata {}
 

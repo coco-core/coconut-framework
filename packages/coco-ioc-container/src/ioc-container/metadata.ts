@@ -100,8 +100,17 @@ function addFieldMethodMetadata(
   fieldMetas.push(metadata);
 }
 
-// 找标记特定注解的所有字段
-function getFields(Cls: Class<any>, MetadataCls: Class<any>) {
+/**
+ * 返回包含特定元数据的所有field
+ * @param Cls 指定类
+ * @param MetadataCls 要包含的元数据类
+ * @param includeCompound 是否也返回包含了MetadataCls的元数据
+ */
+function getFields(
+  Cls: Class<any>,
+  MetadataCls: Class<any>,
+  includeCompound: boolean = false
+): Metadata[] {
   const def = metadataForBizClass.get(Cls);
   if (!def) {
     return [];
@@ -110,6 +119,13 @@ function getFields(Cls: Class<any>, MetadataCls: Class<any>) {
   for (const [key, value] of def.fieldMetadata.entries()) {
     if (value.find((i) => i instanceof MetadataCls)) {
       fields.push(key);
+    } else if (includeCompound) {
+      for (const metadata of value) {
+        const def = metadataForMetadata.get(<Class<any>>metadata.constructor);
+        if (def.classMetadata.find((i) => i instanceof MetadataCls)) {
+          fields.push(key);
+        }
+      }
     }
   }
   return fields;
