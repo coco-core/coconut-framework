@@ -28,7 +28,7 @@ class Remote {
   unsubscribe() {}
 
   public push(newState: any) {
-    for (const key in Object.keys(this.state)) {
+    for (const key of Object.keys(this.state)) {
       this.state[key] = newState[key];
     }
     for (let i = 0; i < this.locals.length; i++) {
