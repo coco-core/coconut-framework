@@ -29,10 +29,10 @@ export {
   store,
   Store,
 } from 'coco-reactive';
+export { default as bind, Bind } from './decorator/bind.ts';
+export { default as globalData, GlobalData } from './decorator/global-data.ts';
 import { default as view, View } from './decorator/view.ts';
 export { view, View };
-export { default as bind, Bind } from './decorator/bind.ts';
-
 export {
   default as webApplication,
   WebApplication,

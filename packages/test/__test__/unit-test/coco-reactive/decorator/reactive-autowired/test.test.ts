@@ -55,6 +55,7 @@ describe('store', () => {
     const { ctx } = render(ApplicationContext, renderApp, Page);
     const form = ctx.getBean(Form);
     const detail = ctx.getBean(Detail);
+    // todo userInfo是否需要是UserInfo的实例
     expect(form.userInfo).toBeInstanceOf(UserInfo);
     expect(detail.userInfo).toBeInstanceOf(UserInfo);
     expect(form.userInfo === detail.userInfo).toBe(false);

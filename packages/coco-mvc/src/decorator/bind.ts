@@ -1,6 +1,3 @@
-/**
- * 将类方法绑定到类实例上
- */
 import { Metadata, target, Target, genDecorator } from 'coco-ioc-container';
 import type { ApplicationContext, MethodContext } from 'coco-ioc-container';
 
