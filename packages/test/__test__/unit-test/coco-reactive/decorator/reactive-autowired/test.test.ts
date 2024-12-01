@@ -78,18 +78,23 @@ describe('store', () => {
     const buttons = getAllByRole(container, 'button');
     const input = getByRole(container, 'textbox');
     expect(getByText(input, 'input:张三')).toBeTruthy();
+    const heading = getByRole(container, 'heading');
+    expect(getByText(heading, '展示:张三')).toBeTruthy();
     expect(memoizedFn1).toHaveBeenCalledTimes(1);
     buttons[1].click();
     await waitFor(async () => {
       expect(getByText(input, 'input:张三1')).toBeTruthy();
+      expect(getByText(heading, '展示:张三1')).toBeTruthy();
       expect(memoizedFn1).toHaveBeenCalledTimes(2);
       buttons[0].click();
       await waitFor(async () => {
         expect(getByText(input, '不依赖reactiveAutowired')).toBeTruthy();
+        expect(getByText(heading, '展示:张三1')).toBeTruthy();
         expect(memoizedFn1).toHaveBeenCalledTimes(3);
         buttons[1].click();
         await waitFor(async () => {
           expect(getByText(input, '不依赖reactiveAutowired')).toBeTruthy();
+          expect(getByText(heading, '展示:张三11')).toBeTruthy();
           expect(memoizedFn1).toHaveBeenCalledTimes(3);
         });
       });
@@ -101,31 +106,38 @@ describe('store', () => {
     const buttons = getAllByRole(container, 'button');
     const input = getByRole(container, 'textbox');
     expect(getByText(input, '张三:1分')).toBeTruthy();
+    const heading = getByRole(container, 'heading');
+    expect(getByText(heading, '展示:张三')).toBeTruthy();
     expect(memoizedFn21).toHaveBeenCalledTimes(1);
     expect(memoizedFn22).toHaveBeenCalledTimes(1);
     buttons[1].click();
     await waitFor(async () => {
       expect(getByText(input, '张三四:1分')).toBeTruthy();
+      expect(getByText(heading, '展示:张三四')).toBeTruthy();
       expect(memoizedFn21).toHaveBeenCalledTimes(2);
       expect(memoizedFn22).toHaveBeenCalledTimes(2);
       buttons[2].click();
       await waitFor(async () => {
         expect(getByText(input, '张三四:2分')).toBeTruthy();
+        expect(getByText(heading, '展示:张三四')).toBeTruthy();
         expect(memoizedFn21).toHaveBeenCalledTimes(3);
         expect(memoizedFn22).toHaveBeenCalledTimes(3);
         buttons[0].click();
         await waitFor(async () => {
           expect(getByText(input, '匿名:2分')).toBeTruthy();
+          expect(getByText(heading, '展示:张三四')).toBeTruthy();
           expect(memoizedFn21).toHaveBeenCalledTimes(4);
           expect(memoizedFn22).toHaveBeenCalledTimes(4);
           buttons[2].click();
           await waitFor(async () => {
             expect(getByText(input, '匿名:3分')).toBeTruthy();
+            expect(getByText(heading, '展示:张三四')).toBeTruthy();
             expect(memoizedFn21).toHaveBeenCalledTimes(5);
             expect(memoizedFn22).toHaveBeenCalledTimes(5);
             buttons[1].click();
             await waitFor(async () => {
               expect(getByText(input, '匿名:3分')).toBeTruthy();
+              expect(getByText(heading, '展示:张三四四')).toBeTruthy();
               expect(memoizedFn21).toHaveBeenCalledTimes(5);
               expect(memoizedFn22).toHaveBeenCalledTimes(5);
             });
