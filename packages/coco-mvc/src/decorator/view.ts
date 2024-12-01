@@ -1,6 +1,3 @@
-/**
- * 视图层注解
- */
 import {
   ClassContext,
   Metadata,

@@ -39,6 +39,10 @@ class Paths {
     return path.join(this.srcFolder, './store');
   }
 
+  get globalDataFolder() {
+    return path.join(this.srcFolder, './global-data');
+  }
+
   get componentFolder() {
     return path.join(this.srcFolder, './component');
   }

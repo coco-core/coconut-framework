@@ -1,6 +1,3 @@
-/**
- * web应用装饰器
- */
 import {
   ClassContext,
   Metadata,
