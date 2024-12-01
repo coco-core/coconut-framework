@@ -18,8 +18,11 @@ class Subscriber {
   }
 
   subscribe = (publisher: Publisher) => {
-    publisher.addListener(this);
-    this.publishers.push(publisher);
+    if (this.publishers.indexOf(publisher) === -1) {
+      // 可能存在一个memoized函数中多次访问reactive变量的情况的
+      publisher.addListener(this);
+      this.publishers.push(publisher);
+    }
   };
 
   // **必须是field，绑定当前this对象**
@@ -32,18 +35,17 @@ class Subscriber {
         }
         this.publishers = [];
       }
-      const childSubscriber = Subscriber.Executing;
-      Subscriber.Executing = this;
 
       {
+        const childSubscriber = Subscriber.Executing;
+        Subscriber.Executing = this;
         this.value = this.fn();
+        Subscriber.Executing = childSubscriber;
+        if (childSubscriber) {
+          this.publishers.forEach(childSubscriber.subscribe);
+        }
       }
       this.isDirty = false;
-
-      if (childSubscriber) {
-        this.publishers.forEach(childSubscriber.subscribe);
-      }
-      Subscriber.Executing = childSubscriber;
     }
     return this.value;
   };

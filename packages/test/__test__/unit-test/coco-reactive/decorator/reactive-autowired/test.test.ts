@@ -2,6 +2,7 @@ import { build } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path.ts';
 import { render } from '../../../../helper/render.tsx';
 import {
+  getAllByRole,
   getByLabelText,
   getByRole,
   getByText,
@@ -17,6 +18,8 @@ let Page;
 let Form;
 let Detail;
 let UserInfo;
+let Page1;
+let memoizedFn1;
 let renderApp;
 describe('store', () => {
   beforeEach(async () => {
@@ -26,6 +29,8 @@ describe('store', () => {
       Page = (await import(cocoIdxStr)).Page;
       Form = (await import(cocoIdxStr)).Form;
       Detail = (await import(cocoIdxStr)).Detail;
+      Page1 = (await import(cocoIdxStr)).Page1;
+      memoizedFn1 = (await import('./src/view/form1.tsx')).memoizedFn;
       UserInfo = (await import(cocoIdxStr)).UserInfo;
       renderApp = (await import('coco-mvc')).renderApp;
     } catch (e) {
@@ -40,7 +45,7 @@ describe('store', () => {
     throwError = false;
   });
 
-  test('不同的组件注入不同的全局实例', async () => {
+  test('不同的组件注入不同的实例', async () => {
     const { ctx } = render(ApplicationContext, renderApp, Page);
     const form = ctx.getBean(Form);
     const detail = ctx.getBean(Detail);
@@ -59,6 +64,29 @@ describe('store', () => {
     await waitFor(() => {
       expect(getByText(input, 'input:李四')).toBeTruthy();
       expect(getByText(heading, '展示:李四')).toBeTruthy();
+    });
+  });
+
+  test('单个组件内，memoized可以依赖reactiveAutowired，也可以取消依赖', async () => {
+    const { container } = render(ApplicationContext, renderApp, Page1);
+    const buttons = getAllByRole(container, 'button');
+    const input = getByRole(container, 'textbox');
+    expect(getByText(input, 'input:张三')).toBeTruthy();
+    expect(memoizedFn1).toHaveBeenCalledTimes(1);
+    buttons[1].click();
+    await waitFor(async () => {
+      expect(getByText(input, 'input:张三1')).toBeTruthy();
+      expect(memoizedFn1).toHaveBeenCalledTimes(2);
+      buttons[0].click();
+      await waitFor(async () => {
+        expect(getByText(input, '不依赖reactiveAutowired')).toBeTruthy();
+        expect(memoizedFn1).toHaveBeenCalledTimes(3);
+        buttons[1].click();
+        await waitFor(async () => {
+          expect(getByText(input, '不依赖reactiveAutowired')).toBeTruthy();
+          expect(memoizedFn1).toHaveBeenCalledTimes(3);
+        });
+      });
     });
   });
 });
