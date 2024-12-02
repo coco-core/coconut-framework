@@ -21,6 +21,11 @@ function legacyRenderSubtreeIntoContainer(
   let root;
   if (!maybeRoot) {
     root = legacyCreateRootFromDOMContainer(container, children);
+  } else {
+    root = maybeRoot;
+    flushSync(() => {
+      updateContainer(children, root, parentComponent, callback);
+    })
   }
 }
 

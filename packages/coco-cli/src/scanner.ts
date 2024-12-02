@@ -69,6 +69,13 @@ export const scan = (paths: Paths): ScanResult => {
       decorator: '@configuration',
     },
     {
+      // 页面
+      type: PATH_TYPE.FOLDER,
+      path: paths.pageFolder,
+      fileExt: '.tsx',
+      decorator: '@route',
+    },
+    {
       // 控制器
       type: PATH_TYPE.FOLDER,
       path: paths.controllerFolder,

@@ -10,3 +10,11 @@ export function render(
   renderApp(<ViewComponent />, container);
   return { container, ctx };
 }
+
+export function renderWithContainer(
+  container: any,
+  renderApp: any,
+  ViewComponent: any
+) {
+  renderApp(<ViewComponent />, container);
+}

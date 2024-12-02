@@ -5,6 +5,7 @@
       "coconut-reconciler": ["packages/coconut-reconciler/src/index.js"],
       "coco-ioc-container": ["packages/coco-ioc-container/src/index.ts"],
       "coco-reactive": ["packages/coco-reactive/src/index.ts"],
+      "coco-router": ["packages/coco-router/src/index.ts"],
       "shared": ["packages/shared/index.ts"]
     },
     "typeRoots": ["types", "./node_modules/@types"]
