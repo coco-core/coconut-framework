@@ -38,6 +38,7 @@ class ApplicationContext {
     this.buildMetadata();
     this.buildBeanDefinition();
     // 清空装饰器参数记录 todo 是否可以挪到this.buildBeanDefinition的上面
+    this.callInitHook();
     clearDecoratorParams();
     register(NAME.applicationContext, this);
   }
@@ -181,6 +182,18 @@ class ApplicationContext {
           name: param.name,
         });
       });
+    }
+  }
+
+  private callInitHook() {
+    const called = new Set();
+    for (const [beDecoratedCls, params] of get().entries()) {
+      for (const { metadataClass, init } of params) {
+        if (init && !called.has(metadataClass)) {
+          called.add(metadataClass);
+          init(this);
+        }
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 /**
- * ioc组件
- * 只有ioc组件才能实例化，同时被component装饰的元数据对应的装饰器也可以被实例化
+ * ioc组件，只有ioc组件才能实例化
+ * 被@component装饰的组件是ioc组件，被@component装饰的元数据类对应的装饰器装饰的组件也是ioc组件
  */
 import Metadata from './metadata';
 import target, { Target } from './target.ts';

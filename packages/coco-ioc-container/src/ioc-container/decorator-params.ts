@@ -12,6 +12,7 @@ type params = {
   metadataParam: any;
   // todo 测试是否支持Symbol类型
   name: Field;
+  init?: Function;
   postConstruct?: PostConstructFn;
 };
 const decoratorParamMap: Map<Class<any>, params[]> = new Map();
@@ -25,6 +26,10 @@ export function recordDecoratorParams(
   beDecoratedCls: Class<any>,
   params: params
 ) {
+  if (!beDecoratedCls) {
+    console.error('错误的装饰目标类', beDecoratedCls);
+    return;
+  }
   if (!decoratorParamMap.has(beDecoratedCls)) {
     decoratorParamMap.set(beDecoratedCls, []);
   }

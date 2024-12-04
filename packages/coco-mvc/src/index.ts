@@ -29,7 +29,7 @@ export {
   store,
   Store,
 } from 'coco-reactive';
-export { route, Route, router, Router } from 'coco-router';
+export { route, Route } from 'coco-router';
 export { default as bind, Bind } from './decorator/bind.ts';
 export { default as globalData, GlobalData } from './decorator/global-data.ts';
 import { default as view, View } from './decorator/view.ts';

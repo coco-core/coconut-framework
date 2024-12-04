@@ -2,17 +2,12 @@ import {
   ClassContext,
   Metadata,
   genDecorator,
-  component,
   target,
   Target,
-  scope,
-  Scope,
   type ApplicationContext,
 } from 'coco-ioc-container';
 
 @target([Target.Type.Class])
-@scope(Scope.Type.Prototype)
-@component()
 export class Route extends Metadata {
   value: string;
 }
