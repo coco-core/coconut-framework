@@ -102,6 +102,7 @@ export function createBean(
 ) {
   const cls = beanDefinition.cls;
   const bean = new cls();
+  bean?.init?.(appCtx);
   for (const pc of beanDefinition.postConstruct) {
     switch (pc.kind) {
       case KindClass: {

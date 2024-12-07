@@ -13,33 +13,35 @@ import { recordDecoratorParams } from '../ioc-container/decorator-params.ts';
 
 interface Option {
   optional?: true;
-  // 在实例化ioc组件后被调用
+  // 初始化装饰器
+  init?: Function;
+  // 如果装饰器刚好装饰了ioc组件，那么在实例化后立刻被调用
   postConstruct?: PostConstructFn;
 }
 
 // 适用于装饰器不装饰自己元数据类，且useParams是必填的场景
 function genDecorator<UserParam, C extends Context>(
   metadataCls: MetadataClass,
-  option?: { postConstruct?: PostConstructFn }
+  option?: { postConstruct?: PostConstructFn; init?: Function }
 ): (userParam: UserParam) => Decorator<C>;
 // 适用于装饰器不装饰自己元数据类，且useParams是可选的场景
 function genDecorator<UserParam, C extends Context>(
   metadataCls: MetadataClass,
-  option: { optional: true; postConstruct?: PostConstructFn }
+  option: { optional: true; postConstruct?: PostConstructFn; init?: Function }
 ): (userParam?: UserParam) => Decorator<C>;
 // 适用于装饰器装饰自己元数据类，且useParams是必填的场景
 function genDecorator<UserParam, C extends Context>(
   metadataClsName: string,
-  option?: { postConstruct?: PostConstructFn }
+  option?: { postConstruct?: PostConstructFn; init?: Function }
 ): (userParam: UserParam, decorateSelf?: true) => Decorator<C>;
 // 适用于装饰器装饰自己元数据类，且useParams是可选的的场景
 function genDecorator<UserParam, C extends Context>(
   metadataClsName: string,
-  option: { optional: true; postConstruct?: PostConstructFn }
+  option: { optional: true; postConstruct?: PostConstructFn; init?: Function }
 ): (userParam?: UserParam, decorateSelf?: true) => Decorator<C>;
 function genDecorator<UserParam, C extends Context>(
   metadataClsOrName: MetadataClass | string,
-  { postConstruct }: Option = {}
+  { postConstruct, init }: Option = {}
 ): (userParam: UserParam, decorateSelf?: true) => Decorator<C> {
   const decoratorName =
     typeof metadataClsOrName === 'string'
@@ -66,6 +68,7 @@ function genDecorator<UserParam, C extends Context>(
                 metadataClass: value,
                 metadataParam: userParam,
                 name: lowercaseFirstLetter(context.name),
+                init,
                 postConstruct,
               });
             }
@@ -75,6 +78,7 @@ function genDecorator<UserParam, C extends Context>(
               metadataClass: metadataCls,
               metadataParam: userParam,
               name: lowercaseFirstLetter(context.name),
+              init,
               postConstruct,
             });
           }
@@ -94,6 +98,7 @@ function genDecorator<UserParam, C extends Context>(
               metadataClass: metadataCls,
               metadataParam: userParam,
               name: context.name,
+              init,
               postConstruct,
             });
             break;

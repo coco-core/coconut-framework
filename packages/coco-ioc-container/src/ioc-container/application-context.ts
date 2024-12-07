@@ -4,6 +4,7 @@ import {
   addClassMetadata,
   addFieldMethodMetadata,
   getAllMetadata,
+  getByClassMetadata,
 } from './metadata.ts';
 import {
   get,
@@ -37,6 +38,7 @@ class ApplicationContext {
     // todo 参数校验
     this.buildMetadata();
     this.buildBeanDefinition();
+    this.callInitHook();
     // 清空装饰器参数记录 todo 是否可以挪到this.buildBeanDefinition的上面
     clearDecoratorParams();
     register(NAME.applicationContext, this);
@@ -45,6 +47,10 @@ class ApplicationContext {
   public getBean<T>(name: string): T;
   public getBean<T>(nameOrCls: Class<T> | string): T {
     return getBean(nameOrCls, this);
+  }
+
+  public getByClassMetadata(metadataClass: Class<any>) {
+    return getByClassMetadata(metadataClass);
   }
 
   /**
@@ -181,6 +187,18 @@ class ApplicationContext {
           name: param.name,
         });
       });
+    }
+  }
+
+  private callInitHook() {
+    const called = new Set();
+    for (const [beDecoratedCls, params] of get().entries()) {
+      for (const { metadataClass, init } of params) {
+        if (init && !called.has(metadataClass)) {
+          called.add(metadataClass);
+          init(this);
+        }
+      }
     }
   }
 }

@@ -27,6 +27,10 @@ class Paths {
     return path.join(this.srcFolder, './config');
   }
 
+  get pageFolder() {
+    return path.join(this.srcFolder, './page');
+  }
+
   get controllerFolder() {
     return path.join(this.srcFolder, './controller');
   }
