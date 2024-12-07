@@ -207,6 +207,23 @@ function findScopeMetadata(Cls: Class<any>): Scope | null {
   return null;
 }
 
+// 找到特定类装饰器
+function getByClassMetadata(
+  MetadataCls: Class<any>
+): Map<Class<any>, Metadata> {
+  const rlt = new Map<Class<any>, Metadata>();
+  for (const [
+    beDecoratedCls,
+    { classMetadata },
+  ] of metadataForBizClass.entries()) {
+    const find = classMetadata.find((i) => i instanceof MetadataCls);
+    if (find) {
+      rlt.set(beDecoratedCls, find);
+    }
+  }
+  return rlt;
+}
+
 function clear() {
   metadataForMetadata.clear();
   metadataForBizClass.clear();
@@ -253,6 +270,7 @@ export {
   getFields,
   getFieldMetadata,
   getClassMetadata,
+  getByClassMetadata,
   clear,
   getMetadata,
   getAllMetadata,

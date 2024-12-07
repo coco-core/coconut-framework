@@ -30,6 +30,9 @@ export function recordDecoratorParams(
     console.error('错误的装饰目标类', beDecoratedCls);
     return;
   }
+
+  // todo 校验：不能有自带的constructor
+
   if (!decoratorParamMap.has(beDecoratedCls)) {
     decoratorParamMap.set(beDecoratedCls, []);
   }

@@ -4,6 +4,7 @@ import {
   addClassMetadata,
   addFieldMethodMetadata,
   getAllMetadata,
+  getByClassMetadata,
 } from './metadata.ts';
 import {
   get,
@@ -46,6 +47,10 @@ class ApplicationContext {
   public getBean<T>(name: string): T;
   public getBean<T>(nameOrCls: Class<T> | string): T {
     return getBean(nameOrCls, this);
+  }
+
+  public getByClassMetadata(metadataClass: Class<any>) {
+    return getByClassMetadata(metadataClass);
   }
 
   /**
