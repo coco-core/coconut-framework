@@ -1,6 +1,5 @@
 import { build } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path.ts';
-import { render } from '../../../../helper/render.tsx';
 import {
   getAllByRole,
   getByLabelText,
@@ -13,6 +12,8 @@ import {
 import { _test_helper } from 'coco-mvc';
 
 let ApplicationContext;
+let WebRender;
+let HistoryRouter;
 let throwError;
 let Page;
 let Form;
@@ -23,12 +24,14 @@ let memoizedFn1;
 let Page2;
 let memoizedFn21;
 let memoizedFn22;
-let renderApp;
+
 describe('store', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
+      WebRender = (await import('coco-mvc')).WebRender;
+      HistoryRouter = (await import('coco-mvc')).HistoryRouter;
       Page = (await import(cocoIdxStr)).Page;
       Form = (await import(cocoIdxStr)).Form;
       Detail = (await import(cocoIdxStr)).Detail;
@@ -38,7 +41,6 @@ describe('store', () => {
       memoizedFn21 = (await import('./src/view/form2.tsx')).memoizedFn;
       memoizedFn22 = (await import('./src/view/form2.tsx')).memoizedFn1;
       UserInfo = (await import(cocoIdxStr)).UserInfo;
-      renderApp = (await import('coco-mvc')).renderApp;
     } catch (e) {
       console.info(e);
       throwError = true;
@@ -46,13 +48,19 @@ describe('store', () => {
   });
 
   afterEach(async () => {
+    _test_helper.mvc.cleanRender();
     _test_helper.iocContainer.clear();
     jest.resetModules();
     throwError = false;
   });
 
   test('不同的组件注入不同的实例', async () => {
-    const { ctx } = render(ApplicationContext, renderApp, Page);
+    const { ctx } = _test_helper.mvc.render(
+      ApplicationContext,
+      Page,
+      WebRender,
+      HistoryRouter
+    );
     const form = ctx.getBean(Form);
     const detail = ctx.getBean(Detail);
     // todo userInfo是否需要是UserInfo的实例
@@ -62,7 +70,12 @@ describe('store', () => {
   });
 
   test('一个组件修改了store的reactive属性，其他组件也会同步更新', async () => {
-    const { container } = render(ApplicationContext, renderApp, Page);
+    const { container } = _test_helper.mvc.render(
+      ApplicationContext,
+      Page,
+      WebRender,
+      HistoryRouter
+    );
     const input = getByRole(container, 'textbox');
     expect(getByText(input, 'input:张三')).toBeTruthy();
     const heading = getByRole(container, 'heading');
@@ -75,7 +88,12 @@ describe('store', () => {
   });
 
   test('单个组件内，memoized可以依赖reactiveAutowired，也可以取消依赖', async () => {
-    const { container } = render(ApplicationContext, renderApp, Page1);
+    const { container } = _test_helper.mvc.render(
+      ApplicationContext,
+      Page1,
+      WebRender,
+      HistoryRouter
+    );
     const buttons = getAllByRole(container, 'button');
     const input = getByRole(container, 'textbox');
     expect(getByText(input, 'input:张三')).toBeTruthy();
@@ -103,7 +121,12 @@ describe('store', () => {
   });
 
   test('单个组件内部，memoized a 依赖memoized b, memoized b取消依赖reactiveAutowired，再修改reactiveAutowired，memoized a也不会重新计算', async () => {
-    const { container } = render(ApplicationContext, renderApp, Page2);
+    const { container } = _test_helper.mvc.render(
+      ApplicationContext,
+      Page2,
+      WebRender,
+      HistoryRouter
+    );
     const buttons = getAllByRole(container, 'button');
     const input = getByRole(container, 'textbox');
     expect(getByText(input, '张三:1分')).toBeTruthy();

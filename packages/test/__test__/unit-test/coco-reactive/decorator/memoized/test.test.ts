@@ -1,11 +1,11 @@
 import { _test_helper } from 'coco-mvc';
 import { build } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
-import { render } from '../../../../helper/render';
 import { getByText, queryAllByRole, waitFor } from '@testing-library/dom';
 
 let ApplicationContext;
-let renderApp;
+let WebRender;
+let HistoryRouter;
 let throwError;
 let Button;
 let memoizedFn;
@@ -20,6 +20,8 @@ describe('memoized', () => {
     try {
       build(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
+      WebRender = (await import('coco-mvc')).WebRender;
+      HistoryRouter = (await import('coco-mvc')).HistoryRouter;
       Button = (await import('./src/view/button.tsx')).default;
       memoizedFn = (await import('./src/view/button.tsx')).memoizedFn;
       Button1 = (await import('./src/view/button1.tsx')).default;
@@ -28,7 +30,6 @@ describe('memoized', () => {
       Button3 = (await import('./src/view/button3.tsx')).default;
       memoizedFn31 = (await import('./src/view/button3.tsx')).memoizedFn1;
       memoizedFn32 = (await import('./src/view/button3.tsx')).memoizedFn2;
-      renderApp = (await import('coco-mvc')).renderApp;
     } catch (e) {
       throwError = true;
     }
@@ -36,12 +37,18 @@ describe('memoized', () => {
 
   afterEach(async () => {
     _test_helper.iocContainer.clear();
+    _test_helper.mvc.cleanRender();
     jest.resetModules();
     throwError = false;
   });
 
   test('memoized直接依赖reactive，且可以缓存上次的值', async () => {
-    const { container } = render(ApplicationContext, renderApp, Button);
+    const { container } = _test_helper.mvc.render(
+      ApplicationContext,
+      Button,
+      WebRender,
+      HistoryRouter
+    );
     const buttons = queryAllByRole(container, 'button');
     expect(buttons.length).toBe(2);
     expect(buttons[0]).toBeTruthy();
@@ -59,7 +66,12 @@ describe('memoized', () => {
   });
 
   test('memoized a依赖reactive a，memoized b依赖memoized a，当reactive a更新时，memoized b也能更新', async () => {
-    const { container } = render(ApplicationContext, renderApp, Button1);
+    const { container } = _test_helper.mvc.render(
+      ApplicationContext,
+      Button1,
+      WebRender,
+      HistoryRouter
+    );
     const buttons = queryAllByRole(container, 'button');
     expect(buttons.length).toBe(1);
     expect(buttons[0]).toBeTruthy();
@@ -71,7 +83,12 @@ describe('memoized', () => {
   });
 
   test('memoized取消依赖reactive时，再修改reactive，memoized不会重新计算', async () => {
-    const { container } = render(ApplicationContext, renderApp, Button2);
+    const { container } = _test_helper.mvc.render(
+      ApplicationContext,
+      Button2,
+      WebRender,
+      HistoryRouter
+    );
     const buttons = queryAllByRole(container, 'button');
     expect(getByText(container, '张三:1分')).toBeTruthy();
     expect(memoizedFn2).toHaveBeenCalledTimes(1);
@@ -103,7 +120,12 @@ describe('memoized', () => {
   });
 
   test('memoized a 依赖memoized b, memoized b取消依赖reactive，再修改reactive，memoized a也不会重新计算', async () => {
-    const { container } = render(ApplicationContext, renderApp, Button3);
+    const { container } = _test_helper.mvc.render(
+      ApplicationContext,
+      Button3,
+      WebRender,
+      HistoryRouter
+    );
     const buttons = queryAllByRole(container, 'button');
     expect(getByText(container, '张三:1分')).toBeTruthy();
     expect(memoizedFn31).toHaveBeenCalledTimes(1);

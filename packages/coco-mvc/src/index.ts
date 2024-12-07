@@ -29,7 +29,7 @@ export {
   store,
   Store,
 } from 'coco-reactive';
-export { route, Route } from 'coco-router';
+export { route, Route, HistoryRouter } from 'coco-router';
 export { default as bind, Bind } from './decorator/bind.ts';
 export { default as globalData, GlobalData } from './decorator/global-data.ts';
 import { default as view, View } from './decorator/view.ts';
@@ -38,6 +38,7 @@ export {
   default as webApplication,
   WebApplication,
 } from './decorator/web-application.ts';
+export { default as WebRender } from './render/web-render.ts';
 
 // todo 没有放在这里导出，会导致jest编译报错
 // TypeError: (0 , _jsxRuntime.jsx) is not a function
@@ -53,11 +54,13 @@ export { jsx, jsxs } from './jsx-runtime/index.ts';
 register(NAME.View, View);
 
 import { _test_helper as iocContainerTestHelper } from 'coco-ioc-container';
+import * as mvcTestHelper from './_test_helper';
 const _test_helper = {
   iocContainer: iocContainerTestHelper,
+  mvc: mvcTestHelper,
 };
 if (!__TEST__) {
-  // @ts-ignore
-  _test_helper.iocContainer = {};
+  _test_helper.iocContainer = {} as any;
+  _test_helper.mvc = {} as any;
 }
 export { _test_helper };

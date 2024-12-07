@@ -37,8 +37,8 @@ class ApplicationContext {
     // todo 参数校验
     this.buildMetadata();
     this.buildBeanDefinition();
-    // 清空装饰器参数记录 todo 是否可以挪到this.buildBeanDefinition的上面
     this.callInitHook();
+    // 清空装饰器参数记录 todo 是否可以挪到this.buildBeanDefinition的上面
     clearDecoratorParams();
     register(NAME.applicationContext, this);
   }
