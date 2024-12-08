@@ -105,12 +105,13 @@ importers:
 
   packages/test:
     dependencies:
-      '@cocofw/cli':
-        specifier: workspace:*
-        version: link:../coco-cli
       coco-mvc:
         specifier: workspace:*
         version: link:../coco-mvc
+    devDependencies:
+      '@cocofw/cli':
+        specifier: workspace:*
+        version: link:../coco-cli
 
 packages:
   /@ampproject/remapping@2.3.0:
