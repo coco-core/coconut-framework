@@ -10,20 +10,18 @@ import {
 import { _test_helper } from 'coco-mvc';
 
 let ApplicationContext;
-let WebRender;
-let HistoryRouter;
+let Render;
+let Router;
 let throwError;
 let App;
-let renderApp;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
-      WebRender = (await import('coco-mvc')).WebRender;
-      HistoryRouter = (await import('coco-mvc')).HistoryRouter;
+      Render = (await import('coco-mvc')).Render;
+      Router = (await import('coco-mvc')).Router;
       App = (await import(cocoIdxStr)).App;
-      renderApp = (await import('coco-mvc')).renderApp;
     } catch (e) {
       throwError = true;
     }
@@ -40,8 +38,8 @@ describe('decorator', () => {
     const { container } = _test_helper.mvc.render(
       ApplicationContext,
       App,
-      WebRender,
-      HistoryRouter
+      Render,
+      Router
     );
     const header = getByRole(container, 'heading');
     const button = getByRole(header, 'button');

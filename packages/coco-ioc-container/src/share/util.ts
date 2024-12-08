@@ -27,6 +27,26 @@ export function constructOf<T>(o: any): Class<T> {
 }
 
 /**
+ * 判断subclass是否是superclass的子类
+ * @param subclass
+ * @param superclass
+ */
+export function isSubclassOf(subclass: Class<any>, superclass: Class<any>) {
+  if (typeof subclass !== 'function' || typeof superclass !== 'function') {
+    return false;
+  }
+
+  let proto = Object.getPrototypeOf(subclass); // 获取子类的父类
+  while (proto) {
+    if (proto === superclass) {
+      return true; // 找到父类
+    }
+    proto = Object.getPrototypeOf(proto); // 向上查找原型链
+  }
+  return false; // 没有匹配到父类
+}
+
+/**
  * 生成一个只能执行一次的函数
  * @param fn
  */

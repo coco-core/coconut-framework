@@ -12,8 +12,8 @@ import {
 import { _test_helper } from 'coco-mvc';
 
 let ApplicationContext;
-let WebRender;
-let HistoryRouter;
+let Render;
+let Router;
 let throwError;
 let Page;
 let Form;
@@ -30,8 +30,8 @@ describe('store', () => {
     try {
       build(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
-      WebRender = (await import('coco-mvc')).WebRender;
-      HistoryRouter = (await import('coco-mvc')).HistoryRouter;
+      Render = (await import('coco-mvc')).Render;
+      Router = (await import('coco-mvc')).Router;
       Page = (await import(cocoIdxStr)).Page;
       Form = (await import(cocoIdxStr)).Form;
       Detail = (await import(cocoIdxStr)).Detail;
@@ -58,8 +58,8 @@ describe('store', () => {
     const { ctx } = _test_helper.mvc.render(
       ApplicationContext,
       Page,
-      WebRender,
-      HistoryRouter
+      Render,
+      Router
     );
     const form = ctx.getBean(Form);
     const detail = ctx.getBean(Detail);
@@ -73,8 +73,8 @@ describe('store', () => {
     const { container } = _test_helper.mvc.render(
       ApplicationContext,
       Page,
-      WebRender,
-      HistoryRouter
+      Render,
+      Router
     );
     const input = getByRole(container, 'textbox');
     expect(getByText(input, 'input:张三')).toBeTruthy();
@@ -91,8 +91,8 @@ describe('store', () => {
     const { container } = _test_helper.mvc.render(
       ApplicationContext,
       Page1,
-      WebRender,
-      HistoryRouter
+      Render,
+      Router
     );
     const buttons = getAllByRole(container, 'button');
     const input = getByRole(container, 'textbox');
@@ -124,8 +124,8 @@ describe('store', () => {
     const { container } = _test_helper.mvc.render(
       ApplicationContext,
       Page2,
-      WebRender,
-      HistoryRouter
+      Render,
+      Router
     );
     const buttons = getAllByRole(container, 'button');
     const input = getByRole(container, 'textbox');

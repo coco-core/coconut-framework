@@ -27,6 +27,7 @@ module.exports.rollupTargets = [
       PACKAGE.SHARED,
       PACKAGE.HOST_CONFIG,
       PACKAGE.IOC_CONTAINER,
+      PACKAGE.IOC_CONTAINER_TEST_HELPER,
     ]
   },
   {

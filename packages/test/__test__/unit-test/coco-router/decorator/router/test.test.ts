@@ -5,20 +5,16 @@ import * as history from '../../../../helper/history';
 import { getByText, queryAllByRole, waitFor } from '@testing-library/dom';
 
 let ApplicationContext;
-let WebRender;
-let HistoryRouter;
+let Render;
+let Router;
 let throwError;
-let IndexPage;
-let TodoPage;
 describe('router', () => {
   beforeEach(async () => {
     try {
       build(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
-      WebRender = (await import('coco-mvc')).WebRender;
-      HistoryRouter = (await import('coco-mvc')).HistoryRouter;
-      IndexPage = (await import(cocoIdxStr)).IndexPage;
-      TodoPage = (await import(cocoIdxStr)).TodoPage;
+      Render = (await import('coco-mvc')).Render;
+      Router = (await import('coco-mvc')).Router;
     } catch (e) {
       throwError = true;
     }
@@ -32,11 +28,10 @@ describe('router', () => {
   });
 
   test('路由切换，页面也会重新渲染', async () => {
-    // todo 这一步改为路由跳转到/
     const { container } = _test_helper.mvc.start(
       ApplicationContext,
-      WebRender,
-      HistoryRouter
+      Render,
+      Router
     );
     history.push('/');
     await waitFor(async () => {

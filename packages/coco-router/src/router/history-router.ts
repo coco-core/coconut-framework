@@ -2,9 +2,10 @@ import router from '../decorator/router.ts';
 import { Route } from '../decorator/route.ts';
 import { type ApplicationContext } from 'coco-ioc-container';
 import RouteMap from './route-map.ts';
+import Router from './router.ts';
 
 @router()
-class HistoryRouter {
+class HistoryRouter extends Router {
   render: any;
   routeMap: RouteMap;
 
