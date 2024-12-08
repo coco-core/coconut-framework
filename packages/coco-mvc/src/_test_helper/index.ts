@@ -3,18 +3,18 @@ import { type ApplicationContext } from 'coco-ioc-container';
 
 let ctx: ApplicationContext;
 let container: HTMLDivElement;
-let webRender: any;
+let renderIns: any;
 
 export function render(
   ApplicationContext: Class<ApplicationContext>,
   ViewComponent: any,
-  WebRender: Class<any>,
+  Render: Class<any>,
   HistoryRouter: Class<any>
 ) {
   return doStart(
     ApplicationContext,
     ViewComponent,
-    WebRender,
+    Render,
     HistoryRouter,
     'no-router'
   );
@@ -22,13 +22,13 @@ export function render(
 
 export function start(
   ApplicationContext: Class<ApplicationContext>,
-  WebRender: Class<any>,
+  Render: Class<any>,
   HistoryRouter: Class<any>
 ) {
   return doStart(
     ApplicationContext,
     undefined,
-    WebRender,
+    Render,
     HistoryRouter,
     'use-router'
   );
@@ -38,28 +38,28 @@ export function start(
  *
  * @param ApplicationContext
  * @param ViewComponent
- * @param WebRender
+ * @param Render
  * @param HistoryRouter
  * @param scene 2种测试场景，一种是使用router(通过路由机制动态渲染组件)，一种是不使用router(直接渲染传入的组件或者是不渲染)
  */
 function doStart(
   ApplicationContext: Class<ApplicationContext>,
   ViewComponent: any,
-  WebRender: Class<any>,
+  Render: Class<any>,
   HistoryRouter: Class<any>,
   scene: 'use-router' | 'no-router'
 ) {
   if (!ctx) {
     // 初次渲染
     ctx = new ApplicationContext();
-    webRender = ctx.getBean(WebRender);
+    renderIns = ctx.getBean(Render);
     container = document.createElement('div');
-    webRender.setContainer(container);
+    renderIns.setContainer(container);
     const router = ctx.getBean(HistoryRouter);
-    router.setRender(webRender);
+    router.setRender(renderIns);
   }
   if (scene === 'no-router' && ViewComponent) {
-    webRender.render(ViewComponent);
+    renderIns.render(ViewComponent);
   }
   return { ctx, container };
 }
@@ -67,5 +67,5 @@ function doStart(
 export function cleanRender() {
   ctx = undefined;
   container = undefined;
-  webRender = undefined;
+  renderIns = undefined;
 }

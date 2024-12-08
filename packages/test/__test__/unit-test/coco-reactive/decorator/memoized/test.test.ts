@@ -4,8 +4,8 @@ import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 import { getByText, queryAllByRole, waitFor } from '@testing-library/dom';
 
 let ApplicationContext;
-let WebRender;
-let HistoryRouter;
+let Render;
+let Router;
 let throwError;
 let Button;
 let memoizedFn;
@@ -20,8 +20,8 @@ describe('memoized', () => {
     try {
       build(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
-      WebRender = (await import('coco-mvc')).WebRender;
-      HistoryRouter = (await import('coco-mvc')).HistoryRouter;
+      Render = (await import('coco-mvc')).Render;
+      Router = (await import('coco-mvc')).Router;
       Button = (await import('./src/view/button.tsx')).default;
       memoizedFn = (await import('./src/view/button.tsx')).memoizedFn;
       Button1 = (await import('./src/view/button1.tsx')).default;
@@ -46,8 +46,8 @@ describe('memoized', () => {
     const { container } = _test_helper.mvc.render(
       ApplicationContext,
       Button,
-      WebRender,
-      HistoryRouter
+      Render,
+      Router
     );
     const buttons = queryAllByRole(container, 'button');
     expect(buttons.length).toBe(2);
@@ -69,8 +69,8 @@ describe('memoized', () => {
     const { container } = _test_helper.mvc.render(
       ApplicationContext,
       Button1,
-      WebRender,
-      HistoryRouter
+      Render,
+      Router
     );
     const buttons = queryAllByRole(container, 'button');
     expect(buttons.length).toBe(1);
@@ -86,8 +86,8 @@ describe('memoized', () => {
     const { container } = _test_helper.mvc.render(
       ApplicationContext,
       Button2,
-      WebRender,
-      HistoryRouter
+      Render,
+      Router
     );
     const buttons = queryAllByRole(container, 'button');
     expect(getByText(container, '张三:1分')).toBeTruthy();
@@ -123,8 +123,8 @@ describe('memoized', () => {
     const { container } = _test_helper.mvc.render(
       ApplicationContext,
       Button3,
-      WebRender,
-      HistoryRouter
+      Render,
+      Router
     );
     const buttons = queryAllByRole(container, 'button');
     expect(getByText(container, '张三:1分')).toBeTruthy();

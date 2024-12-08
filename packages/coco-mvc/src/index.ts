@@ -1,6 +1,4 @@
 import { register, NAME } from 'shared';
-// @ts-ignore todo fix it
-export { render as renderApp } from 'coconut-web';
 export {
   autowired,
   Autowired,
@@ -29,7 +27,8 @@ export {
   store,
   Store,
 } from 'coco-reactive';
-export { route, Route, HistoryRouter } from 'coco-router';
+// todo 13 HistoryRouter需要被扫到，但最好别显式写
+export { route, Route, Router, HistoryRouter } from 'coco-router';
 export { default as bind, Bind } from './decorator/bind.ts';
 export { default as globalData, GlobalData } from './decorator/global-data.ts';
 import { default as view, View } from './decorator/view.ts';
@@ -38,6 +37,8 @@ export {
   default as webApplication,
   WebApplication,
 } from './decorator/web-application.ts';
+export { default as Render } from './render/render.ts';
+// todo 13 WebRender需要被扫到，但最好别显式写
 export { default as WebRender } from './render/web-render.ts';
 
 // todo 没有放在这里导出，会导致jest编译报错

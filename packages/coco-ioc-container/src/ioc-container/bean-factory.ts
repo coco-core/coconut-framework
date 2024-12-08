@@ -13,6 +13,7 @@ import {
   KindField,
   KindMethod,
 } from '../decorator/decorator-context.ts';
+import { isSubclassOf } from '../share/util.ts';
 
 const nameDefinitionMap: Map<string, BeanDefinition<any>> = new Map();
 const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
@@ -75,9 +76,23 @@ function addPostConstruct(cls: Class<any>, pc: PostConstruct) {
 }
 
 function getDefinition(nameOrCls: Class<any> | string) {
-  return typeof nameOrCls === 'string'
-    ? nameDefinitionMap.get(nameOrCls)
-    : clsDefinitionMap.get(nameOrCls);
+  if (typeof nameOrCls === 'string') {
+    return nameDefinitionMap.get(nameOrCls);
+  } else {
+    const matchOrSubCls: Class<any>[] = [];
+    for (const beDecorated of clsDefinitionMap.keys()) {
+      if (beDecorated === nameOrCls || isSubclassOf(beDecorated, nameOrCls)) {
+        matchOrSubCls.push(beDecorated);
+      }
+    }
+    if (matchOrSubCls.length === 1) {
+      return clsDefinitionMap.get(matchOrSubCls[0]);
+    } else if (matchOrSubCls.length === 0) {
+      return undefined;
+    } else {
+      console.error('不应该存在多个一样的子类组件', nameOrCls, matchOrSubCls);
+    }
+  }
 }
 
 // 单例实例集合
