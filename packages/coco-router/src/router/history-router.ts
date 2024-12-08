@@ -1,27 +1,29 @@
 import router from '../decorator/router.ts';
 import { Route } from '../decorator/route.ts';
 import { type ApplicationContext } from 'coco-ioc-container';
-import RouteMap from './route-map.ts';
+import RouteComponentMapper from './route-component-mapper.ts';
 import Router from './router.ts';
 
 @router()
 class HistoryRouter extends Router {
   render: any;
-  routeMap: RouteMap;
+  routeComponentMapper: RouteComponentMapper;
 
   setRender(render: any) {
     this.render = render;
   }
 
   handleRouteChange = () => {
-    const pageComponent = this.routeMap.get(window.location.pathname);
+    const pageComponent = this.routeComponentMapper.get(
+      window.location.pathname
+    );
     this.render.render(pageComponent);
   };
 
   init(appCtx: ApplicationContext) {
-    const routeMap = appCtx.getByClassMetadata(Route);
-    this.routeMap = new RouteMap();
-    this.routeMap.init(routeMap);
+    const routeComponentMap = appCtx.getByClassMetadata(Route);
+    this.routeComponentMapper = new RouteComponentMapper();
+    this.routeComponentMapper.init(routeComponentMap);
     window.addEventListener('popstate', this.handleRouteChange);
   }
 
