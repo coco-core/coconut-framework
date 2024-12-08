@@ -1,34 +1,7 @@
+export * from 'coco-ioc-container';
+export * from 'coco-reactive';
+export * from 'coco-router';
 import { register, NAME } from 'shared';
-export {
-  autowired,
-  Autowired,
-  bean,
-  Bean,
-  component,
-  Component,
-  configuration,
-  Configuration,
-  scope,
-  Scope,
-  target,
-  Target,
-  genDecorator,
-  getFields,
-  Metadata,
-  ApplicationContext,
-} from 'coco-ioc-container';
-export {
-  reactive,
-  Reactive,
-  memoized,
-  Memoized,
-  reactiveAutowired,
-  ReactiveAutowired,
-  store,
-  Store,
-} from 'coco-reactive';
-// todo 13 HistoryRouter需要被扫到，但最好别显式写
-export { route, Route, Router, HistoryRouter } from 'coco-router';
 export { default as bind, Bind } from './decorator/bind.ts';
 export { default as globalData, GlobalData } from './decorator/global-data.ts';
 import { default as view, View } from './decorator/view.ts';
@@ -38,7 +11,6 @@ export {
   WebApplication,
 } from './decorator/web-application.ts';
 export { default as Render } from './render/render.ts';
-// todo 13 WebRender需要被扫到，但最好别显式写
 export { default as WebRender } from './render/web-render.ts';
 
 // todo 没有放在这里导出，会导致jest编译报错
@@ -54,14 +26,4 @@ export { jsx, jsxs } from './jsx-runtime/index.ts';
 
 register(NAME.View, View);
 
-import { _test_helper as iocContainerTestHelper } from 'coco-ioc-container';
-import * as mvcTestHelper from './_test_helper';
-const _test_helper = {
-  iocContainer: iocContainerTestHelper,
-  mvc: mvcTestHelper,
-};
-if (!__TEST__) {
-  _test_helper.iocContainer = {} as any;
-  _test_helper.mvc = {} as any;
-}
-export { _test_helper };
+export * from './_test_helper';

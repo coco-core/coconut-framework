@@ -1,38 +1,9 @@
-import { jsx } from '../jsx-runtime';
+import * as iocContainerTestHelper from 'coco-ioc-container-test-helper';
 import { type ApplicationContext } from 'coco-ioc-container';
 
 let ctx: ApplicationContext;
 let container: HTMLDivElement;
 let renderIns: any;
-
-export function render(
-  ApplicationContext: Class<ApplicationContext>,
-  ViewComponent: any,
-  Render: Class<any>,
-  HistoryRouter: Class<any>
-) {
-  return doStart(
-    ApplicationContext,
-    ViewComponent,
-    Render,
-    HistoryRouter,
-    'no-router'
-  );
-}
-
-export function start(
-  ApplicationContext: Class<ApplicationContext>,
-  Render: Class<any>,
-  HistoryRouter: Class<any>
-) {
-  return doStart(
-    ApplicationContext,
-    undefined,
-    Render,
-    HistoryRouter,
-    'use-router'
-  );
-}
 
 /**
  *
@@ -64,8 +35,47 @@ function doStart(
   return { ctx, container };
 }
 
-export function cleanRender() {
+function render(
+  ApplicationContext: Class<ApplicationContext>,
+  ViewComponent: any,
+  Render: Class<any>,
+  HistoryRouter: Class<any>
+) {
+  return doStart(
+    ApplicationContext,
+    ViewComponent,
+    Render,
+    HistoryRouter,
+    'no-router'
+  );
+}
+
+function start(
+  ApplicationContext: Class<ApplicationContext>,
+  Render: Class<any>,
+  HistoryRouter: Class<any>
+) {
+  return doStart(
+    ApplicationContext,
+    undefined,
+    Render,
+    HistoryRouter,
+    'use-router'
+  );
+}
+
+function cleanRender() {
   ctx = undefined;
   container = undefined;
   renderIns = undefined;
 }
+const _test_helper = {
+  iocContainer: iocContainerTestHelper,
+  mvc: { render, start, cleanRender },
+};
+if (!__TEST__) {
+  _test_helper.iocContainer = {} as any;
+  _test_helper.mvc = {} as any;
+}
+
+export { _test_helper };
