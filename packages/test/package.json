@@ -1,6 +1,7 @@
 {
-  "name": "test",
   "private": true,
+  "name": "test",
+  "description": "测试",
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -1,8 +1,8 @@
 {
-  "name": "coconut-web",
   "private": true,
+  "name": "coconut-web",
+  "description": "dom操作。和react-dom中的client保持同步",
   "version": "0.0.1",
-  "description": "和react-web包保持同步",
   "main": "index.js",
   "exports": {
     ".": "./dist/coconut-web.cjs.js"
