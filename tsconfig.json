@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "paths": {
+      "coco-mvc": ["packages/coco-mvc/src/index.ts"],
       "coconut-web": ["packages/coconut-web/src/index.js"],
       "coconut-reconciler": ["packages/coconut-reconciler/src/index.js"],
       "coco-ioc-container": ["packages/coco-ioc-container/src/index.ts"],

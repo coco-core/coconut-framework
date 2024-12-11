@@ -3,13 +3,13 @@ import { Route } from '../decorator/route.ts';
 import { type ApplicationContext } from 'coco-ioc-container';
 import RouteComponentMapper from './route-component-mapper.ts';
 import Router from './router.ts';
+import { type Render } from 'coco-mvc';
 
 @router()
 class HistoryRouter extends Router {
-  render: any;
   routeComponentMapper: RouteComponentMapper;
 
-  setRender(render: any) {
+  setRender(render: Render) {
     this.render = render;
   }
 
