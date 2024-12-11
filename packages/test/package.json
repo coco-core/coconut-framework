@@ -1,11 +1,14 @@
 {
-  "name": "test",
   "private": true,
+  "name": "test",
+  "description": "测试",
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "@cocofw/cli": "workspace:*",
     "coco-mvc": "workspace:*"
+  },
+  "devDependencies": {
+    "@cocofw/cli": "workspace:*"
   }
 }

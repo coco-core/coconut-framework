@@ -1,5 +1,6 @@
 {
   "name": "@cocofw/cli",
+  "description": "脚手架、开发、构建工具",
   "version": "0.0.1-demo1",
   "main": "dist/index.js",
   "bin": {
@@ -13,8 +14,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
   "dependencies": {
     "webpack": "^5.90.3"
   }

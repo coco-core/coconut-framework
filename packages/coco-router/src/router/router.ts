@@ -1,5 +1,8 @@
+import { type Render } from 'coco-mvc';
+
 abstract class Router {
-  public abstract setRender(render: any): void;
+  public render: Render;
+  public abstract setRender(render: Render): void;
 }
 
 export default Router;
