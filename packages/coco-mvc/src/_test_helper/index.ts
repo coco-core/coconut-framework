@@ -28,6 +28,7 @@ function doStart(
     container = document.createElement('div');
     renderIns.setContainer(container);
     const router = ctx.getBean(HistoryRouterCls);
+    // todo 如何自动装配，还要解决依赖问题
     router.setRender(renderIns);
   }
   if (scene === 'no-router' && ViewComponent) {
