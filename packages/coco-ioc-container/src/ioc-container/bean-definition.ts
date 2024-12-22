@@ -102,9 +102,7 @@ export function createBean(
   ...parameters: any[]
 ) {
   const cls = beanDefinition.cls;
-  const bean = new cls();
-  // todo 不要写死instantiate
-  bean.instantiate?.(...parameters);
+  const bean = new cls(...parameters);
   for (const pc of beanDefinition.postConstruct) {
     switch (pc.kind) {
       case KindClass: {

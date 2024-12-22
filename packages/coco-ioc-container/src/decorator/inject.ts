@@ -5,9 +5,9 @@ import { MethodContext } from './decorator-context.ts';
 
 export type Args = Class<any>[];
 
-@target([Target.Type.Method])
-export class Parameter extends Metadata {
+@target([Target.Type.Class])
+export class Inject extends Metadata {
   value: Class<any>[];
 }
 
-export default genDecorator<Args, MethodContext>(Parameter);
+export default genDecorator<Args, MethodContext>(Inject);

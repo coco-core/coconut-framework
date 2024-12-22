@@ -2,7 +2,7 @@ import router from '../decorator/router.ts';
 import { Route } from '../decorator/route.ts';
 import {
   type ApplicationContext,
-  parameter,
+  inject,
   init,
   start,
 } from 'coco-ioc-container';
@@ -12,9 +12,10 @@ import { get, NAME } from 'shared';
 import { type Render } from 'coco-mvc';
 
 @router()
+@inject([get(NAME.Render)])
 class HistoryRouter extends Router {
-  @parameter([get(NAME.Render)])
-  instantiate(render: Render) {
+  constructor(render: Render) {
+    super();
     this.render = render;
   }
 

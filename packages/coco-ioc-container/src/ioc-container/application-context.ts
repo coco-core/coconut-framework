@@ -31,7 +31,7 @@ import type { Type } from '../decorator/scope.ts';
 import { isPlainObject } from '../share/util.ts';
 import { Configuration } from '../decorator/configuration.ts';
 import { register, NAME } from 'shared';
-import { Parameter } from '../decorator/parameter.ts';
+import { Inject } from '../decorator/inject.ts';
 import { Init } from '../decorator/init.ts';
 import { Start } from '../decorator/start.ts';
 
@@ -197,13 +197,13 @@ class ApplicationContext {
   }
 
   private instantiateBeanRecursively() {
-    const map = getByFieldMetadata(Parameter);
+    const map = getByClassMetadata(Inject);
 
     function doInstantiateBean(beDecorated: Class<any>) {
       if (!map.has(beDecorated)) {
         return getBean(beDecorated, this);
       } else {
-        const ParameterList = map.get(beDecorated).metadata.value;
+        const ParameterList = map.get(beDecorated).value;
         const parameterList = ParameterList.map(doInstantiateBean);
         return getBean(beDecorated, this, ...parameterList);
       }
