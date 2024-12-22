@@ -15,6 +15,7 @@ export const NAME = {
   Reactive: 'Reactive',
   ReactiveAutowired: 'ReactiveAutowired',
   View: 'View',
+  Render: 'Render',
 };
 
 export function register(name: string, fn: any) {

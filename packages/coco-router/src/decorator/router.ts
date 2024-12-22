@@ -1,5 +1,4 @@
 import {
-  type ApplicationContext,
   ClassContext,
   component,
   genDecorator,
@@ -15,9 +14,6 @@ import {
 @component()
 export class Router extends Metadata {}
 
-function init(applicationContext: ApplicationContext) {}
-
 export default genDecorator<string, ClassContext>(Router, {
   optional: true,
-  init,
 });

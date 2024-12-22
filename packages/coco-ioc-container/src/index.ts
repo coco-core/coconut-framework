@@ -17,6 +17,9 @@ export { default as target, Target } from './decorator/target.ts';
 export { default as genDecorator } from './decorator/gen-decorator-exp.ts';
 export { getFields } from './ioc-container/metadata.ts';
 export { default as ApplicationContext } from './ioc-container/application-context.ts';
+export { default as parameter } from './decorator/parameter.ts';
+export { default as init, Init } from './decorator/init.ts';
+export { default as start, Start } from './decorator/start.ts';
 
 export type {
   ClassContext,

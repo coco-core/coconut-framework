@@ -1,6 +1,4 @@
 export * from 'coco-ioc-container';
-export * from 'coco-reactive';
-export * from 'coco-router';
 import { register, NAME } from 'shared';
 export { default as bind, Bind } from './decorator/bind.ts';
 export { default as globalData, GlobalData } from './decorator/global-data.ts';
@@ -25,5 +23,8 @@ export { default as WebRender } from './render/web-render.ts';
 export { jsx, jsxs } from './jsx-runtime/index.ts';
 
 register(NAME.View, View);
+
+export * from 'coco-reactive';
+export * from 'coco-router';
 
 export * from './_test_helper';

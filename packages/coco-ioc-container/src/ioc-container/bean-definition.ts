@@ -98,11 +98,13 @@ export function genMethodPostConstruct(
 
 export function createBean(
   beanDefinition: BeanDefinition<any>,
-  appCtx: ApplicationContext
+  appCtx: ApplicationContext,
+  ...parameters: any[]
 ) {
   const cls = beanDefinition.cls;
   const bean = new cls();
-  bean?.init?.(appCtx);
+  // todo 不要写死instantiate
+  bean.instantiate?.(...parameters);
   for (const pc of beanDefinition.postConstruct) {
     switch (pc.kind) {
       case KindClass: {

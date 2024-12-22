@@ -224,6 +224,27 @@ function getByClassMetadata(
   return rlt;
 }
 
+// 指定一个元数据类，找到所有在field上装饰的类
+function getByFieldMetadata(
+  MetadataCls: Class<any>
+): Map<Class<any>, { field: Field; metadata: Metadata }> {
+  const rlt = new Map<Class<any>, { field: Field; metadata: Metadata }>();
+  for (const [
+    beDecoratedCls,
+    { fieldMetadata },
+  ] of metadataForBizClass.entries()) {
+    for (const [field, metadataList] of fieldMetadata.entries()) {
+      if (metadataList) {
+        const find = metadataList.find((i) => i instanceof MetadataCls);
+        if (find) {
+          rlt.set(beDecoratedCls, { field, metadata: find });
+        }
+      }
+    }
+  }
+  return rlt;
+}
+
 function clear() {
   metadataForMetadata.clear();
   metadataForBizClass.clear();
@@ -271,6 +292,7 @@ export {
   getFieldMetadata,
   getClassMetadata,
   getByClassMetadata,
+  getByFieldMetadata,
   clear,
   getMetadata,
   getAllMetadata,

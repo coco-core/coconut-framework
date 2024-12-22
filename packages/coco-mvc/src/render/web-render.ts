@@ -1,5 +1,6 @@
 // @ts-ignore todo fix it
 import { render as renderApp } from 'coconut-web';
+import { init } from 'coco-ioc-container';
 import render from '../decorator/render';
 import { jsx } from '../jsx-runtime';
 import Render from './render.ts';
@@ -8,8 +9,11 @@ import Render from './render.ts';
 class WebRender extends Render {
   container: HTMLElement;
 
-  setContainer(container: HTMLElement) {
-    this.container = container;
+  @init()
+  init() {
+    if (__TEST__) {
+      this.container = document.createElement('div');
+    }
   }
 
   public render(component: any) {
