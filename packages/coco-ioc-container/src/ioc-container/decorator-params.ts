@@ -4,7 +4,7 @@ import {
   type Kind,
   KindClass,
 } from '../decorator/decorator-context.ts';
-import Metadata from '../decorator/metadata.ts';
+import Metadata from '../metadata/metadata.ts';
 
 type params = {
   metadataKind: Kind;
@@ -31,7 +31,7 @@ export function recordDecoratorParams(
     return;
   }
 
-  // todo 校验：不能有自带的constructor
+  // todo constructor中不能带上业务逻辑的初始化
 
   if (!decoratorParamMap.has(beDecoratedCls)) {
     decoratorParamMap.set(beDecoratedCls, []);

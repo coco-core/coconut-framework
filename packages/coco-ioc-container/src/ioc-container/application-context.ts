@@ -1,10 +1,10 @@
 import { addDefinition, addPostConstruct, getBean } from './bean-factory.ts';
-import { Component } from '../decorator/component.ts';
 import {
   addClassMetadata,
   addFieldMethodMetadata,
   getAllMetadata,
   getByClassMetadata,
+  getByFieldMetadata,
 } from './metadata.ts';
 import {
   get,
@@ -18,18 +18,22 @@ import {
   genFieldPostConstruct,
   genMethodPostConstruct,
 } from './bean-definition.ts';
-import Metadata from '../decorator/metadata.ts';
+import Metadata from '../metadata/metadata.ts';
 import {
   KindClass,
   KindField,
   KindMethod,
 } from '../decorator/decorator-context.ts';
-import { Bean } from '../decorator/bean.ts';
-import { Scope } from '../decorator/scope.ts';
-import type { Type } from '../decorator/scope.ts';
+import Bean from '../metadata/bean.ts';
+import Component from '../metadata/component.ts';
+import Scope from '../metadata/scope.ts';
+import type { Type } from '../metadata/scope.ts';
 import { isPlainObject } from '../share/util.ts';
-import { Configuration } from '../decorator/configuration.ts';
+import Configuration from '../metadata/configuration.ts';
 import { register, NAME } from 'shared';
+import Inject from '../metadata/inject.ts';
+import Init from '../metadata/init.ts';
+import Start from '../metadata/start.ts';
 
 class ApplicationContext {
   constructor() {
@@ -38,9 +42,11 @@ class ApplicationContext {
     // todo 参数校验
     this.buildMetadata();
     this.buildBeanDefinition();
-    this.callInitHook();
     // 清空装饰器参数记录 todo 是否可以挪到this.buildBeanDefinition的上面
     clearDecoratorParams();
+    this.instantiateBeanRecursively();
+    this.initBean();
+    this.startBean();
     register(NAME.applicationContext, this);
   }
   public getBean<T>(cls: Class<T>): T;
@@ -190,15 +196,37 @@ class ApplicationContext {
     }
   }
 
-  private callInitHook() {
-    const called = new Set();
-    for (const [beDecoratedCls, params] of get().entries()) {
-      for (const { metadataClass, init } of params) {
-        if (init && !called.has(metadataClass)) {
-          called.add(metadataClass);
-          init(this);
-        }
+  private instantiateBeanRecursively() {
+    const map = getByClassMetadata(Inject);
+
+    function doInstantiateBean(beDecorated: Class<any>) {
+      if (!map.has(beDecorated)) {
+        return getBean(beDecorated, this);
+      } else {
+        const ParameterList = map.get(beDecorated).value;
+        const parameterList = ParameterList.map(doInstantiateBean);
+        return getBean(beDecorated, this, ...parameterList);
       }
+    }
+
+    for (const beDecorated of map.keys()) {
+      doInstantiateBean(beDecorated);
+    }
+  }
+
+  private initBean() {
+    const map = getByFieldMetadata(Init);
+    for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
+      const bean = getBean(beDecoratedCls, this);
+      bean[field]?.(this);
+    }
+  }
+
+  private startBean() {
+    const map = getByFieldMetadata(Start);
+    for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
+      const bean = getBean(beDecoratedCls, this);
+      bean[field]?.();
     }
   }
 }

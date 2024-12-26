@@ -1,8 +1,6 @@
-import { Metadata, target, Target, genDecorator } from 'coco-ioc-container';
+import { genDecorator } from 'coco-ioc-container';
 import type { ApplicationContext, MethodContext } from 'coco-ioc-container';
-
-@target([Target.Type.Method])
-export class Bind extends Metadata {}
+import Bind from '../metadata/bind.ts';
 
 function postConstruct(
   metadata: Bind,

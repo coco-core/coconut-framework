@@ -1,5 +1,6 @@
+import { register, NAME } from 'shared';
 import { getMetadata, getAllMetadata } from '../ioc-container/metadata.ts';
-import Metadata from '../decorator/metadata.ts';
+import Metadata from '../metadata/metadata.ts';
 import { isEqual } from './is-equal.ts';
 
 const order = [];
@@ -14,10 +15,12 @@ export function reset() {
 export function exec(decoratorName: string, params: any) {
   order.push(item('exec', decoratorName, params));
 }
+register(NAME.exec, exec);
 
 export function apply(decoratorName: string, params: any) {
   order.push(item('apply', decoratorName, params));
 }
+register(NAME.apply, apply);
 
 export function get() {
   return order;

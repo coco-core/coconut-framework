@@ -1,15 +1,20 @@
 import router from '../decorator/router.ts';
-import { Route } from '../decorator/route.ts';
-import { type ApplicationContext } from 'coco-ioc-container';
+import Route from '../metadata/route.ts';
+import {
+  type ApplicationContext,
+  inject,
+  init,
+  start,
+} from 'coco-ioc-container';
 import RouteComponentMapper from './route-component-mapper.ts';
 import Router from './router.ts';
-import { type Render } from 'coco-mvc';
+import { Render } from 'coco-mvc/component';
 
 @router()
+@inject([Render])
 class HistoryRouter extends Router {
-  routeComponentMapper: RouteComponentMapper;
-
-  setRender(render: Render) {
+  constructor(render: Render) {
+    super();
     this.render = render;
   }
 
@@ -20,14 +25,19 @@ class HistoryRouter extends Router {
     this.render.render(pageComponent);
   };
 
+  @init()
   init(appCtx: ApplicationContext) {
     const routeComponentMap = appCtx.getByClassMetadata(Route);
     this.routeComponentMapper = new RouteComponentMapper();
     this.routeComponentMapper.init(routeComponentMap);
+  }
+
+  @start()
+  addListener() {
     window.addEventListener('popstate', this.handleRouteChange);
   }
 
-  destructor() {
+  removeListener() {
     window.removeEventListener('popstate', this.handleRouteChange);
   }
 }

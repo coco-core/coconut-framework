@@ -1,20 +1,16 @@
 /**
  * 用于解决循环依赖的问题
+ * 元数据和装饰器不要在这里暴露，只能注册一些运行时函数
  */
 const map = new Map();
 export const NAME = {
   isRenderPhase: 'isRenderPhase',
   enqueueSetState: 'enqueueSetState',
   scheduleUpdateOnFiber: 'scheduleUpdateOnFiber',
-  addPostConstruct: 'addPostConstruct',
   applicationContext: 'applicationContext',
-  // todo 单独暴露出所有的Metadata
-  Bean: 'Bean',
-  Scope: 'Scope',
-  Component: 'Component',
-  Reactive: 'Reactive',
-  ReactiveAutowired: 'ReactiveAutowired',
-  View: 'View',
+  apply: 'apply',
+  exec: 'exec',
+  getFields: 'getFields',
 };
 
 export function register(name: string, fn: any) {

@@ -1,6 +1,5 @@
 import * as iocContainerTestHelper from 'coco-ioc-container-test-helper';
 import { type ApplicationContext } from 'coco-ioc-container';
-import { type Render } from '../decorator/render.ts';
 
 let ctx: ApplicationContext;
 let container: HTMLDivElement;
@@ -24,16 +23,12 @@ function doStart(
   if (!ctx) {
     // 初次渲染
     ctx = new ApplicationContext();
-    renderIns = ctx.getBean<Render>(RenderCls);
-    container = document.createElement('div');
-    renderIns.setContainer(container);
-    const router = ctx.getBean(HistoryRouterCls);
-    router.setRender(renderIns);
+    renderIns = ctx.getBean(RenderCls);
   }
   if (scene === 'no-router' && ViewComponent) {
     renderIns.render(ViewComponent);
   }
-  return { ctx, container };
+  return { ctx, container: renderIns.container };
 }
 
 function render(

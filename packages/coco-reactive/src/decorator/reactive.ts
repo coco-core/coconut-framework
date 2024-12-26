@@ -1,8 +1,5 @@
 import { get, NAME } from 'shared';
 import {
-  Metadata,
-  target,
-  Target,
   genDecorator,
   type ApplicationContext,
   type FieldContext,
@@ -10,13 +7,7 @@ import {
 } from 'coco-ioc-container';
 import Publisher from '../memoized/publisher.ts';
 import Subscriber from '../memoized/subscriber.ts';
-
-/**
- * 加在field表明是响应式
- * 加在metadata上用于自定义reactive元数据
- */
-@target([Target.Type.Field, Target.Type.Class])
-export class Reactive extends Metadata {}
+import Reactive from '../metadata/reactive.ts';
 
 export function customPostConstruct(hooks?: {
   /**

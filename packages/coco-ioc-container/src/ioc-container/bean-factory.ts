@@ -5,7 +5,7 @@ import BeanDefinition, {
   PostConstruct,
   PostConstructFn,
 } from './bean-definition.ts';
-import { Scope } from '../decorator/scope.ts';
+import Scope from '../metadata/scope.ts';
 import { findScopeMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
 import {
@@ -101,10 +101,12 @@ const singletonInstances: Map<Class<any>, any> = new Map();
  * 创建一个ioc组件实例
  * @param nameOrCls 通过class获取或通过name获取；
  * @param appCtx applicationContext实例；
+ * @param parameters 构造函数参数
  */
 function getBean<T>(
   nameOrCls: Class<T> | string,
-  appCtx: ApplicationContext
+  appCtx: ApplicationContext,
+  ...parameters: any[]
 ): T {
   const definition = getDefinition(nameOrCls);
   if (!definition) {
@@ -118,7 +120,7 @@ function getBean<T>(
   if (isSingleton && singletonInstances.has(cls)) {
     return singletonInstances.get(cls);
   }
-  const bean = createBean(definition, appCtx);
+  const bean = createBean(definition, appCtx, ...parameters);
   if (isSingleton) {
     singletonInstances.set(cls, bean);
   }

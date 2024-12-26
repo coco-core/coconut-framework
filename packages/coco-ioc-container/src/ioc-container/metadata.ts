@@ -2,10 +2,11 @@
  * 注解的运行时配置
  */
 import { isPlainObject } from '../share/util.ts';
-import Metadata from '../decorator/metadata.ts';
+import Metadata from '../metadata/metadata.ts';
 import { type Field } from '../decorator/decorator-context.ts';
-import { get, NAME } from 'shared';
-import { type Scope } from '../decorator/scope.ts';
+import { register, NAME } from 'shared';
+import Scope from '../metadata/scope.ts';
+import Component from '../metadata/component.ts';
 
 type MetadataSet = Array<{ metadata: Metadata; dependencies?: MetadataSet }>;
 
@@ -130,6 +131,7 @@ function getFields(
   }
   return fields;
 }
+register(NAME.getFields, getFields);
 
 // 获取特定field的所有元数据
 function getFieldMetadata(
@@ -183,7 +185,7 @@ function findScopeMetadata(Cls: Class<any>): Scope | null {
   if (!classMetadataList) {
     return null;
   }
-  const scope = classMetadataList.find((i) => i instanceof get(NAME.Scope));
+  const scope = classMetadataList.find((i) => i instanceof Scope);
   if (scope) {
     return scope as Scope;
   }
@@ -194,10 +196,10 @@ function findScopeMetadata(Cls: Class<any>): Scope | null {
     // todo 所有的component都默认加一个scope对象，或者合并也行
     if (
       metadataMetadataList &&
-      metadataMetadataList.find((i) => i instanceof get(NAME.Component))
+      metadataMetadataList.find((i) => i instanceof Component)
     ) {
       for (const scope of metadataMetadataList) {
-        if (scope instanceof get(NAME.Scope)) {
+        if (scope instanceof Scope) {
           return scope as Scope;
         }
       }
@@ -219,6 +221,27 @@ function getByClassMetadata(
     const find = classMetadata.find((i) => i instanceof MetadataCls);
     if (find) {
       rlt.set(beDecoratedCls, find);
+    }
+  }
+  return rlt;
+}
+
+// 指定一个元数据类，找到所有在field上装饰的类
+function getByFieldMetadata(
+  MetadataCls: Class<any>
+): Map<Class<any>, { field: Field; metadata: Metadata }> {
+  const rlt = new Map<Class<any>, { field: Field; metadata: Metadata }>();
+  for (const [
+    beDecoratedCls,
+    { fieldMetadata },
+  ] of metadataForBizClass.entries()) {
+    for (const [field, metadataList] of fieldMetadata.entries()) {
+      if (metadataList) {
+        const find = metadataList.find((i) => i instanceof MetadataCls);
+        if (find) {
+          rlt.set(beDecoratedCls, { field, metadata: find });
+        }
+      }
     }
   }
   return rlt;
@@ -271,6 +294,7 @@ export {
   getFieldMetadata,
   getClassMetadata,
   getByClassMetadata,
+  getByFieldMetadata,
   clear,
   getMetadata,
   getAllMetadata,

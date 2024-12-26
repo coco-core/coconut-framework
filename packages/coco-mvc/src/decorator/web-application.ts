@@ -1,15 +1,5 @@
-import {
-  ClassContext,
-  Metadata,
-  genDecorator,
-  target,
-  Target,
-  configuration,
-} from 'coco-ioc-container';
-
-@target([Target.Type.Class])
-@configuration()
-export class WebApplication extends Metadata {}
+import { ClassContext, genDecorator } from 'coco-ioc-container';
+import WebApplication from '../metadata/web-application.ts';
 
 export default genDecorator<void, ClassContext>(WebApplication, {
   optional: true,
