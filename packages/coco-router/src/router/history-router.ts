@@ -8,11 +8,11 @@ import {
 } from 'coco-ioc-container';
 import RouteComponentMapper from './route-component-mapper.ts';
 import Router from './router.ts';
-import { get, NAME } from 'shared';
-import { type Render } from 'coco-mvc';
+// todo 单独暴露所有的基础ioc组件，元数据也是需要暴露
+import Render from 'coco-mvc/render';
 
 @router()
-@inject([get(NAME.Render)])
+@inject([Render])
 class HistoryRouter extends Router {
   constructor(render: Render) {
     super();
