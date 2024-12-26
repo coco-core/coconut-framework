@@ -1,9 +1,7 @@
-import { Metadata, target, Target, genDecorator } from 'coco-ioc-container';
+import { genDecorator } from 'coco-ioc-container';
 import type { ApplicationContext, MethodContext } from 'coco-ioc-container';
 import Subscriber from '../memoized/subscriber.ts';
-
-@target([Target.Type.Method])
-export class Memoized extends Metadata {}
+import Memoized from '../metadata/memoized.ts';
 
 function postConstruct(
   metadata: Memoized,

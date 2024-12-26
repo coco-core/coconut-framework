@@ -10,7 +10,7 @@ const web = path.join(packages, './coconut-web/src/index.js')
 const iocContainer = path.join(packages, './coco-ioc-container/src/index.ts')
 const iocContainerTestHelper = path.join(packages, './coco-ioc-container/src/_test_helper/index.ts')
 const reactive = path.join(packages, './coco-reactive/src/index.ts')
-const reactiveDecorator = path.join(packages, './coco-reactive/src/decorator/index.ts')
+const reactiveMetadata = path.join(packages, './coco-reactive/src/decorator/index.ts')
 const router = path.join(packages, './coco-router/src/index.ts')
 // todo 支持@
 const shared = path.join(packages, './shared/index.ts')
@@ -25,7 +25,7 @@ const PACKAGE = {
   IOC_CONTAINER: 'coco-ioc-container',
   IOC_CONTAINER_TEST_HELPER: 'coco-ioc-container-test-helper',
   REACTIVE: 'coco-reactive',
-  REACTIVE_DECORATOR: 'coco-reactive/decorator',
+  REACTIVE_METADATA: 'coco-reactive/metadata',
   ROUTER: 'coco-router',
   HOST_CONFIG: 'ReactFiberHostConfig',
   SHARED: 'shared',
@@ -40,7 +40,7 @@ const pathMap = {
   [PACKAGE.IOC_CONTAINER]: iocContainer,
   [PACKAGE.IOC_CONTAINER_TEST_HELPER]: iocContainerTestHelper,
   [PACKAGE.REACTIVE]: reactive,
-  [PACKAGE.REACTIVE_DECORATOR]: reactiveDecorator,
+  [PACKAGE.REACTIVE_METADATA]: reactiveMetadata,
   [PACKAGE.ROUTER]: router,
   [PACKAGE.HOST_CONFIG]: ReactFiberHostConfig,
   [PACKAGE.SHARED]: shared

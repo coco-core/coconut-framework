@@ -1,20 +1,10 @@
 import {
   ClassContext,
-  Metadata,
   genDecorator,
-  component,
-  target,
-  Target,
-  scope,
-  Scope,
   type ApplicationContext,
 } from 'coco-ioc-container';
 import Remote from '../reactive-autowired/remote.ts';
-
-@target([Target.Type.Class])
-@scope(Scope.Type.Singleton)
-@component()
-export class Store extends Metadata {}
+import Store from '../metadata/store.ts';
 
 export const sym_remote = Symbol.for('remote');
 

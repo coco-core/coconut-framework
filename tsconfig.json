@@ -11,8 +11,8 @@
         "packages/coco-ioc-container/src/_test_helper/index.ts"
       ],
       "coco-reactive": ["packages/coco-reactive/src/index.ts"],
-      "coco-reactive/decorator": [
-        "packages/coco-reactive/src/decorator/index.ts"
+      "coco-reactive/metadata": [
+        "packages/coco-reactive/src/metadata/index.ts"
       ],
       "coco-router": ["packages/coco-router/src/index.ts"],
       "shared": ["packages/shared/index.ts"]

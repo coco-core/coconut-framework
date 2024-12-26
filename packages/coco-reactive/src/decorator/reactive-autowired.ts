@@ -1,17 +1,8 @@
-import {
-  Metadata,
-  target,
-  Target,
-  genDecorator,
-  type FieldContext,
-} from 'coco-ioc-container';
+import { genDecorator, type FieldContext } from 'coco-ioc-container';
 import Remote from '../reactive-autowired/remote.ts';
 import { sym_remote } from './store.ts';
-import reactive, { customPostConstruct } from './reactive.ts';
-
-@reactive()
-@target([Target.Type.Field])
-export class ReactiveAutowired extends Metadata {}
+import { customPostConstruct } from './reactive.ts';
+import ReactiveAutowired from '../metadata/reactive-autowired.ts';
 
 const postConstruct = customPostConstruct({
   init: (metadata, appCtx, name, enqueueUpdate) => {

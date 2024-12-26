@@ -1,6 +1,6 @@
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {get, NAME} from "shared";
-import { Reactive } from "coco-reactive/decorator";
+import { Reactive } from "coco-reactive/metadata";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
 
 const classComponentUpdater = {
