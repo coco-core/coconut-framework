@@ -1,5 +1,4 @@
 import { addDefinition, addPostConstruct, getBean } from './bean-factory.ts';
-import { Component } from '../decorator/component.ts';
 import {
   addClassMetadata,
   addFieldMethodMetadata,
@@ -19,21 +18,22 @@ import {
   genFieldPostConstruct,
   genMethodPostConstruct,
 } from './bean-definition.ts';
-import Metadata from '../decorator/metadata.ts';
+import Metadata from '../metadata/metadata.ts';
 import {
   KindClass,
   KindField,
   KindMethod,
 } from '../decorator/decorator-context.ts';
-import { Bean } from '../decorator/bean.ts';
-import { Scope } from '../decorator/scope.ts';
-import type { Type } from '../decorator/scope.ts';
+import Bean from '../metadata/bean.ts';
+import Component from '../metadata/component.ts';
+import Scope from '../metadata/scope.ts';
+import type { Type } from '../metadata/scope.ts';
 import { isPlainObject } from '../share/util.ts';
-import { Configuration } from '../decorator/configuration.ts';
+import Configuration from '../metadata/configuration.ts';
 import { register, NAME } from 'shared';
-import { Inject } from '../decorator/inject.ts';
-import { Init } from '../decorator/init.ts';
-import { Start } from '../decorator/start.ts';
+import Inject from '../metadata/inject.ts';
+import Init from '../metadata/init.ts';
+import Start from '../metadata/start.ts';
 
 class ApplicationContext {
   constructor() {

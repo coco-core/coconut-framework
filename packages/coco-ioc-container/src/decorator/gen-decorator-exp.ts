@@ -1,4 +1,4 @@
-import type { MetadataClass } from './metadata.ts';
+import type { MetadataClass } from '../metadata/metadata.ts';
 import {
   Context,
   Decorator,

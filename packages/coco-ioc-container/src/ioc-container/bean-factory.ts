@@ -5,7 +5,7 @@ import BeanDefinition, {
   PostConstruct,
   PostConstructFn,
 } from './bean-definition.ts';
-import { Scope } from '../decorator/scope.ts';
+import Scope from '../metadata/scope.ts';
 import { findScopeMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
 import {

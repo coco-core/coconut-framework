@@ -2,11 +2,11 @@
  * 注解的运行时配置
  */
 import { isPlainObject } from '../share/util.ts';
-import Metadata from '../decorator/metadata.ts';
+import Metadata from '../metadata/metadata.ts';
 import { type Field } from '../decorator/decorator-context.ts';
 import { register, NAME } from 'shared';
-import { Scope } from '../decorator/scope.ts';
-import { Component } from '../decorator/component.ts';
+import Scope from '../metadata/scope.ts';
+import Component from '../metadata/component.ts';
 
 type MetadataSet = Array<{ metadata: Metadata; dependencies?: MetadataSet }>;
 
