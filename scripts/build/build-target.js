@@ -20,7 +20,7 @@ module.exports.rollupTargets = [
     },
     alias: [
       PACKAGE.COCO_MVC,
-      PACKAGE.COCO_MVC_RENDER,
+      PACKAGE.COCO_MVC_COMPONENT,
       PACKAGE.REACTIVE,
       PACKAGE.ROUTER,
       PACKAGE.RECONCILER,

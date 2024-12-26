@@ -8,7 +8,7 @@ export {
   default as webApplication,
   WebApplication,
 } from './decorator/web-application.ts';
-export { default as Render } from './render/render.ts';
+export { default as Render } from './component/render.ts';
 export { default as WebRender } from './render/web-render.ts';
 
 // todo 没有放在这里导出，会导致jest编译报错

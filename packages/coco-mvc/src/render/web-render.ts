@@ -3,7 +3,7 @@ import { render as renderApp } from 'coconut-web';
 import { init } from 'coco-ioc-container';
 import render from '../decorator/render';
 import { jsx } from '../jsx-runtime';
-import Render from './render.ts';
+import Render from '../component/render.ts';
 
 @render()
 class WebRender extends Render {

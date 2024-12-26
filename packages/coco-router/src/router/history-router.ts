@@ -8,8 +8,7 @@ import {
 } from 'coco-ioc-container';
 import RouteComponentMapper from './route-component-mapper.ts';
 import Router from './router.ts';
-// todo 单独暴露所有的基础ioc组件，元数据也是需要暴露
-import Render from 'coco-mvc/render';
+import { Render } from 'coco-mvc/component';
 
 @router()
 @inject([Render])
