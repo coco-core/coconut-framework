@@ -1,18 +1,5 @@
-import {
-  ClassContext,
-  component,
-  genDecorator,
-  Metadata,
-  Scope,
-  scope,
-  Target,
-  target,
-} from 'coco-ioc-container';
-
-@target([Target.Type.Class])
-@scope(Scope.Type.Singleton)
-@component()
-export class Router extends Metadata {}
+import { ClassContext, genDecorator } from 'coco-ioc-container';
+import Router from '../metadata/router.ts';
 
 export default genDecorator<string, ClassContext>(Router, {
   optional: true,

@@ -10,7 +10,7 @@ const web = path.join(packages, './coconut-web/src/index.js')
 const iocContainer = path.join(packages, './coco-ioc-container/src/index.ts')
 const iocContainerTestHelper = path.join(packages, './coco-ioc-container/src/_test_helper/index.ts')
 const reactive = path.join(packages, './coco-reactive/src/index.ts')
-const reactiveMetadata = path.join(packages, './coco-reactive/src/decorator/index.ts')
+const reactiveMetadata = path.join(packages, './coco-reactive/src/metadata/index.ts')
 const router = path.join(packages, './coco-router/src/index.ts')
 // todo 支持@
 const shared = path.join(packages, './shared/index.ts')

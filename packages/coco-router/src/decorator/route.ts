@@ -1,16 +1,9 @@
 import {
   ClassContext,
-  Metadata,
   genDecorator,
-  target,
-  Target,
   type ApplicationContext,
 } from 'coco-ioc-container';
-
-@target([Target.Type.Class])
-export class Route extends Metadata {
-  value: string;
-}
+import Route from '../metadata/route.ts';
 
 function postConstruct(metadata: Route, appCtx: ApplicationContext) {}
 

@@ -1,5 +1,5 @@
 import router from '../decorator/router.ts';
-import { Route } from '../decorator/route.ts';
+import Route from '../metadata/route.ts';
 import {
   type ApplicationContext,
   inject,
