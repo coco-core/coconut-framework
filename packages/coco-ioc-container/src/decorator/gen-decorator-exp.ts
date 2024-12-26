@@ -6,7 +6,7 @@ import {
   KindField,
   KindMethod,
 } from './decorator-context.ts';
-import { apply, exec } from '../_test_helper/decorator.ts';
+import { get, NAME } from 'shared';
 import { lowercaseFirstLetter, once } from '../share/util.ts';
 import { PostConstructFn } from '../ioc-container/bean-definition.ts';
 import { recordDecoratorParams } from '../ioc-container/decorator-params.ts';
@@ -52,11 +52,11 @@ function genDecorator<UserParam, C extends Context>(
 
   function decorator(userParam: UserParam, decorateSelf?: true) {
     if (__TEST__) {
-      exec(decoratorName, userParam);
+      get(NAME.exec)?.(decoratorName, userParam);
     }
     return function (value, context: C) {
       if (__TEST__) {
-        apply(decoratorName, userParam);
+        get(NAME.apply)?.(decoratorName, userParam);
       }
       switch (context.kind) {
         case KindClass:
