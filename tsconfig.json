@@ -3,7 +3,7 @@
     "paths": {
       "coco-mvc": ["packages/coco-mvc/src/index.ts"],
       "coco-mvc/component": ["packages/coco-mvc/src/component/index.ts"],
-      "coco-mvc/decorator": ["packages/coco-mvc/src/decorator/index.ts"],
+      "coco-mvc/metadata": ["packages/coco-mvc/src/metadata/index.ts"],
       "coconut-web": ["packages/coconut-web/src/index.js"],
       "coconut-reconciler": ["packages/coconut-reconciler/src/index.js"],
       "coco-ioc-container": ["packages/coco-ioc-container/src/index.ts"],

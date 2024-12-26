@@ -4,7 +4,7 @@ const packages = path.join(__dirname, '../../packages');
 // todo 和tsconfig.json.path放在一起维护
 const mvc = path.join(packages, './coco-mvc/src/index.ts')
 const mvcComponent = path.join(packages, './coco-mvc/src/component/index.ts')
-const mvcDecorator = path.join(packages, './coco-mvc/src/decorator/index.ts')
+const mvcMetadata = path.join(packages, './coco-mvc/src/metadata/index.ts')
 const reconciler = path.join(packages, './coconut-reconciler/src/index.js')
 const web = path.join(packages, './coconut-web/src/index.js')
 const iocContainer = path.join(packages, './coco-ioc-container/src/index.ts')
@@ -19,7 +19,7 @@ const ReactFiberHostConfig = path.join(packages, './coconut-web/src/ReactDomHost
 const PACKAGE = {
   MVC: 'coco-mvc',
   MVC_COMPONENT: 'coco-mvc/component',
-  MVC_DECORATOR: 'coco-mvc/decorator',
+  MVC_METADATA: 'coco-mvc/metadata',
   RECONCILER: 'coconut-reconciler',
   WEB: 'coconut-web',
   IOC_CONTAINER: 'coco-ioc-container',
@@ -34,7 +34,7 @@ const PACKAGE = {
 const pathMap = {
   [PACKAGE.MVC]: mvc,
   [PACKAGE.MVC_COMPONENT]: mvcComponent,
-  [PACKAGE.MVC_DECORATOR]: mvcDecorator,
+  [PACKAGE.MVC_METADATA]: mvcMetadata,
   [PACKAGE.RECONCILER]: reconciler,
   [PACKAGE.WEB]: web,
   [PACKAGE.IOC_CONTAINER]: iocContainer,

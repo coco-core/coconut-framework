@@ -21,7 +21,7 @@ module.exports.rollupTargets = [
     alias: [
       PACKAGE.MVC,
       PACKAGE.MVC_COMPONENT,
-      PACKAGE.MVC_DECORATOR,
+      PACKAGE.MVC_METADATA,
       PACKAGE.REACTIVE,
       PACKAGE.REACTIVE_DECORATOR,
       PACKAGE.ROUTER,

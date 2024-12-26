@@ -3,7 +3,7 @@ import {ClassComponent, HostComponent, HostRoot, HostText} from "./ReactWorkTags
 import {constructClassInstance, mountClassInstance, updateClassInstance} from "./ReactFiberClassComponent";
 import {cloneUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {shouldSetTextContent} from "ReactFiberHostConfig";
-import { View } from "coco-mvc/decorator";
+import { View } from "coco-mvc/metadata";
 import {get, NAME} from "shared";
 
 export function reconcileChildren(
