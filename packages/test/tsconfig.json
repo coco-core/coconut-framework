@@ -8,7 +8,7 @@
     "emitDeclarationOnly": true,
     "jsx": "preserve",
     "paths": {
-      "coco-mvc": ["../coco-mvc/dist/types/coco-mvc/src/index.d.ts"]
+      "coco-mvc": ["../coco-mvc/dist/types/index.d.ts"]
     }
   },
   "include": ["__test__/**/*", "**/*.coco/**.*"],

@@ -23,7 +23,8 @@ export default abstract class Metadata {
    *   habit: ['打篮球', '打游戏']
    * }
    */
-  value?: any;
+  // todo 13 有没有更好的方式处理这个问题
+  // value?: any;
 }
 
-export type MetadataClass = Class<Metadata> & {};
+export type MetadataClass = Class<Metadata>;

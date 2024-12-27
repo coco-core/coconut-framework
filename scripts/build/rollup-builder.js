@@ -3,10 +3,11 @@ const replace = require('@rollup/plugin-replace');
 const babel = require('@rollup/plugin-babel');
 const typescript = require('@rollup/plugin-typescript');
 const aliasPlugin = require('@rollup/plugin-alias');
+const { dts } = require("rollup-plugin-dts");
 const genEntries = require('./rollup-alias').genEntries;
 
 function genRollupConfig (inputConfig) {
-  const { input, alias } = inputConfig
+  const { input, alias, type } = inputConfig
 
   return {
     input,
@@ -24,12 +25,12 @@ function genRollupConfig (inputConfig) {
         compilerOptions: {
           "target": "es2015",
           "lib": ["dom", "es2015"],
-          "declaration": true,
-          "declarationDir": "./types"
+          "declaration": false,
       }}),
       aliasPlugin({
         entries: genEntries(alias)
-      })
+      }),
+      type === 'declaration' ? dts() : null
     ],
     onLog(level, log, handler) {
       if (log.code === 'CIRCULAR_DEPENDENCY') {

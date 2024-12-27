@@ -1,5 +1,5 @@
 import { genDecorator } from 'coco-ioc-container';
-import type { ApplicationContext, MethodContext } from 'coco-ioc-container';
+import type { ApplicationContext } from 'coco-ioc-container';
 import Bind from '../metadata/bind.ts';
 
 function postConstruct(
@@ -10,7 +10,7 @@ function postConstruct(
   this[name] = this[name].bind(this);
 }
 
-export default genDecorator<void, MethodContext>(Bind, {
+export default genDecorator<void, ClassMethodDecoratorContext>(Bind, {
   postConstruct,
   optional: true,
 });

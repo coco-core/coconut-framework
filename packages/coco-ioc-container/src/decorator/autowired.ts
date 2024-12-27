@@ -1,5 +1,4 @@
 import genDecorator from './gen-decorator-exp.ts';
-import { FieldContext } from './decorator-context.ts';
 import type ApplicationContext from '../ioc-container/application-context.ts';
 import Autowired, { Args } from '../metadata/autowired.ts';
 
@@ -11,4 +10,6 @@ function postConstruct(
   this[name] = appCtx.getBean(metadata.value);
 }
 
-export default genDecorator<Args, FieldContext>(Autowired, { postConstruct });
+export default genDecorator<Args, ClassFieldDecoratorContext>(Autowired, {
+  postConstruct,
+});

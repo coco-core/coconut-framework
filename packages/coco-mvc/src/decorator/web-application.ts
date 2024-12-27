@@ -1,6 +1,6 @@
-import { ClassContext, genDecorator } from 'coco-ioc-container';
+import { genDecorator } from 'coco-ioc-container';
 import WebApplication from '../metadata/web-application.ts';
 
-export default genDecorator<void, ClassContext>(WebApplication, {
+export default genDecorator<void, ClassDecoratorContext>(WebApplication, {
   optional: true,
 });

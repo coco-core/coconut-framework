@@ -21,12 +21,12 @@ interface Option {
 
 // 适用于装饰器不装饰自己元数据类，且useParams是必填的场景
 function genDecorator<UserParam, C extends Context>(
-  metadataCls: MetadataClass,
+  metadataCls: Class<any>,
   option?: { postConstruct?: PostConstructFn; init?: Function }
 ): (userParam: UserParam) => Decorator<C>;
 // 适用于装饰器不装饰自己元数据类，且useParams是可选的场景
 function genDecorator<UserParam, C extends Context>(
-  metadataCls: MetadataClass,
+  metadataCls: Class<any>,
   option: { optional: true; postConstruct?: PostConstructFn; init?: Function }
 ): (userParam?: UserParam) => Decorator<C>;
 // 适用于装饰器装饰自己元数据类，且useParams是必填的场景
@@ -40,7 +40,7 @@ function genDecorator<UserParam, C extends Context>(
   option: { optional: true; postConstruct?: PostConstructFn; init?: Function }
 ): (userParam?: UserParam, decorateSelf?: true) => Decorator<C>;
 function genDecorator<UserParam, C extends Context>(
-  metadataClsOrName: MetadataClass | string,
+  metadataClsOrName: Class<any> | string,
   { postConstruct, init }: Option = {}
 ): (userParam: UserParam, decorateSelf?: true) => Decorator<C> {
   const decoratorName =
@@ -97,7 +97,7 @@ function genDecorator<UserParam, C extends Context>(
               metadataKind: context.kind,
               metadataClass: metadataCls,
               metadataParam: userParam,
-              name: context.name,
+              name: context.name as string,
               init,
               postConstruct,
             });

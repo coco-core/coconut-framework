@@ -27,7 +27,10 @@ class HistoryRouter extends Router {
 
   @init()
   init(appCtx: ApplicationContext) {
-    const routeComponentMap = appCtx.getByClassMetadata(Route);
+    const routeComponentMap = appCtx.getByClassMetadata(Route) as Map<
+      Class<any>,
+      Route
+    >;
     this.routeComponentMapper = new RouteComponentMapper();
     this.routeComponentMapper.init(routeComponentMap);
   }

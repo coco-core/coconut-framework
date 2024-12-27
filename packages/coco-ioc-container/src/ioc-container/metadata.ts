@@ -38,7 +38,8 @@ function createMetadata(metadataCls: Class<Metadata>, args?: any): Metadata {
       metadata[key] = args[key];
     }
   } else if (args !== undefined) {
-    metadata.value = args;
+    // todo 13 默认赋值给value
+    (metadata as any).value = args;
   }
   return metadata;
 }

@@ -3,6 +3,7 @@
   "version": "0.0.1-demo1",
   "description": "构建现代web应用的mvc框架",
   "main": "./dist/coco-mvc.cjs.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -14,7 +15,6 @@
     ".": "./dist/coco-mvc.cjs.js",
     "./jsx-runtime": "./dist/jsx-runtime.cjs.js"
   },
-  "types": "dist/types/coco-mvc/src/index.d.ts",
   "author": "jiangchenguang",
   "homepage": "https://github.com/jiangchenguang/coconut-framework",
   "license": "MIT"
