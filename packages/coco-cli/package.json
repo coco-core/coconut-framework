@@ -16,6 +16,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "webpack": "^5.90.3"
+    "webpack": "^5.94.0"
   }
 }
