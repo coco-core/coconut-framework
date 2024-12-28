@@ -1,4 +1,4 @@
-name: Publish to npm
+name: Publish
 
 on:
   push:
@@ -34,6 +34,6 @@ jobs:
 
       - name: Publish to npm
         working-directory: packages/coco-mvc
-        run: pnpm publish --access public
+        run: pnpm publish --access public --no-git-checks
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
