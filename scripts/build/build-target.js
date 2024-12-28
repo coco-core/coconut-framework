@@ -13,6 +13,7 @@ const cliDist = path.join(cocoCli, './dist');
 
 module.exports.rollupTargets = [
   {
+    type: 'bundle',
     input: cocoMvcInput,
     output: {
       file: cocoMvcFile,
@@ -34,6 +35,30 @@ module.exports.rollupTargets = [
     ]
   },
   {
+    type: 'declaration',
+    input: cocoMvcInput,
+    output: {
+      // todo 通过npm导入也有效吗？
+      file: './packages/coco-mvc/dist/types/index.d.ts',
+      format: 'es',
+    },
+    alias: [
+      PACKAGE.MVC,
+      PACKAGE.MVC_COMPONENT,
+      PACKAGE.MVC_METADATA,
+      PACKAGE.REACTIVE,
+      PACKAGE.REACTIVE_METADATA,
+      PACKAGE.ROUTER,
+      PACKAGE.RECONCILER,
+      PACKAGE.WEB,
+      PACKAGE.SHARED,
+      PACKAGE.HOST_CONFIG,
+      PACKAGE.IOC_CONTAINER,
+      PACKAGE.IOC_CONTAINER_TEST_HELPER,
+    ]
+  },
+  {
+    type: 'bundle',
     input: jsxInput,
     output: {
       file: jsxFile,

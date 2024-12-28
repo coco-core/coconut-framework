@@ -1,11 +1,11 @@
-import { genDecorator, type FieldContext } from 'coco-ioc-container';
+import { genDecorator } from 'coco-ioc-container';
 import Remote from '../reactive-autowired/remote.ts';
 import { sym_remote } from './store.ts';
 import { customPostConstruct } from './reactive.ts';
 import ReactiveAutowired from '../metadata/reactive-autowired.ts';
 
 const postConstruct = customPostConstruct({
-  init: (metadata, appCtx, name, enqueueUpdate) => {
+  init: (metadata: ReactiveAutowired, appCtx, name, enqueueUpdate) => {
     const cls: any = metadata.value;
     const remote: Remote = appCtx.getBean(cls)[sym_remote];
     remote.fork().setEnqueueUpdate(enqueueUpdate);
@@ -19,7 +19,10 @@ const postConstruct = customPostConstruct({
   },
 });
 
-export default genDecorator<void, FieldContext>(ReactiveAutowired, {
-  postConstruct,
-  optional: true,
-});
+export default genDecorator<void, ClassFieldDecoratorContext>(
+  ReactiveAutowired,
+  {
+    postConstruct,
+    optional: true,
+  }
+);

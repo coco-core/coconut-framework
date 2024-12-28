@@ -1,11 +1,12 @@
 import { type Metadata } from 'coco-ioc-container';
+import Route from '../metadata/route.ts';
 
 class RouteComponentMapper {
   mapper = new Map();
 
-  init(map: Map<Class<any>, Metadata>) {
-    for (const [pageComponent, metadata] of map.entries()) {
-      this.set(metadata.value, pageComponent);
+  init(map: Map<Class<any>, Route>) {
+    for (const [pageComponent, route] of map.entries()) {
+      this.set(route.value, pageComponent);
     }
   }
 

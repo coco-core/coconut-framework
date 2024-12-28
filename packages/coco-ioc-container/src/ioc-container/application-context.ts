@@ -31,7 +31,7 @@ import type { Type } from '../metadata/scope.ts';
 import { isPlainObject } from '../share/util.ts';
 import Configuration from '../metadata/configuration.ts';
 import { register, NAME } from 'shared';
-import Inject from '../metadata/inject.ts';
+import Inject, { ClassList } from '../metadata/inject.ts';
 import Init from '../metadata/init.ts';
 import Start from '../metadata/start.ts';
 
@@ -203,7 +203,8 @@ class ApplicationContext {
       if (!map.has(beDecorated)) {
         return getBean(beDecorated, this);
       } else {
-        const ParameterList = map.get(beDecorated).value;
+        const metadata = map.get(beDecorated) as { value: ClassList };
+        const ParameterList = metadata.value;
         const parameterList = ParameterList.map(doInstantiateBean);
         return getBean(beDecorated, this, ...parameterList);
       }

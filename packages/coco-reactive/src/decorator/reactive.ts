@@ -1,10 +1,5 @@
 import { get, NAME } from 'shared';
-import {
-  genDecorator,
-  type ApplicationContext,
-  type FieldContext,
-  type ClassContext,
-} from 'coco-ioc-container';
+import { genDecorator, type ApplicationContext } from 'coco-ioc-container';
 import Publisher from '../memoized/publisher.ts';
 import Subscriber from '../memoized/subscriber.ts';
 import Reactive from '../metadata/reactive.ts';
@@ -67,7 +62,10 @@ export function customPostConstruct(hooks?: {
 
 const postConstruct = customPostConstruct();
 
-export default genDecorator<void, FieldContext | ClassContext>(Reactive, {
+export default genDecorator<
+  void,
+  ClassFieldDecoratorContext | ClassDecoratorContext
+>(Reactive, {
   postConstruct,
   optional: true,
 });

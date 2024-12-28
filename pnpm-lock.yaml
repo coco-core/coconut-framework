@@ -33,7 +33,7 @@ importers:
         version: 6.0.1(rollup@4.24.0)
       '@rollup/plugin-typescript':
         specifier: ^11.1.6
-        version: 11.1.6(rollup@4.24.0)(tslib@2.6.3)(typescript@5.3.3)
+        version: 11.1.6(rollup@4.24.0)(tslib@2.6.3)(typescript@5.7.2)
       '@testing-library/dom':
         specifier: ^10.4.0
         version: 10.4.0
@@ -76,12 +76,15 @@ importers:
       rollup:
         specifier: ^4.24.0
         version: 4.24.0
+      rollup-plugin-dts:
+        specifier: ^6.1.1
+        version: 6.1.1(rollup@4.24.0)(typescript@5.7.2)
       tslib:
         specifier: ^2.6.3
         version: 2.6.3
       typescript:
-        specifier: ^5.3.3
-        version: 5.3.3
+        specifier: ^5.7.2
+        version: 5.7.2
 
   packages/coco-cli:
     dependencies:
@@ -2329,7 +2332,7 @@ packages:
       rollup: 4.24.0
     dev: true
 
-  /@rollup/plugin-typescript@11.1.6(rollup@4.24.0)(tslib@2.6.3)(typescript@5.3.3):
+  /@rollup/plugin-typescript@11.1.6(rollup@4.24.0)(tslib@2.6.3)(typescript@5.7.2):
     resolution:
       {
         integrity: sha512-R92yOmIACgYdJ7dJ97p4K69I8gg6IEHt8M7dUBxN3W6nrO8uUxX5ixl0yU/N3aZTi8WhPuICvOHXQvF6FaykAA==,
@@ -2349,7 +2352,7 @@ packages:
       resolve: 1.22.8
       rollup: 4.24.0
       tslib: 2.6.3
-      typescript: 5.3.3
+      typescript: 5.7.2
     dev: true
 
   /@rollup/pluginutils@5.1.0(rollup@4.24.0):
@@ -6033,6 +6036,23 @@ packages:
       }
     dev: true
 
+  /rollup-plugin-dts@6.1.1(rollup@4.24.0)(typescript@5.7.2):
+    resolution:
+      {
+        integrity: sha512-aSHRcJ6KG2IHIioYlvAOcEq6U99sVtqDDKVhnwt70rW6tsz3tv5OSjEiWcgzfsHdLyGXZ/3b/7b/+Za3Y6r1XA==,
+      }
+    engines: { node: '>=16' }
+    peerDependencies:
+      rollup: ^3.29.4 || ^4
+      typescript: ^4.5 || ^5.0
+    dependencies:
+      magic-string: 0.30.12
+      rollup: 4.24.0
+      typescript: 5.7.2
+    optionalDependencies:
+      '@babel/code-frame': 7.26.0
+    dev: true
+
   /rollup@4.24.0:
     resolution:
       {
@@ -6535,10 +6555,10 @@ packages:
     engines: { node: '>=10' }
     dev: true
 
-  /typescript@5.3.3:
+  /typescript@5.7.2:
     resolution:
       {
-        integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==,
+        integrity: sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==,
       }
     engines: { node: '>=14.17' }
     hasBin: true

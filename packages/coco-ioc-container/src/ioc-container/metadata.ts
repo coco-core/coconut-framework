@@ -2,7 +2,7 @@
  * 注解的运行时配置
  */
 import { isPlainObject } from '../share/util.ts';
-import Metadata from '../metadata/metadata.ts';
+import Metadata, { defaultProp } from '../metadata/metadata.ts';
 import { type Field } from '../decorator/decorator-context.ts';
 import { register, NAME } from 'shared';
 import Scope from '../metadata/scope.ts';
@@ -34,11 +34,13 @@ function existSameMetadata(
 function createMetadata(metadataCls: Class<Metadata>, args?: any): Metadata {
   const metadata = new metadataCls();
   if (isPlainObject(args)) {
-    for (const key of Object.keys(args)) {
+    for (const key of Object.getOwnPropertyNames(args)) {
       metadata[key] = args[key];
     }
   } else if (args !== undefined) {
-    metadata.value = args;
+    const keys = Object.getOwnPropertyNames(metadata);
+    const propName = keys.length ? keys[0] : defaultProp;
+    (metadata as any)[propName] = args;
   }
   return metadata;
 }

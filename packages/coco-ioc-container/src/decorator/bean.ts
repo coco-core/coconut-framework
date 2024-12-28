@@ -1,5 +1,6 @@
 import genDecorator from './gen-decorator-exp.ts';
-import { MethodContext } from './decorator-context.ts';
 import Bean, { Args } from '../metadata/bean.ts';
 
-export default genDecorator<Args, MethodContext>(Bean, { optional: true });
+export default genDecorator<Args, ClassMethodDecoratorContext>(Bean, {
+  optional: true,
+});

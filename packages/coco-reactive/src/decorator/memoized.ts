@@ -1,5 +1,5 @@
 import { genDecorator } from 'coco-ioc-container';
-import type { ApplicationContext, MethodContext } from 'coco-ioc-container';
+import type { ApplicationContext } from 'coco-ioc-container';
 import Subscriber from '../memoized/subscriber.ts';
 import Memoized from '../metadata/memoized.ts';
 
@@ -13,7 +13,7 @@ function postConstruct(
   this[name] = subscriber.memoizedFn;
 }
 
-export default genDecorator<void, MethodContext>(Memoized, {
+export default genDecorator<void, ClassMethodDecoratorContext>(Memoized, {
   postConstruct,
   optional: true,
 });
