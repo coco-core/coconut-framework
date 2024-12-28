@@ -30,8 +30,14 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ./.npmrc
 
-      - name: Publish to npm
+      - name: Publish coco-mvc
         working-directory: packages/coco-mvc
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish @cocofw/cli
+        working-directory: packages/coco-cli
         run: pnpm publish --access public --no-git-checks
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
