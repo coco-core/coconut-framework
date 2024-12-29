@@ -1,13 +1,14 @@
 {
   "name": "@cocofw/cli",
   "description": "脚手架、开发、构建工具",
-  "version": "0.0.1-alpha202412291439",
+  "version": "0.0.1-alpha202412291444",
   "main": "dist/index.js",
   "bin": {
     "coco": "bin/coco.js"
   },
   "files": [
-    "bin"
+    "bin",
+    "dist"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
