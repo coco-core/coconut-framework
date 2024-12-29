@@ -44,10 +44,11 @@ class ApplicationContext {
     this.buildBeanDefinition();
     // 清空装饰器参数记录 todo 是否可以挪到this.buildBeanDefinition的上面
     clearDecoratorParams();
+    // todo 想办法去掉NAME.applicationContext
+    register(NAME.applicationContext, this);
     this.instantiateBeanRecursively();
     this.initBean();
     this.startBean();
-    register(NAME.applicationContext, this);
   }
   public getBean<T>(cls: Class<T>): T;
   public getBean<T>(name: string): T;

@@ -38,6 +38,11 @@ class HistoryRouter extends Router {
   @start()
   addListener() {
     window.addEventListener('popstate', this.handleRouteChange);
+    // 任意渲染一个路由，todo 后续添加默认路由设置
+    const page = this.routeComponentMapper.getAny();
+    if (page) {
+      this.render.render(page);
+    }
   }
 
   removeListener() {

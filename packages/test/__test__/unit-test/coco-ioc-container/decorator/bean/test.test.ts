@@ -1,4 +1,4 @@
-import { build } from '@cocofw/cli';
+import { genDotCoco } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 import { _test_helper } from 'coco-mvc';
 
@@ -10,7 +10,7 @@ let Theme;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
-      build(pkgPath(__dirname));
+      genDotCoco(pkgPath(__dirname));
       Router = (await import('./src/component/router.ts')).default;
       Button = (await import('./src/component/button.ts')).default;
       Theme = (await import('./src/component/theme.ts')).default;

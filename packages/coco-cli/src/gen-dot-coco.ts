@@ -8,7 +8,7 @@ import Paths from './paths';
 import { scan } from './scanner';
 import * as process from 'node:process';
 
-export default function build(projectPath: string) {
+export function genDotCoco(projectPath: string = '') {
   const appTsFile = 'application.ts';
   const appFilePath = path.join(process.cwd(), projectPath, `src/${appTsFile}`);
   if (!fs.existsSync(appFilePath)) {
@@ -29,7 +29,7 @@ export default function build(projectPath: string) {
   });
   fse.ensureDirSync(paths.dotCocoFolder);
   fs.writeFileSync(
-    path.join(paths.dotCocoFolder, 'index.ts'),
+    path.join(paths.dotCocoFolder, 'index.tsx'),
     appendExport(importStatements),
     { encoding: 'utf-8' }
   );
@@ -41,6 +41,9 @@ function appendExport(importStatements: string[]) {
   const append = `
 import { ApplicationContext } from "coco-mvc";
 export { ApplicationContext };
+
+// 测试时启动交给测试用例，其他情况启动ApplicationContext
+${process.env.NODE_ENV === 'test' ? '' : 'new ApplicationContext()'}
   `;
   return pre.concat(importStatements.join('\n')).concat(append);
 }

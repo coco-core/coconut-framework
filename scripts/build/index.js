@@ -1,4 +1,3 @@
-
 const { rollupTargets, tsTargets } = require('./build-target');
 const { build } = require("./rollup-builder");
 const compiler = require("./ts-compiler");

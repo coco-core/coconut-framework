@@ -1,4 +1,3 @@
-import { type Metadata } from 'coco-ioc-container';
 import Route from '../metadata/route.ts';
 
 class RouteComponentMapper {
@@ -10,7 +9,7 @@ class RouteComponentMapper {
     }
   }
 
-  set(url: string, PageComponent: Class<any>) {
+  private set(url: string, PageComponent: Class<any>) {
     if (this.mapper.has(url)) {
       console.error('重复的URL', url);
     } else {
@@ -20,6 +19,10 @@ class RouteComponentMapper {
 
   get(url: string): any {
     return this.mapper.get(url);
+  }
+
+  getAny() {
+    return this.mapper.values().next().value;
   }
 }
 

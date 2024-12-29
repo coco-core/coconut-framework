@@ -1,4 +1,4 @@
-import { build } from '@cocofw/cli';
+import { genDotCoco } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path.ts';
 import {
   getAllByRole,
@@ -28,7 +28,7 @@ let memoizedFn22;
 describe('store', () => {
   beforeEach(async () => {
     try {
-      build(pkgPath(__dirname));
+      genDotCoco(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
       Render = (await import('coco-mvc')).Render;
       Router = (await import('coco-mvc')).Router;
