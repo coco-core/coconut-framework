@@ -52,9 +52,6 @@ importers:
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
-      fs-extra:
-        specifier: ^11.2.0
-        version: 11.2.0
       glob:
         specifier: ^11.0.0
         version: 11.0.0
@@ -91,6 +88,9 @@ importers:
 
   packages/coco-cli:
     dependencies:
+      fs-extra:
+        specifier: ^11.2.0
+        version: 11.2.0
       prompts:
         specifier: ^2.4.2
         version: 2.4.2
@@ -4172,7 +4172,7 @@ packages:
       graceful-fs: 4.2.11
       jsonfile: 6.1.0
       universalify: 2.0.1
-    dev: true
+    dev: false
 
   /fs.realpath@1.0.0:
     resolution:
@@ -5266,7 +5266,6 @@ packages:
       universalify: 2.0.1
     optionalDependencies:
       graceful-fs: 4.2.11
-    dev: true
 
   /kleur@3.0.3:
     resolution:
@@ -6648,7 +6647,6 @@ packages:
         integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==,
       }
     engines: { node: '>= 10.0.0' }
-    dev: true
 
   /update-browserslist-db@1.1.0(browserslist@4.23.3):
     resolution:
