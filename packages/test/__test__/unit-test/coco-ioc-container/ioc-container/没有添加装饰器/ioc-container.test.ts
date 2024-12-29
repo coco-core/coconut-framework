@@ -1,4 +1,4 @@
-import { build } from '@cocofw/cli';
+import { genDotCoco } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 import { _test_helper } from 'coco-mvc';
 
@@ -6,7 +6,7 @@ let ApplicationContext;
 let Space;
 describe('ioc-container', () => {
   beforeEach(async () => {
-    build(pkgPath(__dirname));
+    genDotCoco(pkgPath(__dirname));
     Space = (await import('./src/component/Space.ts')).default;
     ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
   });

@@ -1,4 +1,4 @@
-import { build } from '@cocofw/cli';
+import { genDotCoco } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../helper/pkg-path';
 import {
   getByLabelText,
@@ -17,7 +17,7 @@ let App;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
-      build(pkgPath(__dirname));
+      genDotCoco(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
       Render = (await import('coco-mvc')).Render;
       Router = (await import('coco-mvc')).Router;

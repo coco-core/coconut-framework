@@ -1,4 +1,4 @@
-import { build } from '@cocofw/cli';
+import { genDotCoco } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr, cocoIdxFolder } from '../../../helper/pkg-path';
 import { _test_helper } from 'coco-mvc';
 import { decoratorName as a } from './src/decorator/a';
@@ -9,7 +9,7 @@ let ApplicationContext;
 
 describe('field装饰器', () => {
   beforeEach(async () => {
-    build(pkgPath(__dirname));
+    genDotCoco(pkgPath(__dirname));
     ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
   });
 

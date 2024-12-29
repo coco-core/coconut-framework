@@ -1,4 +1,4 @@
-import { build } from '@cocofw/cli';
+import { genDotCoco } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 import { _test_helper } from 'coco-mvc';
 
@@ -8,7 +8,7 @@ let Single;
 let VanButton;
 describe('ioc-container', () => {
   beforeEach(async () => {
-    build(pkgPath(__dirname));
+    genDotCoco(pkgPath(__dirname));
     Single = (await import(cocoIdxStr)).Single;
     Button = (await import(cocoIdxStr)).Button;
     VanButton = (await import(cocoIdxStr)).VanButton;

@@ -1,4 +1,4 @@
-import { build } from '@cocofw/cli';
+import { genDotCoco } from '@cocofw/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 import { _test_helper } from 'coco-mvc';
 
@@ -7,7 +7,7 @@ let throwError;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
-      build(pkgPath(__dirname));
+      genDotCoco(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
     } catch (e) {
       throwError = true;

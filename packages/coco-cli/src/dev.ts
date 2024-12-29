@@ -3,7 +3,6 @@ import * as process from 'process';
 import * as fs from 'fs';
 import * as path from 'path';
 import Paths from './paths';
-import { scan } from './scanner';
 
 export const dev = () => {
   const cwd = process.cwd();
@@ -11,42 +10,17 @@ export const dev = () => {
     throw new Error('当前似乎不是在一个项目中');
   }
   const paths = new Paths(cwd);
-  // 1. scan
-  const iocComponents = scan(paths);
-
-  // 2. write file
-  if (fs.existsSync(paths.dotCocoFolder)) {
-    // clean
-    fs.rmSync(paths.dotCocoFolder, { recursive: true });
-  }
-  // create
-  fs.mkdirSync(paths.dotCocoFolder, { recursive: true });
-  fs.writeFileSync(
-    path.join(paths.dotCocoFolder, './index.jsx'),
-    `
-import {render} from "coco-mvc";
-import App from "../page/app";
-
-const container = document.getElementById("root");
-
-render(<App />, container);
-  `,
-    'utf-8'
-  );
-
-  // const container = new IocContainer()
-
-  const entry = path.join(paths.dotCocoFolder, './index.jsx');
+  const entry = path.join(paths.dotCocoFolder, './index.tsx');
   const outputPath = path.join(paths.projectRoot, './dist');
-  console.log('=======eeee===========', entry, outputPath);
   // 3. webpack start
   const compiler = webpack(
     {
+      mode: 'development',
       entry: entry,
       module: {
         rules: [
           {
-            test: /\.jsx?$/,
+            test: /\.tsx?$/,
             use: [
               {
                 loader: 'babel-loader',
@@ -72,7 +46,7 @@ render(<App />, container);
         ],
       },
       resolve: {
-        extensions: ['.jsx', '.js'],
+        extensions: ['.tsx', '.ts', '.jsx', '.js'],
       },
       output: {
         filename: 'main.js',

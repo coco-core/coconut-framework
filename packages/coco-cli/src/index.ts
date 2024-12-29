@@ -1,4 +1,2 @@
-export * from './dev';
-import build from './build';
-
-export { build };
+export { dev } from './dev';
+export { genDotCoco } from './gen-dot-coco';
