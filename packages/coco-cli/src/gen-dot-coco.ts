@@ -42,8 +42,11 @@ function appendExport(importStatements: string[]) {
 import { ApplicationContext } from "coco-mvc";
 export { ApplicationContext };
 
-// 测试时启动交给测试用例，其他情况启动ApplicationContext
-${process.env.NODE_ENV === 'test' ? '' : 'new ApplicationContext()'}
+${
+  process.env.NODE_ENV === 'test'
+    ? `// 测试时由测试用例启动ApplicationContext`
+    : `new ApplicationContext()`
+}
   `;
   return pre.concat(importStatements.join('\n')).concat(append);
 }

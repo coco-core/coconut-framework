@@ -4,11 +4,12 @@ const cli = require('../dist/index.js');
 const [, , command] = process.argv;
 
 switch (command) {
-  case 'dev':
-    cli.dev();
+  case 'create':
+    cli.createApp();
     break;
-  case 'genDotCoco':
+  case 'dev':
     cli.genDotCoco();
+    cli.dev();
     break;
   default:
     console.log(`Unknown command: ${command}`);

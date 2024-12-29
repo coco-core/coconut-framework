@@ -1,13 +1,14 @@
 {
   "name": "@cocofw/cli",
   "description": "脚手架、开发、构建工具",
-  "version": "0.0.1-alpha202412291444",
+  "version": "0.0.1-alpha202412291912",
   "main": "dist/index.js",
   "bin": {
     "coco": "bin/coco.js"
   },
   "files": [
     "bin",
+    "template",
     "dist"
   ],
   "scripts": {
@@ -17,6 +18,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "prompts": "^2.4.2",
     "webpack": "^5.97.1"
   }
 }
