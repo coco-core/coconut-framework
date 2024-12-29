@@ -91,6 +91,9 @@ importers:
 
   packages/coco-cli:
     dependencies:
+      prompts:
+        specifier: ^2.4.2
+        version: 2.4.2
       webpack:
         specifier: ^5.97.1
         version: 5.97.1
@@ -5271,7 +5274,6 @@ packages:
         integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==,
       }
     engines: { node: '>=6' }
-    dev: true
 
   /leven@3.1.0:
     resolution:
@@ -5884,7 +5886,6 @@ packages:
     dependencies:
       kleur: 3.0.3
       sisteransi: 1.0.5
-    dev: true
 
   /psl@1.9.0:
     resolution:
@@ -6227,7 +6228,6 @@ packages:
       {
         integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==,
       }
-    dev: true
 
   /slash@3.0.0:
     resolution:

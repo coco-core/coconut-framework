@@ -4,6 +4,9 @@ const cli = require('../dist/index.js');
 const [, , command] = process.argv;
 
 switch (command) {
+  case 'create':
+    cli.createApp();
+    break;
   case 'dev':
     cli.genDotCoco();
     cli.dev();
