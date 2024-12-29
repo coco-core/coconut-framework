@@ -1,6 +1,6 @@
 {
   "name": "coco-mvc",
-  "version": "0.0.1-alpha202412291439",
+  "version": "0.0.1-alpha202412291444",
   "description": "构建现代web应用的mvc框架",
   "main": "dist/coco-mvc.cjs.js",
   "types": "dist/types/index.d.ts",
