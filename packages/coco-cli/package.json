@@ -1,7 +1,7 @@
 {
   "name": "@cocofw/cli",
   "description": "脚手架、开发、构建工具",
-  "version": "0.0.1-alpha202412281729",
+  "version": "0.0.1-alpha202412291439",
   "main": "dist/index.js",
   "bin": {
     "coco": "bin/coco.js"
