@@ -5,10 +5,8 @@ const [, , command] = process.argv;
 
 switch (command) {
   case 'dev':
-    cli.dev();
-    break;
-  case 'genDotCoco':
     cli.genDotCoco();
+    cli.dev();
     break;
   default:
     console.log(`Unknown command: ${command}`);
