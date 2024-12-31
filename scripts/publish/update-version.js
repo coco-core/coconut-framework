@@ -8,7 +8,7 @@ function prefixZero(num) {
 
 function updateVersion() {
   const now = new Date();
-  const timestamp = `${now.getFullYear()}${now.getMonth() + 1}${prefixZero(now.getDate())}${prefixZero(now.getHours())}${prefixZero(now.getMinutes())}`;
+  const timestamp = `${now.getFullYear()}${prefixZero(now.getMonth() + 1)}${prefixZero(now.getDate())}${prefixZero(now.getHours())}${prefixZero(now.getMinutes())}`;
   let newVersion = '';
   const packages = ['packages/coco-mvc', 'packages/coco-cli'];
   packages.forEach((pkg) => {
