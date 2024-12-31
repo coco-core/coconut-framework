@@ -1,23 +1,21 @@
 {
-  "name": "coconut-framework-demo",
+  "name": "<%= name %>",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "build": "coco dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "coco dev"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.25.9",
     "@babel/plugin-transform-react-jsx": "^7.25.9",
-    "@cocofw/cli": "*",
-    "babel-loader": "^9.2.1"
+    "@cocofw/cli": "^<%= version %>",
+    "babel-loader": "^9.2.1",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "coco-mvc": "*",
+    "coco-mvc": "^<%= version %>",
     "fs-extra": "^11.2.0"
   }
 }

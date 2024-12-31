@@ -1,7 +1,7 @@
 {
   "name": "@cocofw/cli",
   "description": "脚手架、开发、构建工具",
-  "version": "0.0.1-alpha202412291919",
+  "version": "0.0.1-alpha220251010701",
   "main": "dist/index.js",
   "bin": {
     "coco": "bin/coco.js"
@@ -18,7 +18,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "ejs": "^3.1.10",
     "fs-extra": "^11.2.0",
+    "glob": "^11.0.0",
     "prompts": "^2.4.2",
     "webpack": "^5.97.1"
   }
