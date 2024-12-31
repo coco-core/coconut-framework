@@ -1,5 +1,5 @@
 import { _test_helper, Component, Scope, Target } from 'coco-mvc';
-import { genDotCoco } from '@cocofw/cli';
+import { genDotCoco } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 
 let ApplicationContext;

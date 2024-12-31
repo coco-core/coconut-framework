@@ -1,4 +1,4 @@
-import { genDotCoco } from '@cocofw/cli';
+import { genDotCoco } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path.ts';
 import { _test_helper } from 'coco-mvc';
 

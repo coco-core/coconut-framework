@@ -9,6 +9,6 @@
     "coco-mvc": "workspace:*"
   },
   "devDependencies": {
-    "@cocofw/cli": "workspace:*"
+    "@cocojs/cli": "workspace:*"
   }
 }

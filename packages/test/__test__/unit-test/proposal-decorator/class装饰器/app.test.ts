@@ -1,4 +1,4 @@
-import { genDotCoco } from '@cocofw/cli';
+import { genDotCoco } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr, cocoIdxFolder } from '../../../helper/pkg-path';
 import { _test_helper } from 'coco-mvc';
 import { decoratorName as a } from './src/decorator/a';

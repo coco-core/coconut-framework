@@ -1,4 +1,4 @@
-import { genDotCoco } from '@cocofw/cli';
+import { genDotCoco } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 import {
   getByLabelText,
