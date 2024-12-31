@@ -124,7 +124,7 @@ importers:
         specifier: workspace:*
         version: link:../coco-mvc
     devDependencies:
-      '@cocofw/cli':
+      '@cocojs/cli':
         specifier: workspace:*
         version: link:../coco-cli
 

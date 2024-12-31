@@ -1,4 +1,4 @@
-import { genDotCoco } from '@cocofw/cli';
+import { genDotCoco } from '@cocojs/cli';
 // todo 优化成@/helper/pkg-path
 import { pkgPath, cocoIdxStr } from '../../../helper/pkg-path';
 import {
