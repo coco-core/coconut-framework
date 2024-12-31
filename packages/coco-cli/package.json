@@ -18,7 +18,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "ejs": "^3.1.10",
     "fs-extra": "^11.2.0",
+    "glob": "^11.0.0",
     "prompts": "^2.4.2",
     "webpack": "^5.97.1"
   }

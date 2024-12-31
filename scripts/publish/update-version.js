@@ -27,22 +27,6 @@ function updateVersion() {
       }
     });
   });
-
-  // template/package.json
-  const packageJson = path.join(
-    process.cwd(),
-    'packages/coco-cli/template/package.json'
-  );
-  jsonfile.readFile(packageJson, (err, content) => {
-    if (err) console.error(err);
-    else {
-      content.dependencies['coco-mvc'] = `^${newVersion}`;
-      content.devDependencies['@cocofw/cli'] = `^${newVersion}`;
-      jsonfile.writeFile(packageJson, content, { spaces: 2 }, (err) => {
-        if (err) console.error(err);
-      });
-    }
-  });
 }
 
 updateVersion();
