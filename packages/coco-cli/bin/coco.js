@@ -8,7 +8,6 @@ switch (command) {
     cli.createApp();
     break;
   case 'dev':
-    cli.genDotCoco();
     cli.dev();
     break;
   default:
