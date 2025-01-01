@@ -1,30 +1,14 @@
 const path = require('path');
 
 const config = {
-  mode: 'development',
+  mode: 'production',
   entry: './src/.coco/index.tsx',
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              plugins: [
-                ['@babel/plugin-proposal-decorators', { version: '2023-11' }],
-                [
-                  '@babel/plugin-transform-react-jsx',
-                  {
-                    runtime: 'automatic',
-                    importSource: 'coco-mvc',
-                  },
-                ],
-              ],
-            },
-          },
-        ],
-        exclude: /node_module/,
+        use: [{ loader: 'babel-loader' }],
+        exclude: /node_modules/,
       },
     ],
   },
@@ -33,7 +17,15 @@ const config = {
   },
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'public/dist'),
+    clean: true,
+  },
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
+    compress: true,
+    port: 8000,
   },
 };
 
