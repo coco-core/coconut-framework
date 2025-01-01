@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "coco-ioc-container",
-  "description": "IOC容器，提供业务无关的功能",
+  "description": "IOC容器。",
   "version": "0.0.0",
   "scripts": {},
   "author": "jiangchenguang",

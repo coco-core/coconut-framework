@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "coco-router",
-  "description": "调和。和react-reconciler保持同步",
+  "description": "路由。",
   "version": "0.0.0",
   "scripts": {},
   "author": "jiangchenguang",
