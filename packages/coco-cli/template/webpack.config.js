@@ -1,7 +1,7 @@
 const path = require('path');
 
 const config = {
-  mode: 'development',
+  mode: 'production',
   entry: './src/.coco/index.tsx',
   module: {
     rules: [
@@ -24,7 +24,7 @@ const config = {
             },
           },
         ],
-        exclude: /node_module/,
+        exclude: /node_modules/,
       },
     ],
   },
@@ -33,7 +33,15 @@ const config = {
   },
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'public/dist'),
+    clean: true,
+  },
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
+    compress: true,
+    port: 8000,
   },
 };
 
