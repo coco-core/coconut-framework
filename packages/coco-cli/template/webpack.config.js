@@ -7,23 +7,7 @@ const config = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              plugins: [
-                ['@babel/plugin-proposal-decorators', { version: '2023-11' }],
-                [
-                  '@babel/plugin-transform-react-jsx',
-                  {
-                    runtime: 'automatic',
-                    importSource: 'coco-mvc',
-                  },
-                ],
-              ],
-            },
-          },
-        ],
+        use: [{ loader: 'babel-loader' }],
         exclude: /node_modules/,
       },
     ],
