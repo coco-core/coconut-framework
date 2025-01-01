@@ -1,4 +1,3 @@
-const { execSync } = require('child_process');
 const jsonfile = require('jsonfile');
 const glob = require('glob');
 const ejs = require('ejs');
@@ -62,8 +61,6 @@ async function createApp() {
     path.join(targetDir, 'package.json'),
     renderedContent
   );
-
-  execSync('npm install', { cwd: targetDir, stdio: 'inherit' });
 }
 
 export default createApp;
