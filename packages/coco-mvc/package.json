@@ -1,7 +1,7 @@
 {
   "name": "coco-mvc",
-  "version": "0.0.1-alpha202501010750",
-  "description": "构建现代web应用的mvc框架",
+  "version": "0.0.1-alpha202501011515",
+  "description": "基于装饰器的 MVC 框架，助力构建可扩展的 Web 应用。",
   "main": "dist/coco-mvc.cjs.js",
   "types": "dist/types/index.d.ts",
   "files": [

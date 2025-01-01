@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "coconut-web",
-  "description": "dom操作。和react-dom中的client保持同步",
+  "description": "dom操作。和react-dom中的client保持同步。",
   "version": "0.0.1",
   "main": "index.js",
   "exports": {

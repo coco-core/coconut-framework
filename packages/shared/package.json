@@ -1,6 +1,6 @@
 {
   "private": true,
-  "description": "ReactSymbols，还包含所有包公共依赖",
+  "description": "ReactSymbols。还包含所有包公共依赖。",
   "name": "shared",
   "version": "0.0.0"
 }
