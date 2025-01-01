@@ -35,7 +35,6 @@
     "@types/jest": "^29.5.12",
     "@types/node": "20.0.0",
     "babel-jest": "^29.7.0",
-    "babel-loader": "^9.2.1",
     "cross-env": "^7.0.3",
     "glob": "^11.0.0",
     "husky": "^9.1.6",
