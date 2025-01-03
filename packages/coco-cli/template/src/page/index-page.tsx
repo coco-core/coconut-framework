@@ -5,7 +5,7 @@ import { view, route } from 'coco-mvc';
 class IndexPage {
   @view()
   h() {
-    return <div>hello coconut</div>;
+    return <div>hello coco-mvc</div>;
   }
 }
 
