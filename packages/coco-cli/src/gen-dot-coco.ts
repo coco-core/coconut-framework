@@ -21,11 +21,16 @@ export function genDotCoco(projectPath: string = '') {
   const iocComponents = scan(paths);
   // 2. 生成.coco文件
   const importStatements = iocComponents.map(({ className, filePath }) => {
-    const relative = path.relative(
+    const relativePath = path.relative(
       path.join(projectPath, 'src/.coco'),
       filePath
     );
-    return `export { default as ${className} } from '${relative}';`;
+    const extLen = path.extname(relativePath).length;
+    const relativePathNoExt = relativePath.slice(
+      0,
+      relativePath.length - extLen
+    );
+    return `export { default as ${className} } from '${relativePathNoExt}';`;
   });
   fse.ensureDirSync(paths.dotCocoFolder);
   fs.writeFileSync(
