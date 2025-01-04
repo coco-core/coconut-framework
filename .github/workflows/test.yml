@@ -1,4 +1,4 @@
-name: CI
+name: Test
 
 on:
   pull_request_target:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
