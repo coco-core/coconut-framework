@@ -9,9 +9,10 @@ const cocoCli = path.join(packages, './coco-cli');
 const cliSrc = path.join(cocoCli, './src');
 const cliDist = path.join(cocoCli, './dist');
 
+const modifyDeclareImport = require('./modify-declare-import');
+
 module.exports.rollupTargets = [
   {
-    type: 'bundle',
     input: cocoMvcInput,
     output: {
       file: cocoMvcFile,
@@ -30,7 +31,8 @@ module.exports.rollupTargets = [
       PACKAGE.HOST_CONFIG,
       PACKAGE.IOC_CONTAINER,
       PACKAGE.IOC_CONTAINER_TEST_HELPER,
-    ]
+    ],
+    afterBuild: modifyDeclareImport
   },
 ];
 
