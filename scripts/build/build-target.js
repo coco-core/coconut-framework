@@ -4,12 +4,13 @@ const packages = path.join(__dirname, '../../packages');
 const cocoMvc = path.join(packages, './coco-mvc');
 const cocoMvcInput = path.join(cocoMvc, './src/index.ts');
 const cocoMvcFile = path.join(cocoMvc, './dist/coco-mvc.cjs.js');
+const jsxInput = path.join(cocoMvc, './src/jsx-runtime/index.ts');
+const jsxFile = `${path.join(cocoMvc, './dist')}/jsx-runtime.cjs.js`;
 
 const cocoCli = path.join(packages, './coco-cli');
 const cliSrc = path.join(cocoCli, './src');
 const cliDist = path.join(cocoCli, './dist');
 
-const modifyDeclareImport = require('./modify-declare-import');
 
 module.exports.rollupTargets = [
   {
@@ -32,7 +33,13 @@ module.exports.rollupTargets = [
       PACKAGE.IOC_CONTAINER,
       PACKAGE.IOC_CONTAINER_TEST_HELPER,
     ],
-    afterBuild: modifyDeclareImport
+  },
+  {
+    input: jsxInput,
+    output: {
+      file: jsxFile,
+      format: 'cjs',
+    },
   },
 ];
 

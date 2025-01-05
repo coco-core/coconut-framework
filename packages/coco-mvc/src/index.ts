@@ -12,5 +12,6 @@ export { default as webApplication } from './decorator/web-application.ts';
 export { default as Render } from './component/render.ts';
 export { default as WebRender } from './render/web-render.ts';
 
+// todo 拿出去
 export { jsx, jsxs } from './jsx-runtime/index.ts';
 export * from './_test_helper';
