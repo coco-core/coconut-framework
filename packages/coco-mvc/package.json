@@ -1,9 +1,9 @@
 {
   "name": "coco-mvc",
   "version": "0.0.1-alpha202501012203",
-  "description": "基于装饰器的 MVC 框架，助力构建可扩展的 Web 应用。",
+  "description": "基于装饰器的MVC框架，助力构建可扩展的Web应用。",
   "main": "dist/coco-mvc.cjs.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/types/coco-mvc/src/index.d.ts",
   "files": [
     "dist"
   ],
@@ -11,10 +11,6 @@
     "mvc",
     "decorator"
   ],
-  "exports": {
-    ".": "./dist/coco-mvc.cjs.js",
-    "./jsx-runtime": "./dist/jsx-runtime.cjs.js"
-  },
   "author": "jiangchenguang",
   "homepage": "https://github.com/jiangchenguang/coconut-framework",
   "license": "MIT"

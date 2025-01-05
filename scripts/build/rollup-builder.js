@@ -25,12 +25,12 @@ function genRollupConfig (inputConfig) {
         compilerOptions: {
           "target": "es2015",
           "lib": ["dom", "es2015"],
-          "declaration": false,
+          "declaration": true,
+          "declarationDir": "./types"
       }}),
       aliasPlugin({
         entries: genEntries(alias)
       }),
-      type === 'declaration' ? dts() : null
     ],
     onLog(level, log, handler) {
       if (log.code === 'CIRCULAR_DEPENDENCY') {
