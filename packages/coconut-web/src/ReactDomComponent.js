@@ -1,4 +1,5 @@
 import setTextContent from "./setTextContent";
+import { setValueForProperty } from './DOMPropertyOperations';
 
 const CHILDREN = 'children';
 const STYLE = 'style';
@@ -21,7 +22,10 @@ function setInitialDOMProperties(
         setTextContent(domElement, '' + nextProp);
       }
     } else if (propKey === 'onClick') {
+      // todo 挪到setValueForProperty内部
       domElement.addEventListener('click', nextProp);
+    } else if (nextProp != null) {
+      setValueForProperty(domElement, propKey, nextProp)
     }
   }
 }
