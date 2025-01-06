@@ -15,7 +15,8 @@ module.exports = {
     ],
   },
   moduleNameMapper: {
-    'coco-mvc': '<rootDir>/packages/coco-mvc/dist/coco-mvc.cjs.js',
+    'coco-mvc/jsx-runtime$': '<rootDir>/packages/coco-mvc/dist/jsx.cjs.js',
+    'coco-mvc$': '<rootDir>/packages/coco-mvc/dist/coco-mvc.cjs.js',
   },
   setupFiles: ['<rootDir>/scripts/jest/setup.js'],
 };

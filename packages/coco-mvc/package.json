@@ -11,8 +11,8 @@
       "types": "./dist/types/coco-mvc/src/index.d.ts"
     },
     "./jsx-runtime": {
-      "import": "./dist/jsx-runtime.cjs.js",
-      "require": "./dist/jsx-runtime.cjs.js"
+      "import": "./dist/jsx.cjs.js",
+      "require": "./dist/jsx.cjs.js"
     }
   },
   "files": [
