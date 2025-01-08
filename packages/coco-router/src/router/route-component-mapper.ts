@@ -20,10 +20,6 @@ class RouteComponentMapper {
   get(url: string): any {
     return this.mapper.get(url);
   }
-
-  getAny() {
-    return this.mapper.values().next().value;
-  }
 }
 
 export default RouteComponentMapper;
