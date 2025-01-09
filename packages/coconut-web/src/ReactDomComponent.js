@@ -21,9 +21,6 @@ function setInitialDOMProperties(
       } else if (typeof nextProp === 'number') {
         setTextContent(domElement, '' + nextProp);
       }
-    } else if (propKey === 'onClick') {
-      // todo 挪到setValueForProperty内部
-      domElement.addEventListener('click', nextProp);
     } else if (nextProp != null) {
       setValueForProperty(domElement, propKey, nextProp)
     }

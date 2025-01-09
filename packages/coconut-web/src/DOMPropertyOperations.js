@@ -5,8 +5,11 @@ export function setValueForProperty(
   name,
   value
 ) {
+  if (name === 'onClick') {
+    node.addEventListener('click', value);
+    return;
+  }
   const propertyInfo = getPropertyInfo(name);
-
   const { attributeName } = propertyInfo;
   if (value === null) {
     node.removeAttribute(attributeName)
