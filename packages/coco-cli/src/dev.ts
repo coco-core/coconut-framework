@@ -1,4 +1,4 @@
-import * as process from 'process';
+import process from 'node:process';
 import { execSync, spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -20,13 +20,10 @@ const webpack = (isDev: boolean) => {
   });
 
   if (isDev) {
-    const watcher = watch('');
-    watcher.on('close', () => {
-      console.log('[Chokidar] Exiting...');
-      // 当 chokidar 退出时，终止 webpack-dev-server
-      webpackDevServer.kill('SIGINT'); // 发送 SIGINT 信号来通知 webpack-dev-server 退出
+    watch('');
+    process.on('uncaughtException', () => {
+      webpackDevServer.kill('SIGINT'); // 显式杀死子进程
     });
-    // todo 当chokidar意外退出时也需要结束webpackDevServer
   }
 };
 
