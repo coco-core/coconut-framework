@@ -1,5 +1,5 @@
 /**
- * 递归所有ioc组件，并注册到ioc容器中
+ * 扫描获取所有ioc组件
  */
 import * as fs from 'fs';
 import * as path from 'path';
@@ -11,9 +11,9 @@ enum PATH_TYPE {
 }
 const RE_DEFAULT_EXPORT = /export\s+default\s+(\w+);?\s?/;
 
-type ScanResult = { className: string; filePath: string }[];
+export type ScanResult = { className: string; filePath: string }[];
 
-function doScanFile(filePath: string, decorator: string) {
+export function doScanFile(filePath: string, decorator: string) {
   const content = fs.readFileSync(filePath, 'utf-8');
   if (content.includes(decorator) && RE_DEFAULT_EXPORT.test(content)) {
     // todo 需要校验export出来的class名称和注解的是否一致
@@ -59,73 +59,82 @@ function doScan(
   return result;
 }
 
+export const scanPathConfig = [
+  {
+    // 配置项
+    type: PATH_TYPE.FOLDER,
+    path: Paths.CONFIG_DIR,
+    fileExt: '.ts',
+    decorator: '@configuration',
+  },
+  {
+    // 页面
+    type: PATH_TYPE.FOLDER,
+    path: Paths.PAGE_DIR,
+    fileExt: '.tsx',
+    decorator: '@route',
+  },
+  {
+    // 控制器
+    type: PATH_TYPE.FOLDER,
+    path: Paths.CONTROLLER_DIR,
+    fileExt: '.ts',
+    decorator: '@controller',
+  },
+  {
+    // 通用组件
+    type: PATH_TYPE.FOLDER,
+    path: Paths.COMPONENTS_DIR,
+    fileExt: '.ts',
+    decorator: '@component',
+  },
+  {
+    // 服务
+    type: PATH_TYPE.FOLDER,
+    path: Paths.SERVICE_DIR,
+    fileExt: '.ts',
+    decorator: '@service',
+  },
+  {
+    // 视图
+    type: PATH_TYPE.FOLDER,
+    path: Paths.VIEW_DIR,
+    fileExt: '.tsx',
+    decorator: '@view',
+  },
+  {
+    // 全局数据
+    type: PATH_TYPE.FOLDER,
+    path: Paths.GLOBAL_DATA_DIR,
+    fileExt: '.ts',
+    decorator: '@globalData',
+  },
+  {
+    // 全局状态
+    type: PATH_TYPE.FOLDER,
+    path: Paths.STORE_DIR,
+    fileExt: '.ts',
+    decorator: '@store',
+  },
+  {
+    // 入口文件
+    type: PATH_TYPE.FILE,
+    path: Paths.APPLICATION,
+    fileExt: '.ts',
+    decorator: '@webApplication',
+  },
+];
+
 export const scan = (paths: Paths): ScanResult => {
-  return [
-    {
-      // 配置项
-      type: PATH_TYPE.FOLDER,
-      path: paths.configFolder,
-      fileExt: '.ts',
-      decorator: '@configuration',
-    },
-    {
-      // 页面
-      type: PATH_TYPE.FOLDER,
-      path: paths.pageFolder,
-      fileExt: '.tsx',
-      decorator: '@route',
-    },
-    {
-      // 控制器
-      type: PATH_TYPE.FOLDER,
-      path: paths.controllerFolder,
-      fileExt: '.ts',
-      decorator: '@controller',
-    },
-    {
-      // 通用组件
-      type: PATH_TYPE.FOLDER,
-      path: paths.componentFolder,
-      fileExt: '.ts',
-      decorator: '@component',
-    },
-    {
-      // 服务
-      type: PATH_TYPE.FOLDER,
-      path: paths.serviceFolder,
-      fileExt: '.ts',
-      decorator: '@service',
-    },
-    {
-      // 视图
-      type: PATH_TYPE.FOLDER,
-      path: paths.viewFolder,
-      fileExt: '.tsx',
-      decorator: '@view',
-    },
-    {
-      // 全局数据
-      type: PATH_TYPE.FOLDER,
-      path: paths.globalDataFolder,
-      fileExt: '.ts',
-      decorator: '@globalData',
-    },
-    {
-      // 全局状态
-      type: PATH_TYPE.FOLDER,
-      path: paths.storeFolder,
-      fileExt: '.ts',
-      decorator: '@store',
-    },
-    {
-      // 入口文件
-      type: PATH_TYPE.FILE,
-      path: paths.applicationFile,
-      fileExt: '.ts',
-      decorator: '@webApplication',
-    },
-  ].reduce((prev, curr) => {
-    prev.push(...doScan(curr.type, curr.path, curr.fileExt, curr.decorator));
+  return scanPathConfig.reduce((prev, curr) => {
+    prev.push(
+      ...doScan(
+        curr.type,
+        paths.genFullPath(curr.path),
+        curr.fileExt,
+        curr.decorator
+      )
+    );
     return prev;
   }, []);
 };

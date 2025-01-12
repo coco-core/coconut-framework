@@ -7,49 +7,20 @@ class Paths {
     this.projectRoot = projectPath;
   }
 
-  get srcFolder() {
-    return path.join(this.projectRoot, './src');
-  }
+  static DOT_COCO_DIR = '.coco';
+  static APPLICATION = 'application.ts';
+  static VIEW_DIR = 'view';
+  static CONFIG_DIR = 'config';
+  static PAGE_DIR = 'page';
+  static CONTROLLER_DIR = 'controller';
+  static SERVICE_DIR = 'server';
+  static STORE_DIR = 'store';
+  static GLOBAL_DATA_DIR = 'global-data';
+  static COMPONENTS_DIR = 'component';
 
-  get dotCocoFolder() {
-    return path.join(this.srcFolder, '.coco');
-  }
-
-  get applicationFile() {
-    return path.join(this.srcFolder, 'application.ts');
-  }
-
-  get viewFolder() {
-    return path.join(this.srcFolder, './view');
-  }
-
-  get configFolder() {
-    return path.join(this.srcFolder, './config');
-  }
-
-  get pageFolder() {
-    return path.join(this.srcFolder, './page');
-  }
-
-  get controllerFolder() {
-    return path.join(this.srcFolder, './controller');
-  }
-
-  get serviceFolder() {
-    return path.join(this.srcFolder, './service');
-  }
-
-  get storeFolder() {
-    return path.join(this.srcFolder, './store');
-  }
-
-  get globalDataFolder() {
-    return path.join(this.srcFolder, './global-data');
-  }
-
-  get componentFolder() {
-    return path.join(this.srcFolder, './component');
-  }
+  public genFullPath = (name: string) => {
+    return path.join(this.projectRoot, 'src', name);
+  };
 }
 
 export default Paths;
