@@ -22,7 +22,11 @@ class HistoryRouter extends Router {
     const pageComponent = this.routeComponentMapper.get(
       window.location.pathname
     );
-    this.render.render(pageComponent);
+    if (pageComponent) {
+      this.render.render(pageComponent);
+    } else {
+      // todo 404 page
+    }
   };
 
   @init()
@@ -38,11 +42,8 @@ class HistoryRouter extends Router {
   @start()
   addListener() {
     window.addEventListener('popstate', this.handleRouteChange);
-    // 任意渲染一个路由，todo 后续添加默认路由设置
-    const page = this.routeComponentMapper.getAny();
-    if (page) {
-      this.render.render(page);
-    }
+    // 初始化渲染
+    this.handleRouteChange();
   }
 
   removeListener() {

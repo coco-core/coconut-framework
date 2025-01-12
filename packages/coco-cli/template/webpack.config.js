@@ -25,6 +25,7 @@ const config = {
       directory: path.join(__dirname, 'public'),
     },
     compress: true,
+    historyApiFallback: true,
     port: 8000,
     devMiddleware: {
       writeToDisk: true,

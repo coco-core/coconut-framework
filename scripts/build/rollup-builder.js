@@ -4,9 +4,10 @@ const babel = require('@rollup/plugin-babel');
 const typescript = require('@rollup/plugin-typescript');
 const aliasPlugin = require('@rollup/plugin-alias');
 const genEntries = require('./rollup-alias').genEntries;
+const modifyDeclareImport = require('./modify-declare-import');
 
 function genRollupConfig (inputConfig) {
-  const { input, alias  } = inputConfig
+  const { input, alias } = inputConfig
 
   return {
     input,
@@ -41,12 +42,13 @@ function genRollupConfig (inputConfig) {
 
 async function build(targets) {
   try {
-    for (const { output, afterBuild, ...rest } of targets) {
+    for (const { output, ...rest } of targets) {
       const rollupConfig = genRollupConfig(rest);
       const result = await rollup.rollup(rollupConfig)
       await result.write(output)
-      afterBuild();
     }
+
+    modifyDeclareImport();
   } catch (e) {
     console.error('rollup rollup error', e);
     throw e;
