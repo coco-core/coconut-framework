@@ -48,6 +48,8 @@ export function genDotCoco(
     { encoding: 'utf-8' }
   );
 
+  copyApplicationJson(projectPath);
+
   exportedInDotCoco = [...iocComponents];
 }
 
@@ -56,12 +58,13 @@ function appendExport(importStatements: string[]) {
 
   const append = `
 import { ApplicationContext } from "coco-mvc";
+import applicationJson from "./application.json";
 export { ApplicationContext };
 
 ${
   process.env.NODE_ENV === 'test'
     ? `// 测试时由测试用例启动ApplicationContext`
-    : `new ApplicationContext()`
+    : `new ApplicationContext(applicationJson)`
 }
   `;
   return pre.concat(importStatements.join('\n')).concat(append);
@@ -117,6 +120,24 @@ export function watch(projectPath: string = './') {
   watcher.on('unlink', handleDeleteFile.bind(null, paths, projectPath));
 
   return watcher;
+}
+
+function copyApplicationJson(projectPath: string = './') {
+  const jsonFile = 'application.json';
+  const appFilePath = path.join(
+    process.cwd(),
+    projectPath,
+    `bean-config/${jsonFile}`
+  );
+  let content = '{}';
+  if (fs.existsSync(appFilePath)) {
+    content = fs.readFileSync(appFilePath, 'utf8');
+  }
+  fs.writeFileSync(
+    path.join(process.cwd(), projectPath, 'src/.coco/application.json'),
+    content,
+    { encoding: 'utf-8' }
+  );
 }
 
 export function clean(projectPath: string) {

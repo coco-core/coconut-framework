@@ -36,7 +36,10 @@ import Init from '../metadata/init.ts';
 import Start from '../metadata/start.ts';
 
 class ApplicationContext {
-  constructor() {
+  beanConfig: Record<string, any>;
+
+  constructor(jsonConfig: Record<string, any> = {}) {
+    this.beanConfig = jsonConfig;
     this.recordFieldOrMethodDecoratorParams();
     this.recordAtBeanDecoratorParams();
     // todo 参数校验
