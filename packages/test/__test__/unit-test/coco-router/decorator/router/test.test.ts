@@ -1,8 +1,7 @@
 import { _test_helper } from 'coco-mvc';
 import { genDotCoco } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
-import * as history from '../../../../helper/history';
-import { getByText, queryAllByRole, waitFor } from '@testing-library/dom';
+import { getByText, waitFor } from '@testing-library/dom';
 
 let ApplicationContext;
 let Render;
@@ -28,15 +27,16 @@ describe('router', () => {
   });
 
   test('路由切换，页面也会重新渲染', async () => {
-    const { container } = _test_helper.mvc.start(
+    const { container, ctx } = _test_helper.mvc.start(
       ApplicationContext,
       Render,
       Router
     );
-    history.push('/');
+    const router = ctx.getBean(Router);
+    router.navigateTo('/');
     await waitFor(async () => {
       expect(getByText(container, 'index page')).toBeTruthy();
-      history.push('/todo-page');
+      router.navigateTo('/todo-page');
       await waitFor(() => {
         expect(getByText(container, 'todo page')).toBeTruthy();
       });
