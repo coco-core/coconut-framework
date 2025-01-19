@@ -49,6 +49,11 @@ class HistoryRouter extends Router {
   removeListener() {
     window.removeEventListener('popstate', this.handleRouteChange);
   }
+
+  public navigateTo(url: string) {
+    window.history.pushState({}, '', url);
+    this.handleRouteChange();
+  }
 }
 
 export default HistoryRouter;

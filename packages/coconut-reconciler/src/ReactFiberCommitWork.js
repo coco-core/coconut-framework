@@ -1,6 +1,6 @@
 import {ClassComponent, HostComponent, HostRoot, HostText} from "./ReactWorkTags";
 import {MutationMask, Placement, Update} from "./ReactFiberFlags";
-import {commitTextUpdate, commitUpdate} from "ReactFiberHostConfig";
+import {commitTextUpdate, commitUpdate, removeChild, removeChildFromContainer} from "ReactFiberHostConfig";
 
 
 function isHostParent(fiber) {
@@ -60,6 +60,94 @@ function insertOrAppendPlacementNodeIntoContainer(node, before, parent) {
 
 }
 
+function detachFiberMutation(fiber) {
+  // Cut off the return pointer to disconnect it from the tree.
+  // This enables us to detect and warn against state updates on an unmounted component.
+  // It also prevents events from bubbling from within disconnected components.
+  //
+  // Ideally, we should also clear the child pointer of the parent alternate to let this
+  // get GC:ed but we don't know which for sure which parent is the current
+  // one so we'll settle for GC:ing the subtree of this child.
+  // This child itself will be GC:ed when the parent updates the next time.
+  //
+  // Note that we can't clear child or sibling pointers yet.
+  // They're needed for passive effects and for findDOMNode.
+  // We defer those fields, and all other cleanup, to the passive phase (see detachFiberAfterEffects).
+  //
+  // Don't reset the alternate yet, either. We need that so we can detach the
+  // alternate's fields in the passive phase. Clearing the return pointer is
+  // sufficient for findDOMNode semantics.
+  const alternate = fiber.alternate;
+  if (alternate !== null) {
+    alternate.return = null;
+  }
+  fiber.return = null;
+}
+
+let hostParent = null;
+let hostParentIsContainer = false;
+function commitDeletionEffects(root, returnFiber, deletedFiber) {
+  let parent = returnFiber;
+  findParent: while(parent !== null) {
+    switch (parent.tag) {
+      case HostComponent:
+        hostParent = parent.stateNode;
+        hostParentIsContainer = false;
+        break findParent;
+      case HostRoot: {
+        hostParent = parent.stateNode.containerInfo;
+        hostParentIsContainer = true;
+        break findParent;
+      }
+    }
+    parent = parent.return;
+  }
+  if (hostParent === null) {
+    throw new Error(
+      'Expected to find a host parent. This error is likely caused by ' +
+      'a bug in React. Please file an issue.',
+    );
+  }
+  commitDeletionEffectsOnFiber(root, returnFiber, deletedFiber);
+  hostParent = null;
+  hostParentIsContainer = false;
+
+  detachFiberMutation(deletedFiber)
+}
+
+function recursivelyTraverseDeletionEffects(finishedRoot, nearestMountedAncestor, parent) {
+  let child = parent.child;
+  while (child !== null) {
+    commitDeletionEffectsOnFiber(finishedRoot, nearestMountedAncestor, child);
+    child = child.sibling;
+  }
+}
+
+function commitDeletionEffectsOnFiber(finishedRoot, nearestMountedAncestor, deletedFiber) {
+  switch (deletedFiber.tag) {
+    case HostComponent:
+    case HostText:
+      const prevHostParent = hostParent;
+      const prevHostParentIsContainer = hostParentIsContainer;
+      hostParent = null;
+      recursivelyTraverseDeletionEffects(finishedRoot, nearestMountedAncestor, deletedFiber);
+      hostParent = prevHostParent;
+      hostParentIsContainer = prevHostParentIsContainer;
+      if (hostParent !== null) {
+        if (hostParentIsContainer) {
+          removeChildFromContainer(hostParent, deletedFiber.stateNode);
+        } else {
+          removeChild(hostParent, deletedFiber.stateNode);
+        }
+      }
+      return;
+    case ClassComponent: {
+      recursivelyTraverseDeletionEffects(finishedRoot, nearestMountedAncestor, deletedFiber);
+      return;
+    }
+  }
+}
+
 function getHostParentFiber(fiber) {
   let parent = fiber.return;
   while (parent !== null) {
@@ -94,6 +182,12 @@ function commitPlacement(finishedWork) {
 }
 
 function recursivelyTraverseMutationEffects(root, parentFiber) {
+  const deletions = parentFiber.deletions;
+  if (deletions !== null) {
+    for (let i = 0; i < deletions.length; i++) {
+      commitDeletionEffects(root, parentFiber, deletions[i]);
+    }
+  }
   if (parentFiber.subtreeFlags & MutationMask) {
     let child = parentFiber.child;
     while (child !== null) {

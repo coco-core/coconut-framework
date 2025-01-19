@@ -54,3 +54,17 @@ export function createInstance(type, props) {
 export function finalizeInitialChildren(domElement, type, props) {
   setInitialProperties(domElement, type, props);
 }
+
+export function removeChild(
+  parentInstance,
+  child,
+) {
+  parentInstance.removeChild(child);
+}
+
+export function removeChildFromContainer(
+  container,
+  child,
+) {
+  container.removeChild(child);
+}

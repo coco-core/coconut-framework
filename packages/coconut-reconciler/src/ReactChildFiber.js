@@ -64,7 +64,7 @@ function ChildReconciler(shouldTrackSideEffects) {
   }
 
   function deleteRemainingChildren(returnFiber, currentFirstChild) {
-    if (shouldTrackSideEffects) {
+    if (!shouldTrackSideEffects) {
       return null;
     }
     let childToDelete = currentFirstChild;
