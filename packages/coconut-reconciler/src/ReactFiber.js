@@ -93,6 +93,8 @@ export function createWorkInProgress(
     workInProgress.pendingProps = pendingProps;
     workInProgress.type = current.type;
     workInProgress.flags = NoFlags;
+    workInProgress.subtreeFlags = NoFlags;
+    workInProgress.deletions = null;
   }
   workInProgress.child = current.child;
   workInProgress.memoizedProps = current.memoizedProps;
