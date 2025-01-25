@@ -31,7 +31,7 @@ import type { Type } from '../metadata/scope.ts';
 import { isPlainObject } from '../share/util.ts';
 import Configuration from '../metadata/configuration.ts';
 import { register, NAME } from 'shared';
-import Inject, { ClassList } from '../metadata/inject.ts';
+import ConstructorParam, { ClassList } from '../metadata/constructor-param.ts';
 import Init from '../metadata/init.ts';
 import Start from '../metadata/start.ts';
 
@@ -201,7 +201,7 @@ class ApplicationContext {
   }
 
   private instantiateBeanRecursively() {
-    const map = getByClassMetadata(Inject);
+    const map = getByClassMetadata(ConstructorParam);
 
     function doInstantiateBean(beDecorated: Class<any>) {
       if (!map.has(beDecorated)) {
