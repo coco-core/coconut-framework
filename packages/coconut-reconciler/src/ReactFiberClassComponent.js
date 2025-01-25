@@ -68,6 +68,8 @@ function updateClassInstance(
     instance[field] = newState[field]
   }
 
+  instance.props = newProps;
+
   return true;
 }
 
