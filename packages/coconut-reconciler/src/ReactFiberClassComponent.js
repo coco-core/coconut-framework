@@ -61,12 +61,11 @@ function updateClassInstance(
   processUpdateQueue(workInProgress, newProps, instance);
   newState = workInProgress.memoizedState;
 
+  instance.props = newProps;
   const fields = get(NAME.getFields)?.(ctor, Reactive, true);
   for (const field of fields) {
     instance[field] = newState[field]
   }
-
-  instance.props = newProps;
 
   return true;
 }

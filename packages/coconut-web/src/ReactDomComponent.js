@@ -89,16 +89,18 @@ function updateDOMProperties(
   domElement,
   updatePayload,
   wasCustomComponentTag,
-  isCustomComponentTag
+  isCustomComponentTag,
+  lastRawProps,
 ) {
   for (let i = 0; i < updatePayload.length; i += 2) {
     const propKey = updatePayload[i];
     const propValue = updatePayload[i + 1];
+    const oldPropValue = lastRawProps[propKey];
     if (propKey === STYLE) {
     } else if (propKey === CHILDREN) {
       setTextContent(domElement, propValue)
     } else {
-      setValueForProperty(domElement, propKey, propValue)
+      setValueForProperty(domElement, propKey, propValue, oldPropValue);
     }
   }
 }
@@ -114,6 +116,7 @@ export function updateProperties(
     domElement,
     updatePayload,
     false,
-    false
+    false,
+    lastRawProps,
   )
 }
