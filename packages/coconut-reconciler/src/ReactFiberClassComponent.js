@@ -16,8 +16,6 @@ const classComponentUpdater = {
         scheduleUpdateOnFiber(root, fiber);
       }
     }
-    // todo 这里先用同步刷新，后面再添加调度器
-    flushSyncCallbacks();
   }
 }
 
