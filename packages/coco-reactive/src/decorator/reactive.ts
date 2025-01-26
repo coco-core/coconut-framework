@@ -12,26 +12,26 @@ export function customPostConstruct(hooks?: {
     metadata: Reactive,
     appCtx: ApplicationContext,
     name: string,
-    enqueueUpdate: (v: any) => void
+    enqueueSetState: (v: any) => void
   ) => any;
   // 值的初始化
   initValue?: (initRtn: any) => any;
   // 在获取值之前
   preGetter?: (initRtn: any) => void;
   // 在排队操作之前
-  preEnqueueUpdate?: (initRtn: any) => void;
+  preEnqueueSetUpdate?: (initRtn: any) => void;
   // 自定义的排队
-  enqueueUpdate?: (initRtn: any, v: any) => void;
+  enqueueSetState?: (initRtn: any, v: any) => void;
 }) {
   return function postConstruct(
     metadata: Reactive,
     appCtx: ApplicationContext,
     name: string
   ) {
-    const enqueueUpdate = (v: any) => {
+    const enqueueSetState = (v: any) => {
       get(NAME.enqueueSetState)?.(this, name, v);
     };
-    const initRtn = hooks?.init?.(metadata, appCtx, name, enqueueUpdate);
+    const initRtn = hooks?.init?.(metadata, appCtx, name, enqueueSetState);
     let _value: any = hooks?.initValue ? hooks.initValue(initRtn) : this[name];
     const publisher = new Publisher(name);
     Object.defineProperty(this, name, {
@@ -49,10 +49,10 @@ export function customPostConstruct(hooks?: {
           _value = v;
         } else {
           publisher.notify();
-          hooks?.preEnqueueUpdate?.(initRtn);
-          hooks?.enqueueUpdate
-            ? hooks.enqueueUpdate(initRtn, v)
-            : enqueueUpdate(v);
+          hooks?.preEnqueueSetUpdate?.(initRtn);
+          hooks?.enqueueSetState
+            ? hooks.enqueueSetState(initRtn, v)
+            : enqueueSetState(v);
         }
         return true;
       },

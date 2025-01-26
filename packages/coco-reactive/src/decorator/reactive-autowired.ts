@@ -5,16 +5,16 @@ import { customPostConstruct } from './reactive.ts';
 import ReactiveAutowired from '../metadata/reactive-autowired.ts';
 
 const postConstruct = customPostConstruct({
-  init: (metadata: ReactiveAutowired, appCtx, name, enqueueUpdate) => {
+  init: (metadata: ReactiveAutowired, appCtx, name, enqueueSetState) => {
     const cls: any = metadata.value;
     const remote: Remote = appCtx.getBean(cls)[sym_remote];
-    remote.fork().setEnqueueUpdate(enqueueUpdate);
+    remote.fork().setEnqueueUpdate(enqueueSetState);
     return remote;
   },
   initValue: (remote: Remote) => {
     return remote.pull();
   },
-  enqueueUpdate(remote: Remote, v: any) {
+  enqueueSetState(remote: Remote, v: any) {
     remote.push(v);
   },
 });
