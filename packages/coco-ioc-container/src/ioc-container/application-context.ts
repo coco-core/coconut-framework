@@ -33,6 +33,7 @@ import { register, NAME } from 'shared';
 import ConstructorParam, { ClassList } from '../metadata/constructor-param.ts';
 import Init from '../metadata/init.ts';
 import Start from '../metadata/start.ts';
+import Target from '../metadata/target.ts';
 
 class ApplicationContext {
   beanConfig: Record<string, any>;
@@ -42,7 +43,7 @@ class ApplicationContext {
     {
       this.recordFieldOrMethodDecoratorParams();
       this.recordAtBeanDecoratorParams();
-      // todo 参数校验
+      this.validateTarget();
       this.buildMetadata();
       this.buildBeanDefinition();
     }
@@ -109,7 +110,7 @@ class ApplicationContext {
    * 被装饰类是否被特定元数据类装饰；或者被特定元数据类的复合元数据装饰
    * @param beDecoratedCls 被装饰的类
    * @param Target
-   * @param ignoreMetadataCls 是否忽略元数据的类，即之查找业务元数据类
+   * @param ignoreMetadataCls 是否忽略元数据的类，即只查找业务元数据类
    * @private
    */
   private isDecoratedByOrCompoundDecorated(
@@ -235,6 +236,45 @@ class ApplicationContext {
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
       const bean = getBean(beDecoratedCls, this);
       bean[field]?.();
+    }
+  }
+
+  private validateTarget() {
+    const allDecoratorParams = get();
+    for (const [beDecoratedCls, params] of allDecoratorParams.entries()) {
+      for (const param of params) {
+        const { metadataClass, metadataKind } = param;
+        if (metadataClass === Target) {
+          continue;
+        }
+        const decoratorDecoratorParams =
+          allDecoratorParams.get(metadataClass) || [];
+        const find = decoratorDecoratorParams.find(
+          (i) => i.metadataClass === Target
+        );
+        if (!find) {
+          if (__TEST__ || __DEV__) {
+            console.warn(
+              `${metadataClass}应该添加@target装饰器，以明确装饰器作用范围。`
+            );
+          }
+          return;
+        }
+        if (find.metadataParam.indexOf(metadataKind) === -1) {
+          if (__DEV__) {
+            console.error(
+              beDecoratedCls,
+              '没有按照target限制使用装饰器:',
+              metadataClass,
+              '。'
+            );
+          } else {
+            throw new Error(
+              `Target Error! ${beDecoratedCls} use ${metadataClass}`
+            );
+          }
+        }
+      }
     }
   }
 }
