@@ -10,8 +10,12 @@ type params = {
   metadataKind: Kind;
   metadataClass: Class<any>;
   metadataParam: any;
-  // todo 测试是否支持Symbol类型
-  name: Field;
+  /**
+   * 如果metadataKind是'class'，field是undefined
+   * 如果metadataKind是'method'\'field'，field就是对应的prop名字
+   * todo 测试是否支持Symbol类型
+   */
+  field?: Field;
   init?: Function;
   postConstruct?: PostConstructFn;
 };

@@ -67,7 +67,6 @@ function genDecorator<UserParam, C extends Context>(
                 metadataKind: KindClass,
                 metadataClass: value,
                 metadataParam: userParam,
-                name: lowercaseFirstLetter(context.name),
                 init,
                 postConstruct,
               });
@@ -77,7 +76,6 @@ function genDecorator<UserParam, C extends Context>(
               metadataKind: KindClass,
               metadataClass: metadataCls,
               metadataParam: userParam,
-              name: lowercaseFirstLetter(context.name),
               init,
               postConstruct,
             });
@@ -97,7 +95,7 @@ function genDecorator<UserParam, C extends Context>(
               metadataKind: context.kind,
               metadataClass: metadataCls,
               metadataParam: userParam,
-              name: context.name as string,
+              field: context.name as string,
               init,
               postConstruct,
             });

@@ -75,7 +75,12 @@ class ApplicationContext {
   // 根据装饰器的参数，构建对应的元数据实例
   private buildMetadata() {
     for (const [beDecoratedCls, list] of get().entries()) {
-      for (const { metadataKind, metadataClass, metadataParam, name } of list) {
+      for (const {
+        metadataKind,
+        metadataClass,
+        metadataParam,
+        field,
+      } of list) {
         switch (metadataKind) {
           case KindClass:
             addClassMetadata(beDecoratedCls, metadataClass, metadataParam);
@@ -84,7 +89,7 @@ class ApplicationContext {
           case KindMethod:
             addFieldMethodMetadata(
               beDecoratedCls,
-              name,
+              field,
               metadataClass,
               metadataParam
             );
@@ -126,7 +131,7 @@ class ApplicationContext {
         if (this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Component)) {
           addDefinition(beDecoratedCls);
           params.forEach(
-            ({ metadataClass, metadataKind, postConstruct, name }) => {
+            ({ metadataClass, metadataKind, postConstruct, field }) => {
               if (postConstruct) {
                 switch (metadataKind) {
                   case KindClass:
@@ -141,13 +146,17 @@ class ApplicationContext {
                   case KindField:
                     addPostConstruct(
                       beDecoratedCls,
-                      genFieldPostConstruct(metadataClass, postConstruct, name)
+                      genFieldPostConstruct(metadataClass, postConstruct, field)
                     );
                     break;
                   case KindMethod:
                     addPostConstruct(
                       beDecoratedCls,
-                      genMethodPostConstruct(metadataClass, postConstruct, name)
+                      genMethodPostConstruct(
+                        metadataClass,
+                        postConstruct,
+                        field
+                      )
                     );
                     break;
                 }
@@ -183,7 +192,6 @@ class ApplicationContext {
           metadataKind: KindClass,
           metadataClass: Component,
           metadataParam: scope,
-          name: param.name,
         });
       });
     }
