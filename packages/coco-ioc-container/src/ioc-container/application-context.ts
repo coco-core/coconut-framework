@@ -39,18 +39,24 @@ class ApplicationContext {
 
   constructor(jsonConfig: Record<string, any> = {}) {
     this.beanConfig = jsonConfig;
-    this.recordFieldOrMethodDecoratorParams();
-    this.recordAtBeanDecoratorParams();
-    // todo 参数校验
-    this.buildMetadata();
-    this.buildBeanDefinition();
-    // 清空装饰器参数记录 todo 是否可以挪到this.buildBeanDefinition的上面
+    {
+      this.recordFieldOrMethodDecoratorParams();
+      this.recordAtBeanDecoratorParams();
+      // todo 参数校验
+      this.buildMetadata();
+      this.buildBeanDefinition();
+    }
+    // 清空装饰器参数记录
     clearDecoratorParams();
-    // todo 想办法去掉NAME.applicationContext
-    register(NAME.applicationContext, this);
-    this.instantiateBeanRecursively();
-    this.initBean();
-    this.startBean();
+    {
+      // todo 想办法去掉NAME.applicationContext
+      register(NAME.applicationContext, this);
+    }
+    {
+      this.instantiateBeanRecursively();
+      this.initBean();
+      this.startBean();
+    }
   }
   public getBean<T>(Cls: Class<T>): T {
     return getBean(Cls, this);
@@ -124,10 +130,10 @@ class ApplicationContext {
   }
 
   private buildBeanDefinition() {
-    const metadata = getAllMetadata()[1];
+    const bizMetadata = getAllMetadata()[1];
     // 处理@component和带有@component的元数据类
     for (const [beDecoratedCls, params] of get().entries()) {
-      if (metadata.has(beDecoratedCls)) {
+      if (bizMetadata.has(beDecoratedCls)) {
         if (this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Component)) {
           addDefinition(beDecoratedCls);
           params.forEach(
