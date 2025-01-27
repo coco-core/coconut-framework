@@ -16,7 +16,6 @@ type params = {
    * todo 测试是否支持Symbol类型
    */
   field?: Field;
-  init?: Function;
   postConstruct?: PostConstructFn;
 };
 const decoratorParamMap: Map<Class<any>, params[]> = new Map();
