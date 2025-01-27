@@ -15,24 +15,16 @@ import {
 } from '../decorator/decorator-context.ts';
 import { isSubclassOf } from '../share/util.ts';
 
-const nameDefinitionMap: Map<string, BeanDefinition<any>> = new Map();
 const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
 
-/**
- * 保存一个bean定义
- * @param name
- * @param cls
- */
-function addDefinition(name: string, cls: Class<any>) {
-  const exited = nameDefinitionMap.get(name);
+function addDefinition(cls: Class<any>) {
+  const exited = clsDefinitionMap.get(cls);
   if (exited) {
     throw new Error(`存在同名的bean: [${exited.cls}] - [${cls}]`);
   }
   const beanDefinition = new BeanDefinition();
-  beanDefinition.name = name;
   beanDefinition.cls = cls;
   beanDefinition.postConstruct = [];
-  nameDefinitionMap.set(name, beanDefinition);
   clsDefinitionMap.set(cls, beanDefinition);
 }
 
@@ -75,23 +67,19 @@ function addPostConstruct(cls: Class<any>, pc: PostConstruct) {
   definition.postConstruct.push(pc);
 }
 
-function getDefinition(nameOrCls: Class<any> | string) {
-  if (typeof nameOrCls === 'string') {
-    return nameDefinitionMap.get(nameOrCls);
+function getDefinition(Cls: Class<any>) {
+  const matchOrSubCls: Class<any>[] = [];
+  for (const beDecorated of clsDefinitionMap.keys()) {
+    if (beDecorated === Cls || isSubclassOf(beDecorated, Cls)) {
+      matchOrSubCls.push(beDecorated);
+    }
+  }
+  if (matchOrSubCls.length === 1) {
+    return clsDefinitionMap.get(matchOrSubCls[0]);
+  } else if (matchOrSubCls.length === 0) {
+    return undefined;
   } else {
-    const matchOrSubCls: Class<any>[] = [];
-    for (const beDecorated of clsDefinitionMap.keys()) {
-      if (beDecorated === nameOrCls || isSubclassOf(beDecorated, nameOrCls)) {
-        matchOrSubCls.push(beDecorated);
-      }
-    }
-    if (matchOrSubCls.length === 1) {
-      return clsDefinitionMap.get(matchOrSubCls[0]);
-    } else if (matchOrSubCls.length === 0) {
-      return undefined;
-    } else {
-      console.error('不应该存在多个一样的子类组件', nameOrCls, matchOrSubCls);
-    }
+    console.error('不应该存在多个一样的子类组件', Cls, matchOrSubCls);
   }
 }
 
@@ -99,19 +87,19 @@ function getDefinition(nameOrCls: Class<any> | string) {
 const singletonInstances: Map<Class<any>, any> = new Map();
 /**
  * 创建一个ioc组件实例
- * @param nameOrCls 通过class获取或通过name获取；
+ * @param Cls 通过class获取或通过name获取；
  * @param appCtx applicationContext实例；
  * @param parameters 构造函数参数
  */
 function getBean<T>(
-  nameOrCls: Class<T> | string,
+  Cls: Class<T>,
   appCtx: ApplicationContext,
   ...parameters: any[]
 ): T {
-  const definition = getDefinition(nameOrCls);
+  const definition = getDefinition(Cls);
   if (!definition) {
     if (__TEST__) {
-      throw new Error(`can no find Bean:${nameOrCls}`);
+      throw new Error(`can no find Bean:${Cls}`);
     }
   }
   const cls = definition.cls;
@@ -128,7 +116,6 @@ function getBean<T>(
 }
 
 function clear() {
-  nameDefinitionMap.clear();
   clsDefinitionMap.clear();
   singletonInstances.clear();
 }

@@ -52,10 +52,8 @@ class ApplicationContext {
     this.initBean();
     this.startBean();
   }
-  public getBean<T>(cls: Class<T>): T;
-  public getBean<T>(name: string): T;
-  public getBean<T>(nameOrCls: Class<T> | string): T {
-    return getBean(nameOrCls, this);
+  public getBean<T>(Cls: Class<T>): T {
+    return getBean(Cls, this);
   }
 
   public getByClassMetadata(metadataClass: Class<any>) {
@@ -126,9 +124,7 @@ class ApplicationContext {
     for (const [beDecoratedCls, params] of get().entries()) {
       if (metadata.has(beDecoratedCls)) {
         if (this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Component)) {
-          const name = params.find((i) => i.metadataKind === KindClass)
-            .name as string;
-          addDefinition(name, beDecoratedCls);
+          addDefinition(beDecoratedCls);
           params.forEach(
             ({ metadataClass, metadataKind, postConstruct, name }) => {
               if (postConstruct) {

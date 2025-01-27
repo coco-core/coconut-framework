@@ -26,20 +26,6 @@ describe('ioc-container', () => {
     expect(bean).toBeInstanceOf(Button);
   });
 
-  // todo 13 待删除
-  xtest('通过name可以拿到实例', async () => {
-    const context = new ApplicationContext();
-    const bean = context.getBean('button');
-    expect(bean).toBeInstanceOf(Button);
-  });
-
-  // todo 13 待删除
-  xtest('通过自定义name可以拿到实例', async () => {
-    const context = new ApplicationContext();
-    const bean = context.getBean('antButton');
-    expect(bean).toBeInstanceOf(VanButton);
-  });
-
   test('component装饰器设置prototype每次返回不同的实例', async () => {
     const context = new ApplicationContext();
     const bean1 = context.getBean(Button);
@@ -49,30 +35,10 @@ describe('ioc-container', () => {
     expect(bean1).not.toBe(bean2);
   });
 
-  // todo 13 待删除
-  xtest('每次返回的组件都是不同的实例-2', async () => {
-    const context = new ApplicationContext();
-    const bean1 = context.getBean(Button);
-    const bean2 = context.getBean('button');
-    expect(bean1).toBeInstanceOf(Button);
-    expect(bean2).toBeInstanceOf(Button);
-    expect(bean1).not.toBe(bean2);
-  });
-
   test('单例模式每次获取到的都是一样的', async () => {
     const context = new ApplicationContext();
     const bean1 = context.getBean(Single);
     const bean2 = context.getBean(Single);
-    expect(bean1).toBeInstanceOf(Single);
-    expect(bean2).toBeInstanceOf(Single);
-    expect(bean1).toBe(bean2);
-  });
-
-  // todo 13 待删除
-  xtest('单例模式每次获取到的都是一样的-2', async () => {
-    const context = new ApplicationContext();
-    const bean1 = context.getBean(Single);
-    const bean2 = context.getBean('single');
     expect(bean1).toBeInstanceOf(Single);
     expect(bean2).toBeInstanceOf(Single);
     expect(bean1).toBe(bean2);
