@@ -9,7 +9,7 @@ import {
 import { get, NAME } from 'shared';
 import { lowercaseFirstLetter, once } from '../share/util.ts';
 import { PostConstructFn } from '../ioc-container/bean-definition.ts';
-import { recordDecoratorParams } from '../ioc-container/decorator-params.ts';
+import { addDecoratorParams } from '../ioc-container/decorator-params.ts';
 
 interface Option {
   optional?: true;
@@ -63,7 +63,7 @@ function genDecorator<UserParam, C extends Context>(
           if (decorateSelf) {
             if (metadataCls === null) {
               metadataCls = value;
-              recordDecoratorParams(value, {
+              addDecoratorParams(value, {
                 metadataKind: KindClass,
                 metadataClass: value,
                 metadataParam: userParam,
@@ -73,7 +73,7 @@ function genDecorator<UserParam, C extends Context>(
               });
             }
           } else {
-            recordDecoratorParams(value, {
+            addDecoratorParams(value, {
               metadataKind: KindClass,
               metadataClass: metadataCls,
               metadataParam: userParam,
@@ -93,7 +93,7 @@ function genDecorator<UserParam, C extends Context>(
         switch (context.kind) {
           case KindField:
           case KindMethod:
-            recordDecoratorParams(this.constructor, {
+            addDecoratorParams(this.constructor, {
               metadataKind: context.kind,
               metadataClass: metadataCls,
               metadataParam: userParam,

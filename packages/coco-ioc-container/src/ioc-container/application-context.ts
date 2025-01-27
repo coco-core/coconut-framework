@@ -10,7 +10,7 @@ import {
   get,
   clear as clearDecoratorParams,
   getClassAndClasClassDecorator,
-  recordDecoratorParams,
+  addDecoratorParams,
 } from './decorator-params.ts';
 import {
   ClassPostConstructFn,
@@ -179,7 +179,7 @@ class ApplicationContext {
         } else {
           targetCls = param.metadataParam;
         }
-        recordDecoratorParams(targetCls, {
+        addDecoratorParams(targetCls, {
           metadataKind: KindClass,
           metadataClass: Component,
           metadataParam: scope,

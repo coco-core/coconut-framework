@@ -18,14 +18,11 @@ type params = {
 const decoratorParamMap: Map<Class<any>, params[]> = new Map();
 
 /**
- * 记录装饰器参数
+ * 保存装饰器参数
  * @param beDecoratedCls 被装饰的类
  * @param params
  */
-export function recordDecoratorParams(
-  beDecoratedCls: Class<any>,
-  params: params
-) {
+export function addDecoratorParams(beDecoratedCls: Class<any>, params: params) {
   if (!beDecoratedCls) {
     console.error('错误的装饰目标类', beDecoratedCls);
     return;
