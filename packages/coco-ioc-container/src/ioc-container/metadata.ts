@@ -1,6 +1,3 @@
-/**
- * 注解的运行时配置
- */
 import { isPlainObject } from '../share/util.ts';
 import Metadata, { defaultProp } from '../metadata/metadata.ts';
 import { type Field } from '../decorator/decorator-context.ts';
