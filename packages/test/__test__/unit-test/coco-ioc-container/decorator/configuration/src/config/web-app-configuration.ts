@@ -1,4 +1,4 @@
-import { configuration, bean, Scope } from 'coco-mvc';
+import { configuration, bean, Component } from 'coco-mvc';
 import Router from './router.ts';
 import Button from './button.ts';
 import Theme from './theme.ts';
@@ -10,7 +10,7 @@ class WebAppConfiguration {
     return new Router();
   }
 
-  @bean({ value: Button, scope: Scope.Type.Prototype })
+  @bean({ value: Button, scope: Component.Scope.Prototype })
   button() {
     return new Button();
   }

@@ -26,8 +26,7 @@ import {
 } from '../decorator/decorator-context.ts';
 import Bean from '../metadata/bean.ts';
 import Component from '../metadata/component.ts';
-import Scope from '../metadata/scope.ts';
-import type { Type } from '../metadata/scope.ts';
+import type { Scope } from '../metadata/component.ts';
 import { isPlainObject } from '../share/util.ts';
 import Configuration from '../metadata/configuration.ts';
 import { register, NAME } from 'shared';
@@ -177,7 +176,7 @@ class ApplicationContext {
       );
       beanDecorateParams.forEach(function (param) {
         let targetCls: Class<any>;
-        let scope: Type;
+        let scope: Scope;
         if (isPlainObject(param.metadataParam)) {
           targetCls = param.metadataParam.value;
           scope = param.metadataParam.scope;
@@ -186,14 +185,8 @@ class ApplicationContext {
         }
         recordDecoratorParams(targetCls, {
           metadataKind: KindClass,
-          metadataClass: Scope,
-          metadataParam: scope,
-          name: param.name,
-        });
-        recordDecoratorParams(targetCls, {
-          metadataKind: KindClass,
           metadataClass: Component,
-          metadataParam: undefined,
+          metadataParam: scope,
           name: param.name,
         });
       });

@@ -9,8 +9,6 @@ export { default as Configuration } from './metadata/configuration.ts';
 export { default as configuration } from './decorator/configuration.ts';
 export { default as ConstructorParam } from './metadata/constructor-param.ts';
 export { default as constructorParam } from './decorator/constructor-param.ts';
-export { default as Scope } from './metadata/scope.ts';
-export { default as scope } from './decorator/scope.ts';
 export { default as Target } from './metadata/target.ts';
 export { default as target } from './decorator/target.ts';
 export { default as Init } from './metadata/init.ts';

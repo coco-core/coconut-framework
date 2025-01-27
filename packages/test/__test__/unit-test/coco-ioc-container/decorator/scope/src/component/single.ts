@@ -1,7 +1,6 @@
-import { component, scope, Scope } from 'coco-mvc';
+import { component, Component } from 'coco-mvc';
 
-@component()
-@scope(Scope.Type.Singleton)
+@component(Component.Scope.Singleton)
 class Single {}
 
 export default Single;

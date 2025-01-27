@@ -1,6 +1,5 @@
-import { component, scope } from 'coco-mvc';
+import { component } from 'coco-mvc';
 
-@scope()
 @component()
 class Theme {}
 
