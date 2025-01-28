@@ -62,6 +62,7 @@ function genDecorator<UserParam, C extends Context>(
             if (metadataCls === null) {
               metadataCls = value;
               addDecoratorParams(value, {
+                decoratorName,
                 metadataKind: KindClass,
                 metadataClass: value,
                 metadataParam: userParam,
@@ -70,6 +71,7 @@ function genDecorator<UserParam, C extends Context>(
             }
           } else {
             addDecoratorParams(value, {
+              decoratorName,
               metadataKind: KindClass,
               metadataClass: metadataCls,
               metadataParam: userParam,
@@ -88,6 +90,7 @@ function genDecorator<UserParam, C extends Context>(
           case KindField:
           case KindMethod:
             addDecoratorParams(this.constructor, {
+              decoratorName,
               metadataKind: context.kind,
               metadataClass: metadataCls,
               metadataParam: userParam,

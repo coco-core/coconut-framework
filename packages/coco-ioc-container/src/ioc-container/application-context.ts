@@ -27,7 +27,7 @@ import {
 import Bean from '../metadata/bean.ts';
 import Component from '../metadata/component.ts';
 import type { Scope } from '../metadata/component.ts';
-import { isPlainObject } from '../share/util.ts';
+import { isPlainObject, lowercaseFirstLetter } from '../share/util.ts';
 import Configuration from '../metadata/configuration.ts';
 import { register, NAME } from 'shared';
 import ConstructorParam, { ClassList } from '../metadata/constructor-param.ts';
@@ -196,6 +196,7 @@ class ApplicationContext {
           targetCls = param.metadataParam;
         }
         addDecoratorParams(targetCls, {
+          decoratorName: lowercaseFirstLetter(Component.name),
           metadataKind: KindClass,
           metadataClass: Component,
           metadataParam: scope,
@@ -243,19 +244,16 @@ class ApplicationContext {
     const allDecoratorParams = get();
     for (const [beDecoratedCls, params] of allDecoratorParams.entries()) {
       for (const param of params) {
-        const { metadataClass, metadataKind } = param;
-        if (metadataClass === Target) {
-          continue;
-        }
+        const { metadataClass, metadataKind, decoratorName } = param;
         const decoratorDecoratorParams =
           allDecoratorParams.get(metadataClass) || [];
         const find = decoratorDecoratorParams.find(
           (i) => i.metadataClass === Target
         );
         if (!find) {
-          if (__TEST__ || __DEV__) {
+          if (__DEV__) {
             console.warn(
-              `${metadataClass}应该添加@target装饰器，以明确装饰器作用范围。`
+              `${metadataClass}应该添加@target装饰器，以明确装饰器对象。`
             );
           }
           return;
@@ -270,7 +268,7 @@ class ApplicationContext {
             );
           } else {
             throw new Error(
-              `Target Error! ${beDecoratedCls} use ${metadataClass}`
+              `[${beDecoratedCls.name}]使用@${decoratorName}和其定义的@target值不一致。`
             );
           }
         }

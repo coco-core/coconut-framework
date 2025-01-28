@@ -7,6 +7,7 @@ import {
 import Metadata from '../metadata/metadata.ts';
 
 type params = {
+  decoratorName?: string;
   metadataKind: Kind;
   metadataClass: Class<any>;
   metadataParam: any;
