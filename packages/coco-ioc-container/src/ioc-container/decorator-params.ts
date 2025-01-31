@@ -7,31 +7,30 @@ import {
 import Metadata from '../metadata/metadata.ts';
 
 type params = {
+  decoratorName?: string;
   metadataKind: Kind;
   metadataClass: Class<any>;
   metadataParam: any;
-  // todo 测试是否支持Symbol类型
-  name: Field;
-  init?: Function;
+  /**
+   * 如果metadataKind是'class'，field是undefined
+   * 如果metadataKind是'method'\'field'，field就是对应的prop名字
+   * todo 测试是否支持Symbol类型
+   */
+  field?: Field;
   postConstruct?: PostConstructFn;
 };
 const decoratorParamMap: Map<Class<any>, params[]> = new Map();
 
 /**
- * 记录装饰器参数
+ * 保存装饰器参数
  * @param beDecoratedCls 被装饰的类
  * @param params
  */
-export function recordDecoratorParams(
-  beDecoratedCls: Class<any>,
-  params: params
-) {
+export function addDecoratorParams(beDecoratedCls: Class<any>, params: params) {
   if (!beDecoratedCls) {
     console.error('错误的装饰目标类', beDecoratedCls);
     return;
   }
-
-  // todo constructor中不能带上业务逻辑的初始化
 
   if (!decoratorParamMap.has(beDecoratedCls)) {
     decoratorParamMap.set(beDecoratedCls, []);

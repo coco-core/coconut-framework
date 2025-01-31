@@ -108,6 +108,7 @@ function commitRootImpl(root) {
 
   const finishedWork = root.finishedWork;
   root.finishedWork = null;
+  root.callbackPriority = false;
 
   commitMutationEffects(root, finishedWork)
 
@@ -128,7 +129,15 @@ function performSyncWorkOnRoot(root) {
 }
 
 function ensureRootIsScheduled(root) {
+  // Check if there's an existing task. We may be able to reuse it.
+  if (root.callbackPriority) {
+    return;
+  }
   scheduleSyncCallback(performSyncWorkOnRoot.bind(null, root))
+  setTimeout(() => {
+    flushSyncCallbacks();
+  })
+  root.callbackPriority = true;
 }
 
 export function flushSync(fn) {

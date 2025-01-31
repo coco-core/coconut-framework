@@ -1,6 +1,6 @@
-import { component } from 'coco-mvc';
+import { component, Component } from 'coco-mvc';
 
-@component()
+@component(Component.Scope.Prototype)
 class Button {}
 
 export default Button;

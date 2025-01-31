@@ -1,15 +1,13 @@
 import {
   Metadata,
   component,
+  Component,
   target,
   Target,
-  scope,
-  Scope,
 } from 'coco-ioc-container';
 
 @target([Target.Type.Class, Target.Type.Method])
-@scope(Scope.Type.Prototype)
-@component()
+@component(Component.Scope.Prototype)
 class View extends Metadata {}
 
 export default View;

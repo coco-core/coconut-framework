@@ -10,7 +10,7 @@ import {
   get,
   clear as clearDecoratorParams,
   getClassAndClasClassDecorator,
-  recordDecoratorParams,
+  addDecoratorParams,
 } from './decorator-params.ts';
 import {
   ClassPostConstructFn,
@@ -26,37 +26,41 @@ import {
 } from '../decorator/decorator-context.ts';
 import Bean from '../metadata/bean.ts';
 import Component from '../metadata/component.ts';
-import Scope from '../metadata/scope.ts';
-import type { Type } from '../metadata/scope.ts';
-import { isPlainObject } from '../share/util.ts';
+import type { Scope } from '../metadata/component.ts';
+import { isPlainObject, lowercaseFirstLetter } from '../share/util.ts';
 import Configuration from '../metadata/configuration.ts';
 import { register, NAME } from 'shared';
-import Inject, { ClassList } from '../metadata/inject.ts';
+import ConstructorParam, { ClassList } from '../metadata/constructor-param.ts';
 import Init from '../metadata/init.ts';
 import Start from '../metadata/start.ts';
+import Target from '../metadata/target.ts';
 
 class ApplicationContext {
   beanConfig: Record<string, any>;
 
   constructor(jsonConfig: Record<string, any> = {}) {
     this.beanConfig = jsonConfig;
-    this.recordFieldOrMethodDecoratorParams();
-    this.recordAtBeanDecoratorParams();
-    // todo 参数校验
-    this.buildMetadata();
-    this.buildBeanDefinition();
-    // 清空装饰器参数记录 todo 是否可以挪到this.buildBeanDefinition的上面
+    {
+      this.recordFieldOrMethodDecoratorParams();
+      this.recordAtBeanDecoratorParams();
+      this.validateTarget();
+      this.buildMetadata();
+      this.buildBeanDefinition();
+    }
+    // 清空装饰器参数记录
     clearDecoratorParams();
-    // todo 想办法去掉NAME.applicationContext
-    register(NAME.applicationContext, this);
-    this.instantiateBeanRecursively();
-    this.initBean();
-    this.startBean();
+    {
+      // todo 想办法去掉NAME.applicationContext
+      register(NAME.applicationContext, this);
+    }
+    {
+      this.instantiateBeanRecursively();
+      this.initBean();
+      this.startBean();
+    }
   }
-  public getBean<T>(cls: Class<T>): T;
-  public getBean<T>(name: string): T;
-  public getBean<T>(nameOrCls: Class<T> | string): T {
-    return getBean(nameOrCls, this);
+  public getBean<T>(Cls: Class<T>): T {
+    return getBean(Cls, this);
   }
 
   public getByClassMetadata(metadataClass: Class<any>) {
@@ -78,7 +82,12 @@ class ApplicationContext {
   // 根据装饰器的参数，构建对应的元数据实例
   private buildMetadata() {
     for (const [beDecoratedCls, list] of get().entries()) {
-      for (const { metadataKind, metadataClass, metadataParam, name } of list) {
+      for (const {
+        metadataKind,
+        metadataClass,
+        metadataParam,
+        field,
+      } of list) {
         switch (metadataKind) {
           case KindClass:
             addClassMetadata(beDecoratedCls, metadataClass, metadataParam);
@@ -87,7 +96,7 @@ class ApplicationContext {
           case KindMethod:
             addFieldMethodMetadata(
               beDecoratedCls,
-              name,
+              field,
               metadataClass,
               metadataParam
             );
@@ -101,7 +110,7 @@ class ApplicationContext {
    * 被装饰类是否被特定元数据类装饰；或者被特定元数据类的复合元数据装饰
    * @param beDecoratedCls 被装饰的类
    * @param Target
-   * @param ignoreMetadataCls 是否忽略元数据的类，即之查找业务元数据类
+   * @param ignoreMetadataCls 是否忽略元数据的类，即只查找业务元数据类
    * @private
    */
   private isDecoratedByOrCompoundDecorated(
@@ -122,16 +131,14 @@ class ApplicationContext {
   }
 
   private buildBeanDefinition() {
-    const metadata = getAllMetadata()[1];
+    const bizMetadata = getAllMetadata()[1];
     // 处理@component和带有@component的元数据类
     for (const [beDecoratedCls, params] of get().entries()) {
-      if (metadata.has(beDecoratedCls)) {
+      if (bizMetadata.has(beDecoratedCls)) {
         if (this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Component)) {
-          const name = params.find((i) => i.metadataKind === KindClass)
-            .name as string;
-          addDefinition(name, beDecoratedCls);
+          addDefinition(beDecoratedCls);
           params.forEach(
-            ({ metadataClass, metadataKind, postConstruct, name }) => {
+            ({ metadataClass, metadataKind, postConstruct, field }) => {
               if (postConstruct) {
                 switch (metadataKind) {
                   case KindClass:
@@ -146,13 +153,17 @@ class ApplicationContext {
                   case KindField:
                     addPostConstruct(
                       beDecoratedCls,
-                      genFieldPostConstruct(metadataClass, postConstruct, name)
+                      genFieldPostConstruct(metadataClass, postConstruct, field)
                     );
                     break;
                   case KindMethod:
                     addPostConstruct(
                       beDecoratedCls,
-                      genMethodPostConstruct(metadataClass, postConstruct, name)
+                      genMethodPostConstruct(
+                        metadataClass,
+                        postConstruct,
+                        field
+                      )
                     );
                     break;
                 }
@@ -177,31 +188,25 @@ class ApplicationContext {
       );
       beanDecorateParams.forEach(function (param) {
         let targetCls: Class<any>;
-        let scope: Type;
+        let scope: Scope;
         if (isPlainObject(param.metadataParam)) {
           targetCls = param.metadataParam.value;
           scope = param.metadataParam.scope;
         } else {
           targetCls = param.metadataParam;
         }
-        recordDecoratorParams(targetCls, {
-          metadataKind: KindClass,
-          metadataClass: Scope,
-          metadataParam: scope,
-          name: param.name,
-        });
-        recordDecoratorParams(targetCls, {
+        addDecoratorParams(targetCls, {
+          decoratorName: lowercaseFirstLetter(Component.name),
           metadataKind: KindClass,
           metadataClass: Component,
-          metadataParam: undefined,
-          name: param.name,
+          metadataParam: scope,
         });
       });
     }
   }
 
   private instantiateBeanRecursively() {
-    const map = getByClassMetadata(Inject);
+    const map = getByClassMetadata(ConstructorParam);
 
     function doInstantiateBean(beDecorated: Class<any>) {
       if (!map.has(beDecorated)) {
@@ -232,6 +237,42 @@ class ApplicationContext {
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
       const bean = getBean(beDecoratedCls, this);
       bean[field]?.();
+    }
+  }
+
+  private validateTarget() {
+    const allDecoratorParams = get();
+    for (const [beDecoratedCls, params] of allDecoratorParams.entries()) {
+      for (const param of params) {
+        const { metadataClass, metadataKind, decoratorName } = param;
+        const decoratorDecoratorParams =
+          allDecoratorParams.get(metadataClass) || [];
+        const find = decoratorDecoratorParams.find(
+          (i) => i.metadataClass === Target
+        );
+        if (!find) {
+          if (__DEV__) {
+            console.warn(
+              `${metadataClass}应该添加@target装饰器，以明确装饰器对象。`
+            );
+          }
+          return;
+        }
+        if (find.metadataParam.indexOf(metadataKind) === -1) {
+          if (__DEV__) {
+            console.error(
+              beDecoratedCls,
+              '没有按照target限制使用装饰器:',
+              metadataClass,
+              '。'
+            );
+          } else {
+            throw new Error(
+              `[${beDecoratedCls.name}]使用@${decoratorName}和其定义的@target值不一致。`
+            );
+          }
+        }
+      }
     }
   }
 }

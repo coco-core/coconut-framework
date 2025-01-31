@@ -3,9 +3,13 @@ import { getPropertyInfo } from '../shared/DOMProperty';
 export function setValueForProperty(
   node,
   name,
-  value
+  value,
+  oldValue,
 ) {
   if (name === 'onClick') {
+    if (typeof oldValue === 'function') {
+      node.removeEventListener('click', oldValue);
+    }
     node.addEventListener('click', value);
     return;
   }

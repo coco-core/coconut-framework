@@ -4,12 +4,14 @@ import { _test_helper } from 'coco-mvc';
 
 let ApplicationContext;
 let throwError;
+let DefaultValue;
 let Single;
 let Prototype;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       genDotCoco(pkgPath(__dirname));
+      DefaultValue = (await import(cocoIdxStr)).DefaultValue;
       Single = (await import(cocoIdxStr)).Single;
       Prototype = (await import(cocoIdxStr)).Prototype;
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
@@ -26,8 +28,8 @@ describe('decorator', () => {
 
   test('默认singleton模式', async () => {
     const context = new ApplicationContext();
-    const s1 = context.getBean('defaultValue');
-    const s2 = context.getBean('defaultValue');
+    const s1 = context.getBean(DefaultValue);
+    const s2 = context.getBean(DefaultValue);
     expect(s1 === s2).toBe(true);
   });
 

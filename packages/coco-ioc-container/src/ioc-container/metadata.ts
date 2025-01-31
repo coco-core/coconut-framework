@@ -1,11 +1,7 @@
-/**
- * 注解的运行时配置
- */
 import { isPlainObject } from '../share/util.ts';
 import Metadata, { defaultProp } from '../metadata/metadata.ts';
 import { type Field } from '../decorator/decorator-context.ts';
 import { register, NAME } from 'shared';
-import Scope from '../metadata/scope.ts';
 import Component from '../metadata/component.ts';
 
 type MetadataSet = Array<{ metadata: Metadata; dependencies?: MetadataSet }>;
@@ -180,31 +176,23 @@ function getClsMetadata(Cls: Class<any>): Metadata[] | null {
   return configs.classMetadata;
 }
 
-// 找类装饰器中是否包含scope装饰器
-// 找类装饰的装饰器是否包含component元数据，如果包含的话返回其对应的scope对象
-function findScopeMetadata(Cls: Class<any>): Scope | null {
+// 找到component元数据，同样也找元数据对应的类是否包含component元数据
+function findComponentMetadata(Cls: Class<any>): Component | null {
   const classMetadataList = getClsMetadata(Cls);
   if (!classMetadataList) {
     return null;
   }
-  const scope = classMetadataList.find((i) => i instanceof Scope);
-  if (scope) {
-    return scope as Scope;
+  const component = classMetadataList.find((i) => i instanceof Component);
+  if (component) {
+    return component as Component;
   }
   for (const metadata of classMetadataList) {
     const metadataMetadataList = getClsMetadata(
       <Class<any>>metadata.constructor
     );
-    // todo 所有的component都默认加一个scope对象，或者合并也行
-    if (
-      metadataMetadataList &&
-      metadataMetadataList.find((i) => i instanceof Component)
-    ) {
-      for (const scope of metadataMetadataList) {
-        if (scope instanceof Scope) {
-          return scope as Scope;
-        }
-      }
+    const component = metadataMetadataList.find((i) => i instanceof Component);
+    if (component) {
+      return component as Component;
     }
   }
 
@@ -291,7 +279,7 @@ function getAllMetadata() {
 export {
   addClassMetadata,
   addFieldMethodMetadata,
-  findScopeMetadata,
+  findComponentMetadata,
   getFields,
   getFieldMetadata,
   getClassMetadata,

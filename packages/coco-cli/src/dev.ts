@@ -3,6 +3,7 @@ import { execSync, spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import { genDotCoco, watch } from './gen-dot-coco';
+import { validateConstructor } from './validate-constructor';
 
 const webpack = (isDev: boolean) => {
   const cwd = process.cwd();
@@ -14,22 +15,22 @@ const webpack = (isDev: boolean) => {
   const args = isDev
     ? ['serve', '--config', 'webpack.config.js']
     : ['--config', 'webpack.config.js'];
-  const webpackDevServer = spawn('webpack', args, {
+  return spawn('webpack', args, {
     cwd: process.cwd(),
     stdio: 'inherit',
   });
-
-  if (isDev) {
-    watch('');
-    process.on('uncaughtException', () => {
-      webpackDevServer.kill('SIGINT'); // 显式杀死子进程
-    });
-  }
 };
 
 export const dev = () => {
-  webpack(true);
+  // todo 添加watch
+  validateConstructor('');
+  const webpackProcess = webpack(true);
+  watch('');
+  process.on('uncaughtException', () => {
+    webpackProcess.kill('SIGINT'); // 显式杀死子进程
+  });
 };
 export const build = () => {
+  validateConstructor('');
   webpack(false);
 };

@@ -1,15 +1,13 @@
 import {
   Metadata,
   component,
+  Component,
   target,
   Target,
-  scope,
-  Scope,
 } from 'coco-ioc-container';
 
 @target([Target.Type.Class])
-@scope(Scope.Type.Singleton)
-@component()
+@component(Component.Scope.Singleton)
 class Store extends Metadata {}
 
 export const sym_remote = Symbol.for('remote');

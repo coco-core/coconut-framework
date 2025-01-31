@@ -1,4 +1,4 @@
-import { _test_helper, Component, Scope, Target } from 'coco-mvc';
+import { _test_helper, Component, Target } from 'coco-mvc';
 import { genDotCoco } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 
@@ -26,8 +26,10 @@ describe('decorator', () => {
     const asExpected = _test_helper.iocContainer.checkClassMetadataAsExpected(
       Button,
       [
-        { Metadata: Component },
-        { Metadata: Scope, fieldValues: { value: Scope.Type.Singleton } },
+        {
+          Metadata: Component,
+          fieldValues: { scope: Component.Scope.Singleton },
+        },
       ]
     );
     expect(asExpected).toBe(true);

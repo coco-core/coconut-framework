@@ -5,6 +5,7 @@ import {flushSync, updateContainer, createContainer} from 'coconut-reconciler';
 function legacyCreateRootFromDOMContainer(container, children) {
   const root = createContainer(container)
   container._reactRootContainer = root;
+  // Initial mount should not be batched.
   flushSync(() => {
     updateContainer(children, root, null, null);
   })
@@ -20,12 +21,10 @@ function legacyRenderSubtreeIntoContainer(
   const maybeRoot = container._reactRootContainer;
   let root;
   if (!maybeRoot) {
-    root = legacyCreateRootFromDOMContainer(container, children);
+    legacyCreateRootFromDOMContainer(container, children);
   } else {
     root = maybeRoot;
-    flushSync(() => {
-      updateContainer(children, root, parentComponent, callback);
-    })
+    updateContainer(children, root, parentComponent, callback);
   }
 }
 

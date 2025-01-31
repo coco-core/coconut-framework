@@ -16,8 +16,6 @@ const classComponentUpdater = {
         scheduleUpdateOnFiber(root, fiber);
       }
     }
-    // todo 这里先用同步刷新，后面再添加调度器
-    flushSyncCallbacks();
   }
 }
 
@@ -63,12 +61,11 @@ function updateClassInstance(
   processUpdateQueue(workInProgress, newProps, instance);
   newState = workInProgress.memoizedState;
 
+  instance.props = newProps;
   const fields = get(NAME.getFields)?.(ctor, Reactive, true);
   for (const field of fields) {
     instance[field] = newState[field]
   }
-
-  instance.props = newProps;
 
   return true;
 }
