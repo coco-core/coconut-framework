@@ -32,8 +32,6 @@ export function addDecoratorParams(beDecoratedCls: Class<any>, params: params) {
     return;
   }
 
-  // todo constructor中不能带上业务逻辑的初始化
-
   if (!decoratorParamMap.has(beDecoratedCls)) {
     decoratorParamMap.set(beDecoratedCls, []);
   }
