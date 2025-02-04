@@ -3,7 +3,7 @@ import Login from '../global-data/login.ts';
 
 @view()
 class Button1 {
-  @autowired(Login)
+  @autowired()
   login: Login;
 
   @view()

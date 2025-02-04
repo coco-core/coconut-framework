@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "ESNext",
     "lib": ["dom"],
-    "module": "Node16",
-    "moduleResolution": "Node16",
-    "jsx": "preserve"
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "plugins": [{ "transform": "@cocojs/typescript-transformer-autowired" }]
   }
 }
