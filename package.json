@@ -9,7 +9,7 @@
     "test": "pnpm run build:test && pnpm run jest",
     "updateVersion": "node ./scripts/publish/update-version.js",
     "updateVer": "pnpm run updateVersion && pnpm run test",
-    "prepare": "husky install && ts-patch install -s"
+    "prepare": "husky install && ts-patch install"
   },
   "repository": {
     "type": "git",
