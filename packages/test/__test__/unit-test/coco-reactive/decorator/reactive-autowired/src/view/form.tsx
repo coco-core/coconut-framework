@@ -3,7 +3,7 @@ import UserInfo from '../store/user-info.ts';
 
 @view()
 class Form {
-  @reactiveAutowired(UserInfo)
+  @reactiveAutowired()
   userInfo: UserInfo;
 
   label() {

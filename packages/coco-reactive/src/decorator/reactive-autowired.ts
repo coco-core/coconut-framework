@@ -19,7 +19,6 @@ const postConstruct = customPostConstruct({
   },
 });
 
-// todo !!!不需要入参
 export default genDecorator<void, ClassFieldDecoratorContext>(
   ReactiveAutowired,
   {
