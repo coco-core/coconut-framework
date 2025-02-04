@@ -9,7 +9,18 @@ const config = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [{ loader: 'babel-loader' }],
+        use: [
+          { loader: 'babel-loader' },
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: false,
+              compilerOptions: {
+                verbatimModuleSyntax: true,
+              },
+            },
+          },
+        ],
         exclude: /node_modules/,
       },
       {

@@ -7,12 +7,7 @@ module.exports = {
   testMatch: ['**/__test__/**/*.test.ts'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transform: {
-    '\\.[jt]sx?$': [
-      'babel-jest',
-      {
-        extends: path.join(__dirname, './babel.config.js'),
-      },
-    ],
+    '\\.[jt]sx?$': '<rootDir>/scripts/jest/transformer.js',
   },
   moduleNameMapper: {
     'coco-mvc/jsx-runtime$': '<rootDir>/packages/coco-mvc/dist/jsx.cjs.js',

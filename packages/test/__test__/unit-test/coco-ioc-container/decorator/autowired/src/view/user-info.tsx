@@ -1,21 +1,21 @@
 import { autowired, view } from 'coco-mvc';
-import Button from './button';
+import Button from './button.tsx';
 import Theme from '../component/theme.ts';
 import Router from '../component/router.ts';
 import Route from '../component/route.ts';
 
 @view()
 class UserInfo {
-  @autowired(Button)
+  @autowired()
   button: Button;
 
-  @autowired(Theme)
+  @autowired()
   theme: Theme;
 
-  @autowired(Router)
+  @autowired()
   router: Router;
 
-  @autowired(Route)
+  @autowired()
   route: Route;
 }
 

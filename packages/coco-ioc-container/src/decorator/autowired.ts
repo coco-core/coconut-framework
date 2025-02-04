@@ -11,5 +11,6 @@ function postConstruct(
 }
 
 export default genDecorator<Args, ClassFieldDecoratorContext>(Autowired, {
+  optional: true,
   postConstruct,
 });
