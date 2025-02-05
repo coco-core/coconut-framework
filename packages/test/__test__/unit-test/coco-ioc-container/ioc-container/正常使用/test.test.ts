@@ -5,13 +5,11 @@ import { _test_helper } from 'coco-mvc';
 let ApplicationContext;
 let Button;
 let Single;
-let VanButton;
 describe('ioc-container', () => {
   beforeEach(async () => {
     genDotCoco(pkgPath(__dirname));
     Single = (await import(cocoIdxStr)).Single;
     Button = (await import(cocoIdxStr)).Button;
-    VanButton = (await import(cocoIdxStr)).VanButton;
     ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
   });
 

@@ -37,6 +37,9 @@ importers:
       '@cocojs/typescript-transformer-autowired':
         specifier: ^0.0.3
         version: 0.0.3(typescript@5.7.2)
+      '@cocojs/typescript-transformer-component':
+        specifier: ^0.0.1
+        version: registry.npmjs.org/@cocojs/typescript-transformer-component@0.0.1
       '@rollup/plugin-alias':
         specifier: ^5.1.0
         version: 5.1.0(rollup@4.24.0)
@@ -6742,4 +6745,15 @@ packages:
         integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==,
       }
     engines: { node: '>=10' }
+    dev: true
+
+  registry.npmjs.org/@cocojs/typescript-transformer-component@0.0.1:
+    resolution:
+      {
+        integrity: sha512-xpRSZpoUir/SgXzegphRZBNYOsNI7M00Owfa/U8+Mbod+e6NHomlwQ9+skQn1Ipx/VOBNDygrWytC060gIFTKg==,
+        registry: https://registry.npmmirror.com/,
+        tarball: https://registry.npmjs.org/@cocojs/typescript-transformer-component/-/typescript-transformer-component-0.0.1.tgz,
+      }
+    name: '@cocojs/typescript-transformer-component'
+    version: 0.0.1
     dev: true
