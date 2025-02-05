@@ -1,4 +1,8 @@
-import { addDefinition, addPostConstruct, getBean } from './bean-factory.ts';
+import {
+  addDefinition,
+  addPostConstruct,
+  getComponent,
+} from './component-factory.ts';
 import {
   addClassMetadata,
   addFieldMethodMetadata,
@@ -17,14 +21,13 @@ import {
   genClassPostConstruct,
   genFieldPostConstruct,
   genMethodPostConstruct,
-} from './bean-definition.ts';
+} from './ioc-component-definition.ts';
 import Metadata from '../metadata/metadata.ts';
 import {
   KindClass,
   KindField,
   KindMethod,
 } from '../decorator/decorator-context.ts';
-import Bean from '../metadata/bean.ts';
 import Component from '../metadata/component.ts';
 import type { Scope } from '../metadata/component.ts';
 import { isPlainObject, lowercaseFirstLetter } from '../share/util.ts';
@@ -42,10 +45,10 @@ class ApplicationContext {
     this.beanConfig = jsonConfig;
     {
       this.recordFieldOrMethodDecoratorParams();
-      this.recordAtBeanDecoratorParams();
+      this.addAtComponentDecoratorParams();
       this.validateTarget();
       this.buildMetadata();
-      this.buildBeanDefinition();
+      this.buildIocComponentDefinition();
     }
     // 清空装饰器参数记录
     clearDecoratorParams();
@@ -54,13 +57,13 @@ class ApplicationContext {
       register(NAME.applicationContext, this);
     }
     {
-      this.instantiateBeanRecursively();
-      this.initBean();
-      this.startBean();
+      this.instantiateComponentRecursively();
+      this.initComponent();
+      this.startComponent();
     }
   }
-  public getBean<T>(Cls: Class<T>): T {
-    return getBean(Cls, this);
+  public getComponent<T>(Cls: Class<T>): T {
+    return getComponent(Cls, this);
   }
 
   public getByClassMetadata(metadataClass: Class<any>) {
@@ -130,7 +133,7 @@ class ApplicationContext {
     });
   }
 
-  private buildBeanDefinition() {
+  private buildIocComponentDefinition() {
     const bizMetadata = getAllMetadata()[1];
     // 处理@component和带有@component的元数据类
     for (const [beDecoratedCls, params] of get().entries()) {
@@ -175,18 +178,18 @@ class ApplicationContext {
     }
   }
 
-  // 为@bean对应的类添加装饰器参数
-  private recordAtBeanDecoratorParams() {
+  // 为@component添加装饰器参数
+  private addAtComponentDecoratorParams() {
     for (const [beDecoratedCls, params] of get().entries()) {
       if (
         !this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Configuration)
       ) {
         continue;
       }
-      const beanDecorateParams = params.filter(
-        (i) => i.metadataKind === KindMethod && i.metadataClass === Bean
+      const componentDecorateParams = params.filter(
+        (i) => i.metadataKind === KindMethod && i.metadataClass === Component
       );
-      beanDecorateParams.forEach(function (param) {
+      componentDecorateParams.forEach(function (param) {
         let targetCls: Class<any>;
         let scope: Scope;
         if (isPlainObject(param.metadataParam)) {
@@ -205,38 +208,38 @@ class ApplicationContext {
     }
   }
 
-  private instantiateBeanRecursively() {
+  private instantiateComponentRecursively() {
     const map = getByClassMetadata(ConstructorParam);
 
-    function doInstantiateBean(beDecorated: Class<any>) {
+    function doInstantiateComponent(beDecorated: Class<any>) {
       if (!map.has(beDecorated)) {
-        return getBean(beDecorated, this);
+        return getComponent(beDecorated, this);
       } else {
         const metadata = map.get(beDecorated) as { value: ClassList };
         const ParameterList = metadata.value;
-        const parameterList = ParameterList.map(doInstantiateBean);
-        return getBean(beDecorated, this, ...parameterList);
+        const parameterList = ParameterList.map(doInstantiateComponent);
+        return getComponent(beDecorated, this, ...parameterList);
       }
     }
 
     for (const beDecorated of map.keys()) {
-      doInstantiateBean(beDecorated);
+      doInstantiateComponent(beDecorated);
     }
   }
 
-  private initBean() {
+  private initComponent() {
     const map = getByFieldMetadata(Init);
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
-      const bean = getBean(beDecoratedCls, this);
-      bean[field]?.(this);
+      const component = getComponent(beDecoratedCls, this);
+      component[field]?.(this);
     }
   }
 
-  private startBean() {
+  private startComponent() {
     const map = getByFieldMetadata(Start);
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
-      const bean = getBean(beDecoratedCls, this);
-      bean[field]?.();
+      const component = getComponent(beDecoratedCls, this);
+      component[field]?.();
     }
   }
 

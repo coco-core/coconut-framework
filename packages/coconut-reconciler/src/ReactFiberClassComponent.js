@@ -27,7 +27,7 @@ function adoptClassInstance(workInProgress, instance) {
 
 function constructClassInstance(workInProgress, ctor, props) {
   const appCtx = get(NAME.applicationContext);
-  const instance = appCtx.getBean(ctor);
+  const instance = appCtx.getComponent(ctor);
   const fields = get(NAME.getFields)?.(ctor, Reactive, true);
   workInProgress.memoizedState = fields.reduce((prev, field) => {
     prev[field] = instance[field];

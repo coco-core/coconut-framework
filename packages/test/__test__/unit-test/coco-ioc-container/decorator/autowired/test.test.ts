@@ -33,8 +33,8 @@ describe('autowired', () => {
 
   test('可以拿到注册的view组件，且拿到的实例也是不同的', async () => {
     const context = new ApplicationContext();
-    const userInfo1 = context.getBean(UserInfo);
-    const userInfo2 = context.getBean(UserInfo);
+    const userInfo1 = context.getComponent(UserInfo);
+    const userInfo2 = context.getComponent(UserInfo);
     expect(userInfo1.button instanceof Button).toBe(true);
     expect(userInfo2.button instanceof Button).toBe(true);
     expect(userInfo1.button).not.toBe(userInfo2.button);
@@ -42,24 +42,24 @@ describe('autowired', () => {
 
   test('可以拿到注册的view组件，且可以拿到单例组件', async () => {
     const context = new ApplicationContext();
-    const userInfo1 = context.getBean(UserInfo);
-    const userInfo2 = context.getBean(UserInfo);
+    const userInfo1 = context.getComponent(UserInfo);
+    const userInfo2 = context.getComponent(UserInfo);
     expect(userInfo1.theme instanceof Theme).toBe(true);
     expect(userInfo1.theme).toBe(userInfo2.theme);
   });
 
-  test('可以拿到@bean注册的组件，默认是单例组件', async () => {
+  test('可以拿到@component注册的组件，默认是单例组件', async () => {
     const context = new ApplicationContext();
-    const userInfo1 = context.getBean(UserInfo);
-    const userInfo2 = context.getBean(UserInfo);
+    const userInfo1 = context.getComponent(UserInfo);
+    const userInfo2 = context.getComponent(UserInfo);
     expect(userInfo1.router instanceof Router).toBe(true);
     expect(userInfo1.router).toBe(userInfo2.router);
   });
 
-  test('可以拿到@bean注册的组件，也支持每次返回新的实例', async () => {
+  test('可以拿到@component注册的组件，也支持每次返回新的实例', async () => {
     const context = new ApplicationContext();
-    const userInfo1 = context.getBean(UserInfo);
-    const userInfo2 = context.getBean(UserInfo);
+    const userInfo1 = context.getComponent(UserInfo);
+    const userInfo2 = context.getComponent(UserInfo);
     expect(userInfo1.route instanceof Route).toBe(true);
     expect(userInfo2.route instanceof Route).toBe(true);
     expect(userInfo1.route).not.toBe(userInfo2.route);

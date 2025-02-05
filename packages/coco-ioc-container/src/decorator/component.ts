@@ -5,6 +5,9 @@
 import genDecorator from './gen-decorator-exp.ts';
 import Component, { Scope } from '../metadata/component.ts';
 
-export default genDecorator<Scope, ClassDecoratorContext>(Component, {
+export default genDecorator<
+  Scope,
+  ClassDecoratorContext | ClassMethodDecoratorContext
+>(Component, {
   optional: true,
 });

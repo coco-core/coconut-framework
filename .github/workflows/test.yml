@@ -13,6 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Fetch fork repository branch
+        run: |
+          git fetch --no-tags --depth=1 ${{ github.event.pull_request.head.repo.clone_url }} ${{ github.event.pull_request.head.ref }}
+          git checkout FETCH_HEAD
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:

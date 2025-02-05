@@ -29,21 +29,21 @@ describe('decorator', () => {
 
   test('直接传入要注册的ioc组件', async () => {
     const context = new ApplicationContext();
-    const router = context.getBean(Router);
+    const router = context.getComponent(Router);
     expect(router).toBeTruthy();
   });
 
   test('通过对象传入要注册的ioc组件，默认singleton模式', async () => {
     const context = new ApplicationContext();
-    const t1 = context.getBean(Theme);
-    const t2 = context.getBean(Theme);
+    const t1 = context.getComponent(Theme);
+    const t2 = context.getComponent(Theme);
     expect(t1 === t2).toBe(true);
   });
 
   test('通过对象传入要注册的ioc组件，可以设置prototype模式', async () => {
     const context = new ApplicationContext();
-    const b1 = context.getBean(Button);
-    const b2 = context.getBean(Button);
+    const b1 = context.getComponent(Button);
+    const b2 = context.getComponent(Button);
     expect(b1 === b2).toBe(false);
   });
 });

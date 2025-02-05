@@ -20,7 +20,7 @@ describe('field装饰器', () => {
 
   test('多个装饰器执行顺序', async () => {
     const context = new ApplicationContext();
-    context.getBean(Button);
+    context.getComponent(Button);
     const isExpected = _test_helper.iocContainer.expectInOrder([
       { type: 'exec', name: a },
       { type: 'exec', name: b },

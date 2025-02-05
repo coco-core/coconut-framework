@@ -7,7 +7,7 @@ import ReactiveAutowired from '../metadata/reactive-autowired.ts';
 const postConstruct = customPostConstruct({
   init: (metadata: ReactiveAutowired, appCtx, name, enqueueSetState) => {
     const cls: any = metadata.value;
-    const remote: Remote = appCtx.getBean(cls)[sym_remote];
+    const remote: Remote = appCtx.getComponent(cls)[sym_remote];
     remote.fork().setEnqueueUpdate(enqueueSetState);
     return remote;
   },
@@ -19,7 +19,6 @@ const postConstruct = customPostConstruct({
   },
 });
 
-// todo !!!不需要入参
 export default genDecorator<void, ClassFieldDecoratorContext>(
   ReactiveAutowired,
   {

@@ -61,7 +61,7 @@ export type PostConstruct =
   | FieldPostConstruct
   | MethodPostConstruct;
 
-export default class BeanDefinition<T> {
+export default class IocComponentDefinition<T> {
   name: Field;
 
   cls: Class<T>;
@@ -96,19 +96,19 @@ export function genMethodPostConstruct(
   return { kind: KindMethod, metadataCls, fn, field };
 }
 
-export function createBean(
-  beanDefinition: BeanDefinition<any>,
+export function createComponent(
+  componentDefinition: IocComponentDefinition<any>,
   appCtx: ApplicationContext,
   ...parameters: any[]
 ) {
-  const cls = beanDefinition.cls;
-  const bean = new cls(...parameters);
-  for (const pc of beanDefinition.postConstruct) {
+  const cls = componentDefinition.cls;
+  const component = new cls(...parameters);
+  for (const pc of componentDefinition.postConstruct) {
     switch (pc.kind) {
       case KindClass: {
         const metadata = getClassMetadata(cls, pc.metadataCls);
         if (metadata.length === 1) {
-          pc.fn.call(bean, metadata[0], appCtx);
+          pc.fn.call(component, metadata[0], appCtx);
         } else {
           if (__TEST__) {
             console.error('元数据应该只有一个', cls, pc.metadataCls);
@@ -120,7 +120,7 @@ export function createBean(
       case KindMethod: {
         const metadata = getFieldMetadata(cls, pc.field, pc.metadataCls);
         if (metadata.length === 1) {
-          pc.fn.call(bean, metadata[0], appCtx, pc.field);
+          pc.fn.call(component, metadata[0], appCtx, pc.field);
         } else {
           if (__TEST__) {
             console.error('元数据应该只有一个', cls, pc.metadataCls, pc.field);
@@ -130,5 +130,5 @@ export function createBean(
       }
     }
   }
-  return bean;
+  return component;
 }

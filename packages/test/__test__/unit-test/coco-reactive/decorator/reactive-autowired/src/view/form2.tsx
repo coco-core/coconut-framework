@@ -9,7 +9,7 @@ class Form2 {
   @reactive()
   showName = true;
 
-  @reactiveAutowired(UserInfo)
+  @reactiveAutowired()
   userInfo: UserInfo;
 
   @reactive()

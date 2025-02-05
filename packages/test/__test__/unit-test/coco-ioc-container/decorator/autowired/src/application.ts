@@ -1,15 +1,15 @@
-import { bean, Component, webApplication } from 'coco-mvc';
+import { component, Component, webApplication } from 'coco-mvc';
 import Router from './component/router.ts';
 import Route from './component/route.ts';
 
 @webApplication()
 class Application {
-  @bean(Router)
+  @component(Router)
   router() {
     return new Router();
   }
 
-  @bean({ value: Route, scope: Component.Scope.Prototype })
+  @component({ value: Route, scope: Component.Scope.Prototype })
   route() {
     return new Route();
   }

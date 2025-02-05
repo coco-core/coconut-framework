@@ -23,7 +23,7 @@ function doStart(
   if (!ctx) {
     // 初次渲染
     ctx = new ApplicationContext();
-    renderIns = ctx.getBean(RenderCls);
+    renderIns = ctx.getComponent(RenderCls);
   }
   if (scene === 'no-router' && ViewComponent) {
     renderIns.render(ViewComponent);

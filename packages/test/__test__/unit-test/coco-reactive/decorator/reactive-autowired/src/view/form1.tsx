@@ -8,7 +8,7 @@ class Form1 {
   @reactive()
   useUserInfo = true;
 
-  @reactiveAutowired(UserInfo)
+  @reactiveAutowired()
   userInfo: UserInfo;
 
   @memoized()

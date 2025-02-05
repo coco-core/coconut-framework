@@ -28,22 +28,22 @@ describe('decorator', () => {
 
   test('默认singleton模式', async () => {
     const context = new ApplicationContext();
-    const s1 = context.getBean(DefaultValue);
-    const s2 = context.getBean(DefaultValue);
+    const s1 = context.getComponent(DefaultValue);
+    const s2 = context.getComponent(DefaultValue);
     expect(s1 === s2).toBe(true);
   });
 
   test('支持显式singleton', async () => {
     const context = new ApplicationContext();
-    const s1 = context.getBean(Single);
-    const s2 = context.getBean(Single);
+    const s1 = context.getComponent(Single);
+    const s2 = context.getComponent(Single);
     expect(s1 === s2).toBe(true);
   });
 
   test('支持设置prototype', async () => {
     const context = new ApplicationContext();
-    const p1 = context.getBean(Prototype);
-    const p2 = context.getBean(Prototype);
+    const p1 = context.getComponent(Prototype);
+    const p2 = context.getComponent(Prototype);
     expect(p1 === p2).toBe(false);
   });
 });

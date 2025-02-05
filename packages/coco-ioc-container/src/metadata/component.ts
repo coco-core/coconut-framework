@@ -9,7 +9,7 @@ export enum Scope {
   Prototype = 1,
 }
 
-@target([Target.Type.Class])
+@target([Target.Type.Class, Target.Type.Method])
 class Component extends Metadata {
   static Scope = Scope;
 
