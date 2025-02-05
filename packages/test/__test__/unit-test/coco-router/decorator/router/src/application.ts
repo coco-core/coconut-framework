@@ -1,4 +1,4 @@
-import { bean, webApplication } from 'coco-mvc';
+import { webApplication } from 'coco-mvc';
 
 @webApplication()
 class Application {}

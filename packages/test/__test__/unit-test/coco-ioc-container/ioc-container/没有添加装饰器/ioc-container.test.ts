@@ -20,7 +20,7 @@ describe('ioc-container', () => {
     let throwError = false;
     try {
       const context = new ApplicationContext();
-      context.getBean(Space);
+      context.getComponent(Space);
     } catch (e) {
       throwError = true;
     }

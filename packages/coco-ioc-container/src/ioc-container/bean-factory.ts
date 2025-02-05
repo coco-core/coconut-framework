@@ -91,7 +91,7 @@ const singletonInstances: Map<Class<any>, any> = new Map();
  * @param appCtx applicationContext实例；
  * @param parameters 构造函数参数
  */
-function getBean<T>(
+function getComponent<T>(
   Cls: Class<T>,
   appCtx: ApplicationContext,
   ...parameters: any[]
@@ -120,4 +120,4 @@ function clear() {
   singletonInstances.clear();
 }
 
-export { getBean, addDefinition, addPostConstruct, getDefinition, clear };
+export { getComponent, addDefinition, addPostConstruct, getDefinition, clear };

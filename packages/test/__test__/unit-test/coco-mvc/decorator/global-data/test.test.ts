@@ -26,8 +26,8 @@ describe('view', () => {
 
   test('可以获取到globalData，并且是同一引用', async () => {
     const context = new ApplicationContext();
-    const btn = context.getBean(Button);
-    const btn1 = context.getBean(Button1);
+    const btn = context.getComponent(Button);
+    const btn1 = context.getComponent(Button1);
     expect(btn).not.toBe(btn1);
     expect(btn.login).toBe(btn1.login);
     expect(btn.login.token).toBe('mock token');

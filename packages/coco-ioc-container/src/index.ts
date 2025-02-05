@@ -1,8 +1,6 @@
 export { default as Metadata } from './metadata/metadata.ts';
 export { default as Autowired } from './metadata/autowired.ts';
 export { default as autowired } from './decorator/autowired.ts';
-export { default as Bean } from './metadata/bean.ts';
-export { default as bean } from './decorator/bean.ts';
 export { default as Component } from './metadata/component.ts';
 export { default as component } from './decorator/component.ts';
 export { default as Configuration } from './metadata/configuration.ts';

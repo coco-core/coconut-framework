@@ -48,7 +48,7 @@ describe('decorator', () => {
       [
         {
           Metadata: Target,
-          fieldValues: { value: [Target.Type.Class] },
+          fieldValues: { value: [Target.Type.Class, Target.Type.Method] },
         },
       ]
     );

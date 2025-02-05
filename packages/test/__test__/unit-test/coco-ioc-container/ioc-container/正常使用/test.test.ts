@@ -22,14 +22,14 @@ describe('ioc-container', () => {
 
   test('通过cls可以拿到实例', async () => {
     const context = new ApplicationContext();
-    const bean = context.getBean(Button);
+    const bean = context.getComponent(Button);
     expect(bean).toBeInstanceOf(Button);
   });
 
   test('component装饰器设置prototype每次返回不同的实例', async () => {
     const context = new ApplicationContext();
-    const bean1 = context.getBean(Button);
-    const bean2 = context.getBean(Button);
+    const bean1 = context.getComponent(Button);
+    const bean2 = context.getComponent(Button);
     expect(bean1).toBeInstanceOf(Button);
     expect(bean2).toBeInstanceOf(Button);
     expect(bean1).not.toBe(bean2);
@@ -37,8 +37,8 @@ describe('ioc-container', () => {
 
   test('单例模式每次获取到的都是一样的', async () => {
     const context = new ApplicationContext();
-    const bean1 = context.getBean(Single);
-    const bean2 = context.getBean(Single);
+    const bean1 = context.getComponent(Single);
+    const bean2 = context.getComponent(Single);
     expect(bean1).toBeInstanceOf(Single);
     expect(bean2).toBeInstanceOf(Single);
     expect(bean1).toBe(bean2);

@@ -21,7 +21,7 @@ describe('class装饰器', () => {
 
   test('一个类的多个类装饰器执行顺序', async () => {
     const context = new ApplicationContext();
-    context.getBean(Button);
+    context.getComponent(Button);
     const isExpected = _test_helper.iocContainer.expectInOrder([
       { type: 'exec', name: a },
       { type: 'exec', name: b },

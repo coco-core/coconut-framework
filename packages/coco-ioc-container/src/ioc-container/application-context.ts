@@ -1,4 +1,8 @@
-import { addDefinition, addPostConstruct, getBean } from './bean-factory.ts';
+import {
+  addDefinition,
+  addPostConstruct,
+  getComponent,
+} from './bean-factory.ts';
 import {
   addClassMetadata,
   addFieldMethodMetadata,
@@ -24,7 +28,6 @@ import {
   KindField,
   KindMethod,
 } from '../decorator/decorator-context.ts';
-import Bean from '../metadata/bean.ts';
 import Component from '../metadata/component.ts';
 import type { Scope } from '../metadata/component.ts';
 import { isPlainObject, lowercaseFirstLetter } from '../share/util.ts';
@@ -42,7 +45,7 @@ class ApplicationContext {
     this.beanConfig = jsonConfig;
     {
       this.recordFieldOrMethodDecoratorParams();
-      this.recordAtBeanDecoratorParams();
+      this.addAtComponentDecoratorParams();
       this.validateTarget();
       this.buildMetadata();
       this.buildBeanDefinition();
@@ -59,8 +62,8 @@ class ApplicationContext {
       this.startBean();
     }
   }
-  public getBean<T>(Cls: Class<T>): T {
-    return getBean(Cls, this);
+  public getComponent<T>(Cls: Class<T>): T {
+    return getComponent(Cls, this);
   }
 
   public getByClassMetadata(metadataClass: Class<any>) {
@@ -175,8 +178,8 @@ class ApplicationContext {
     }
   }
 
-  // 为@bean对应的类添加装饰器参数
-  private recordAtBeanDecoratorParams() {
+  // 为@component添加装饰器参数
+  private addAtComponentDecoratorParams() {
     for (const [beDecoratedCls, params] of get().entries()) {
       if (
         !this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Configuration)
@@ -184,7 +187,7 @@ class ApplicationContext {
         continue;
       }
       const beanDecorateParams = params.filter(
-        (i) => i.metadataKind === KindMethod && i.metadataClass === Bean
+        (i) => i.metadataKind === KindMethod && i.metadataClass === Component
       );
       beanDecorateParams.forEach(function (param) {
         let targetCls: Class<any>;
@@ -210,12 +213,12 @@ class ApplicationContext {
 
     function doInstantiateBean(beDecorated: Class<any>) {
       if (!map.has(beDecorated)) {
-        return getBean(beDecorated, this);
+        return getComponent(beDecorated, this);
       } else {
         const metadata = map.get(beDecorated) as { value: ClassList };
         const ParameterList = metadata.value;
         const parameterList = ParameterList.map(doInstantiateBean);
-        return getBean(beDecorated, this, ...parameterList);
+        return getComponent(beDecorated, this, ...parameterList);
       }
     }
 
@@ -227,7 +230,7 @@ class ApplicationContext {
   private initBean() {
     const map = getByFieldMetadata(Init);
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
-      const bean = getBean(beDecoratedCls, this);
+      const bean = getComponent(beDecoratedCls, this);
       bean[field]?.(this);
     }
   }
@@ -235,7 +238,7 @@ class ApplicationContext {
   private startBean() {
     const map = getByFieldMetadata(Start);
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
-      const bean = getBean(beDecoratedCls, this);
+      const bean = getComponent(beDecoratedCls, this);
       bean[field]?.();
     }
   }

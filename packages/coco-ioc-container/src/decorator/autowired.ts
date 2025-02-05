@@ -7,7 +7,7 @@ function postConstruct(
   appCtx: ApplicationContext,
   name: string
 ) {
-  this[name] = appCtx.getBean(metadata.value);
+  this[name] = appCtx.getComponent(metadata.value);
 }
 
 export default genDecorator<Args, ClassFieldDecoratorContext>(Autowired, {

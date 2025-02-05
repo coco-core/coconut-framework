@@ -32,7 +32,7 @@ describe('router', () => {
       Render,
       Router
     );
-    const router = ctx.getBean(Router);
+    const router = ctx.getComponent(Router);
     router.navigateTo('/');
     await waitFor(async () => {
       expect(getByText(container, 'index page')).toBeTruthy();
