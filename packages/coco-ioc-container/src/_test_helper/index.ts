@@ -2,20 +2,20 @@ import {
   expectInOrder,
   checkClassMetadataAsExpected,
   checkMetadataForMetadataAsExpected,
-} from './decorator';
+} from './decorator.ts';
 
 import {
   getMetadata,
   getAllMetadata,
   clear as clearMetadata,
 } from '../ioc-container/metadata.ts';
-import { clear as clearBeanDefinition } from '../ioc-container/bean-factory.ts';
+import { clear as clearComponentDefinition } from '../ioc-container/component-factory.ts';
 
 import { clear as clearPreventCircularDependency } from 'shared';
 
 function clear() {
   clearMetadata();
-  clearBeanDefinition();
+  clearComponentDefinition();
   clearPreventCircularDependency();
 }
 

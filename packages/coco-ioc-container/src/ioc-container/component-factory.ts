@@ -1,10 +1,10 @@
-import BeanDefinition, {
-  createBean,
+import IocComponentDefinition, {
+  createComponent,
   type FieldPostConstruct,
   type MethodPostConstruct,
   PostConstruct,
   PostConstructFn,
-} from './bean-definition.ts';
+} from './ioc-component-definition.ts';
 import { Scope } from '../metadata/component.ts';
 import { findComponentMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
@@ -15,17 +15,20 @@ import {
 } from '../decorator/decorator-context.ts';
 import { isSubclassOf } from '../share/util.ts';
 
-const clsDefinitionMap: Map<Class<any>, BeanDefinition<any>> = new Map();
+const clsDefinitionMap: Map<
+  Class<any>,
+  IocComponentDefinition<any>
+> = new Map();
 
 function addDefinition(cls: Class<any>) {
   const exited = clsDefinitionMap.get(cls);
   if (exited) {
-    throw new Error(`存在同名的bean: [${exited.cls}] - [${cls}]`);
+    throw new Error(`存在同名的组件: [${exited.cls}] - [${cls}]`);
   }
-  const beanDefinition = new BeanDefinition();
-  beanDefinition.cls = cls;
-  beanDefinition.postConstruct = [];
-  clsDefinitionMap.set(cls, beanDefinition);
+  const componentDefinition = new IocComponentDefinition();
+  componentDefinition.cls = cls;
+  componentDefinition.postConstruct = [];
+  clsDefinitionMap.set(cls, componentDefinition);
 }
 
 function addPostConstruct(cls: Class<any>, pc: PostConstruct) {
@@ -99,7 +102,7 @@ function getComponent<T>(
   const definition = getDefinition(Cls);
   if (!definition) {
     if (__TEST__) {
-      throw new Error(`can no find Bean:${Cls}`);
+      throw new Error(`can no find component definition:${Cls}`);
     }
   }
   const cls = definition.cls;
@@ -108,11 +111,11 @@ function getComponent<T>(
   if (isSingleton && singletonInstances.has(cls)) {
     return singletonInstances.get(cls);
   }
-  const bean = createBean(definition, appCtx, ...parameters);
+  const component = createComponent(definition, appCtx, ...parameters);
   if (isSingleton) {
-    singletonInstances.set(cls, bean);
+    singletonInstances.set(cls, component);
   }
-  return bean;
+  return component;
 }
 
 function clear() {

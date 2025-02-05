@@ -1,4 +1,4 @@
-import type { PostConstructFn } from './bean-definition.ts';
+import type { PostConstructFn } from './ioc-component-definition.ts';
 import {
   type Field,
   type Kind,

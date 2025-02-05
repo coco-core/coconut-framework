@@ -2,7 +2,7 @@ import {
   addDefinition,
   addPostConstruct,
   getComponent,
-} from './bean-factory.ts';
+} from './component-factory.ts';
 import {
   addClassMetadata,
   addFieldMethodMetadata,
@@ -21,7 +21,7 @@ import {
   genClassPostConstruct,
   genFieldPostConstruct,
   genMethodPostConstruct,
-} from './bean-definition.ts';
+} from './ioc-component-definition.ts';
 import Metadata from '../metadata/metadata.ts';
 import {
   KindClass,
@@ -48,7 +48,7 @@ class ApplicationContext {
       this.addAtComponentDecoratorParams();
       this.validateTarget();
       this.buildMetadata();
-      this.buildBeanDefinition();
+      this.buildIocComponentDefinition();
     }
     // 清空装饰器参数记录
     clearDecoratorParams();
@@ -57,9 +57,9 @@ class ApplicationContext {
       register(NAME.applicationContext, this);
     }
     {
-      this.instantiateBeanRecursively();
-      this.initBean();
-      this.startBean();
+      this.instantiateComponentRecursively();
+      this.initComponent();
+      this.startComponent();
     }
   }
   public getComponent<T>(Cls: Class<T>): T {
@@ -133,7 +133,7 @@ class ApplicationContext {
     });
   }
 
-  private buildBeanDefinition() {
+  private buildIocComponentDefinition() {
     const bizMetadata = getAllMetadata()[1];
     // 处理@component和带有@component的元数据类
     for (const [beDecoratedCls, params] of get().entries()) {
@@ -186,10 +186,10 @@ class ApplicationContext {
       ) {
         continue;
       }
-      const beanDecorateParams = params.filter(
+      const componentDecorateParams = params.filter(
         (i) => i.metadataKind === KindMethod && i.metadataClass === Component
       );
-      beanDecorateParams.forEach(function (param) {
+      componentDecorateParams.forEach(function (param) {
         let targetCls: Class<any>;
         let scope: Scope;
         if (isPlainObject(param.metadataParam)) {
@@ -208,38 +208,38 @@ class ApplicationContext {
     }
   }
 
-  private instantiateBeanRecursively() {
+  private instantiateComponentRecursively() {
     const map = getByClassMetadata(ConstructorParam);
 
-    function doInstantiateBean(beDecorated: Class<any>) {
+    function doInstantiateComponent(beDecorated: Class<any>) {
       if (!map.has(beDecorated)) {
         return getComponent(beDecorated, this);
       } else {
         const metadata = map.get(beDecorated) as { value: ClassList };
         const ParameterList = metadata.value;
-        const parameterList = ParameterList.map(doInstantiateBean);
+        const parameterList = ParameterList.map(doInstantiateComponent);
         return getComponent(beDecorated, this, ...parameterList);
       }
     }
 
     for (const beDecorated of map.keys()) {
-      doInstantiateBean(beDecorated);
+      doInstantiateComponent(beDecorated);
     }
   }
 
-  private initBean() {
+  private initComponent() {
     const map = getByFieldMetadata(Init);
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
-      const bean = getComponent(beDecoratedCls, this);
-      bean[field]?.(this);
+      const component = getComponent(beDecoratedCls, this);
+      component[field]?.(this);
     }
   }
 
-  private startBean() {
+  private startComponent() {
     const map = getByFieldMetadata(Start);
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
-      const bean = getComponent(beDecoratedCls, this);
-      bean[field]?.();
+      const component = getComponent(beDecoratedCls, this);
+      component[field]?.();
     }
   }
 
