@@ -35,8 +35,8 @@ importers:
         specifier: ^7.24.7
         version: 7.24.7(@babel/core@7.26.7)
       '@cocojs/typescript-transformer-autowired':
-        specifier: ^0.0.2
-        version: 0.0.2
+        specifier: ^0.0.3
+        version: 0.0.3(typescript@5.7.2)
       '@rollup/plugin-alias':
         specifier: ^5.1.0
         version: 5.1.0(rollup@4.24.0)
@@ -2065,11 +2065,15 @@ packages:
       }
     dev: true
 
-  /@cocojs/typescript-transformer-autowired@0.0.2:
+  /@cocojs/typescript-transformer-autowired@0.0.3(typescript@5.7.2):
     resolution:
       {
-        integrity: sha512-WQInqGZzSjpWYjN4NrLjnimgzBHoZjiTreNga0AmUs4ZepLZKbx5xDyLtecaBZmPKGEFrHeO2ZrhsqTWOMcWcA==,
+        integrity: sha512-FYg7VR0mcU3lqlJmSfxT3PZ//eUZPTpeF8qFtNaOj4m3Bo6sCdPjrzbGrmytj5l+bWNFbJbdtFFSGl6nOgTrwg==,
       }
+    peerDependencies:
+      typescript: ^5.7.3
+    dependencies:
+      typescript: 5.7.2
     dev: true
 
   /@isaacs/cliui@8.0.2:
