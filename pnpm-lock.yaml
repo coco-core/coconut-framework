@@ -35,11 +35,11 @@ importers:
         specifier: ^7.24.7
         version: 7.24.7(@babel/core@7.26.7)
       '@cocojs/typescript-transformer-autowired':
-        specifier: ^0.0.3
-        version: 0.0.3(typescript@5.7.2)
+        specifier: ^0.0.4
+        version: 0.0.4(typescript@5.7.2)
       '@cocojs/typescript-transformer-component':
-        specifier: ^0.0.1
-        version: registry.npmjs.org/@cocojs/typescript-transformer-component@0.0.1
+        specifier: ^0.0.2
+        version: 0.0.2(typescript@5.7.2)
       '@rollup/plugin-alias':
         specifier: ^5.1.0
         version: 5.1.0(rollup@4.24.0)
@@ -2068,10 +2068,21 @@ packages:
       }
     dev: true
 
-  /@cocojs/typescript-transformer-autowired@0.0.3(typescript@5.7.2):
+  /@cocojs/typescript-transformer-autowired@0.0.4(typescript@5.7.2):
     resolution:
       {
-        integrity: sha512-FYg7VR0mcU3lqlJmSfxT3PZ//eUZPTpeF8qFtNaOj4m3Bo6sCdPjrzbGrmytj5l+bWNFbJbdtFFSGl6nOgTrwg==,
+        integrity: sha512-/SIESjSA95BSM9DrxWYClZywdxubJuefch0xXujlkrRWYKgoUF+JS8VZLo0TFizQCd6/DyjgtaXrvxofcNNm5g==,
+      }
+    peerDependencies:
+      typescript: ^5.7.3
+    dependencies:
+      typescript: 5.7.2
+    dev: true
+
+  /@cocojs/typescript-transformer-component@0.0.2(typescript@5.7.2):
+    resolution:
+      {
+        integrity: sha512-H8EgcMibsQacBiFnAenayM9TqhcX1wuCz8qYwSxw66SQ7PDAUdV6KjtFHjr9zkJlbect1MszXgeojzWbeiR7tw==,
       }
     peerDependencies:
       typescript: ^5.7.3
@@ -6745,15 +6756,4 @@ packages:
         integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==,
       }
     engines: { node: '>=10' }
-    dev: true
-
-  registry.npmjs.org/@cocojs/typescript-transformer-component@0.0.1:
-    resolution:
-      {
-        integrity: sha512-xpRSZpoUir/SgXzegphRZBNYOsNI7M00Owfa/U8+Mbod+e6NHomlwQ9+skQn1Ipx/VOBNDygrWytC060gIFTKg==,
-        registry: https://registry.npmmirror.com/,
-        tarball: https://registry.npmjs.org/@cocojs/typescript-transformer-component/-/typescript-transformer-component-0.0.1.tgz,
-      }
-    name: '@cocojs/typescript-transformer-component'
-    version: 0.0.1
     dev: true
