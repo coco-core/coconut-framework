@@ -14,10 +14,7 @@ module.exports = {
           verbatimModuleSyntax: true,
           jsx: 'preserve',
           resolveJsonModule: true,
-          plugins: [
-            { transform: '@cocojs/typescript-transformer-autowired' },
-            { transform: '@cocojs/typescript-transformer-component' },
-          ],
+          plugins: [{ transform: '@cocojs/typescript-transformer' }],
         },
         fileName: filename,
       });
