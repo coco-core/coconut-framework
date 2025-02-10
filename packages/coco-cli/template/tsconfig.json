@@ -7,6 +7,6 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
     "resolveJsonModule": true,
-    "plugins": [{ "transform": "@cocojs/typescript-transformer-autowired" }]
+    "plugins": [{ "transform": "@cocojs/typescript-transformer" }]
   }
 }

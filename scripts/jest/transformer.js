@@ -11,10 +11,10 @@ module.exports = {
           module: 'ESNext',
           moduleResolution: 'node',
           allowSyntheticDefaultImports: true,
-          verbatimModuleSyntax: true,
+          verbatimModuleSyntax: true, // todo 22 删除
           jsx: 'preserve',
           resolveJsonModule: true,
-          plugins: [{ transform: '@cocojs/typescript-transformer-autowired' }],
+          plugins: [{ transform: '@cocojs/typescript-transformer' }],
         },
         fileName: filename,
       });

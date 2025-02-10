@@ -5,17 +5,17 @@ import Theme from './theme.ts';
 
 @configuration()
 class WebAppConfiguration {
-  @component(Router)
+  @component()
   router() {
     return new Router();
   }
 
-  @component({ value: Button, scope: Component.Scope.Prototype })
+  @component(Component.Scope.Prototype)
   button() {
     return new Button();
   }
 
-  @component({ value: Theme })
+  @component()
   theme() {
     return new Theme();
   }

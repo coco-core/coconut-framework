@@ -16,7 +16,7 @@ const config = {
             options: {
               transpileOnly: false,
               compilerOptions: {
-                verbatimModuleSyntax: true, // todo 删除
+                verbatimModuleSyntax: true, // todo 22 删除
               },
             },
           },

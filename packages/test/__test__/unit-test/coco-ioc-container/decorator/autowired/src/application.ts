@@ -4,12 +4,12 @@ import Route from './component/route.ts';
 
 @webApplication()
 class Application {
-  @component(Router)
+  @component()
   router() {
     return new Router();
   }
 
-  @component({ value: Route, scope: Component.Scope.Prototype })
+  @component(Component.Scope.Prototype)
   route() {
     return new Route();
   }
