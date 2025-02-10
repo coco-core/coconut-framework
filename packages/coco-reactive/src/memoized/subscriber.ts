@@ -1,5 +1,4 @@
-import Publisher from './publisher.ts';
-import publisher from './publisher.ts';
+import type Publisher from './publisher.ts';
 
 class Subscriber {
   static Executing: Subscriber;

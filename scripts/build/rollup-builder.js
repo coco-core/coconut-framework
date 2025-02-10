@@ -26,7 +26,9 @@ function genRollupConfig (inputConfig) {
           "target": "es2015",
           "lib": ["dom", "es2015"],
           "declaration": true,
-          "declarationDir": "./types"
+          "declarationDir": "./types",
+          "plugins": [{ "transform": "@cocojs/typescript-transformer" }],
+          "verbatimModuleSyntax": true, // todo 22 删除
       }}),
       aliasPlugin({
         entries: genEntries(alias)

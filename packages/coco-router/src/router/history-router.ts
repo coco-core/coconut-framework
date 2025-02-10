@@ -11,7 +11,7 @@ import Router from './router.ts';
 import { Render } from 'coco-mvc/component';
 
 @router()
-@constructorParam([Render])
+@constructorParam()
 class HistoryRouter extends Router {
   constructor(render: Render) {
     super();
