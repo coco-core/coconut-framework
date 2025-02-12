@@ -1,3 +1,4 @@
+export const RESERVED = 0;
 export const STRING = 1;
 
 const properties = {};
@@ -36,4 +37,21 @@ function PropertyInfoRecord(
   this.type = type;
   this.sanitizeURL = sanitizeURL;
   this.removeEmptyString = removeEmptyString;
+}
+
+function shouldIgnoreAttribute(
+  name,
+  propertyInfo
+  ) {
+  if (propertyInfo !== null) {
+    return propertyInfo.type === RESERVED;
+  }
+  if (
+    name.length > 2 &&
+    (name[0] === 'o' || name[0] === 'O') &&
+    (name[1] === 'n' || name[1] === 'N')
+  ) {
+    return true;
+  }
+  return false;
 }

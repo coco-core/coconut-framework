@@ -1,7 +1,9 @@
 import {ClassComponent, HostComponent, HostRoot, HostText} from "./ReactWorkTags";
-import {MutationMask, Placement, Update} from "./ReactFiberFlags";
+import { LayoutMask, MutationMask, NoFlags, Placement, Ref, Update } from './ReactFiberFlags';
 import {commitTextUpdate, commitUpdate, removeChild, removeChildFromContainer} from "ReactFiberHostConfig";
 
+let nextEffect = null;
+let inProgressRoot = null;
 
 function isHostParent(fiber) {
   return fiber.tag === HostComponent || fiber.tag === HostRoot;
@@ -271,4 +273,75 @@ export function commitMutationEffects(
   finishedWork
 ) {
   commitMutationEffectsOnFiber(finishedWork, root)
+}
+
+export function commitLayoutEffects(
+  finishedWork,
+  root
+) {
+  inProgressRoot = root;
+  nextEffect = finishedWork;
+
+  commitLayoutEffects_begin(finishedWork, root)
+
+  inProgressRoot = null;
+}
+
+function commitLayoutEffects_begin(
+  subtreeRoot,
+  root
+) {
+  while (nextEffect !== null) {
+    const fiber = nextEffect;
+    const firstChild = fiber.child;
+
+    if ((fiber.subtreeFlags & LayoutMask) !== NoFlags && firstChild !== null) {
+      firstChild.return = fiber;
+      nextEffect = firstChild;
+    } else {
+      commitLayoutMountEffects_complete(subtreeRoot, root)
+    }
+  }
+}
+
+function commitLayoutMountEffects_complete(subtreeRoot, root) {
+  while (nextEffect !== null) {
+    const fiber = nextEffect;
+    if ((fiber.flags & LayoutMask) !== NoFlags) {
+      const current = fiber.alternate;
+      commitLayoutEffectOnFiber(root, current, fiber);
+    }
+
+    if (fiber === subtreeRoot) {
+      nextEffect = null;
+      return;
+    }
+
+    const sibling = fiber.sibling;
+    if (sibling !== null) {
+      sibling.return = fiber.return;
+      nextEffect = sibling;
+      return;
+    }
+
+    nextEffect = fiber.return;
+  }
+}
+
+function commitLayoutEffectOnFiber(
+  finishedRoot,
+  current,
+  finishedWork
+) {
+  if (finishedWork.flags & Ref) {
+    commitAttachRef(finishedWork)
+  }
+}
+
+function commitAttachRef(finishedWork) {
+  const ref = finishedWork.ref;
+  if (ref !== null) {
+    const instanceToUse = finishedWork.stateNode;
+    ref.current = instanceToUse;
+  }
 }

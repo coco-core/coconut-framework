@@ -7,6 +7,8 @@ export { default as Controller } from './metadata/controller.ts';
 export { default as controller } from './decorator/controller.ts';
 export { default as GlobalData } from './metadata/global-data.ts';
 export { default as globalData } from './decorator/global-data.ts';
+export { default as Ref } from './metadata/ref.ts';
+export { default as ref } from './decorator/ref.ts';
 export { default as Service } from './metadata/service.ts';
 export { default as service } from './decorator/service.ts';
 export { default as View } from './metadata/view.ts';

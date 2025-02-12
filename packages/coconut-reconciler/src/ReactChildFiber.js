@@ -3,6 +3,22 @@ import {Deletion, Forked, Placement} from "./ReactFiberFlags";
 import {REACT_ELEMENT_TYPE} from "shared";
 import {HostText} from "./ReactWorkTags";
 
+function coerceRef(
+  returnFiber,
+  current,
+  element
+) {
+  const mixedRef = element.ref;
+  if (
+    mixedRef !== null &&
+    typeof mixedRef !== "object"
+  ) {
+    throw new Error(
+      'Expected ref to be an object returned by React.createRef(), or null.',
+    );
+  }
+  return mixedRef;
+}
 
 function ChildReconciler(shouldTrackSideEffects) {
   function deleteChild(returnFiber, childToDelete) {
@@ -29,6 +45,7 @@ function ChildReconciler(shouldTrackSideEffects) {
     }
     if (typeof newChild === 'object' && newChild !== null) {
       const created = createFiberFromElement(newChild)
+      created.ref = coerceRef(returnFiber, null, newChild);
       created.return = returnFiber;
       return created;
     }
@@ -84,6 +101,7 @@ function ChildReconciler(shouldTrackSideEffects) {
     if (current !== null) {
       if (current.elementType === elementType) {
         const existing = useFiber(current, element.props);
+        existing.ref = coerceRef(returnFiber, current, element);
         existing.return = returnFiber;
         return existing;
       }
@@ -147,6 +165,7 @@ function ChildReconciler(shouldTrackSideEffects) {
         if (child.elementType === element.type) {
           deleteRemainingChildren(returnFiber, child.sibling);
           const existing = useFiber(child, element.props);
+          existing.ref = coerceRef(returnFiber, child, element);
           existing.return = returnFiber;
           return existing;
         } else {
@@ -160,6 +179,7 @@ function ChildReconciler(shouldTrackSideEffects) {
     }
 
     const created = createFiberFromElement(element);
+    created.ref = coerceRef(returnFiber, currentFirstChild, element);
     created.return = returnFiber;
     return created;
   }
