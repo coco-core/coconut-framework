@@ -22,7 +22,7 @@ function setInitialDOMProperties(
         setTextContent(domElement, '' + nextProp);
       }
     } else if (nextProp != null) {
-      setValueForProperty(domElement, propKey, nextProp)
+      setValueForProperty(domElement, propKey, nextProp, false)
     }
   }
 }
@@ -100,7 +100,7 @@ function updateDOMProperties(
     } else if (propKey === CHILDREN) {
       setTextContent(domElement, propValue)
     } else {
-      setValueForProperty(domElement, propKey, propValue, oldPropValue);
+      setValueForProperty(domElement, propKey, propValue, false, oldPropValue);
     }
   }
 }

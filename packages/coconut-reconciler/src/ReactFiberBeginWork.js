@@ -5,6 +5,7 @@ import {cloneUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue
 import {shouldSetTextContent} from "ReactFiberHostConfig";
 import { View } from "coco-mvc/metadata";
 import {get, NAME} from "shared";
+import { Ref } from './ReactFiberFlags';
 
 export function reconcileChildren(
   current,
@@ -18,12 +19,23 @@ export function reconcileChildren(
   }
 }
 
+function markRef(current, workInProgress) {
+  const ref = workInProgress.ref;
+  if (
+    (current === null && ref !== null) ||
+    (current !== null && current.ref !== ref)
+  ) {
+    workInProgress.flags |= Ref;
+  }
+}
+
 function finishClassComponent(
   current,
   workInProgress,
   Component,
   shouldUpdate,
 ) {
+  markRef(current, workInProgress);
   if (!shouldUpdate) {
     return null;
   }
@@ -90,6 +102,7 @@ function updateHostComponent(
     nextChildren = null;
   }
 
+  markRef(current, workInProgress);
   reconcileChildren(current, workInProgress, nextChildren);
   return workInProgress.child;
 }

@@ -4,6 +4,7 @@ export function setValueForProperty(
   node,
   name,
   value,
+  isCustomComponentTag,
   oldValue,
 ) {
   if (name === 'onClick') {
@@ -14,6 +15,16 @@ export function setValueForProperty(
     return;
   }
   const propertyInfo = getPropertyInfo(name);
+
+  if( propertyInfo === null) {
+    const attributeName = name;
+    if (value === null) {
+      node.removeAttribute(attributeName);
+    } else {
+      node.setAttribute(attributeName, '' + value);
+    }
+    return;
+  }
   const { attributeName } = propertyInfo;
   if (value === null) {
     node.removeAttribute(attributeName)

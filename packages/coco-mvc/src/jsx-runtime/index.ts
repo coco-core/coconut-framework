@@ -1,9 +1,30 @@
 import { REACT_ELEMENT_TYPE } from 'shared';
 
-const h = (component, props) => {
+const RESERVED_PROPS = {
+  ref: true,
+};
+
+const h = (component: any, config: Record<any, any>) => {
+  const props = {};
+  let ref = null;
+
+  if (config?.ref) {
+    ref = config.ref;
+  }
+
+  for (let propName in config) {
+    if (
+      Object.hasOwnProperty.call(config, propName) &&
+      !RESERVED_PROPS.hasOwnProperty(propName)
+    ) {
+      props[propName] = config[propName];
+    }
+  } // Resolve default props
+
   return {
     $$typeof: REACT_ELEMENT_TYPE,
     type: component,
+    ref,
     props,
   };
 };

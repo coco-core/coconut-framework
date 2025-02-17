@@ -15,9 +15,6 @@ const config = {
             loader: 'ts-loader',
             options: {
               transpileOnly: false,
-              compilerOptions: {
-                verbatimModuleSyntax: true, // todo 22 删除
-              },
             },
           },
         ],

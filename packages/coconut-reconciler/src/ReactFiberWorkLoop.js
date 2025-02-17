@@ -5,7 +5,7 @@ import {unwindWork} from "./ReactFiberUnwindWork";
 import {flushSyncCallbacks, scheduleSyncCallback} from "./ReactFiberSyncTaskQueue";
 import {createWorkInProgress} from "./ReactFiber";
 import {finishQueueingConcurrentUpdates} from "./ReactFiberConcurrentUpdate";
-import {commitMutationEffects} from "./ReactFiberCommitWork";
+import { commitLayoutEffects, commitMutationEffects } from './ReactFiberCommitWork';
 
 export const NoContext = /*             */ 0b000;
 const BatchedContext = /*               */ 0b001;
@@ -113,6 +113,8 @@ function commitRootImpl(root) {
   commitMutationEffects(root, finishedWork)
 
   root.current = finishedWork;
+
+  commitLayoutEffects(finishedWork, root)
 }
 
 function commitRoot(root) {
