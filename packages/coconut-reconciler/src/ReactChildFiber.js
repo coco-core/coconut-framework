@@ -106,6 +106,11 @@ function ChildReconciler(shouldTrackSideEffects) {
         return existing;
       }
     }
+    // Insert
+    const created = createFiberFromElement(element);
+    created.ref = coerceRef(returnFiber, current, element);
+    created.return = returnFiber;
+    return created;
   }
 
   function updateTextNode(
@@ -151,6 +156,7 @@ function ChildReconciler(shouldTrackSideEffects) {
         }
       }
     }
+    return null;
   }
 
   function reconcileSingleElement(
@@ -182,6 +188,48 @@ function ChildReconciler(shouldTrackSideEffects) {
     created.ref = coerceRef(returnFiber, currentFirstChild, element);
     created.return = returnFiber;
     return created;
+  }
+
+  function mapRemainingChildren(
+    returnFiber,
+    currentFirstChild,
+  ) {
+    const existingChildren = new Map();
+    let existingChild = currentFirstChild;
+    while (existingChild !== null) {
+      if (existingChild.key !== null) {
+        existingChildren.set(existingChild.key, existingChild);
+      } else {
+        existingChildren.set(existingChild.index, existingChild);
+      }
+      existingChild = existingChild.sibling;
+    }
+    return existingChildren;
+  }
+
+  function updateFromMap(
+    existingChildren,
+    returnFiber,
+    newIdx,
+    newChild
+  ) {
+    if (
+      (typeof newChild === 'string' && newChild !== '') ||
+      typeof newChild === 'number'
+    ) {
+      const matchedFiber = existingChildren.get(newIdx) || null;
+      return updateTextNode(returnFiber, matchedFiber, "" + newChild);
+    }
+    if (typeof newChild === 'object' && newChild !== null) {
+      switch (newChild.$$typeof) {
+        case REACT_ELEMENT_TYPE: {
+          const matchedFiber = existingChildren.get(newChild.key === null ? newIdx : newChild.key) || null;
+          return updateElement(returnFiber, matchedFiber, newChild);
+        }
+      }
+    }
+
+    return null;
   }
 
   function reconcileChildrenArray(
@@ -237,6 +285,35 @@ function ChildReconciler(shouldTrackSideEffects) {
       }
       return resultingFirstChild;
     }
+
+    const existingChildren = mapRemainingChildren(returnFiber, oldFiber);
+    for (; newIdx < newChildren.length; newIdx++) {
+      const newFiber = updateFromMap(
+        existingChildren,
+        returnFiber,
+        newIdx,
+        newChildren[newIdx]
+      );
+      if (newFiber !== null) {
+        if (shouldTrackSideEffects) {
+          if (newFiber.alternate !== null) {
+            existingChildren.delete(newFiber.key === null ? newIdx : newFiber.key);
+          }
+        }
+        lastPlacedIndex = placeChild(newFiber, lastPlacedIndex, newIdx);
+        if (previousNewFiber === null) {
+          resultingFirstChild = newFiber;
+        } else {
+          previousNewFiber.sibling = newFiber;
+        }
+        previousNewFiber = newFiber;
+      }
+    }
+    if (shouldTrackSideEffects) {
+      existingChildren.forEach(child => deleteChild(returnFiber, child));
+    }
+
+    return resultingFirstChild;
   }
 
   function reconcileChildFibers(
