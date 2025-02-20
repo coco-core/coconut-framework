@@ -36,6 +36,17 @@ function getHostSibling(fiber) {
     }
   }
 }
+const callComponentWillUnmountWithTimer = function(current, instance) {
+  instance.componentWillUnmount();
+};
+
+function safelyCallComponentWillUnmount(
+  current,
+  nearestMountedAncestor,
+  instance,
+) {
+  callComponentWillUnmountWithTimer(current, instance);
+}
 
 function insertOrAppendPlacementNodeIntoContainer(node, before, parent) {
   const tag = node.tag;
@@ -144,6 +155,14 @@ function commitDeletionEffectsOnFiber(finishedRoot, nearestMountedAncestor, dele
       }
       return;
     case ClassComponent: {
+      const instance = deletedFiber.stateNode;
+      if (typeof instance.componentWillUnmount === 'function') {
+        safelyCallComponentWillUnmount(
+          deletedFiber,
+          nearestMountedAncestor,
+          instance
+        )
+      }
       recursivelyTraverseDeletionEffects(finishedRoot, nearestMountedAncestor, deletedFiber);
       return;
     }
@@ -333,6 +352,26 @@ function commitLayoutEffectOnFiber(
   current,
   finishedWork
 ) {
+  if ((finishedWork.flags & LayoutMask) !== NoFlags) {
+    switch(finishedWork.tag) {
+      case ClassComponent: {
+        const instance = finishedWork.stateNode;
+        if (finishedWork.flags & Update) {
+          if (current === null) {
+            instance.componentDidMount();
+          } else {
+            const prevProps = current.memoizedProps;
+            const prevState = current.memoizedState;
+            instance.componentDidUpdate(
+              prevProps,
+              prevState
+            )
+          }
+        }
+        break;
+      }
+    }
+  }
   if (finishedWork.flags & Ref) {
     commitAttachRef(finishedWork)
   }

@@ -1,4 +1,5 @@
 import {enqueueConcurrentClassUpdate} from "./ReactFiberConcurrentUpdate";
+import { assign } from "shared";
 
 export const UpdateState = 0;
 
@@ -73,6 +74,7 @@ function getFieldStateFromUpdate(
         partialState = payload;
       }
       if (partialState === null || partialState === undefined) {
+        // Null and undefined are treated as no-ops.
         return prevState;
       }
       return partialState;
@@ -130,7 +132,7 @@ export function processUpdateQueue(
     do {
       const {field} = update;
       const newFieldState = getFieldStateFromUpdate(workInProgress, queue, update, newState[field], props, instance);
-      Object.assign(newState, {[field]: newFieldState});
+      newState = assign({}, newState, {[field]: newFieldState});
       update = update.next;
       if (update === null) {
         pendingQueue = queue.shared.pending;

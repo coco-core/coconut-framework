@@ -7,6 +7,7 @@ const RESERVED_PROPS = {
 const h = (component: any, config: Record<any, any>) => {
   const props = {};
   let ref = null;
+  let key = null;
 
   if (config?.ref) {
     ref = config.ref;
@@ -24,6 +25,7 @@ const h = (component: any, config: Record<any, any>) => {
   return {
     $$typeof: REACT_ELEMENT_TYPE,
     type: component,
+    key,
     ref,
     props,
   };

@@ -2,6 +2,7 @@ import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} 
 import {get, NAME} from "shared";
 import { Reactive } from "coco-reactive/metadata";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
+import { Update } from "./ReactFiberFlags";
 
 const classComponentUpdater = {
   enqueueSetState(inst, field, payload, callback) {
@@ -47,6 +48,10 @@ function mountClassInstance(
   instance.props = newProps;
 
   initializeUpdateQueue(workInProgress)
+
+  if (typeof instance.componentDidMount === 'function') {
+    workInProgress.flags |= Update;
+  }
 }
 
 function updateClassInstance(
@@ -65,6 +70,12 @@ function updateClassInstance(
   const fields = get(NAME.getFields)?.(ctor, Reactive, true);
   for (const field of fields) {
     instance[field] = newState[field]
+  }
+
+  // todo 新旧state对比，新旧props对比，判断是否需要update
+
+  if (typeof instance.componentDidUpdate === 'function') {
+    workInProgress.flags |= Update;
   }
 
   return true;
