@@ -67,7 +67,15 @@ function ChildReconciler(shouldTrackSideEffects) {
       return lastPlacedIndex;
     }
     const current = newFiber.alternate;
-    if (current === null) {
+    if (current !== null) {
+      const oldIndex = current.index;
+      if (oldIndex < lastPlacedIndex) {
+        newFiber.flags |= Placement;
+        return lastPlacedIndex;
+      } else {
+        return oldIndex;
+      }
+    } else {
       newFiber.flags |= Placement;
       return lastPlacedIndex;
     }
@@ -257,6 +265,9 @@ function ChildReconciler(shouldTrackSideEffects) {
         newChildren[newIdx]
       )
       if (newFiber === null) {
+        if (oldFiber === null) {
+          oldFiber = nextOldFiber;
+        }
         break;
       }
       lastPlacedIndex = placeChild(newFiber, lastPlacedIndex, newIdx);
@@ -267,6 +278,11 @@ function ChildReconciler(shouldTrackSideEffects) {
       }
       previousNewFiber = newFiber;
       oldFiber = nextOldFiber;
+    }
+
+    if (newIdx === newChildren.length) {
+      deleteRemainingChildren(returnFiber, oldFiber);
+      return resultingFirstChild;
     }
 
     if (oldFiber === null) {
