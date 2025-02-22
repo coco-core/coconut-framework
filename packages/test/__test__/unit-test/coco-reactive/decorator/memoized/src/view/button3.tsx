@@ -45,8 +45,7 @@ class Button3 {
     return `${this.myScore()}分`;
   }
 
-  @view()
-  h() {
+  render() {
     return (
       <div>
         <button onClick={this.onClick}>click to hide name</button>

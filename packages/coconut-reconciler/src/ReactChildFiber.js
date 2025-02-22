@@ -11,10 +11,11 @@ function coerceRef(
   const mixedRef = element.ref;
   if (
     mixedRef !== null &&
+    typeof mixedRef !== "function" &&
     typeof mixedRef !== "object"
   ) {
     throw new Error(
-      'Expected ref to be an object returned by React.createRef(), or null.',
+      'Expected ref to be an object, an function, or null.',
     );
   }
   return mixedRef;

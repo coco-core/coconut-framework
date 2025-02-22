@@ -3,8 +3,7 @@ import Button from './button';
 
 @view()
 class App {
-  @view()
-  fn() {
+  render() {
     return (
       <h1>
         <Button />

@@ -32,8 +32,7 @@ class Form1 {
     this.userInfo = { name: newName };
   }
 
-  @view()
-  h() {
+  render() {
     return (
       <div>
         <button onClick={this.handleChangeUse}>update userUserInfo</button>

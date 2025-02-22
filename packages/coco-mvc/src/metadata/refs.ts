@@ -6,8 +6,8 @@ import {
   Target,
 } from 'coco-ioc-container';
 
-@target([Target.Type.Class])
+@target([Target.Type.Field])
 @component(Component.Scope.Prototype)
-class View extends Metadata {}
+class Refs extends Metadata {}
 
-export default View;
+export default Refs;

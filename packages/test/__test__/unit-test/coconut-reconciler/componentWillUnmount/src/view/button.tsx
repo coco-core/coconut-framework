@@ -10,8 +10,7 @@ class Button {
     buttonWillUnmount();
   }
 
-  @view()
-  fn() {
+  render() {
     return <button>count:{this.count}</button>;
   }
 }

@@ -4,8 +4,7 @@ import Detail2 from './detail2.tsx';
 
 @view()
 class Page2 {
-  @view()
-  h() {
+  render() {
     return (
       <div>
         <Form2 />

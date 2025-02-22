@@ -6,8 +6,7 @@ class Button {
   @autowired()
   login: Login;
 
-  @view()
-  h() {
+  render() {
     return <button>btn-0</button>;
   }
 }

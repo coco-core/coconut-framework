@@ -4,8 +4,7 @@ import Form from './form.tsx';
 
 @view()
 class Page {
-  @view()
-  h() {
+  render() {
     return (
       <div>
         <Detail />

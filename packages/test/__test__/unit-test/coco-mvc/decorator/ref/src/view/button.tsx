@@ -17,7 +17,6 @@ class Button {
   @ref()
   view: { current: View };
 
-  @view()
   render() {
     return (
       <div>
