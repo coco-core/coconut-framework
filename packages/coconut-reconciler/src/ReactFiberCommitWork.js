@@ -381,6 +381,10 @@ function commitAttachRef(finishedWork) {
   const ref = finishedWork.ref;
   if (ref !== null) {
     const instanceToUse = finishedWork.stateNode;
-    ref.current = instanceToUse;
+    if (typeof ref === 'function') {
+      ref(instanceToUse)
+    } else {
+      ref.current = instanceToUse;
+    }
   }
 }
