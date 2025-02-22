@@ -17,7 +17,6 @@ class Button {
   @refs()
   refs: Record<number, HTMLElement | View>;
 
-  @view()
   render() {
     return (
       <div>

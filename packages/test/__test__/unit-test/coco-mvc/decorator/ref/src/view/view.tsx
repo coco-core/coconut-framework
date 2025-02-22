@@ -6,7 +6,6 @@ class View {
     return 'view-component';
   }
 
-  @view()
   render() {
     return <div>view</div>;
   }

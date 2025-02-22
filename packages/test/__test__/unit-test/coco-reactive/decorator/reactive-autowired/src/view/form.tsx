@@ -15,8 +15,7 @@ class Form {
     this.userInfo = { name: '李四' };
   }
 
-  @view()
-  h() {
+  render() {
     return <input onClick={this.handleClick}>input:{this.userInfo.name}</input>;
   }
 }

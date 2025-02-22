@@ -15,8 +15,7 @@ class Button {
     buttonDidUpdate(prevCount);
   }
 
-  @view()
-  fn() {
+  render() {
     return <button onClick={this.onClick}>count:{this.count}</button>;
   }
 }

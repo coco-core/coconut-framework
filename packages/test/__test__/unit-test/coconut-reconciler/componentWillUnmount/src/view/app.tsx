@@ -11,8 +11,7 @@ class App {
     this.show = false;
   }
 
-  @view()
-  fn() {
+  render() {
     return (
       <h1 onClick={this.handleClick}>{this.show ? <Button /> : 'not show'}</h1>
     );

@@ -38,8 +38,7 @@ class Button2 {
     }
   }
 
-  @view()
-  h() {
+  render() {
     return (
       <div>
         <button onClick={this.onClick}>click to hide name</button>

@@ -3,8 +3,7 @@ import { view, route } from 'coco-mvc';
 @route('/todo-page')
 @view()
 class TodoPage {
-  @view()
-  h() {
+  render() {
     return <div>todo page</div>;
   }
 }

@@ -23,8 +23,7 @@ class Button1 {
     this.count = 2;
   }
 
-  @view()
-  h() {
+  render() {
     return (
       <div>
         <button onClick={this.onClick}>click to update count</button>

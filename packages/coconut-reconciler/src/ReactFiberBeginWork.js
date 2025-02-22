@@ -3,8 +3,6 @@ import {ClassComponent, HostComponent, HostRoot, HostText} from "./ReactWorkTags
 import {constructClassInstance, mountClassInstance, updateClassInstance} from "./ReactFiberClassComponent";
 import {cloneUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {shouldSetTextContent} from "ReactFiberHostConfig";
-import { View } from "coco-mvc/metadata";
-import {get, NAME} from "shared";
 import { Ref } from './ReactFiberFlags';
 
 export function reconcileChildren(
@@ -40,8 +38,7 @@ function finishClassComponent(
     return null;
   }
   const instance = workInProgress.stateNode;
-  const fields = get(NAME.getFields)?.(workInProgress.type, View);
-  const render = instance[fields[0]];
+  const render = instance.render;
   const nextChildren = render.call(instance);
   reconcileChildren(current, workInProgress, nextChildren);
 

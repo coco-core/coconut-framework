@@ -26,8 +26,7 @@ class Button {
     this.name = '李四';
   }
 
-  @view()
-  h() {
+  render() {
     return (
       <div>
         <button onClick={this.onClick}>click to update count</button>

@@ -8,8 +8,7 @@ class App {
     appDidMount();
   }
 
-  @view()
-  fn() {
+  render() {
     return (
       <h1>
         <Button />

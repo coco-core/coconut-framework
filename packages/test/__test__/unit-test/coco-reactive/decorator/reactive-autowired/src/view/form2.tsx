@@ -47,8 +47,7 @@ class Form2 {
     this.userInfo = { name: newName };
   }
 
-  @view()
-  h() {
+  render() {
     return (
       <div>
         <button onClick={this.handleChangeShow}>update show</button>

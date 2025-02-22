@@ -3,8 +3,7 @@ import { view, route } from 'coco-mvc';
 @route('/')
 @view()
 class IndexPage {
-  @view()
-  h() {
+  render() {
     return <div>index page</div>;
   }
 }

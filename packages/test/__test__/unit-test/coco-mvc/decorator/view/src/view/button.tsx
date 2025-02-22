@@ -10,8 +10,7 @@ class Button {
     this.count = 2;
   }
 
-  @view()
-  h() {
+  render() {
     return <button onClick={this.onClick}>count:{this.count}</button>;
   }
 }

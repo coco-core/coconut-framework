@@ -10,8 +10,7 @@ class Detail1 {
     return `展示:${this.userInfo?.name}`;
   }
 
-  @view()
-  h() {
+  render() {
     return <h1>展示:{this.userInfo?.name}</h1>;
   }
 }
