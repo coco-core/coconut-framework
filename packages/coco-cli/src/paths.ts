@@ -13,7 +13,7 @@ class Paths {
   static CONFIG_DIR = 'config';
   static PAGE_DIR = 'page';
   static CONTROLLER_DIR = 'controller';
-  static SERVICE_DIR = 'server';
+  static SERVICE_DIR = 'service';
   static STORE_DIR = 'store';
   static GLOBAL_DATA_DIR = 'global-data';
   static COMPONENTS_DIR = 'component';

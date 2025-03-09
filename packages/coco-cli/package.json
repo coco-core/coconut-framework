@@ -1,7 +1,7 @@
 {
   "name": "@cocojs/cli",
   "description": "命令行工具（脚手架、开发、构建）。",
-  "version": "0.0.1-alpha202503091723",
+  "version": "0.0.1-alpha202503092219",
   "main": "dist/index.js",
   "bin": {
     "coco": "bin/coco.js"
@@ -26,7 +26,7 @@
     "chokidar": "^4.0.3",
     "ejs": "^3.1.10",
     "fs-extra": "^11.2.0",
-    "glob": "^11.0.0",
+    "glob": "9.3.5",
     "prompts": "^2.4.2"
   }
 }
