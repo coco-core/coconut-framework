@@ -127,7 +127,7 @@ function copyApplicationJson(projectPath: string = './') {
   const appFilePath = path.join(
     process.cwd(),
     projectPath,
-    `bean-config/${jsonFile}`
+    `properties/${jsonFile}`
   );
   let content = '{}';
   if (fs.existsSync(appFilePath)) {
