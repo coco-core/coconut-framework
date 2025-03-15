@@ -8,6 +8,7 @@ import Paths from './paths';
 import { scan, scanPathConfig, doScanFile, type ScanResult } from './scanner';
 import * as process from 'node:process';
 import chokidar from 'chokidar';
+import genConfig from './config';
 
 // 已经正确导出的类
 let exportedInDotCoco: ScanResult = [];
@@ -48,7 +49,7 @@ export function genDotCoco(
     { encoding: 'utf-8' }
   );
 
-  copyApplicationJson(projectPath);
+  genConfig(projectPath);
 
   exportedInDotCoco = [...iocComponents];
 }
@@ -120,24 +121,6 @@ export function watch(projectPath: string = './') {
   watcher.on('unlink', handleDeleteFile.bind(null, paths, projectPath));
 
   return watcher;
-}
-
-function copyApplicationJson(projectPath: string = './') {
-  const jsonFile = 'application.json';
-  const appFilePath = path.join(
-    process.cwd(),
-    projectPath,
-    `properties/${jsonFile}`
-  );
-  let content = '{}';
-  if (fs.existsSync(appFilePath)) {
-    content = fs.readFileSync(appFilePath, 'utf8');
-  }
-  fs.writeFileSync(
-    path.join(process.cwd(), projectPath, 'src/.coco/application.json'),
-    content,
-    { encoding: 'utf-8' }
-  );
 }
 
 export function clean(projectPath: string) {
