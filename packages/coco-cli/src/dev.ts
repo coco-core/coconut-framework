@@ -12,10 +12,22 @@ const webpack = (isDev: boolean) => {
   }
   genDotCoco('');
 
+  const webpack = path.resolve(
+    __dirname,
+    '../node_modules/webpack-cli/bin/cli.js'
+  );
+  const webpackDevServer = path.resolve(
+    __dirname,
+    '../node_modules/webpack-dev-server/bin/webpack-dev-server.js'
+  );
+  const webpackConfigPath = path.resolve(
+    __dirname,
+    '../build-config/webpack.config.js'
+  );
   const args = isDev
-    ? ['serve', '--config', 'webpack.config.js']
-    : ['--config', 'webpack.config.js'];
-  return spawn('webpack', args, {
+    ? [webpackDevServer, '--config', webpackConfigPath]
+    : [webpack, '--config', webpackConfigPath];
+  return spawn('node', args, {
     cwd: process.cwd(),
     stdio: 'inherit',
   });
