@@ -1,6 +1,17 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
-// const json = require('./config/config.json');
+const path = require('node:path');
+const fs = require('node:fs');
+const { merge } = require('webpack-merge');
+
+function readWebpack(env) {
+  const filename = env ? `config.${env}.js` : 'config.js';
+  const configPath = path.resolve(process.cwd(), `config/${filename}`);
+  const projectConfig = fs.existsSync(configPath) ? require(configPath) : {};
+  return projectConfig.webpack;
+}
+
+const projectConfig = readWebpack();
+const envConfig = readWebpack(process.env.NODE_ENV);
 
 const config = {
   mode: 'production',
@@ -19,6 +30,7 @@ const config = {
           {
             loader: 'ts-loader',
             options: {
+              context: process.cwd(),
               transpileOnly: false,
             },
           },
@@ -83,4 +95,4 @@ const config = {
   ],
 };
 
-module.exports = config;
+module.exports = merge(config, projectConfig, envConfig);
