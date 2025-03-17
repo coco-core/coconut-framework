@@ -184,6 +184,10 @@ importers:
       webpack-merge:
         specifier: ^6.0.1
         version: 6.0.1
+    devDependencies:
+      '@cocojs/typescript-transformer':
+        specifier: ^0.0.10
+        version: 0.0.10(typescript@5.3.3)
 
   packages/coco-ioc-container: {}
 
