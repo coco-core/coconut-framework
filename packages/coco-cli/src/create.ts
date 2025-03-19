@@ -6,26 +6,42 @@ import path from 'path';
 import fse from 'fs-extra';
 
 async function createApp() {
-  const response = await prompts([
-    {
-      type: 'text',
-      name: 'projectName',
-      message: '项目名称？',
-    },
-    {
-      type: (projectName: string) => {
-        const targetDir = path.resolve(process.cwd(), projectName);
-        return fse.pathExistsSync(targetDir) ? 'confirm' : null;
+  let userCancelled = false;
+  const response = await prompts(
+    [
+      {
+        type: 'text',
+        name: 'projectName',
+        message: '项目名称（新建文件夹，并且设置package.json的name）？',
       },
-      name: 'deleteExistFolder',
-      message: (projectName: string) => {
-        return `当前目录下已经存在${projectName}，确定【删除${projectName}】并继续？`;
+      {
+        type: 'text',
+        name: 'author',
+        message: '作者（package.json的author）？',
       },
-      initial: true,
-    },
-  ]);
+      {
+        type: (projectName: string) => {
+          const targetDir = path.resolve(process.cwd(), projectName);
+          return fse.pathExistsSync(targetDir) ? 'confirm' : null;
+        },
+        name: 'deleteExistFolder',
+        message: (projectName: string) => {
+          return `当前目录下已经存在${projectName}，确定【删除${projectName}】并继续？`;
+        },
+        initial: true,
+      },
+    ],
+    {
+      onCancel: () => {
+        userCancelled = true;
+      },
+    }
+  );
 
-  const { projectName, deleteExistFolder } = response;
+  if (userCancelled) {
+    return;
+  }
+  const { projectName, author, deleteExistFolder } = response;
   const targetDir = path.resolve(process.cwd(), projectName);
   if (deleteExistFolder === false) {
     return;
@@ -55,6 +71,7 @@ async function createApp() {
   // 目前coco-mvc和coco-cli的版本号保持一致
   const renderedContent = await ejs.renderFile(packageJsonEjs, {
     name: projectName,
+    author,
     version: cliPackageJson.version,
   });
   await fse.outputFileSync(
