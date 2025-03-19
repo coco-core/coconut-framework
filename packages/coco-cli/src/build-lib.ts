@@ -5,10 +5,7 @@ import { execSync, spawn } from 'child_process';
 import process from 'node:process';
 
 export const build = async () => {
-  const rollupJs = path.resolve(
-    __dirname,
-    '../node_modules/rollup/dist/bin/rollup'
-  );
+  const rollupJs = path.resolve(process.cwd(), './node_modules/.bin/rollup');
   const configPath = path.resolve(
     __dirname,
     '../build-config/lib/rollup.config.js'
