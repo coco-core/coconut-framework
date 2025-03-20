@@ -2,20 +2,26 @@
   "name": "<%= name %>",
   "version": "0.0.1",
   "description": "",
+  "main": "dist/bundle.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "prepare": "ts-patch install -s",
-    "dev": "NODE_ENV=dev coco dev",
-    "build": "coco build"
+    "build": "coco build lib",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
   "author": "<%= author %>",
   "license": "ISC",
   "devDependencies": {
     "@cocojs/cli": "^<%= version %>",
-    "@cocojs/typescript-transformer": "^0.0.10",
+    "@cocojs/typescript-transformer": "<%= transformerVersion %>",
     "ts-patch": "3.1.2",
     "typescript": "5.3.3"
   },
-  "dependencies": {
+  "peerDependencies": {
     "coco-mvc": "^<%= version %>"
   }
 }
