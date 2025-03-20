@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { genDotCoco, watch } from './gen-dot-coco';
 import { validateConstructor } from './validate-constructor';
+import { resolveFromProject } from './util/resolve';
 
 const webpack = (isDev: boolean) => {
   const cwd = process.cwd();
@@ -12,14 +13,8 @@ const webpack = (isDev: boolean) => {
   }
   genDotCoco('');
 
-  const webpack = path.resolve(
-    __dirname,
-    '../node_modules/webpack-cli/bin/cli.js'
-  );
-  const webpackDevServer = path.resolve(
-    __dirname,
-    '../node_modules/webpack-dev-server/bin/webpack-dev-server.js'
-  );
+  const webpack = resolveFromProject('webpack');
+  const webpackDevServer = resolveFromProject('webpack-dev-server');
   const webpackConfigPath = path.resolve(
     __dirname,
     '../build-config/webpack.config.js'

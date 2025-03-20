@@ -3,9 +3,10 @@ import fs from 'node:fs';
 import rollup from 'rollup';
 import { execSync, spawn } from 'child_process';
 import process from 'node:process';
+import { resolveFromProject } from './util/resolve';
 
 export const build = async () => {
-  const rollupJs = path.resolve(process.cwd(), './node_modules/.bin/rollup');
+  const rollupJs = resolveFromProject('rollup');
   const configPath = path.resolve(
     __dirname,
     '../build-config/lib/rollup.config.js'
