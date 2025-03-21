@@ -66,6 +66,7 @@ const config = {
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
   },
   output: {
+    publicPath: '/',
     filename: 'main.js',
     path: path.join(process.cwd(), 'dist'),
     clean: true,
