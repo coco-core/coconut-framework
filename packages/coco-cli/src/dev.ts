@@ -11,7 +11,7 @@ const webpack = (isDev: boolean) => {
   if (!fs.existsSync(path.join(cwd, './package.json'))) {
     throw new Error('当前似乎不是在一个项目中');
   }
-  genDotCoco('');
+  genDotCoco('', false, isDev ? 'dev' : 'build');
 
   const webpack = resolveFromProject('webpack');
   const webpackDevServer = resolveFromProject('webpack-dev-server');

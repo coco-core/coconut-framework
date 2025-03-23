@@ -15,7 +15,8 @@ let exportedInDotCoco: ScanResult = [];
 
 export function genDotCoco(
   projectPath: string = '',
-  isUpdate: boolean = false
+  isUpdate: boolean = false,
+  cmd: string
 ) {
   const appTsFile = 'application.ts';
   const appFilePath = path.join(process.cwd(), projectPath, `src/${appTsFile}`);
@@ -49,7 +50,7 @@ export function genDotCoco(
     { encoding: 'utf-8' }
   );
 
-  genConfig(projectPath);
+  genConfig(projectPath, cmd);
 
   exportedInDotCoco = [...iocComponents];
 }
@@ -87,7 +88,7 @@ const handleAddFile = (paths: Paths, projectPath: string, filePath: string) => {
     if (scanRlt !== null) {
       const { className } = scanRlt;
       if (!exportedInDotCoco.find((i) => i.className === className)) {
-        genDotCoco(projectPath, true);
+        genDotCoco(projectPath, true, 'dev');
       } else {
         // ignore
       }
@@ -104,7 +105,7 @@ const handleDeleteFile = (
     const index = exportedInDotCoco.findIndex((i) => i.filePath === fullPath);
     if (index > 0) {
       exportedInDotCoco.splice(index, 1);
-      genDotCoco(projectPath, true);
+      genDotCoco(projectPath, true, 'dev');
     }
   }
 };

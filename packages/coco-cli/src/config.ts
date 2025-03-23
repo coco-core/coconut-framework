@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import process from 'node:process';
+import { getEnvConfigName } from './util/env';
 
 function readFile(filepath: string) {
   let content = '{}';
@@ -10,11 +11,11 @@ function readFile(filepath: string) {
   return content;
 }
 
-function genConfig(projectPath: string = './') {
+function genConfig(projectPath: string = './', cmd: string) {
   const defaultConfig = readFile(
     path.join(process.cwd(), projectPath, `properties/application.json`)
   );
-  const env = process.env.NODE_ENV;
+  const env = getEnvConfigName(cmd);
   let envConfig = '{}';
   if (env) {
     envConfig = readFile(
@@ -44,7 +45,7 @@ function merge(...configs: any[]): Record<string, any> {
   });
 }
 
-function config(config1, config2) {
+function config(config1: any, config2: any) {
   const type1 = typeof config1;
   const type2 = typeof config2;
   if (type1 !== type2) {
