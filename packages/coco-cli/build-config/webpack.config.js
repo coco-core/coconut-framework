@@ -2,18 +2,23 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('node:path');
 const fs = require('node:fs');
 const { merge } = require('webpack-merge');
+const { getEnvConfigName } = require('./env');
 
 function readWebpack(env) {
   const filename = env ? `config.${env}.js` : 'config.js';
-  const configPath = path.resolve(process.cwd(), `config/${filename}`);
-  const projectConfig = fs.existsSync(configPath) ? require(configPath) : {};
-  return projectConfig.webpack;
+  const filepath = path.resolve(process.cwd(), `config/${filename}`);
+  if (!fs.existsSync(filepath)) {
+    console.warn(`找不到配置文件：${filename}`);
+    return {};
+  }
+  return require(filepath).webpack ?? {}; // Merging undefined is not supported
 }
 
-const projectConfig = readWebpack();
-const envConfig = readWebpack(process.env.NODE_ENV);
+const baseConfig = readWebpack();
+const env = getEnvConfigName();
+const envConfig = env && readWebpack(env);
 
-const config = {
+const buildInConfig = {
   mode: 'production',
   entry: path.join(process.cwd(), './src/.coco/index.tsx'),
   module: {
@@ -96,4 +101,4 @@ const config = {
   ],
 };
 
-module.exports = merge(config, projectConfig, envConfig);
+module.exports = merge(buildInConfig, baseConfig, envConfig);
