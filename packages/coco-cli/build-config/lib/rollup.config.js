@@ -7,14 +7,16 @@ const tailwindcss = require('tailwindcss');
 const config = {
   input: path.join(process.cwd(), './src/lib.ts'),
   output: {
-    file: path.join(process.cwd(), './dist/bundle.js'),
-    format: 'cjs',
+    file: path.join(process.cwd(), './dist/bundle.esm.js'),
+    format: 'es',
   },
   plugins: [
     typescript({
       compilerOptions: {
         target: 'ESNext',
         lib: ['dom'],
+        declaration: true,
+        declarationDir: './dist/types',
         jsx: 'preserve',
         resolveJsonModule: true,
         plugins: [

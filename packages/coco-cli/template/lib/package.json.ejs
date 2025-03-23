@@ -2,10 +2,11 @@
   "name": "<%= name %>",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/bundle.js",
+  "type": "module",
+  "module": "dist/bundle.esm.js",
+  "types": "dist/types/lib.d.ts",
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "prepare": "ts-patch install -s",
