@@ -14,7 +14,7 @@ const reactiveMetadata = path.join(packages, './coco-reactive/src/metadata/index
 const router = path.join(packages, './coco-router/src/index.ts')
 // todo 支持@
 const shared = path.join(packages, './shared/index.ts')
-const ReactFiberHostConfig = path.join(packages, './coconut-web/src/ReactDomHostConfig.js')
+const ReactFiberHostConfig = path.join(packages, './coconut-web/src/client/ReactDomHostConfig.js')
 
 const PACKAGE = {
   MVC: 'coco-mvc',

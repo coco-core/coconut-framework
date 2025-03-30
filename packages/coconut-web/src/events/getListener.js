@@ -1,4 +1,4 @@
-import { getFiberCurrentPropsFromNode } from '../ReactDomComponentTree';
+import { getFiberCurrentPropsFromNode } from '../client/ReactDomComponentTree';
 
 
 export default function getListener(
