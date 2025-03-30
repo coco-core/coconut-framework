@@ -178,6 +178,15 @@ function getClsMetadata(Cls: Class<any>): Metadata[] | null {
 
 // 找到component元数据，同样也找元数据对应的类是否包含component元数据
 function findComponentMetadata(Cls: Class<any>): Component | null {
+  return doFindComponentMetadata(Cls, 3);
+}
+function doFindComponentMetadata(
+  Cls: Class<any>,
+  level: number = 0
+): Component | null {
+  if (level <= 0) {
+    return null;
+  }
   const classMetadataList = getClsMetadata(Cls);
   if (!classMetadataList) {
     return null;
@@ -187,12 +196,12 @@ function findComponentMetadata(Cls: Class<any>): Component | null {
     return component as Component;
   }
   for (const metadata of classMetadataList) {
-    const metadataMetadataList = getClsMetadata(
-      <Class<any>>metadata.constructor
+    const find = doFindComponentMetadata(
+      <Class<any>>metadata.constructor,
+      level - 1
     );
-    const component = metadataMetadataList.find((i) => i instanceof Component);
-    if (component) {
-      return component as Component;
+    if (find) {
+      return find;
     }
   }
 

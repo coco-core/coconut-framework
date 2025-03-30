@@ -1,4 +1,5 @@
 import {createTextNode, setInitialProperties, diffProperties, updateProperties} from "./ReactDomComponent";
+import {updateFiberProps} from './ReactDomComponentTree';
 
 export function shouldSetTextContent(type, props) {
   return (
@@ -44,10 +45,12 @@ export function commitUpdate(
   newProps
 ) {
   updateProperties(domElement, updatePayload, type, oldProps, newProps);
+  updateFiberProps(domElement, newProps);
 }
 
 export function createInstance(type, props) {
   const domElement = document.createElement(type, props);
+  updateFiberProps(domElement, props);
   return domElement;
 }
 

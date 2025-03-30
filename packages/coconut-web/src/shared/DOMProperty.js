@@ -39,7 +39,7 @@ function PropertyInfoRecord(
   this.removeEmptyString = removeEmptyString;
 }
 
-function shouldIgnoreAttribute(
+export function shouldIgnoreAttribute(
   name,
   propertyInfo
   ) {

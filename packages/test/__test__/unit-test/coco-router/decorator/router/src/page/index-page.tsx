@@ -1,7 +1,7 @@
-import { view, route } from 'coco-mvc';
+import { page, route } from 'coco-mvc';
 
 @route('/')
-@view()
+@page()
 class IndexPage {
   render() {
     return <div>index page</div>;

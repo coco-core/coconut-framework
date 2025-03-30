@@ -1,7 +1,7 @@
-import { view, route } from 'coco-mvc';
+import { page, route } from 'coco-mvc';
 
 @route('/todo-page')
-@view()
+@page()
 class TodoPage {
   render() {
     return <div>todo page</div>;

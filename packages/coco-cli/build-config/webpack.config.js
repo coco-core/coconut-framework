@@ -69,6 +69,9 @@ const buildInConfig = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js'],
+    alias: {
+      '@': path.resolve(process.cwd(), 'src/'),
+    },
   },
   output: {
     publicPath: '/',

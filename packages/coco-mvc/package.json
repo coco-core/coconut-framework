@@ -1,6 +1,6 @@
 {
   "name": "coco-mvc",
-  "version": "0.0.1-alpha202503231918",
+  "version": "0.0.1-alpha202503302111",
   "description": "使用@装饰器构建可扩展的WEB应用。",
   "main": "dist/coco-mvc.cjs.js",
   "types": "dist/types/coco-mvc/src/index.d.ts",
@@ -23,6 +23,6 @@
     "decorator"
   ],
   "author": "jiangchenguang",
-  "homepage": "https://github.com/jiangchenguang/coconut-framework",
+  "homepage": "https://github.com/coco-core/coconut-framework",
   "license": "MIT"
 }

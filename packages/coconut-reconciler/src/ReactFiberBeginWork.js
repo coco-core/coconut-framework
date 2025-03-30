@@ -47,7 +47,6 @@ function finishClassComponent(
 
 function updateHostRoot(current, workInProgress) {
   const nextProps = workInProgress.pendingProps;
-  const prevState = workInProgress.memoizedState;
   cloneUpdateQueue(current, workInProgress);
   processUpdateQueue(workInProgress, nextProps, null);
 
