@@ -40,46 +40,51 @@ export function addDecoratorParams(beDecoratedCls: Class<any>, params: params) {
 }
 
 /**
- * 返回被装饰类的类装饰器以及类装饰器的类装饰器
+ * 查看被装饰类的是否包含了某元类
  * @param beDecoratedCls
+ * @param targetMetadataCls
+ * @param level
  * @param ignoreMetadataCls
  */
 export function getClassAndClasClassDecorator(
   beDecoratedCls: Class<any>,
+  targetMetadataCls: Class<any>,
+  level: number,
   ignoreMetadataCls: boolean = true
-) {
-  const params = decoratorParamMap.get(beDecoratedCls);
-  if (!params) {
+): boolean {
+  if (level <= 0) {
+    return false;
+  }
+
+  const allDecoratorParams = decoratorParamMap.get(beDecoratedCls);
+  if (!allDecoratorParams) {
     if (__TEST__) {
       throw new Error(`${beDecoratedCls.name} has no decorator params`);
     }
   }
-  const clsDecoratorList: Array<{
-    metadataClass: Class<any>;
-    metadataMetadataClassList: Array<Class<any>>;
-  }> = [];
-  if (ignoreMetadataCls && Object.getPrototypeOf(beDecoratedCls) === Metadata) {
-    return clsDecoratorList;
+  // 找到所有类装饰器
+  const classDecoratorParams = allDecoratorParams.filter(
+    (i) => i.metadataKind === KindClass
+  );
+  const find = classDecoratorParams.find(
+    (params) => params.metadataClass === targetMetadataCls
+  );
+  if (find) {
+    return true;
   }
-  params
-    .filter((i) => i.metadataKind === KindClass)
-    .forEach((i) => {
-      // cls的类装饰器
-      const metadataClass = i.metadataClass;
-      // cls的类装饰器的类装饰器
-      const metadataMetadataClassList = [];
-      if (decoratorParamMap.has(metadataClass)) {
-        const param = decoratorParamMap.get(metadataClass);
-        param
-          .filter((i) => i.metadataKind === KindClass)
-          .forEach((i) => metadataMetadataClassList.push(i.metadataClass));
-      }
-      clsDecoratorList.push({
-        metadataClass,
-        metadataMetadataClassList,
-      });
-    });
-  return clsDecoratorList;
+  // 继续向上一层查找
+  for (const classDecoratorParam of classDecoratorParams) {
+    const find = getClassAndClasClassDecorator(
+      classDecoratorParam.metadataClass,
+      targetMetadataCls,
+      level - 1,
+      ignoreMetadataCls
+    );
+    if (find) {
+      return true;
+    }
+  }
+  return false;
 }
 
 export function get() {

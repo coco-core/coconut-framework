@@ -72,7 +72,7 @@ export const scanPathConfig = [
     type: PATH_TYPE.FOLDER,
     path: Paths.PAGE_DIR,
     fileExt: '.tsx',
-    decorator: '@route',
+    decorator: '@page',
   },
   {
     // 控制器

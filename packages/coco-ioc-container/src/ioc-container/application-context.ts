@@ -111,6 +111,9 @@ class ApplicationContext {
 
   /**
    * 被装饰类是否被特定元数据类装饰；或者被特定元数据类的复合元数据装饰
+   * 直接装饰@component
+   * 被component装饰的通用层，例如view controller service；
+   * 还有被通用层装饰的一层，例如page(view), httpService(service)等
    * @param beDecoratedCls 被装饰的类
    * @param Target
    * @param ignoreMetadataCls 是否忽略元数据的类，即只查找业务元数据类
@@ -121,16 +124,12 @@ class ApplicationContext {
     Target: Class<any>,
     ignoreMetadataCls: boolean = true
   ) {
-    const list = getClassAndClasClassDecorator(
+    return getClassAndClasClassDecorator(
       beDecoratedCls,
+      Target,
+      3,
       ignoreMetadataCls
     );
-    return list.some(({ metadataClass, metadataMetadataClassList }) => {
-      return (
-        metadataClass === Target ||
-        metadataMetadataClassList.find((i) => i === Target)
-      );
-    });
   }
 
   private buildIocComponentDefinition() {
