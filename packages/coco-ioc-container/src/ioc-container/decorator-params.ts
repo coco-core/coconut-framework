@@ -44,13 +44,11 @@ export function addDecoratorParams(beDecoratedCls: Class<any>, params: params) {
  * @param beDecoratedCls
  * @param targetMetadataCls
  * @param level
- * @param ignoreMetadataCls
  */
 export function getClassAndClasClassDecorator(
   beDecoratedCls: Class<any>,
   targetMetadataCls: Class<any>,
-  level: number,
-  ignoreMetadataCls: boolean = true
+  level: number
 ): boolean {
   if (level <= 0) {
     return false;
@@ -58,9 +56,7 @@ export function getClassAndClasClassDecorator(
 
   const allDecoratorParams = decoratorParamMap.get(beDecoratedCls);
   if (!allDecoratorParams) {
-    if (__TEST__) {
-      throw new Error(`${beDecoratedCls.name} has no decorator params`);
-    }
+    return false;
   }
   // 找到所有类装饰器
   const classDecoratorParams = allDecoratorParams.filter(
@@ -77,8 +73,7 @@ export function getClassAndClasClassDecorator(
     const find = getClassAndClasClassDecorator(
       classDecoratorParam.metadataClass,
       targetMetadataCls,
-      level - 1,
-      ignoreMetadataCls
+      level - 1
     );
     if (find) {
       return true;

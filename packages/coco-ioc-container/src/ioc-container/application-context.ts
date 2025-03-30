@@ -116,20 +116,13 @@ class ApplicationContext {
    * 还有被通用层装饰的一层，例如page(view), httpService(service)等
    * @param beDecoratedCls 被装饰的类
    * @param Target
-   * @param ignoreMetadataCls 是否忽略元数据的类，即只查找业务元数据类
    * @private
    */
   private isDecoratedByOrCompoundDecorated(
     beDecoratedCls: Class<any>,
-    Target: Class<any>,
-    ignoreMetadataCls: boolean = true
+    Target: Class<any>
   ) {
-    return getClassAndClasClassDecorator(
-      beDecoratedCls,
-      Target,
-      3,
-      ignoreMetadataCls
-    );
+    return getClassAndClasClassDecorator(beDecoratedCls, Target, 3);
   }
 
   private buildIocComponentDefinition() {
