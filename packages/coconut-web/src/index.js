@@ -1,3 +1,5 @@
+import { listenToAllSupportedEvents } from './events/DOMPluginEventSystem';
+
 export * from './ReactDomComponent.js'
 export * from './ReactDomHostConfig.js'
 import {flushSync, updateContainer, createContainer} from 'coconut-reconciler';
@@ -5,6 +7,8 @@ import {flushSync, updateContainer, createContainer} from 'coconut-reconciler';
 function legacyCreateRootFromDOMContainer(container, children) {
   const root = createContainer(container)
   container._reactRootContainer = root;
+
+  listenToAllSupportedEvents(container);
   // Initial mount should not be batched.
   flushSync(() => {
     updateContainer(children, root, null, null);

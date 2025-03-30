@@ -1,4 +1,4 @@
-import { getPropertyInfo } from '../shared/DOMProperty';
+import { getPropertyInfo, shouldIgnoreAttribute } from '../shared/DOMProperty';
 
 export function setValueForProperty(
   node,
@@ -7,14 +7,10 @@ export function setValueForProperty(
   isCustomComponentTag,
   oldValue,
 ) {
-  if (name === 'onClick') {
-    if (typeof oldValue === 'function') {
-      node.removeEventListener('click', oldValue);
-    }
-    node.addEventListener('click', value);
+  const propertyInfo = getPropertyInfo(name);
+  if (shouldIgnoreAttribute(name, propertyInfo)) {
     return;
   }
-  const propertyInfo = getPropertyInfo(name);
 
   if( propertyInfo === null) {
     const attributeName = name;
