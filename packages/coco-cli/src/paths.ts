@@ -12,6 +12,7 @@ class Paths {
   static VIEW_DIR = 'view';
   static CONFIG_DIR = 'config';
   static PAGE_DIR = 'page';
+  static LAYOUT_DIR = 'layout';
   static CONTROLLER_DIR = 'controller';
   static SERVICE_DIR = 'service';
   static STORE_DIR = 'store';

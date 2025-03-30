@@ -68,6 +68,13 @@ export const scanPathConfig = [
     decorator: '@configuration',
   },
   {
+    // 布局
+    type: PATH_TYPE.FOLDER,
+    path: Paths.LAYOUT_DIR,
+    fileExt: '.tsx',
+    decorator: '@layout',
+  },
+  {
     // 页面
     type: PATH_TYPE.FOLDER,
     path: Paths.PAGE_DIR,
