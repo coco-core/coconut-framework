@@ -79,7 +79,7 @@ const handleAddFile = (paths: Paths, projectPath: string, filePath: string) => {
   if (isTsTsxFile(filePath)) {
     const { dir, ext } = path.parse(filePath);
     const match = scanPathConfig.find((item) => {
-      return item.path.startsWith(dir) && item.fileExt === ext;
+      return dir.startsWith(item.path) && item.fileExt === ext;
     });
     if (!match) {
       return;
@@ -114,6 +114,11 @@ export function watch(projectPath: string = './') {
   const paths = new Paths(path.join(projectPath));
   const projSrc = path.join(process.cwd(), projectPath, `src`);
   const watcher = chokidar.watch(projSrc, {
+    ignored: (absPath, stats) => {
+      // 忽略.coco文件夹
+      const srcPath = path.relative(projSrc, absPath);
+      return srcPath.startsWith('.coco');
+    },
     ignoreInitial: true,
     cwd: projSrc,
   });
