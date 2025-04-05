@@ -1,5 +1,5 @@
 import path from 'path';
-import Paths from './paths';
+import Project from './project';
 import { scan } from './scanner';
 import process from 'node:process';
 import fs from 'fs';
@@ -8,9 +8,9 @@ import traverse from '@babel/traverse';
 import { isExpressionStatement, isCallExpression } from '@babel/types';
 
 export function validateConstructor(projectPath: string = '') {
-  const paths = new Paths(path.join(projectPath));
+  const project = new Project(path.join(projectPath));
   // 1. 扫描所有ioc组件
-  const iocComponents = scan(paths);
+  const iocComponents = scan(project);
   // 2. 生成.coco文件
   const importStatements = iocComponents.map(({ className, filePath }) => {
     return path.join(process.cwd(), projectPath, filePath);

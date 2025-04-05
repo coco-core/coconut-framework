@@ -4,7 +4,7 @@
 import fs from 'fs';
 import fse from 'fs-extra';
 import path from 'path';
-import Paths from './paths';
+import Project from './project';
 import { scan, scanPathConfig, doScanFile, type ScanResult } from './scanner';
 import * as process from 'node:process';
 import chokidar from 'chokidar';
@@ -26,9 +26,9 @@ export function genDotCoco(
   if (!isUpdate) {
     clean(projectPath);
   }
-  const paths = new Paths(path.join(projectPath));
+  const project = new Project(path.join(projectPath));
   // 1. 扫描所有ioc组件
-  const iocComponents = scan(paths);
+  const iocComponents = scan(project);
   // 2. 生成.coco文件
   const importStatements = iocComponents.map(({ className, filePath }) => {
     const relativePath = path.relative(
@@ -42,7 +42,7 @@ export function genDotCoco(
     );
     return `export { default as ${className} } from '${relativePathNoExt}';`;
   });
-  const dotCocoDir = paths.genFullPath(Paths.DOT_COCO_DIR);
+  const dotCocoDir = project.genFullPath(Project.DOT_COCO_DIR);
   fse.ensureDirSync(dotCocoDir);
   fs.writeFileSync(
     path.join(dotCocoDir, 'index.tsx'),
@@ -75,7 +75,11 @@ ${
 const isTsTsxFile = (path: string) =>
   path.endsWith('.ts') || path.endsWith('.tsx');
 
-const handleAddFile = (paths: Paths, projectPath: string, filePath: string) => {
+const handleAddFile = (
+  project: Project,
+  projectPath: string,
+  filePath: string
+) => {
   if (isTsTsxFile(filePath)) {
     const { dir, ext } = path.parse(filePath);
     const match = scanPathConfig.find((item) => {
@@ -84,7 +88,7 @@ const handleAddFile = (paths: Paths, projectPath: string, filePath: string) => {
     if (!match) {
       return;
     }
-    const scanRlt = doScanFile(paths.genFullPath(filePath), match.decorator);
+    const scanRlt = doScanFile(project.genFullPath(filePath), match.decorator);
     if (scanRlt !== null) {
       const { className } = scanRlt;
       if (!exportedInDotCoco.find((i) => i.className === className)) {
@@ -96,12 +100,12 @@ const handleAddFile = (paths: Paths, projectPath: string, filePath: string) => {
   }
 };
 const handleDeleteFile = (
-  paths: Paths,
+  project: Project,
   projectPath: string,
   filePath: string
 ) => {
   if (isTsTsxFile(filePath)) {
-    const fullPath = paths.genFullPath(filePath);
+    const fullPath = project.genFullPath(filePath);
     const index = exportedInDotCoco.findIndex((i) => i.filePath === fullPath);
     if (index > 0) {
       exportedInDotCoco.splice(index, 1);
@@ -111,7 +115,7 @@ const handleDeleteFile = (
 };
 
 export function watch(projectPath: string = './') {
-  const paths = new Paths(path.join(projectPath));
+  const project = new Project(path.join(projectPath));
   const projSrc = path.join(process.cwd(), projectPath, `src`);
   const watcher = chokidar.watch(projSrc, {
     ignored: (absPath, stats) => {
@@ -122,9 +126,9 @@ export function watch(projectPath: string = './') {
     ignoreInitial: true,
     cwd: projSrc,
   });
-  watcher.on('add', handleAddFile.bind(null, paths, projectPath));
-  watcher.on('change', handleAddFile.bind(null, paths, projectPath));
-  watcher.on('unlink', handleDeleteFile.bind(null, paths, projectPath));
+  watcher.on('add', handleAddFile.bind(null, project, projectPath));
+  watcher.on('change', handleAddFile.bind(null, project, projectPath));
+  watcher.on('unlink', handleDeleteFile.bind(null, project, projectPath));
 
   return watcher;
 }

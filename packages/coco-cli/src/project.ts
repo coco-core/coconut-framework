@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-class Paths {
+class Project {
   projectRoot = '';
 
   constructor(projectPath: string) {
@@ -24,4 +24,4 @@ class Paths {
   };
 }
 
-export default Paths;
+export default Project;

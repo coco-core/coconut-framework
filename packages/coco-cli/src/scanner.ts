@@ -3,7 +3,7 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import Paths from './paths';
+import Project from './project';
 
 enum PATH_TYPE {
   FOLDER,
@@ -63,81 +63,81 @@ export const scanPathConfig = [
   {
     // 配置项
     type: PATH_TYPE.FOLDER,
-    path: Paths.CONFIG_DIR,
+    path: Project.CONFIG_DIR,
     fileExt: '.ts',
     decorator: '@configuration',
   },
   {
     // 布局
     type: PATH_TYPE.FOLDER,
-    path: Paths.LAYOUT_DIR,
+    path: Project.LAYOUT_DIR,
     fileExt: '.tsx',
     decorator: '@layout',
   },
   {
     // 页面
     type: PATH_TYPE.FOLDER,
-    path: Paths.PAGE_DIR,
+    path: Project.PAGE_DIR,
     fileExt: '.tsx',
     decorator: '@page',
   },
   {
     // 控制器
     type: PATH_TYPE.FOLDER,
-    path: Paths.CONTROLLER_DIR,
+    path: Project.CONTROLLER_DIR,
     fileExt: '.ts',
     decorator: '@controller',
   },
   {
     // 通用组件
     type: PATH_TYPE.FOLDER,
-    path: Paths.COMPONENTS_DIR,
+    path: Project.COMPONENTS_DIR,
     fileExt: '.ts',
     decorator: '@component',
   },
   {
     // 服务
     type: PATH_TYPE.FOLDER,
-    path: Paths.SERVICE_DIR,
+    path: Project.SERVICE_DIR,
     fileExt: '.ts',
     decorator: '@service',
   },
   {
     // 视图
     type: PATH_TYPE.FOLDER,
-    path: Paths.VIEW_DIR,
+    path: Project.VIEW_DIR,
     fileExt: '.tsx',
     decorator: '@view',
   },
   {
     // 全局数据
     type: PATH_TYPE.FOLDER,
-    path: Paths.GLOBAL_DATA_DIR,
+    path: Project.GLOBAL_DATA_DIR,
     fileExt: '.ts',
     decorator: '@globalData',
   },
   {
     // 全局状态
     type: PATH_TYPE.FOLDER,
-    path: Paths.STORE_DIR,
+    path: Project.STORE_DIR,
     fileExt: '.ts',
     decorator: '@store',
   },
   {
     // 入口文件
     type: PATH_TYPE.FILE,
-    path: Paths.APPLICATION,
+    path: Project.APPLICATION,
     fileExt: '.ts',
     decorator: '@webApplication',
   },
 ];
 
-export const scan = (paths: Paths): ScanResult => {
+export const scan = (project: Project): ScanResult => {
   return scanPathConfig.reduce((prev, curr) => {
     prev.push(
       ...doScan(
         curr.type,
-        paths.genFullPath(curr.path),
+        project.genFullPath(curr.path),
         curr.fileExt,
         curr.decorator
       )
