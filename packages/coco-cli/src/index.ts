@@ -1,6 +1,6 @@
-import { dev, build as buildApp } from './dev';
+import devApp from './dev-app';
+import buildApp from './build-app';
 import { build as buildLib } from './build-lib';
-export { genDotCoco } from './gen-dot-coco';
 import { createApp, createLib } from './create';
 
 function cli(command: string, ...args: string[]) {
@@ -15,7 +15,7 @@ function cli(command: string, ...args: string[]) {
       break;
     }
     case 'dev':
-      dev();
+      devApp();
       break;
     case 'build': {
       const arg = args[0];

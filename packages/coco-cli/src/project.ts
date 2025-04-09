@@ -1,10 +1,23 @@
-import * as path from 'path';
+import path from 'node:path';
 
 class Project {
-  projectRoot = '';
+  // 项目所在文件夹的绝对路径
+  absPath: string = '';
+
+  get srcAbsPath() {
+    return path.join(this.absPath, `src`);
+  }
+
+  get dotCocoAbsPath() {
+    return path.join(this.srcAbsPath, Project.DOT_COCO_DIR);
+  }
+
+  get applicationTsFileAbsPath() {
+    return path.join(this.srcAbsPath, Project.APPLICATION);
+  }
 
   constructor(projectPath: string) {
-    this.projectRoot = projectPath;
+    this.absPath = path.join(process.cwd(), projectPath);
   }
 
   static DOT_COCO_DIR = '.coco';
@@ -20,7 +33,7 @@ class Project {
   static COMPONENTS_DIR = 'component';
 
   public genFullPath = (name: string) => {
-    return path.join(this.projectRoot, 'src', name);
+    return path.join(this.srcAbsPath, name);
   };
 }
 
