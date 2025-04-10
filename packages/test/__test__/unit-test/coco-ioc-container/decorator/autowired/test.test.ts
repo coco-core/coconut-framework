@@ -1,4 +1,4 @@
-import { genDotCoco } from '@cocojs/cli';
+import { _test_helper as cli_helper } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 import { _test_helper } from 'coco-mvc';
 
@@ -12,7 +12,7 @@ let UserInfo;
 describe('autowired', () => {
   beforeEach(async () => {
     try {
-      genDotCoco(pkgPath(__dirname));
+      cli_helper.prepareBuild(pkgPath(__dirname));
       Router = (await import('./src/component/router.ts')).default;
       Route = (await import('./src/component/route.ts')).default;
       Theme = (await import('./src/component/theme.ts')).default;

@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import process from 'node:process';
 import { getEnvConfigName } from './util/env';
+import Project from './project';
 
 function readFile(filepath: string) {
   let content = '{}';
@@ -11,30 +12,22 @@ function readFile(filepath: string) {
   return content;
 }
 
-function merge(projectPath: string = './', cmd: string) {
+function merge(project: Project, cmd: string) {
   const defaultConfig = readFile(
-    path.join(process.cwd(), projectPath, `properties/application.json`)
+    path.join(project.absPath, `properties/application.json`)
   );
   const env = getEnvConfigName(cmd);
   let envConfig = '{}';
   if (env) {
     envConfig = readFile(
-      path.join(
-        process.cwd(),
-        projectPath,
-        `properties/application.${env}.json`
-      )
+      path.join(project.absPath, `properties/application.${env}.json`)
     );
   }
   const config = merge2properties(
     JSON.parse(defaultConfig),
     JSON.parse(envConfig)
   );
-  const filePath = path.join(
-    process.cwd(),
-    projectPath,
-    'src/.coco/application.json'
-  );
+  const filePath = path.join(project.absPath, 'src/.coco/application.json');
   fs.writeFileSync(filePath, JSON.stringify(config, null, 2), {
     encoding: 'utf-8',
   });

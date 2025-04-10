@@ -1,4 +1,4 @@
-import { genDotCoco } from '@cocojs/cli';
+import { _test_helper as cli_helper } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path.ts';
 import { _test_helper } from 'coco-mvc';
 
@@ -9,10 +9,10 @@ let Button1;
 describe('view', () => {
   beforeEach(async () => {
     try {
-      genDotCoco(pkgPath(__dirname));
+      cli_helper.prepareBuild(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
-      Button = (await import(cocoIdxStr)).Button;
-      Button1 = (await import(cocoIdxStr)).Button1;
+      Button = (await import('./src/view/button.tsx')).default;
+      Button1 = (await import('./src/view/button1.tsx')).default;
     } catch (e) {
       throwError = true;
     }

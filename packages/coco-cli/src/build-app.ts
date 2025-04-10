@@ -18,7 +18,9 @@ const runWebpack = async () => {
 
 async function prepareBuild() {
   return new Promise(function (resolve, reject) {
-    const prepareProcess = fork(path.join(__dirname, './prepare-build'));
+    const prepareProcess = fork(path.join(__dirname, './prepare-build'), [
+      'build-once',
+    ]);
     prepareProcess.on('exit', (code) => {
       if (code === 0) {
         resolve(true);

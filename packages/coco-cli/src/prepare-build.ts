@@ -14,8 +14,12 @@ class Watcher {
   iocComponents: ScanResult;
   chokidarWatcher: FSWatcher;
 
-  constructor() {
-    this.project = new Project(path.join('.'));
+  /**
+   * 目前仅支持单体应用，为了单元测试，可以传入子应用相对项目根的路径
+   * @param monorepoPath
+   */
+  constructor(monorepoPath: string = '.') {
+    this.project = new Project(monorepoPath);
     this.iocComponents = scan(this.project);
   }
 
@@ -32,7 +36,7 @@ class Watcher {
   doPrepareWork = (cmd: 'dev' | 'build') => {
     this.ensureEmptyDotCocoFolder(this.project);
     validateConstructor(this.project);
-    mergeProperties('', cmd);
+    mergeProperties(this.project, cmd);
     genIndexTsx(this.project, this.iocComponents);
   };
 
@@ -107,15 +111,19 @@ class Watcher {
   };
 }
 
-function start() {
-  const secondArgv = process.argv[2];
+function runAsProcess() {
   const watcher = new Watcher();
-  if (secondArgv === 'watch') {
+  if (secondArgv === 'build-and-watch') {
     watcher.startListen();
-  } else {
+  } else if (secondArgv === 'build-once') {
     watcher.doPrepareWork('build');
     process.exit(0);
   }
 }
 
-start();
+const secondArgv = process.argv[2];
+if (secondArgv === 'build-and-watch' || secondArgv === 'build-once') {
+  runAsProcess();
+}
+
+export default Watcher;

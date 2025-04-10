@@ -16,7 +16,9 @@ const startWebpackDevServer = () => {
 };
 
 async function devApp() {
-  const watchProcess = fork(path.join(__dirname, './prepare-build'), ['watch']);
+  const watchProcess = fork(path.join(__dirname, './prepare-build'), [
+    'build-and-watch',
+  ]);
   let webpackDevProcess: ChildProcess;
   watchProcess.on('message', (msg) => {
     switch (msg) {

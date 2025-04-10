@@ -11,7 +11,7 @@ import * as process from 'node:process';
 function genIndexTsx(project: Project, iocComponents: ScanResult) {
   // 2. 生成.coco文件
   const importStatements = iocComponents.map(({ className, filePath }) => {
-    const relativePath = path.relative('src/.coco', filePath);
+    const relativePath = path.relative(project.dotCocoAbsPath, filePath);
     const extLen = path.extname(relativePath).length;
     const relativePathNoExt = relativePath.slice(
       0,
