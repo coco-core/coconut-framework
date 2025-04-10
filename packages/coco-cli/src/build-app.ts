@@ -16,17 +16,21 @@ const runWebpack = async () => {
   });
 };
 
-async function prepare() {
+async function prepareBuild() {
   return new Promise(function (resolve, reject) {
     const prepareProcess = fork(path.join(__dirname, './prepare-build'));
     prepareProcess.on('exit', (code) => {
-      resolve(true);
+      if (code === 0) {
+        resolve(true);
+      } else {
+        reject();
+      }
     });
   });
 }
 
 async function buildApp() {
-  await prepare();
+  await prepareBuild();
   await runWebpack();
 }
 

@@ -1,6 +1,7 @@
-import { fork, spawn } from 'child_process';
+import { fork, spawn, ChildProcess } from 'child_process';
 import * as path from 'path';
 import { resolveFromProject } from './util/resolve';
+import process from 'node:process';
 
 const startWebpackDevServer = () => {
   const devServer = resolveFromProject('webpack-dev-server');
@@ -16,12 +17,17 @@ const startWebpackDevServer = () => {
 
 async function devApp() {
   const watchProcess = fork(path.join(__dirname, './prepare-build'), ['watch']);
-  let webpackDevProcess;
+  let webpackDevProcess: ChildProcess;
   watchProcess.on('message', (msg) => {
     switch (msg) {
       case 'prepare-success': {
-        console.info('prepare-success');
         webpackDevProcess = startWebpackDevServer();
+        webpackDevProcess.on('exit', () => {
+          if (watchProcess) {
+            watchProcess.kill();
+          }
+          process.exit(0);
+        });
         break;
       }
       default: {
@@ -30,21 +36,26 @@ async function devApp() {
       }
     }
   });
-  watchProcess.on('exit', (code) => {});
+  watchProcess.on('exit', () => {
+    if (webpackDevProcess) {
+      webpackDevProcess.kill();
+    }
+    process.exit(0);
+  });
   process.on('exit', () => {
     if (watchProcess) {
-      watchProcess.kill('SIGINT');
+      watchProcess.kill();
     }
     if (webpackDevProcess) {
-      webpackDevProcess.kill('SIGINT'); // 显式杀死子进程
+      webpackDevProcess.kill();
     }
   });
   process.on('uncaughtException', () => {
     if (watchProcess) {
-      watchProcess.kill('SIGINT');
+      watchProcess.kill();
     }
     if (webpackDevProcess) {
-      webpackDevProcess.kill('SIGINT'); // 显式杀死子进程
+      webpackDevProcess.kill(); // 显式杀死子进程
     }
   });
 
