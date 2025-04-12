@@ -111,19 +111,23 @@ class Watcher {
   };
 }
 
-function runAsProcess() {
+function build(ifWatch: boolean) {
   const watcher = new Watcher();
-  if (secondArgv === 'build-and-watch') {
+  if (ifWatch) {
     watcher.startListen();
-  } else if (secondArgv === 'build-once') {
+  } else {
     watcher.doPrepareWork('build');
     process.exit(0);
   }
 }
 
-const secondArgv = process.argv[2];
-if (secondArgv === 'build-and-watch' || secondArgv === 'build-once') {
-  runAsProcess();
+function startAsProcess() {
+  const secondArgv = process.argv[2];
+  if (secondArgv === 'build-and-watch' || secondArgv === 'build-once') {
+    build(secondArgv === 'build-and-watch');
+  }
 }
+
+startAsProcess();
 
 export default Watcher;
