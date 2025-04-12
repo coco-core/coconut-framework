@@ -8,8 +8,8 @@ let Single;
 describe('ioc-container', () => {
   beforeEach(async () => {
     cli_helper.prepareBuild(pkgPath(__dirname));
-    Single = (await import('./src/component/single.ts')).default;
-    Button = (await import('./src/component/button.ts')).default;
+    Single = (await import('./src/component/a-single.ts')).default;
+    Button = (await import('./src/component/a-button.ts')).default;
     ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
   });
 

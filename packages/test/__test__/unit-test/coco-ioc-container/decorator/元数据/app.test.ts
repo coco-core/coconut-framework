@@ -10,7 +10,7 @@ describe('decorator', () => {
     try {
       cli_helper.prepareBuild(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
-      Button = (await import('./src/component/button.ts')).default;
+      Button = (await import('./src/component/a-button.ts')).default;
     } catch (e) {
       throwError = true;
     }
