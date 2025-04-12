@@ -1,4 +1,4 @@
-import { genDotCoco } from '@cocojs/cli';
+import { _test_helper as cli_helper } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr, cocoIdxFolder } from '../../../helper/pkg-path';
 import { _test_helper } from 'coco-mvc';
 import { decoratorName as a } from './src/decorator/a';
@@ -10,7 +10,7 @@ let ApplicationContext;
 describe('class装饰器', () => {
   beforeEach(async () => {
     // TEST.decorator.reset();
-    genDotCoco(pkgPath(__dirname));
+    cli_helper.prepareBuild(pkgPath(__dirname));
     ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
   });
 

@@ -1,5 +1,5 @@
 import { _test_helper } from 'coco-mvc';
-import { genDotCoco } from '@cocojs/cli';
+import { _test_helper as cli_helper } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 import { getByText, waitFor } from '@testing-library/dom';
 
@@ -10,7 +10,7 @@ let throwError;
 describe('router', () => {
   beforeEach(async () => {
     try {
-      genDotCoco(pkgPath(__dirname));
+      cli_helper.prepareBuild(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
       Render = (await import('coco-mvc')).Render;
       Router = (await import('coco-mvc')).Router;

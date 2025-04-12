@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import process from 'node:process';
 import { getEnvConfigName } from './util/env';
+import Project from './project';
 
 function readFile(filepath: string) {
   let content = '{}';
@@ -11,41 +12,39 @@ function readFile(filepath: string) {
   return content;
 }
 
-function genConfig(projectPath: string = './', cmd: string) {
+function merge(project: Project, cmd: string) {
   const defaultConfig = readFile(
-    path.join(process.cwd(), projectPath, `properties/application.json`)
+    path.join(project.absPath, `properties/application.json`)
   );
   const env = getEnvConfigName(cmd);
   let envConfig = '{}';
   if (env) {
     envConfig = readFile(
-      path.join(
-        process.cwd(),
-        projectPath,
-        `properties/application.${env}.json`
-      )
+      path.join(project.absPath, `properties/application.${env}.json`)
     );
   }
-  const config = merge(JSON.parse(defaultConfig), JSON.parse(envConfig));
-  fs.writeFileSync(
-    path.join(process.cwd(), projectPath, 'src/.coco/application.json'),
-    JSON.stringify(config, null, 2),
-    { encoding: 'utf-8' }
+  const config = merge2properties(
+    JSON.parse(defaultConfig),
+    JSON.parse(envConfig)
   );
+  const filePath = path.join(project.absPath, 'src/.coco/application.json');
+  fs.writeFileSync(filePath, JSON.stringify(config, null, 2), {
+    encoding: 'utf-8',
+  });
 }
 
 // 从前往后依次合并配置对象
-function merge(...configs: any[]): Record<string, any> {
+function merge2properties(...configs: any[]): Record<string, any> {
   if (configs.length === 0) {
     return {};
   }
 
   return configs.reduce((prev, currentConfig) => {
-    return config(prev, currentConfig);
+    return doMerge(prev, currentConfig);
   });
 }
 
-function config(config1: any, config2: any) {
+function doMerge(config1: any, config2: any) {
   const type1 = typeof config1;
   const type2 = typeof config2;
   if (type1 !== type2) {
@@ -62,9 +61,9 @@ function config(config1: any, config2: any) {
   const keys2 = Object.keys(config2);
   const merged = { ...config1 };
   for (const key of keys2) {
-    merged[key] = config(config1[key], config2[key]);
+    merged[key] = doMerge(config1[key], config2[key]);
   }
   return merged;
 }
 
-export default genConfig;
+export default merge;

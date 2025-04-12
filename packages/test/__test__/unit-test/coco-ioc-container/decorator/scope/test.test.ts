@@ -1,4 +1,4 @@
-import { genDotCoco } from '@cocojs/cli';
+import { _test_helper as cli_helper } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 import { _test_helper } from 'coco-mvc';
 
@@ -10,10 +10,10 @@ let Prototype;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
-      genDotCoco(pkgPath(__dirname));
-      DefaultValue = (await import(cocoIdxStr)).DefaultValue;
-      Single = (await import(cocoIdxStr)).Single;
-      Prototype = (await import(cocoIdxStr)).Prototype;
+      cli_helper.prepareBuild(pkgPath(__dirname));
+      DefaultValue = (await import('./src/component/default-value.ts')).default;
+      Single = (await import('./src/component/single.ts')).default;
+      Prototype = (await import('./src/component/prototype.ts')).default;
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
     } catch (e) {
       throwError = true;

@@ -1,4 +1,4 @@
-import { genDotCoco } from '@cocojs/cli';
+import { _test_helper as cli_helper } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path.ts';
 import {
   getAllByRole,
@@ -28,19 +28,19 @@ let memoizedFn22;
 describe('store', () => {
   beforeEach(async () => {
     try {
-      genDotCoco(pkgPath(__dirname));
+      cli_helper.prepareBuild(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
       Render = (await import('coco-mvc')).Render;
       Router = (await import('coco-mvc')).Router;
-      Page = (await import(cocoIdxStr)).Page;
-      Form = (await import(cocoIdxStr)).Form;
-      Detail = (await import(cocoIdxStr)).Detail;
-      Page1 = (await import(cocoIdxStr)).Page1;
+      Page = (await import('./src/view/page.tsx')).default;
+      Form = (await import('./src/view/form.tsx')).default;
+      Detail = (await import('./src/view/detail.tsx')).default;
+      Page1 = (await import('./src/view/page1.tsx')).default;
       memoizedFn1 = (await import('./src/view/form1.tsx')).memoizedFn;
-      Page2 = (await import(cocoIdxStr)).Page2;
+      Page2 = (await import('./src/view/page2.tsx')).default;
       memoizedFn21 = (await import('./src/view/form2.tsx')).memoizedFn;
       memoizedFn22 = (await import('./src/view/form2.tsx')).memoizedFn1;
-      UserInfo = (await import(cocoIdxStr)).UserInfo;
+      UserInfo = (await import('./src/store/user-info.ts')).default;
     } catch (e) {
       console.info(e);
       throwError = true;

@@ -1,4 +1,4 @@
-import { genDotCoco } from '@cocojs/cli';
+import { _test_helper as cli_helper } from '@cocojs/cli';
 import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
 import {
   getByLabelText,
@@ -19,11 +19,11 @@ let Button;
 describe('ref', () => {
   beforeEach(async () => {
     try {
-      genDotCoco(pkgPath(__dirname));
+      cli_helper.prepareBuild(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
       Render = (await import('coco-mvc')).Render;
       Router = (await import('coco-mvc')).Router;
-      Button = (await import(cocoIdxStr)).Button;
+      Button = (await import('./src/view/button.tsx')).default;
     } catch (e) {
       throwError = true;
     }

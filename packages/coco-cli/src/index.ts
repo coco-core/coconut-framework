@@ -1,7 +1,8 @@
-import { dev, build as buildApp } from './dev';
+import devApp from './dev-app';
+import buildApp from './build-app';
 import { build as buildLib } from './build-lib';
-export { genDotCoco } from './gen-dot-coco';
 import { createApp, createLib } from './create';
+export * from './_test_helper/index';
 
 function cli(command: string, ...args: string[]) {
   switch (command) {
@@ -15,7 +16,7 @@ function cli(command: string, ...args: string[]) {
       break;
     }
     case 'dev':
-      dev();
+      devApp();
       break;
     case 'build': {
       const arg = args[0];
