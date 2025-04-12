@@ -7,8 +7,8 @@
     "prettier": "prettier --write 'packages/**/*.*'",
     "prettier:check": "prettier --check 'packages/**/*.*'",
     "test": "pnpm run build:test && pnpm run jest",
-    "updateVersion": "node ./scripts/publish/update-version.js",
-    "updateVer": "pnpm run updateVersion && pnpm run test",
+    "_modifyPkgVersion": "node scripts/publish/modify-pkg-version.js",
+    "updateVersion": "pnpm run test && pnpm run _modifyPkgVersion",
     "prepare": "husky install && ts-patch install -s"
   },
   "repository": {

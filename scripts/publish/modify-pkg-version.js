@@ -6,7 +6,7 @@ function prefixZero(num) {
   return num < 10 ? `0${num}` : num;
 }
 
-function updateVersion() {
+function modifyPkgVersion() {
   const now = new Date();
   const timestamp = `${now.getFullYear()}${prefixZero(now.getMonth() + 1)}${prefixZero(now.getDate())}${prefixZero(now.getHours())}${prefixZero(now.getMinutes())}`;
   let newVersion = '';
@@ -29,4 +29,4 @@ function updateVersion() {
   });
 }
 
-updateVersion();
+modifyPkgVersion();
