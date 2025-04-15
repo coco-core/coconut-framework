@@ -53,7 +53,7 @@ const buildInConfig = {
               postcssOptions: {
                 plugins: [
                   require('tailwindcss')({
-                    config: path.resolve(__dirname, 'tailwind.config.js'),
+                    config: path.resolve(process.cwd(), 'tailwind.config.js'),
                   }),
                   require('autoprefixer'),
                 ],
