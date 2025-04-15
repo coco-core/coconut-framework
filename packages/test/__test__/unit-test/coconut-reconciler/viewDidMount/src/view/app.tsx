@@ -4,7 +4,7 @@ import { appDidMount } from '../../test.test';
 
 @view()
 class App {
-  componentDidMount() {
+  viewDidMount() {
     appDidMount();
   }
 

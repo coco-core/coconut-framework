@@ -3,14 +3,14 @@ import { pkgPath, cocoIdxStr } from '../../../helper/pkg-path';
 import { getByRole, getByText, waitFor } from '@testing-library/dom';
 import { _test_helper } from 'coco-mvc';
 
-export const buttonWillUnmount = jest.fn();
+export const appDidMount = jest.fn();
 
 let ApplicationContext;
 let Render;
 let Router;
 let throwError;
 let App;
-describe('componentWillUnmount', () => {
+describe('viewDidMount', () => {
   beforeEach(async () => {
     try {
       cli_helper.prepareBuild(pkgPath(__dirname));
@@ -30,7 +30,7 @@ describe('componentWillUnmount', () => {
     throwError = false;
   });
 
-  test('componentWillUnmount被调用', async () => {
+  test('App的viewDidMount被调用', async () => {
     const { container } = _test_helper.mvc.render(
       ApplicationContext,
       App,
@@ -41,10 +41,6 @@ describe('componentWillUnmount', () => {
     const button = getByRole(header, 'button');
     expect(button).toBeTruthy();
     expect(getByText(button, 'count:1')).toBeTruthy();
-    header.click();
-    await waitFor(() => {
-      expect(getByText(header, 'not show')).toBeTruthy();
-      expect(buttonWillUnmount).toHaveBeenCalledTimes(1);
-    });
+    expect(appDidMount).toHaveBeenCalledTimes(1);
   });
 });

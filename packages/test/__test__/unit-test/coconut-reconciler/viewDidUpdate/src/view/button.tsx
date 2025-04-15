@@ -11,7 +11,7 @@ class Button {
     this.count = 2;
   }
 
-  componentDidUpdate(prevProps, { count: prevCount }) {
+  viewDidUpdate(prevProps, { count: prevCount }) {
     buttonDidUpdate(prevCount);
   }
 
