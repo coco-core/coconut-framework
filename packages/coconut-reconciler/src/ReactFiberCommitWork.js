@@ -37,7 +37,7 @@ function getHostSibling(fiber) {
   }
 }
 const callComponentWillUnmountWithTimer = function(current, instance) {
-  instance.componentWillUnmount();
+  instance.viewWillUnmount();
 };
 
 function safelyCallComponentWillUnmount(
@@ -156,7 +156,7 @@ function commitDeletionEffectsOnFiber(finishedRoot, nearestMountedAncestor, dele
       return;
     case ClassComponent: {
       const instance = deletedFiber.stateNode;
-      if (typeof instance.componentWillUnmount === 'function') {
+      if (typeof instance.viewWillUnmount === 'function') {
         safelyCallComponentWillUnmount(
           deletedFiber,
           nearestMountedAncestor,
@@ -358,11 +358,11 @@ function commitLayoutEffectOnFiber(
         const instance = finishedWork.stateNode;
         if (finishedWork.flags & Update) {
           if (current === null) {
-            instance.componentDidMount();
+            instance.viewDidMount();
           } else {
             const prevProps = current.memoizedProps;
             const prevState = current.memoizedState;
-            instance.componentDidUpdate(
+            instance.viewDidUpdate(
               prevProps,
               prevState
             )

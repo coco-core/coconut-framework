@@ -6,7 +6,7 @@ class Button {
   @reactive()
   count = 1;
 
-  componentWillUnmount() {
+  viewWillUnmount() {
     buttonWillUnmount();
   }
 

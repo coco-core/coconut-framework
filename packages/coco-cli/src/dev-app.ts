@@ -1,15 +1,15 @@
 import { fork, spawn, ChildProcess } from 'child_process';
 import * as path from 'path';
-import { resolveFromProject } from './util/resolve';
+import { resolveCli } from './util/resolve';
 import process from 'node:process';
 
 const startWebpackDevServer = () => {
-  const devServer = resolveFromProject('webpack-dev-server');
+  const devServer = resolveCli('webpack-dev-server');
   const webpackConfigPath = path.resolve(
     __dirname,
     '../build-config/webpack.config.js'
   );
-  return spawn('node', [devServer, '--config', webpackConfigPath], {
+  return spawn(devServer, ['--config', webpackConfigPath], {
     cwd: process.cwd(),
     stdio: 'inherit',
   });

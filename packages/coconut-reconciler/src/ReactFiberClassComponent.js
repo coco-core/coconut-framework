@@ -49,7 +49,7 @@ function mountClassInstance(
 
   initializeUpdateQueue(workInProgress)
 
-  if (typeof instance.componentDidMount === 'function') {
+  if (typeof instance.viewDidMount === 'function') {
     workInProgress.flags |= Update;
   }
 }
@@ -74,7 +74,7 @@ function updateClassInstance(
 
   // todo 新旧state对比，新旧props对比，判断是否需要update
 
-  if (typeof instance.componentDidUpdate === 'function') {
+  if (typeof instance.viewDidUpdate === 'function') {
     workInProgress.flags |= Update;
   }
 
