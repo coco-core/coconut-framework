@@ -14,7 +14,7 @@ const config = {
     typescript({
       compilerOptions: {
         target: 'ESNext',
-        lib: ['dom'],
+        lib: ['dom', 'esnext'],
         declaration: true,
         declarationDir: './dist/types',
         jsx: 'preserve',
