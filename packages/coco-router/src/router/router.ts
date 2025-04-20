@@ -3,7 +3,12 @@ import type RouteComponentMapper from './route-component-mapper.ts';
 
 abstract class Router {
   public pathname: string;
+  public params: Record<string, string>; // 动态路由参数
   public render: Render;
+
+  protected constructor() {
+    this.params = {};
+  }
 
   protected routeComponentMapper: RouteComponentMapper;
 
