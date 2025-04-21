@@ -1,24 +1,21 @@
-import Route from '../metadata/route.ts';
+import RouteClass from '../metadata/route.ts';
+import DynamicRoute from './dynamic-route.ts';
 
-interface RouteUrl {
-  // 是否是动态路由
-  isDynamic: boolean;
-  // 不是动态路由就是固定的url；是动态路由则是url对应的正则表达式
-  route: string | RegExp;
-  // 是动态路由时，url被/拆分后的结果
-  parts?: string[];
-}
+type Route = string | DynamicRoute;
 class RouteComponentMapper {
-  mapper: Map<RouteUrl, Class<any>> = new Map();
+  mapper: Map<Route, Class<any>> = new Map();
 
-  init(map: Map<Class<any>, Route>) {
+  init(map: Map<Class<any>, RouteClass>) {
     for (const [pageComponent, route] of map.entries()) {
-      const routeUrl = this.formatUrl2RouteUrl(route.value);
-      this.set(routeUrl, pageComponent);
+      if (route.value.includes(':')) {
+        this.add(new DynamicRoute(route.value), pageComponent);
+      } else {
+        this.add(route.value, pageComponent);
+      }
     }
   }
 
-  private set(routeUrl: RouteUrl, PageComponent: Class<any>) {
+  private add(routeUrl: Route, PageComponent: Class<any>) {
     if (this.mapper.has(routeUrl)) {
       console.error('重复的URL', routeUrl);
     } else {
@@ -27,50 +24,19 @@ class RouteComponentMapper {
   }
 
   match(url: string): any {
-    for (const [routeUrl, pageComponent] of this.mapper.entries()) {
-      if (!routeUrl.isDynamic) {
-        if (routeUrl.route === url) {
+    for (const [route, pageComponent] of this.mapper.entries()) {
+      if (typeof route === 'string') {
+        if (route === url) {
           return { pageComponent };
         }
       } else {
-        const match = (routeUrl.route as RegExp).exec(url);
-        if (match) {
-          let params = {};
-          let paramIndex = 1;
-          routeUrl.parts.forEach((part) => {
-            if (part.startsWith(':')) {
-              const paramName = part.slice(1);
-              params[paramName] = match[paramIndex++];
-            }
-          });
+        const params = route.match(url);
+        if (params) {
           return { pageComponent, params };
         }
       }
     }
     return {};
-  }
-
-  formatUrl2RouteUrl(url: string): RouteUrl {
-    if (url.includes(':')) {
-      const parts = url.split('/');
-      const regexParts = parts.map((part) => {
-        if (part.startsWith(':')) {
-          return '(.+)';
-        } else {
-          return part;
-        }
-      });
-      return {
-        isDynamic: true,
-        route: new RegExp(`^${regexParts.join('\\/')}$`),
-        parts,
-      };
-    } else {
-      return {
-        isDynamic: false,
-        route: url,
-      };
-    }
   }
 }
 

@@ -4,7 +4,7 @@ module.exports = {
   rootDir: path.join(__dirname, '../..'),
   maxConcurrency: 1,
   testEnvironment: 'jsdom',
-  testMatch: ['**/__test__/**/*.test.ts'],
+  testMatch: ['**/*.test.ts'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transform: {
     '\\.[jt]sx?$': '<rootDir>/scripts/jest/transformer.js',
