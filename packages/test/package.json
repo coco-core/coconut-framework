@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "test",
-  "description": "测试。",
+  "description": "集成测试包",
   "keywords": [],
   "author": "",
   "license": "MIT",

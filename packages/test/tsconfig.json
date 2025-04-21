@@ -11,6 +11,6 @@
       "coco-mvc": ["../coco-mvc/dist/coco-mvc.cjs.js"]
     }
   },
-  "include": ["__test__/**/*", "**/*.coco/**.*"],
+  "include": ["src/**/*", "**/*.coco/**.*"],
   "exclude": ["node_modules"]
 }
