@@ -62,7 +62,7 @@ export type PostConstruct =
   | MethodPostConstruct;
 
 export default class IocComponentDefinition<T> {
-  name: Field;
+  id: string;
 
   cls: Class<T>;
 
@@ -97,8 +97,8 @@ export function genMethodPostConstruct(
 }
 
 export function createComponent(
-  componentDefinition: IocComponentDefinition<any>,
   appCtx: ApplicationContext,
+  componentDefinition: IocComponentDefinition<any>,
   ...parameters: any[]
 ) {
   const cls = componentDefinition.cls;

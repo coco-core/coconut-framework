@@ -9,12 +9,14 @@ import {
   getAllMetadata,
   getByClassMetadata,
   getByFieldMetadata,
+  getFieldMetadata,
 } from './metadata.ts';
 import {
   get,
   clear as clearDecoratorParams,
   getClassAndClasClassDecorator,
   addDecoratorParams,
+  getFieldDecorator,
 } from './decorator-params.ts';
 import {
   ClassPostConstructFn,
@@ -34,15 +36,14 @@ import { isPlainObject, lowercaseFirstLetter } from '../share/util.ts';
 import Configuration from '../metadata/configuration.ts';
 import { register, NAME } from 'shared';
 import ConstructorParam, { ClassList } from '../metadata/constructor-param.ts';
-import Init from '../metadata/init.ts';
-import Start from '../metadata/start.ts';
-import Target from '../metadata/target.ts';
+import { Init, Start, Target, Qualifier } from '../metadata/index.ts';
+import PropertiesConfig from './properties-config.ts';
 
 class ApplicationContext {
-  beanConfig: Record<string, any>;
+  propertiesConfig: PropertiesConfig;
 
   constructor(jsonConfig: Record<string, any> = {}) {
-    this.beanConfig = jsonConfig;
+    this.propertiesConfig = new PropertiesConfig(jsonConfig);
     {
       this.recordFieldOrMethodDecoratorParams();
       this.addAtComponentDecoratorParams();
@@ -62,8 +63,40 @@ class ApplicationContext {
       this.startComponent();
     }
   }
-  public getComponent<T>(Cls: Class<T>): T {
-    return getComponent(Cls, this);
+
+  /**
+   * 根据组件定义返回组件实例，如果存在多个子组件，需要通过qualify指定子组件id
+   * @param cls 类定义
+   * @param qualifier 如果cls存在多个子类，需要通过qualifier指定子类id
+   */
+  public getComponent<T>(cls: Class<T>, qualifier?: string): T;
+  // 根据组件id返回组件实例
+  public getComponent<T>(id: string): T;
+  public getComponent<T>(ClsOrId: Class<T> | string, qualifier?: string): T {
+    return getComponent(this, ClsOrId, { qualifier });
+  }
+
+  /**
+   * 为@autowired装饰器的字段，返回字段类型的组件实例
+   * @param Cls
+   * @param deDecoratedCls 被装饰器的类定义
+   * @param autowiredField 被装饰器的字段
+   */
+  public getComponentForAutowired<T>(
+    Cls: Class<T>,
+    deDecoratedCls: Class<T>,
+    autowiredField: string
+  ): T {
+    const qualifierMetadata = getFieldMetadata(
+      deDecoratedCls,
+      autowiredField,
+      Qualifier
+    ) as Qualifier[];
+    let qualifier;
+    if (qualifierMetadata.length) {
+      qualifier = qualifierMetadata[0].value;
+    }
+    return this.getComponent(Cls, qualifier);
   }
 
   public getByClassMetadata(metadataClass: Class<any>) {
@@ -203,16 +236,18 @@ class ApplicationContext {
   private instantiateComponentRecursively() {
     const map = getByClassMetadata(ConstructorParam);
 
-    function doInstantiateComponent(beDecorated: Class<any>) {
+    const doInstantiateComponent = (beDecorated: Class<any>) => {
       if (!map.has(beDecorated)) {
-        return getComponent(beDecorated, this);
+        return getComponent(this, beDecorated);
       } else {
         const metadata = map.get(beDecorated) as { value: ClassList };
         const ParameterList = metadata.value;
         const parameterList = ParameterList.map(doInstantiateComponent);
-        return getComponent(beDecorated, this, ...parameterList);
+        return getComponent(this, beDecorated, {
+          newParameters: parameterList,
+        });
       }
-    }
+    };
 
     for (const beDecorated of map.keys()) {
       doInstantiateComponent(beDecorated);
@@ -222,7 +257,7 @@ class ApplicationContext {
   private initComponent() {
     const map = getByFieldMetadata(Init);
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
-      const component = getComponent(beDecoratedCls, this);
+      const component = getComponent(this, beDecoratedCls);
       component[field]?.(this);
     }
   }
@@ -230,7 +265,7 @@ class ApplicationContext {
   private startComponent() {
     const map = getByFieldMetadata(Start);
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
-      const component = getComponent(beDecoratedCls, this);
+      const component = getComponent(this, beDecoratedCls);
       component[field]?.();
     }
   }

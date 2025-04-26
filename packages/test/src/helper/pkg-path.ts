@@ -13,4 +13,5 @@ export function pkgPath(_dirname) {
  * 返回.coco/index.ts字符串。都是固定的
  */
 export const cocoIdxStr = './src/.coco/index';
+export const cocoIdxAppJson = './src/.coco/application.json';
 export const cocoIdxFolder = './src/.coco';

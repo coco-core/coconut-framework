@@ -3,6 +3,7 @@ import {
   type Field,
   type Kind,
   KindClass,
+  KindField,
 } from '../decorator/decorator-context.ts';
 import Metadata from '../metadata/metadata.ts';
 
@@ -80,6 +81,27 @@ export function getClassAndClasClassDecorator(
     }
   }
   return false;
+}
+
+/**
+ * 返回指定字段的装饰器参数，返回装饰器参数数组
+ * @param Cls 指定组件
+ * @param field 指定字段
+ * @param decoratorCls 装饰器类，如果传入此参数，则查找字段的所有装饰器，能找到就返回1个元素的数组，没有找到就返回空数组；如果没有传入参数，则返回field所有的装饰器参数
+ */
+export function getFieldDecorator(
+  Cls: Class<any>,
+  field: string,
+  decoratorCls?: Class<any>
+) {
+  const fieldDecorators = (decoratorParamMap.get(Cls) || []).filter(
+    (i) => i.metadataKind === KindField && i.field === field
+  );
+  if (decoratorCls) {
+    return fieldDecorators.filter((i) => i.metadataClass === decoratorCls);
+  } else {
+    return fieldDecorators;
+  }
 }
 
 export function get() {

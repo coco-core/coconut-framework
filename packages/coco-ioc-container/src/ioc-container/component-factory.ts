@@ -13,21 +13,33 @@ import {
   KindField,
   KindMethod,
 } from '../decorator/decorator-context.ts';
-import { isSubclassOf } from '../share/util.ts';
+import { isChildClass, uppercaseFirstLetter } from '../share/util.ts';
 
+type Id = string;
+const idDefinitionMap: Map<Id, IocComponentDefinition<any>> = new Map();
 const clsDefinitionMap: Map<
   Class<any>,
   IocComponentDefinition<any>
 > = new Map();
 
 function addDefinition(cls: Class<any>) {
-  const exited = clsDefinitionMap.get(cls);
-  if (exited) {
-    throw new Error(`存在同名的组件: [${exited.cls}] - [${cls}]`);
+  const existClsDef = clsDefinitionMap.get(cls);
+  if (existClsDef) {
+    throw new Error(`存在同名的组件: [${existClsDef.cls}] - [${cls}]`);
+  }
+  const id = uppercaseFirstLetter(cls.name);
+  if (typeof id !== 'string' || !id.trim()) {
+    throw new Error(`生成组件id失败: [${cls.name}]`);
+  }
+  const existIdDef = idDefinitionMap.get(id);
+  if (existIdDef) {
+    throw new Error(`存在id的组件: [${existIdDef.cls}] - [${cls.name}]`);
   }
   const componentDefinition = new IocComponentDefinition();
+  componentDefinition.id = id;
   componentDefinition.cls = cls;
   componentDefinition.postConstruct = [];
+  idDefinitionMap.set(id, componentDefinition);
   clsDefinitionMap.set(cls, componentDefinition);
 }
 
@@ -70,19 +82,44 @@ function addPostConstruct(cls: Class<any>, pc: PostConstruct) {
   definition.postConstruct.push(pc);
 }
 
-function getDefinition(Cls: Class<any>) {
-  const matchOrSubCls: Class<any>[] = [];
+function getDefinition(
+  ClsOrId: Class<any> | Id,
+  appCtx: ApplicationContext,
+  qualifier?: string
+) {
+  if (typeof ClsOrId === 'string') {
+    return idDefinitionMap.get(ClsOrId);
+  }
+  const childCls: Class<any>[] = [];
   for (const beDecorated of clsDefinitionMap.keys()) {
-    if (beDecorated === Cls || isSubclassOf(beDecorated, Cls)) {
-      matchOrSubCls.push(beDecorated);
+    if (isChildClass(beDecorated, ClsOrId)) {
+      childCls.push(beDecorated);
     }
   }
-  if (matchOrSubCls.length === 1) {
-    return clsDefinitionMap.get(matchOrSubCls[0]);
-  } else if (matchOrSubCls.length === 0) {
-    return undefined;
+  const definition = clsDefinitionMap.get(ClsOrId);
+  if (childCls.length === 0) {
+    // 没有子组件直接返回本身
+    return definition;
+  } else if (childCls.length === 1) {
+    // 有一个子组件
+    return clsDefinitionMap.get(childCls[0]);
   } else {
-    console.error('不应该存在多个一样的子类组件', Cls, matchOrSubCls);
+    // 多个子组件
+    let _qualifier = qualifier;
+    if (!_qualifier && definition) {
+      _qualifier = appCtx.propertiesConfig.getValue(
+        `${definition.id}.qualifier`
+      );
+    }
+    if (_qualifier) {
+      for (const child of childCls) {
+        const def = clsDefinitionMap.get(child);
+        if (def.id === _qualifier) {
+          return def;
+        }
+      }
+    }
+    throw new Error(`不应该存在多个一样的子类组件${ClsOrId}`);
   }
 }
 
@@ -90,19 +127,20 @@ function getDefinition(Cls: Class<any>) {
 const singletonInstances: Map<Class<any>, any> = new Map();
 /**
  * 创建一个ioc组件实例
- * @param Cls 通过class获取或通过name获取；
  * @param appCtx applicationContext实例；
- * @param parameters 构造函数参数
+ * @param ClsOrId 通过类定义或Id获取；
+ * @param rest 其他参数
  */
 function getComponent<T>(
-  Cls: Class<T>,
   appCtx: ApplicationContext,
-  ...parameters: any[]
+  ClsOrId: Class<T> | Id,
+  rest: { qualifier?: string; newParameters?: any[] } = {}
 ): T {
-  const definition = getDefinition(Cls);
+  const { qualifier, newParameters = [] } = rest;
+  const definition = getDefinition(ClsOrId, appCtx, qualifier);
   if (!definition) {
     if (__TEST__) {
-      throw new Error(`can no find component definition:${Cls}`);
+      throw new Error(`can no find component definition:${ClsOrId}`);
     }
   }
   const cls = definition.cls;
@@ -111,7 +149,7 @@ function getComponent<T>(
   if (isSingleton && singletonInstances.has(cls)) {
     return singletonInstances.get(cls);
   }
-  const component = createComponent(definition, appCtx, ...parameters);
+  const component = createComponent(appCtx, definition, ...newParameters);
   if (isSingleton) {
     singletonInstances.set(cls, component);
   }
@@ -119,8 +157,9 @@ function getComponent<T>(
 }
 
 function clear() {
+  idDefinitionMap.clear();
   clsDefinitionMap.clear();
   singletonInstances.clear();
 }
 
-export { getComponent, addDefinition, addPostConstruct, getDefinition, clear };
+export { getComponent, addDefinition, addPostConstruct, clear };
