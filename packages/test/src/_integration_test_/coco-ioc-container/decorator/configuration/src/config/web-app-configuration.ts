@@ -1,5 +1,5 @@
 import { configuration, component, Component } from 'coco-mvc';
-import Router from './router.ts';
+import User from './user.ts';
 import Button from './button.ts';
 import Theme from './theme.ts';
 
@@ -7,7 +7,7 @@ import Theme from './theme.ts';
 class WebAppConfiguration {
   @component()
   router() {
-    return new Router();
+    return new User();
   }
 
   @component(Component.Scope.Prototype)

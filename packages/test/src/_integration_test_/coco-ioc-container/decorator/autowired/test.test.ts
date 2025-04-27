@@ -4,8 +4,8 @@ import { _test_helper } from 'coco-mvc';
 
 let ApplicationContext;
 let throwError;
-let Router;
-let Route;
+let User;
+let Computer;
 let Button;
 let Theme;
 let UserInfo;
@@ -13,8 +13,8 @@ describe('autowired', () => {
   beforeEach(async () => {
     try {
       cli_helper.prepareBuild(pkgPath(__dirname));
-      Router = (await import('./src/component/router.ts')).default;
-      Route = (await import('./src/component/route.ts')).default;
+      User = (await import('./src/component/user.ts')).default;
+      Computer = (await import('./src/component/computer.ts')).default;
       Theme = (await import('./src/component/theme.ts')).default;
       UserInfo = (await import('./src/view/user-info.tsx')).default;
       Button = (await import('./src/view/button.tsx')).default;
@@ -52,16 +52,16 @@ describe('autowired', () => {
     const context = new ApplicationContext();
     const userInfo1 = context.getComponent(UserInfo);
     const userInfo2 = context.getComponent(UserInfo);
-    expect(userInfo1.router instanceof Router).toBe(true);
-    expect(userInfo1.router).toBe(userInfo2.router);
+    expect(userInfo1.user instanceof User).toBe(true);
+    expect(userInfo1.user).toBe(userInfo2.user);
   });
 
   test('可以拿到@component注册的组件，也支持每次返回新的实例', async () => {
     const context = new ApplicationContext();
     const userInfo1 = context.getComponent(UserInfo);
     const userInfo2 = context.getComponent(UserInfo);
-    expect(userInfo1.route instanceof Route).toBe(true);
-    expect(userInfo2.route instanceof Route).toBe(true);
-    expect(userInfo1.route).not.toBe(userInfo2.route);
+    expect(userInfo1.computer instanceof Computer).toBe(true);
+    expect(userInfo2.computer instanceof Computer).toBe(true);
+    expect(userInfo1.computer).not.toBe(userInfo2.computer);
   });
 });

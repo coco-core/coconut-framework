@@ -1,6 +1,7 @@
 import {
   addDefinition,
   addPostConstruct,
+  findInstantiateComponent,
   getComponent,
 } from './component-factory.ts';
 import {
@@ -32,7 +33,11 @@ import {
 } from '../decorator/decorator-context.ts';
 import Component from '../metadata/component.ts';
 import type { Scope } from '../metadata/component.ts';
-import { isPlainObject, lowercaseFirstLetter } from '../share/util.ts';
+import {
+  isChildClass,
+  isPlainObject,
+  lowercaseFirstLetter,
+} from '../share/util.ts';
 import Configuration from '../metadata/configuration.ts';
 import { register, NAME } from 'shared';
 import ConstructorParam, { ClassList } from '../metadata/constructor-param.ts';
@@ -58,9 +63,7 @@ class ApplicationContext {
       register(NAME.applicationContext, this);
     }
     {
-      this.instantiateComponentRecursively();
-      this.initComponent();
-      this.startComponent();
+      this.bootComponent();
     }
   }
 
@@ -233,8 +236,49 @@ class ApplicationContext {
     }
   }
 
-  private instantiateComponentRecursively() {
+  /**
+   * 启动所有配置boot的组件
+   * @private
+   */
+  private bootComponent() {
+    // 1. 所有配置boot的组件集合
+    const bootComponents = this.propertiesConfig.getAllBootComponents();
+    // 2. boot的组件可能会有@inject，也可能实例化子组件，那么判断一下，找到真正需要实例化的组件的集合
+    const constructorParamMetadata = getByClassMetadata(ConstructorParam);
+    const instantiateCls: Set<Class<any>> = new Set(); // 需要实例化的组件集合
+    const doFindInstantiateComponent = (clsOrId: Class<any> | string) => {
+      const Cls = findInstantiateComponent(this, clsOrId);
+      if (instantiateCls.has(Cls)) {
+        // 已经有了
+        return;
+      } else {
+        instantiateCls.add(Cls);
+      }
+      const metadata = <ConstructorParam>constructorParamMetadata.get(Cls);
+      const ClsList = metadata && metadata.value;
+      if (ClsList?.length) {
+        ClsList.forEach((i) => {
+          if (!instantiateCls.has(i)) {
+            doFindInstantiateComponent(i);
+          }
+        });
+      }
+    };
+    bootComponents.forEach(doFindInstantiateComponent);
+    this.instantiateComponentRecursively(instantiateCls);
+    this.initComponent(instantiateCls);
+    this.startComponent(instantiateCls);
+  }
+
+  private instantiateComponentRecursively(bootComponent: Set<Class<any>>) {
     const map = getByClassMetadata(ConstructorParam);
+    const realInitiatedCls: Set<Class<any>> = new Set();
+    for (const beDecoratedCls of map.keys()) {
+      // 只初始化配置boot的组件
+      if (bootComponent.has(beDecoratedCls)) {
+        realInitiatedCls.add(beDecoratedCls);
+      }
+    }
 
     const doInstantiateComponent = (beDecorated: Class<any>) => {
       if (!map.has(beDecorated)) {
@@ -249,24 +293,28 @@ class ApplicationContext {
       }
     };
 
-    for (const beDecorated of map.keys()) {
+    for (const beDecorated of bootComponent) {
       doInstantiateComponent(beDecorated);
     }
   }
 
-  private initComponent() {
+  private initComponent(bootComponent: Set<Class<any>>) {
     const map = getByFieldMetadata(Init);
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
-      const component = getComponent(this, beDecoratedCls);
-      component[field]?.(this);
+      if (bootComponent.has(beDecoratedCls)) {
+        const component = getComponent(this, beDecoratedCls);
+        component[field]?.(this);
+      }
     }
   }
 
-  private startComponent() {
+  private startComponent(bootComponent: Set<Class<any>>) {
     const map = getByFieldMetadata(Start);
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
-      const component = getComponent(this, beDecoratedCls);
-      component[field]?.();
+      if (bootComponent.has(beDecoratedCls)) {
+        const component = getComponent(this, beDecoratedCls);
+        component[field]?.();
+      }
     }
   }
 

@@ -1,3 +1,7 @@
+/**
+ * 动态配置操作类
+ */
+
 class PropertiesConfig {
   beanConfig: Record<string, any>;
 
@@ -17,6 +21,16 @@ class PropertiesConfig {
       value = value[prop];
     }
     return value;
+  }
+
+  public getAllBootComponents() {
+    const boots: string[] = [];
+    for (const [componentId, config] of Object.entries(this.beanConfig)) {
+      if (config['boot']) {
+        boots.push(componentId);
+      }
+    }
+    return boots;
   }
 }
 

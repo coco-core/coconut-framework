@@ -1,5 +1,5 @@
 import { _test_helper as cli_helper } from '@cocojs/cli';
-import { pkgPath, cocoIdxStr } from '../../../helper/pkg-path';
+import { pkgPath, cocoIdxStr, cocoIdxAppJson } from '../../../helper/pkg-path';
 import {
   getByLabelText,
   getByRole,
@@ -10,6 +10,7 @@ import {
 import { _test_helper } from 'coco-mvc';
 
 let ApplicationContext;
+let applicationJson;
 let Render;
 let Router;
 let throwError;
@@ -19,6 +20,7 @@ describe('decorator', () => {
     try {
       cli_helper.prepareBuild(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
+      applicationJson = (await import(cocoIdxAppJson)).default;
       Render = (await import('coco-mvc')).Render;
       Router = (await import('coco-mvc')).Router;
       App = (await import('./src/view/app.tsx')).default;
@@ -39,7 +41,8 @@ describe('decorator', () => {
       ApplicationContext,
       App,
       Render,
-      Router
+      Router,
+      applicationJson
     );
     const header = getByRole(container, 'heading');
     const button = getByRole(header, 'button');

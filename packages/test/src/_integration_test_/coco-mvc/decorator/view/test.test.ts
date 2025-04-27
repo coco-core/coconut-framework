@@ -1,5 +1,9 @@
 import { _test_helper as cli_helper } from '@cocojs/cli';
-import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path.ts';
+import {
+  pkgPath,
+  cocoIdxStr,
+  cocoIdxAppJson,
+} from '../../../../helper/pkg-path.ts';
 import {
   getByLabelText,
   getByRole,
@@ -10,6 +14,7 @@ import {
 import { _test_helper } from 'coco-mvc';
 
 let ApplicationContext;
+let applicationJson;
 let Render;
 let Router;
 let throwError;
@@ -19,6 +24,7 @@ describe('view', () => {
     try {
       cli_helper.prepareBuild(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
+      applicationJson = (await import(cocoIdxAppJson)).default;
       Render = (await import('coco-mvc')).Render;
       Router = (await import('coco-mvc')).Router;
       Button = (await import('./src/view/button.tsx')).default;
@@ -39,7 +45,8 @@ describe('view', () => {
       ApplicationContext,
       Button,
       Render,
-      Router
+      Router,
+      applicationJson
     );
     const button = getByRole(container, 'button');
     expect(button).toBeTruthy();

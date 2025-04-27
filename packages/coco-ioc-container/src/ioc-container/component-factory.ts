@@ -88,6 +88,7 @@ function getDefinition(
   qualifier?: string
 ) {
   if (typeof ClsOrId === 'string') {
+    // todo 如果使用id的话，要考虑子组件的情况吗？
     return idDefinitionMap.get(ClsOrId);
   }
   const childCls: Class<any>[] = [];
@@ -119,12 +120,41 @@ function getDefinition(
         }
       }
     }
-    throw new Error(`不应该存在多个一样的子类组件${ClsOrId}`);
+    throw new Error(`不应该存在多个一样的子类组件${ClsOrId.name}`);
   }
 }
 
 // 单例实例集合
 const singletonInstances: Map<Class<any>, any> = new Map();
+
+/*
+ * 如果实例化组件ID，找到要实例化的子组件，也有可能是多子组件的情况下
+ */
+function findInstantiateComponent(
+  appCtx: ApplicationContext,
+  clsOrId: Class<any> | Id,
+  qualifier?: string
+) {
+  const definition =
+    typeof clsOrId === 'string'
+      ? idDefinitionMap.get(clsOrId)
+      : clsDefinitionMap.get(clsOrId);
+  if (definition) {
+    const definitionOrChildDefinition = getDefinition(
+      definition.cls,
+      appCtx,
+      qualifier
+    );
+    if (definitionOrChildDefinition) {
+      return definitionOrChildDefinition.cls;
+    } else {
+      return definition.cls;
+    }
+  } else {
+    throw new Error(`这应该是一个bug，没有${clsOrId}对应的组件`);
+  }
+}
+
 /**
  * 创建一个ioc组件实例
  * @param appCtx applicationContext实例；
@@ -162,4 +192,10 @@ function clear() {
   singletonInstances.clear();
 }
 
-export { getComponent, addDefinition, addPostConstruct, clear };
+export {
+  getComponent,
+  findInstantiateComponent,
+  addDefinition,
+  addPostConstruct,
+  clear,
+};

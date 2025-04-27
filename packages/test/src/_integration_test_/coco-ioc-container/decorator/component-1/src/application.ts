@@ -1,13 +1,13 @@
 import { component, Component, webApplication } from 'coco-mvc';
-import Router from './component/router.ts';
+import User from './component/user.ts';
 import Button from './component/button.ts';
 import Theme from './component/theme.ts';
 
 @webApplication()
 class Application {
   @component()
-  router() {
-    return new Router();
+  user() {
+    return new User();
   }
 
   @component()

@@ -6,15 +6,12 @@ import { jsx } from '../jsx-runtime';
 import Render from '../component/render.ts';
 
 @render()
-class WebRender extends Render {
+class TestWebRender extends Render {
   container: HTMLElement;
 
   @init()
   init() {
-    this.container = document.getElementById('root');
-    if (!this.container) {
-      console.error('未找到根节点');
-    }
+    this.container = document.createElement('div');
   }
 
   public render(component: any) {
@@ -22,4 +19,4 @@ class WebRender extends Render {
   }
 }
 
-export default WebRender;
+export default TestWebRender;

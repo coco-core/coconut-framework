@@ -1,17 +1,17 @@
 import { component, Component, webApplication } from 'coco-mvc';
-import Router from './component/router.ts';
-import Route from './component/route.ts';
+import User from './component/user.ts';
+import Computer from './component/computer.ts';
 
 @webApplication()
 class Application {
   @component()
-  router() {
-    return new Router();
+  user() {
+    return new User();
   }
 
   @component(Component.Scope.Prototype)
-  route() {
-    return new Route();
+  computer() {
+    return new Computer();
   }
 }
 

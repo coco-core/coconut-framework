@@ -1,8 +1,8 @@
 import { autowired, view } from 'coco-mvc';
 import Button from './button.tsx';
 import Theme from '../component/theme.ts';
-import Router from '../component/router.ts';
-import Route from '../component/route.ts';
+import User from '../component/user.ts';
+import Computer from '../component/computer.ts';
 
 @view()
 class UserInfo {
@@ -13,10 +13,10 @@ class UserInfo {
   theme: Theme;
 
   @autowired()
-  router: Router;
+  user: User;
 
   @autowired()
-  route: Route;
+  computer: Computer;
 }
 
 export default UserInfo;

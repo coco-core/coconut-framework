@@ -1,5 +1,9 @@
 import { _test_helper as cli_helper } from '@cocojs/cli';
-import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path';
+import {
+  pkgPath,
+  cocoIdxStr,
+  cocoIdxAppJson,
+} from '../../../../helper/pkg-path';
 import {
   getByLabelText,
   getByRole,
@@ -12,6 +16,7 @@ import { _test_helper } from 'coco-mvc';
 export const mockFn = jest.fn();
 
 let ApplicationContext;
+let applicationJson;
 let Render;
 let Router;
 let throwError;
@@ -21,6 +26,7 @@ describe('ref', () => {
     try {
       cli_helper.prepareBuild(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
+      applicationJson = (await import(cocoIdxAppJson)).default;
       Render = (await import('coco-mvc')).Render;
       Router = (await import('coco-mvc')).Router;
       Button = (await import('./src/view/button.tsx')).default;
@@ -41,7 +47,8 @@ describe('ref', () => {
       ApplicationContext,
       Button,
       Render,
-      Router
+      Router,
+      applicationJson
     );
     const button = getByRole(container, 'button');
     expect(button).toBeTruthy();

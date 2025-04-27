@@ -4,14 +4,14 @@ import { _test_helper } from 'coco-mvc';
 
 let ApplicationContext;
 let throwError;
-let Router;
+let User;
 let Button;
 let Theme;
 describe('decorator', () => {
   beforeEach(async () => {
     try {
       cli_helper.prepareBuild(pkgPath(__dirname));
-      Router = (await import('./src/config/router.ts')).default;
+      User = (await import('./src/config/user.ts')).default;
       Button = (await import('./src/config/button.ts')).default;
       Theme = (await import('./src/config/theme.ts')).default;
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
@@ -29,8 +29,8 @@ describe('decorator', () => {
 
   test('直接传入要注册的ioc组件', async () => {
     const context = new ApplicationContext();
-    const router = context.getComponent(Router);
-    expect(router).toBeTruthy();
+    const user = context.getComponent(User);
+    expect(user).toBeTruthy();
   });
 
   test('通过对象传入要注册的ioc组件，默认singleton模式', async () => {

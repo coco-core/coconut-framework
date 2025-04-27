@@ -1,5 +1,9 @@
 import { _test_helper as cli_helper } from '@cocojs/cli';
-import { pkgPath, cocoIdxStr } from '../../../../helper/pkg-path.ts';
+import {
+  pkgPath,
+  cocoIdxStr,
+  cocoIdxAppJson,
+} from '../../../../helper/pkg-path.ts';
 import {
   getAllByRole,
   getByLabelText,
@@ -12,6 +16,7 @@ import {
 import { _test_helper } from 'coco-mvc';
 
 let ApplicationContext;
+let applicationJson;
 let Render;
 let Router;
 let throwError;
@@ -30,6 +35,7 @@ describe('store', () => {
     try {
       cli_helper.prepareBuild(pkgPath(__dirname));
       ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
+      applicationJson = (await import(cocoIdxAppJson)).default;
       Render = (await import('coco-mvc')).Render;
       Router = (await import('coco-mvc')).Router;
       Page = (await import('./src/view/page.tsx')).default;
@@ -59,7 +65,8 @@ describe('store', () => {
       ApplicationContext,
       Page,
       Render,
-      Router
+      Router,
+      applicationJson
     );
     const form = ctx.getComponent(Form);
     const detail = ctx.getComponent(Detail);
@@ -74,7 +81,8 @@ describe('store', () => {
       ApplicationContext,
       Page,
       Render,
-      Router
+      Router,
+      applicationJson
     );
     const input = getByRole(container, 'textbox');
     expect(getByText(input, 'input:张三')).toBeTruthy();
@@ -92,7 +100,8 @@ describe('store', () => {
       ApplicationContext,
       Page1,
       Render,
-      Router
+      Router,
+      applicationJson
     );
     const buttons = getAllByRole(container, 'button');
     const input = getByRole(container, 'textbox');
@@ -125,7 +134,8 @@ describe('store', () => {
       ApplicationContext,
       Page2,
       Render,
-      Router
+      Router,
+      applicationJson
     );
     const buttons = getAllByRole(container, 'button');
     const input = getByRole(container, 'textbox');
