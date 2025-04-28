@@ -1,6 +1,6 @@
+export * from '../index';
 import * as iocContainerTestHelper from 'coco-ioc-container-test-helper';
 import { type ApplicationContext } from 'coco-ioc-container';
-// todo 这里还是在正式环境的时候被引入了
 import TestWebRender from './test-web-render.ts';
 
 let ctx: ApplicationContext;
@@ -77,9 +77,5 @@ const _test_helper = {
   iocContainer: iocContainerTestHelper,
   mvc: { render, start, cleanRender, TestWebRender },
 };
-if (!__TEST__) {
-  _test_helper.iocContainer = {} as any;
-  _test_helper.mvc = {} as any;
-}
 
 export { _test_helper };

@@ -23,5 +23,3 @@ export { default as WebApplication } from './metadata/web-application.ts';
 export { default as webApplication } from './decorator/web-application.ts';
 export { default as Render } from './component/render.ts';
 export { default as WebRender } from './render/web-render.ts';
-
-export * from './_test_helper';
