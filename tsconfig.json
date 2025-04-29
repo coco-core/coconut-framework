@@ -8,7 +8,7 @@
       "coconut-reconciler": ["packages/coconut-reconciler/src/index.js"],
       "coco-ioc-container": ["packages/coco-ioc-container/src/index.ts"],
       "coco-ioc-container-test-helper": [
-        "packages/coco-ioc-container/src/_test_helper/index.ts"
+        "packages/coco-ioc-container/src/__tests__/index.ts"
       ],
       "coco-reactive": ["packages/coco-reactive/src/index.ts"],
       "coco-reactive/metadata": [

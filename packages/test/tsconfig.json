@@ -8,7 +8,8 @@
     "emitDeclarationOnly": true,
     "jsx": "preserve",
     "paths": {
-      "coco-mvc": ["../coco-mvc/dist/coco-mvc.cjs.js"]
+      "coco-mvc": ["../coco-mvc/dist/coco-mvc.cjs.js"],
+      "@cocojs/cli": ["../coco-cli/dist/index.js"]
     }
   },
   "include": ["src/**/*", "**/*.coco/**.*"],

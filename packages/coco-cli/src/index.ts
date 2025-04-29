@@ -2,7 +2,6 @@ import devApp from './dev-app';
 import buildApp from './build-app';
 import { build as buildLib } from './build-lib';
 import { createApp, createLib } from './create';
-export * from './_test_helper/index';
 
 function cli(command: string, ...args: string[]) {
   switch (command) {
