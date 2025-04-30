@@ -1,0 +1,45 @@
+import { _test_helper } from 'coco-mvc';
+import { _test_helper as cli_helper } from '@cocojs/cli';
+import { getByText, waitFor } from '@testing-library/dom';
+const { pkgPath, cocoIdxStr, cocoIdxAppJson } =
+  _test_helper.iocContainer.pkgPath;
+
+let ApplicationContext;
+let applicationJson;
+let Render;
+let Router;
+let throwError;
+describe('router', () => {
+  beforeEach(async () => {
+    cli_helper.prepareBuild(pkgPath(__dirname));
+    ApplicationContext = (await import(cocoIdxStr)).ApplicationContext;
+    applicationJson = (await import(cocoIdxAppJson)).default;
+    Render = (await import('coco-mvc')).Render;
+    Router = (await import('coco-mvc')).Router;
+  });
+
+  afterEach(async () => {
+    _test_helper.iocContainer.clear();
+    _test_helper.mvc.cleanRender();
+    jest.resetModules();
+    throwError = false;
+  });
+
+  test('路由切换，页面也会重新渲染', async () => {
+    const { container, ctx } = _test_helper.mvc.start(
+      ApplicationContext,
+      Render,
+      Router,
+      applicationJson
+    );
+    const router = ctx.getComponent(Router);
+    router.navigateTo('/');
+    await waitFor(async () => {
+      expect(getByText(container, 'index page')).toBeTruthy();
+      router.navigateTo('/todo-page');
+      await waitFor(() => {
+        expect(getByText(container, 'todo page')).toBeTruthy();
+      });
+    });
+  });
+});

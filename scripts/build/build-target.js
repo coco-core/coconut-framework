@@ -47,6 +47,7 @@ module.exports.rollupTargets = [
 module.exports.tsTargets = [
   {
     input: cliSrc,
-    output: cliDist
+    output: cliDist,
+    ignore: process.env.NODE_ENV === 'test' ? undefined : `${cliSrc}/__tests__/**`
   }
 ]

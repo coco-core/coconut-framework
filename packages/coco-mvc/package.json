@@ -1,7 +1,7 @@
 {
   "name": "coco-mvc",
   "version": "0.0.1-alpha202504192155",
-  "description": "使用@装饰器构建可扩展的WEB应用。",
+  "description": "使用@装饰器构建web应用。",
   "main": "dist/coco-mvc.cjs.js",
   "types": "dist/types/coco-mvc/src/index.d.ts",
   "exports": {
