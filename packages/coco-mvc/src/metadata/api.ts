@@ -8,6 +8,6 @@ import {
 
 @target([Target.Type.Class])
 @component(Component.Scope.Prototype)
-class Service extends Metadata {}
+class Api extends Metadata {}
 
-export default Service;
+export default Api;

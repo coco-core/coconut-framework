@@ -148,8 +148,8 @@ class ApplicationContext {
   /**
    * 被装饰类是否被特定元数据类装饰；或者被特定元数据类的复合元数据装饰
    * 直接装饰@component
-   * 被component装饰的通用层，例如view controller service；
-   * 还有被通用层装饰的一层，例如page(view), httpService(service)等
+   * 被component装饰的通用层，例如view controller api
+   * 还有被通用层装饰的一层，例如page(view), httpAip(api)等
    * @param beDecoratedCls 被装饰的类
    * @param Target
    * @private
