@@ -55,6 +55,11 @@
     "tslib": "^2.6.3",
     "typescript": "5.3.3"
   },
+  "pnpm": {
+    "overrides": {
+      "cross-spawn": "^7.0.5"
+    }
+  },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   }
