@@ -1,6 +1,6 @@
-import { genDecorator } from 'coco-ioc-container';
+import { createDecoratorExp } from 'coco-ioc-container';
 import Layout from '../metadata/layout.ts';
 
-export default genDecorator<string, ClassDecoratorContext>(Layout, {
+export default createDecoratorExp<string, ClassDecoratorContext>(Layout, {
   optional: true,
 });

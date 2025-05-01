@@ -1,6 +1,6 @@
-import { genDecorator } from 'coco-ioc-container';
+import { createDecoratorExp } from 'coco-ioc-container';
 import Page from '../metadata/page.ts';
 
-export default genDecorator<string, ClassDecoratorContext>(Page, {
+export default createDecoratorExp<string, ClassDecoratorContext>(Page, {
   optional: true,
 });

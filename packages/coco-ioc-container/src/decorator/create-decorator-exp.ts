@@ -18,26 +18,38 @@ interface Option {
 }
 
 // 适用于装饰器不装饰自己元数据类，且useParams是必填的场景
-function genDecorator<UserParam, C extends Context>(
+function createDecoratorExp<UserParam, C extends Context>(
   metadataCls: Class<any>,
   option?: { postConstruct?: PostConstructFn }
 ): (userParam: UserParam) => Decorator<C>;
 // 适用于装饰器不装饰自己元数据类，且useParams是可选的场景
-function genDecorator<UserParam, C extends Context>(
+function createDecoratorExp<UserParam, C extends Context>(
   metadataCls: Class<any>,
   option: { optional: true; postConstruct?: PostConstructFn }
 ): (userParam?: UserParam) => Decorator<C>;
+function createDecoratorExp<UserParam, C extends Context>(
+  metadataCls: Class<any>,
+  option: Option = {}
+): (userParam: UserParam) => Decorator<C> {
+  return doCreateDecoratorExp(metadataCls, option);
+}
 // 适用于装饰器装饰自己元数据类，且useParams是必填的场景
-function genDecorator<UserParam, C extends Context>(
-  metadataClsName: string,
+function createDecoratorExpByName<UserParam, C extends Context>(
+  decoratorName: string,
   option?: { postConstruct?: PostConstructFn }
 ): (userParam: UserParam, decorateSelf?: true) => Decorator<C>;
 // 适用于装饰器装饰自己元数据类，且useParams是可选的的场景
-function genDecorator<UserParam, C extends Context>(
-  metadataClsName: string,
+function createDecoratorExpByName<UserParam, C extends Context>(
+  decoratorName: string,
   option: { optional: true; postConstruct?: PostConstructFn }
 ): (userParam?: UserParam, decorateSelf?: true) => Decorator<C>;
-function genDecorator<UserParam, C extends Context>(
+function createDecoratorExpByName<UserParam, C extends Context>(
+  decoratorName: string,
+  option: Option = {}
+): (userParam: UserParam, decorateSelf?: true) => Decorator<C> {
+  return doCreateDecoratorExp(decoratorName, option);
+}
+function doCreateDecoratorExp<UserParam, C extends Context>(
   metadataClsOrName: Class<any> | string,
   { postConstruct }: Option = {}
 ): (userParam: UserParam, decorateSelf?: true) => Decorator<C> {
@@ -47,8 +59,7 @@ function genDecorator<UserParam, C extends Context>(
       : lowercaseFirstLetter(metadataClsOrName.name);
   let metadataCls =
     typeof metadataClsOrName !== 'string' ? metadataClsOrName : null;
-
-  function decorator(userParam: UserParam, decorateSelf?: true) {
+  function decoratorExpress(userParam: UserParam, decorateSelf?: true) {
     if (__TEST__) {
       get(NAME.exec)?.(decoratorName, userParam);
     }
@@ -110,7 +121,7 @@ function genDecorator<UserParam, C extends Context>(
     };
   }
 
-  return decorator;
+  return decoratorExpress;
 }
 
-export default genDecorator;
+export { createDecoratorExp, createDecoratorExpByName };

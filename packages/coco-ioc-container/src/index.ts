@@ -17,5 +17,5 @@ export { default as Start } from './metadata/start.ts';
 export { default as start } from './decorator/start.ts';
 export { default as Value } from './metadata/value.ts';
 export { default as value } from './decorator/value.ts';
-export { default as genDecorator } from './decorator/gen-decorator-exp.ts';
+export * from './decorator/create-decorator-exp.ts';
 export { default as ApplicationContext } from './ioc-container/application-context.ts';

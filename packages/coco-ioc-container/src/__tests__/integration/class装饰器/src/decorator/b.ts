@@ -1,5 +1,5 @@
-import { genDecorator, Metadata } from 'coco-mvc';
+import { createDecoratorExp, Metadata } from 'coco-mvc';
 
 class B extends Metadata {}
-export default genDecorator(B);
+export default createDecoratorExp(B);
 export const decoratorName = 'b';

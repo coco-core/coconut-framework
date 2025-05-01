@@ -1,4 +1,4 @@
-import genDecorator from './gen-decorator-exp.ts';
+import { createDecoratorExp } from './create-decorator-exp.ts';
 import type ApplicationContext from '../ioc-container/application-context.ts';
 import Autowired, { Args } from '../metadata/autowired.ts';
 
@@ -14,7 +14,7 @@ function postConstruct(
   );
 }
 
-export default genDecorator<Args, ClassFieldDecoratorContext>(Autowired, {
+export default createDecoratorExp<Args, ClassFieldDecoratorContext>(Autowired, {
   optional: true,
   postConstruct,
 });
