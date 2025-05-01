@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  cross-spawn: ^7.0.5
+
 importers:
   .:
     devDependencies:
@@ -214,16 +217,6 @@ importers:
   packages/coconut-web: {}
 
   packages/shared: {}
-
-  packages/test:
-    dependencies:
-      coco-mvc:
-        specifier: workspace:*
-        version: link:../coco-mvc
-    devDependencies:
-      '@cocojs/cli':
-        specifier: workspace:*
-        version: link:../coco-cli
 
 packages:
   /@alloc/quick-lru@5.2.0:
@@ -5128,13 +5121,13 @@ packages:
     engines: { node: '>=10.14', npm: '>=6', yarn: '>=1' }
     hasBin: true
     dependencies:
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
     dev: true
 
-  /cross-spawn@7.0.3:
+  /cross-spawn@7.0.6:
     resolution:
       {
-        integrity: sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==,
+        integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==,
       }
     engines: { node: '>= 8' }
     dependencies:
@@ -5912,7 +5905,7 @@ packages:
       }
     engines: { node: '>=10' }
     dependencies:
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
       get-stream: 6.0.1
       human-signals: 2.1.0
       is-stream: 2.0.1
@@ -5930,7 +5923,7 @@ packages:
       }
     engines: { node: '>=16.17' }
     dependencies:
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
       get-stream: 8.0.1
       human-signals: 5.0.0
       is-stream: 3.0.0
@@ -6160,7 +6153,7 @@ packages:
       }
     engines: { node: '>=14' }
     dependencies:
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
   /form-data@4.0.0:
@@ -11290,7 +11283,7 @@ packages:
       '@webpack-cli/serve': 3.0.1(webpack-cli@6.0.1)(webpack-dev-server@5.2.0)(webpack@5.98.0)
       colorette: 2.0.20
       commander: 12.1.0
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
       envinfo: 7.14.0
       fastest-levenshtein: 1.0.16
       import-local: 3.1.0
