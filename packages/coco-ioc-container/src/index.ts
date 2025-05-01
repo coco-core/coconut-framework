@@ -11,6 +11,8 @@ export { default as Target } from './metadata/target.ts';
 export { default as target } from './decorator/target.ts';
 export { default as Init } from './metadata/init.ts';
 export { default as init } from './decorator/init.ts';
+export { default as Qualifier } from './metadata/qualifier.ts';
+export { default as qualifier } from './decorator/qualifier.ts';
 export { default as Start } from './metadata/start.ts';
 export { default as start } from './decorator/start.ts';
 export { default as Value } from './metadata/value.ts';

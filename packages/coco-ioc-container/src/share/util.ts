@@ -1,14 +1,30 @@
-/**
- * 第一个字母改为小写，其他不变
- */
-export function lowercaseFirstLetter(str: string) {
+function transformFirstLetter(str: string, transform: 'lower' | 'upper') {
   if (!str) {
     if (__DEV__ && typeof str !== 'string') {
       throw new Error(`请传入字符串:[${str}]`);
     }
     return str;
   }
-  return str[0].toLowerCase() + str.slice(1);
+  switch (transform) {
+    case 'lower':
+      return str[0].toLowerCase() + str.slice(1);
+    case 'upper':
+      return str[0].toUpperCase() + str.slice(1);
+    default:
+      return str;
+  }
+}
+/**
+ * 第一个字母改为小写，其他不变
+ */
+export function lowercaseFirstLetter(str: string) {
+  return transformFirstLetter(str, 'lower');
+}
+/**
+ * 第一个字母改为大写，其他不变
+ */
+export function uppercaseFirstLetter(str: string) {
+  return transformFirstLetter(str, 'upper');
 }
 
 /**
@@ -28,22 +44,15 @@ export function constructOf<T>(o: any): Class<T> {
 
 /**
  * 判断subclass是否是superclass的子类
- * @param subclass
- * @param superclass
+ * @param childCls
+ * @param parentCls
  */
-export function isSubclassOf(subclass: Class<any>, superclass: Class<any>) {
-  if (typeof subclass !== 'function' || typeof superclass !== 'function') {
+export function isChildClass(childCls: Class<any>, parentCls: Class<any>) {
+  if (typeof childCls !== 'function' || typeof parentCls !== 'function') {
     return false;
   }
 
-  let proto = Object.getPrototypeOf(subclass); // 获取子类的父类
-  while (proto) {
-    if (proto === superclass) {
-      return true; // 找到父类
-    }
-    proto = Object.getPrototypeOf(proto); // 向上查找原型链
-  }
-  return false; // 没有匹配到父类
+  return parentCls === Object.getPrototypeOf(childCls);
 }
 
 /**

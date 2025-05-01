@@ -12,12 +12,14 @@ function writeFile(folder, fileName, content) {
 
 async function compiler (targets) {
   for (const t of targets) {
-    const {input, output} = t;
+    const {input, output, ignore} = t;
     // clean
     if (fs.existsSync(output)) {
       fs.rmSync(output, { recursive: true });
     }
-    for (const file of glob.globIterateSync(`${input}/**/*.ts`)) {
+    for (const file of glob.globIterateSync(`${input}/**/*.ts`, {
+      ignore
+    })) {
       // compiler
       const source = fs.readFileSync(file, "utf-8");
       const result = transpileModule(source, {

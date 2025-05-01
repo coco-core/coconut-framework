@@ -27,7 +27,7 @@ class Project {
   static PAGE_DIR = 'page';
   static LAYOUT_DIR = 'layout';
   static CONTROLLER_DIR = 'controller';
-  static SERVICE_DIR = 'service';
+  static API_DIR = 'api';
   static STORE_DIR = 'store';
   static GLOBAL_DATA_DIR = 'global-data';
   static COMPONENTS_DIR = 'component';

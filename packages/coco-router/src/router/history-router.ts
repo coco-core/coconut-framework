@@ -20,8 +20,11 @@ class HistoryRouter extends Router {
 
   handleRouteChange = () => {
     this.pathname = window.location.pathname;
-    const pageComponent = this.routeComponentMapper.get(this.pathname);
+    const { pageComponent, params } = this.routeComponentMapper.match(
+      this.pathname
+    );
     if (pageComponent) {
+      this.params = params || {};
       this.render.render(pageComponent);
     } else {
       // todo 404 page

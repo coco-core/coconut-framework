@@ -11,13 +11,9 @@ class WebRender extends Render {
 
   @init()
   init() {
-    if (__TEST__) {
-      this.container = document.createElement('div');
-    } else {
-      this.container = document.getElementById('root');
-      if (!this.container) {
-        console.error('未找到根节点');
-      }
+    this.container = document.getElementById('root');
+    if (!this.container) {
+      console.error('未找到根节点');
     }
   }
 

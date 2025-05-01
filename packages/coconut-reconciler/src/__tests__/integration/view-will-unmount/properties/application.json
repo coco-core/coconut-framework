@@ -1,0 +1,8 @@
+{
+  "Render": {
+    "qualifier": "TestWebRender"
+  },
+  "Router": {
+    "boot": true
+  }
+}

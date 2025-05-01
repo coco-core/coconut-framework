@@ -98,11 +98,11 @@ export const scanPathConfig = [
     decorator: '@component',
   },
   {
-    // 服务
+    // 接口
     type: PATH_TYPE.FOLDER,
-    path: Project.SERVICE_DIR,
+    path: Project.API_DIR,
     fileExt: '.ts',
-    decorator: '@service',
+    decorator: '@api',
   },
   {
     // 视图

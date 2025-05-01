@@ -1,24 +1,42 @@
-import Route from '../metadata/route.ts';
+import RouteClass from '../metadata/route.ts';
+import DynamicRoute from './dynamic-route.ts';
 
+type Route = string | DynamicRoute;
 class RouteComponentMapper {
-  mapper = new Map();
+  mapper: Map<Route, Class<any>> = new Map();
 
-  init(map: Map<Class<any>, Route>) {
+  init(map: Map<Class<any>, RouteClass>) {
     for (const [pageComponent, route] of map.entries()) {
-      this.set(route.value, pageComponent);
+      if (route.value.includes(':')) {
+        this.add(new DynamicRoute(route.value), pageComponent);
+      } else {
+        this.add(route.value, pageComponent);
+      }
     }
   }
 
-  private set(url: string, PageComponent: Class<any>) {
-    if (this.mapper.has(url)) {
-      console.error('重复的URL', url);
+  private add(routeUrl: Route, PageComponent: Class<any>) {
+    if (this.mapper.has(routeUrl)) {
+      console.error('重复的URL', routeUrl);
     } else {
-      this.mapper.set(url, PageComponent);
+      this.mapper.set(routeUrl, PageComponent);
     }
   }
 
-  get(url: string): any {
-    return this.mapper.get(url);
+  match(url: string): any {
+    for (const [route, pageComponent] of this.mapper.entries()) {
+      if (typeof route === 'string') {
+        if (route === url) {
+          return { pageComponent };
+        }
+      } else {
+        const params = route.match(url);
+        if (params) {
+          return { pageComponent, params };
+        }
+      }
+    }
+    return {};
   }
 }
 
