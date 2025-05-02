@@ -8,8 +8,8 @@ import {
 } from './decorator-context.ts';
 import { get, NAME } from 'shared';
 import { lowercaseFirstLetter, once } from '../share/util.ts';
-import type { PostConstructFn } from '../ioc-container/ioc-component-definition.ts';
-import { addDecoratorParams } from '../ioc-container/decorator-params.ts';
+import type { PostConstructFn } from './ioc-component-definition.ts';
+import { addDecoratorParams } from './decorator-params.ts';
 
 interface Option {
   optional?: true;

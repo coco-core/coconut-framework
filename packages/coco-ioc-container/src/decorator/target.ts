@@ -3,8 +3,8 @@ import {
   KindClass,
   KindField,
   KindMethod,
-} from './decorator-context.ts';
-import { createDecoratorExpByName } from './create-decorator-exp.ts';
+} from '../ioc-container/decorator-context.ts';
+import { createDecoratorExpByName } from '../ioc-container/create-decorator-exp.ts';
 
 export enum Type {
   Class = KindClass,

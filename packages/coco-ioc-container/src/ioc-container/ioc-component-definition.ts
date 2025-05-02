@@ -3,7 +3,7 @@ import {
   KindClass,
   KindField,
   KindMethod,
-} from '../decorator/decorator-context.ts';
+} from './decorator-context.ts';
 import { getClassMetadata, getFieldMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
 import type { Metadata } from 'coco-ioc-container';

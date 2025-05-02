@@ -1,6 +1,6 @@
 import { isPlainObject } from '../share/util.ts';
 import Metadata, { defaultProp } from '../metadata/metadata.ts';
-import { type Field } from '../decorator/decorator-context.ts';
+import { type Field } from './decorator-context.ts';
 import { register, NAME } from 'shared';
 import Component from '../metadata/component.ts';
 

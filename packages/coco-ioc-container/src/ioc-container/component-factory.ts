@@ -8,11 +8,7 @@ import IocComponentDefinition, {
 import { Scope } from '../metadata/component.ts';
 import { findComponentMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
-import {
-  KindClass,
-  KindField,
-  KindMethod,
-} from '../decorator/decorator-context.ts';
+import { KindClass, KindField, KindMethod } from './decorator-context.ts';
 import { isChildClass, uppercaseFirstLetter } from '../share/util.ts';
 
 type Id = string;

@@ -1,4 +1,4 @@
-import { createDecoratorExp } from './create-decorator-exp.ts';
+import { createDecoratorExp } from '../ioc-container/create-decorator-exp.ts';
 import Init from '../metadata/init.ts';
 
 export default createDecoratorExp<undefined, ClassMethodDecoratorContext>(

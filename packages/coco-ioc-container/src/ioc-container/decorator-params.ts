@@ -4,7 +4,7 @@ import {
   type Kind,
   KindClass,
   KindField,
-} from '../decorator/decorator-context.ts';
+} from './decorator-context.ts';
 import Metadata from '../metadata/metadata.ts';
 
 type params = {

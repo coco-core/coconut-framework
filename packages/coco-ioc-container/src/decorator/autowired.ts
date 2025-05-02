@@ -1,4 +1,4 @@
-import { createDecoratorExp } from './create-decorator-exp.ts';
+import { createDecoratorExp } from '../ioc-container/create-decorator-exp.ts';
 import type ApplicationContext from '../ioc-container/application-context.ts';
 import Autowired, { Args } from '../metadata/autowired.ts';
 

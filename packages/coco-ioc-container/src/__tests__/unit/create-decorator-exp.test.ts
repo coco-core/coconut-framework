@@ -1,7 +1,7 @@
 import {
   createDecoratorExp,
   createDecoratorExpByName,
-} from '../../decorator/create-decorator-exp.ts';
+} from '../../ioc-container/create-decorator-exp.ts';
 
 describe('create-decorator-exp:createDecoratorExp', () => {
   beforeEach(async () => {});
@@ -73,7 +73,7 @@ describe('create-decorator-exp:createDecoratorExpByName', () => {
     jest.resetModules();
   });
 
-  test('createDecoratorExp第一个参数使用字符串', async () => {
+  test('createDecoratorExpByName第一个参数使用字符串', async () => {
     let shouldThrowError = false;
     try {
       createDecoratorExpByName('abc');
@@ -94,7 +94,7 @@ describe('create-decorator-exp:createDecoratorExpByName', () => {
     expect(shouldThrowError).toBe(true);
   });
 
-  test('createDecoratorExp第一个参数不能使用对象', async () => {
+  test('createDecoratorExpByName第一个参数不能使用对象', async () => {
     let shouldThrowError = false;
     try {
       // @ts-ignore
