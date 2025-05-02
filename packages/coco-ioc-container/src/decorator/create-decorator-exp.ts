@@ -31,6 +31,12 @@ function createDecoratorExp<UserParam, C extends Context>(
   metadataCls: Class<any>,
   option: Option = {}
 ): (userParam: UserParam) => Decorator<C> {
+  if (
+    typeof metadataCls !== 'function' ||
+    !metadataCls.toString().includes('class')
+  ) {
+    throw new Error('createDecoratorExp的第一个参数类型是类');
+  }
   return doCreateDecoratorExp(metadataCls, option);
 }
 // 适用于装饰器装饰自己元数据类，且useParams是必填的场景
@@ -47,6 +53,11 @@ function createDecoratorExpByName<UserParam, C extends Context>(
   decoratorName: string,
   option: Option = {}
 ): (userParam: UserParam, decorateSelf?: true) => Decorator<C> {
+  if (typeof decoratorName !== 'string') {
+    throw new Error(
+      'createDecoratorExpByName的第一个参数类型是字符串，表示装饰器的名字'
+    );
+  }
   return doCreateDecoratorExp(decoratorName, option);
 }
 function doCreateDecoratorExp<UserParam, C extends Context>(

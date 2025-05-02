@@ -4,4 +4,5 @@ declare const __TEST__: boolean;
 
 declare interface Class<T> {
   new (...args: any): T;
+  toString(): string;
 }
