@@ -15,6 +15,7 @@ module.exports = {
     '@cocojs/cli$': '<rootDir>/packages/coco-cli/dist/__tests__/index.js',
   },
   globals: {
+    __DEV__: false,
     __TEST__: true,
   },
 };

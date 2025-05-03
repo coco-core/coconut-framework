@@ -9,7 +9,7 @@ import {
   KindAccessor,
 } from './decorator-context.ts';
 import { get, NAME } from 'shared';
-import { lowercaseFirstLetter, once } from '../share/util.ts';
+import { isClass, lowercaseFirstLetter, once } from '../share/util.ts';
 import type { PostConstructFn } from './ioc-component-definition.ts';
 import { addDecoratorParams } from './decorator-params.ts';
 
@@ -119,10 +119,7 @@ function createDecoratorExp<UserParam, C extends Context>(
   metadataCls: Class<any>,
   option: Option = {}
 ): (userParam: UserParam) => Decorator<C> {
-  if (
-    typeof metadataCls !== 'function' ||
-    !metadataCls.toString().includes('class')
-  ) {
+  if (!isClass(metadataCls)) {
     throw new Error('createDecoratorExp的第一个参数类型是类');
   }
   return doCreateDecoratorExp(metadataCls, option);

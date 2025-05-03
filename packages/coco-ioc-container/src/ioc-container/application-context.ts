@@ -15,9 +15,8 @@ import {
 import {
   get,
   clear as clearDecoratorParams,
-  getClassAndClasClassDecorator,
+  isIncludesClassDecorator,
   addDecoratorParams,
-  getFieldDecorator,
 } from './decorator-params.ts';
 import {
   ClassPostConstructFn,
@@ -154,7 +153,7 @@ class ApplicationContext {
     beDecoratedCls: Class<any>,
     Target: Class<any>
   ) {
-    return getClassAndClasClassDecorator(beDecoratedCls, Target, 3);
+    return isIncludesClassDecorator(beDecoratedCls, Target, 2);
   }
 
   private buildIocComponentDefinition() {
