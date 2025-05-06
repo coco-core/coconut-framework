@@ -1,4 +1,4 @@
-import Metadata from '../metadata/metadata.ts';
+import Metadata from './abstract/metadata.ts';
 import Target from './target.ts';
 import target from '../decorator/target.ts';
 

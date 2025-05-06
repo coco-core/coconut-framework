@@ -9,7 +9,7 @@ import {
   listClassMetadata,
   listFieldMetadata,
 } from '../../ioc-container/metadata.ts';
-import Metadata, { createMetadata } from '../../metadata/metadata.ts';
+import Metadata, { createMetadata } from '../../metadata/abstract/metadata.ts';
 import { createDecoratorExp } from '../../ioc-container/create-decorator-exp.ts';
 
 describe('metadata/metadata', () => {

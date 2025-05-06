@@ -1,4 +1,4 @@
-export { default as Metadata } from './metadata/metadata.ts';
+export { default as Metadata } from './metadata/abstract/metadata.ts';
 export { default as Autowired } from './metadata/autowired.ts';
 export { default as autowired } from './decorator/autowired.ts';
 export { default as Component } from './metadata/component.ts';

@@ -1,6 +1,6 @@
 import { register, NAME } from 'shared';
 import { getMetadata, getAllMetadata } from '../ioc-container/metadata.ts';
-import Metadata from '../metadata/metadata.ts';
+import Metadata from '../metadata/abstract/metadata.ts';
 import { isEqual } from './is-equal.ts';
 
 const order = [];

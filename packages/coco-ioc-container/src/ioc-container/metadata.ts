@@ -1,4 +1,4 @@
-import Metadata, { createMetadata } from '../metadata/metadata.ts';
+import Metadata, { createMetadata } from '../metadata/abstract/metadata.ts';
 import { type Field } from './decorator-context.ts';
 import { register, NAME } from 'shared';
 

@@ -1,4 +1,4 @@
-import Metadata from './metadata.ts';
+import Metadata from './abstract/metadata.ts';
 import target, { Type } from '../decorator/target.ts';
 
 @target([Type.Class], true)

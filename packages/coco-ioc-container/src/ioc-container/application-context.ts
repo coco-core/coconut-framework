@@ -24,7 +24,7 @@ import {
   genFieldPostConstruct,
   genMethodPostConstruct,
 } from './ioc-component-definition.ts';
-import Metadata from '../metadata/metadata.ts';
+import Metadata from '../metadata/abstract/metadata.ts';
 import { KindClass, KindField, KindMethod } from './decorator-context.ts';
 import Component from '../metadata/component.ts';
 import type { Scope } from '../metadata/component.ts';

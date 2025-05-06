@@ -1,4 +1,4 @@
-import { isPlainObject } from '../share/util.ts';
+import { isPlainObject } from '../../share/util.ts';
 
 const defaultProp = 'value';
 /**
@@ -31,12 +31,12 @@ export function createMetadata(
   } else if (args !== undefined) {
     /**
      * 使用装饰器第一个参数不是对象（例如：基础数据类型或数组），则使用单属性赋值：
-     * 如果getOwnPropertyNames返回非空数据（需要赋值undefined），则赋值给第一个prop；空数组就赋值给prop为'value'。
+     * 如果getOwnPropertyNames返回非空数组，则赋值给第一个prop；空数组就赋值给prop为'value'。
      * 举例：
      * 装饰器这样使用：@person('张三')
      ** 如果元数据定义如下：
      * class Person extends Metadata {
-     *   name: string = undefined;
+     *   name: string = undefined; // 如果希望getOwnPropertyNames返回非空数组，需要在定义field时赋初始值
      * }
      * 则生成的元数据为：
      * {
