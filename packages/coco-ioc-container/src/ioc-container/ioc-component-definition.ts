@@ -4,7 +4,7 @@ import {
   KindField,
   KindMethod,
 } from './decorator-context.ts';
-import { getClassMetadata, getFieldMetadata } from './metadata.ts';
+import { listClassMetadata, listFieldMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
 import type { Metadata } from 'coco-ioc-container';
 
@@ -106,7 +106,7 @@ export function createComponent(
   for (const pc of componentDefinition.postConstruct) {
     switch (pc.kind) {
       case KindClass: {
-        const metadata = getClassMetadata(cls, pc.metadataCls);
+        const metadata = listClassMetadata(cls, pc.metadataCls);
         if (metadata.length === 1) {
           pc.fn.call(component, metadata[0], appCtx);
         } else {
@@ -118,7 +118,7 @@ export function createComponent(
       }
       case KindField:
       case KindMethod: {
-        const metadata = getFieldMetadata(cls, pc.field, pc.metadataCls);
+        const metadata = listFieldMetadata(cls, pc.field, pc.metadataCls);
         if (metadata.length === 1) {
           pc.fn.call(component, metadata[0], appCtx, pc.field);
         } else {

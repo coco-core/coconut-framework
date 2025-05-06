@@ -5,8 +5,8 @@ import IocComponentDefinition, {
   PostConstruct,
   PostConstructFn,
 } from './ioc-component-definition.ts';
-import { Scope } from '../metadata/component.ts';
-import { findComponentMetadata } from './metadata.ts';
+import Component, { Scope } from '../metadata/component.ts';
+import { findClassMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
 import { KindClass, KindField, KindMethod } from './decorator-context.ts';
 import { isChildClass, uppercaseFirstLetter } from '../share/util.ts';
@@ -170,7 +170,7 @@ function getComponent<T>(
     }
   }
   const cls = definition.cls;
-  const metadata = findComponentMetadata(cls);
+  const metadata = findClassMetadata(cls, Component, 2);
   const isSingleton = metadata.scope === Scope.Singleton;
   if (isSingleton && singletonInstances.has(cls)) {
     return singletonInstances.get(cls);

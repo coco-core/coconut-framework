@@ -46,7 +46,7 @@ export function addDecoratorParams(beDecoratedCls: Class<any>, params: params) {
  * 被装饰类的类装饰器是否包含了某元数据类
  * @param beDecoratedCls
  * @param targetMetadataCls
- * @param findMetadataCls 用于设置继续在类装饰器的元数据的类装饰器上继续查找
+ * @param upward 用于设置继续在类装饰器的元数据的类装饰器上继续查找
  * 如果设置0（默认），表示只查找 beDecoratedCls的类装饰器
  * 如果设置1，表示还会查找beDecoratedCls的类装饰器 的元数据的类装饰器
  * 如果设置2，表示还会查找beDecoratedCls的类装饰器 的元数据的类装饰器 的元数据的类装饰器
@@ -55,9 +55,9 @@ export function addDecoratorParams(beDecoratedCls: Class<any>, params: params) {
 export function isIncludesClassDecorator(
   beDecoratedCls: Class<any>,
   targetMetadataCls: Class<any>,
-  findMetadataCls: number = 0
+  upward: number = 0
 ): boolean {
-  if (findMetadataCls < 0) {
+  if (upward < 0) {
     return false;
   }
 
@@ -81,7 +81,7 @@ export function isIncludesClassDecorator(
     const find = isIncludesClassDecorator(
       classDecoratorParam.metadataClass,
       targetMetadataCls,
-      findMetadataCls - 1
+      upward - 1
     );
     if (find) {
       return true;

@@ -1,17 +1,15 @@
-import { isPlainObject } from '../share/util.ts';
-import Metadata, { defaultProp } from '../metadata/metadata.ts';
+import Metadata, { createMetadata } from '../metadata/metadata.ts';
 import { type Field } from './decorator-context.ts';
 import { register, NAME } from 'shared';
-import Component from '../metadata/component.ts';
 
 type MetadataSet = Array<{ metadata: Metadata; dependencies?: MetadataSet }>;
 
-// 元数据类的元数据
+// 元数据子类的元数据
 const metadataForMetadata: Map<
   Class<Metadata>,
   { classMetadata: Metadata[] }
 > = new Map();
-// 业务类的元数据
+// 非元数据子类（业务类）的元数据
 const metadataForBizClass: Map<
   Class<any>,
   {
@@ -20,6 +18,47 @@ const metadataForBizClass: Map<
   }
 > = new Map();
 
+function getFromMap(Cls: Class<any>) {
+  const value: {
+    classMetadata: Metadata[];
+    fieldMetadata?: Map<Field, Metadata[]>;
+  } =
+    Object.getPrototypeOf(Cls) === Metadata
+      ? metadataForMetadata.get(Cls)
+      : metadataForBizClass.get(Cls);
+  if (!value) {
+    if (__DEV__) {
+      console.error(
+        `未注册的组件：`,
+        Cls,
+        Object.getPrototypeOf(Cls),
+        Metadata,
+        metadataForMetadata,
+        metadataForBizClass
+      );
+    }
+  }
+  return value;
+}
+
+function addToMap(cls: Class<any>) {
+  let config;
+  if (Object.getPrototypeOf(cls) === Metadata) {
+    config = metadataForMetadata.get(cls);
+    if (!config) {
+      config = { classMetadata: [] };
+      metadataForMetadata.set(cls, config);
+    }
+  } else {
+    config = metadataForBizClass.get(cls);
+    if (!config) {
+      config = { classMetadata: [], fieldMetadata: new Map() };
+      metadataForBizClass.set(cls, config);
+    }
+  }
+  return config;
+}
+
 function existSameMetadata(
   exited: Metadata[],
   metadataCls: Class<Metadata>
@@ -27,41 +66,16 @@ function existSameMetadata(
   return exited.some((i) => i instanceof metadataCls);
 }
 
-function createMetadata(metadataCls: Class<Metadata>, args?: any): Metadata {
-  const metadata = new metadataCls();
-  if (isPlainObject(args)) {
-    for (const key of Object.getOwnPropertyNames(args)) {
-      metadata[key] = args[key];
-    }
-  } else if (args !== undefined) {
-    const keys = Object.getOwnPropertyNames(metadata);
-    const propName = keys.length ? keys[0] : defaultProp;
-    (metadata as any)[propName] = args;
-  }
-  return metadata;
-}
-
 function addClassMetadata(
   cls: Class<any>,
   MetadataCls?: Class<Metadata>,
   args?: any
 ) {
-  let classMetadata: Metadata[];
-  if (Object.getPrototypeOf(cls) === Metadata) {
-    let config = metadataForMetadata.get(cls);
-    if (!config) {
-      config = { classMetadata: [] };
-      metadataForMetadata.set(cls, config);
-    }
-    classMetadata = config.classMetadata;
-  } else {
-    let config = metadataForBizClass.get(cls);
-    if (!config) {
-      config = { classMetadata: [], fieldMetadata: new Map() };
-      metadataForBizClass.set(cls, config);
-    }
-    classMetadata = config.classMetadata;
+  let config = getFromMap(cls);
+  if (!config) {
+    config = addToMap(cls);
   }
+  const classMetadata: Metadata[] = config.classMetadata;
   if (MetadataCls) {
     if (__DEV__ && existSameMetadata(classMetadata, MetadataCls)) {
       console.warn(`${cls}已经存在相同的注解【${MetadataCls}】，忽略`);
@@ -72,19 +86,20 @@ function addClassMetadata(
   }
 }
 
-function addFieldMethodMetadata(
+function addFieldOrMethodMetadata(
   Cls: Class<any>,
   fieldName: Field,
   MetadataCls: Class<Metadata>,
   args?: any
 ) {
-  if (__DEV__) {
-    if (!metadataForBizClass.has(Cls)) {
-      console.error('需要先给组件【', Cls, '】添加注解，字段注解才能生效');
-      return;
-    }
+  let config = getFromMap(Cls);
+  if (!config) {
+    config = addToMap(Cls);
   }
-  const { fieldMetadata } = metadataForBizClass.get(Cls);
+  if (Object.getPrototypeOf(Cls) === Metadata) {
+    throw new Error('目前元数据的类只支持类装饰器');
+  }
+  const { fieldMetadata } = config;
   let fieldMetas = fieldMetadata.get(fieldName);
   if (!fieldMetas) {
     fieldMetas = [];
@@ -100,12 +115,81 @@ function addFieldMethodMetadata(
 }
 
 /**
- * 返回包含特定元数据的所有field
+ * 获取指定类的类元数据
+ * @param Cls 指定类
+ * @param findMetadataCls 如果不指定，返回全部；否则进行列表过滤
+ */
+function listClassMetadata(Cls: Class<any>, findMetadataCls?: Class<any>) {
+  const value = getFromMap(Cls);
+  if (!value) {
+    return [];
+  }
+
+  return value.classMetadata.filter((i) => {
+    return findMetadataCls ? i instanceof findMetadataCls : true;
+  });
+}
+
+/**
+ * 获取指定类的指定field（method）的元数据
+ * @param Cls 指定类
+ * @param field 指定field名或method名
+ * @param findMetadataCls 如果不指定，返回全部；否则进行列表过滤
+ */
+function listFieldMetadata(
+  Cls: Class<any>,
+  field: Field,
+  findMetadataCls?: Class<any>
+) {
+  const value = getFromMap(Cls);
+  if (!value) {
+    return [];
+  }
+  return value.fieldMetadata.get(field).filter((i) => {
+    return findMetadataCls ? i instanceof findMetadataCls : true;
+  });
+}
+
+/**
+ * 在类的所有类元数据中递归查找某个元数据类，找到就直接返回
+ */
+function findClassMetadata(
+  Cls: Class<any>,
+  TargetCls: Class<any>,
+  upward: number = 0
+) {
+  if (upward < 0) {
+    return null;
+  }
+  const classMetadataList = listClassMetadata(Cls);
+  if (!classMetadataList) {
+    return null;
+  }
+  const instance = classMetadataList.find((i) => i instanceof TargetCls);
+  if (instance) {
+    return instance;
+  }
+  for (const metadata of classMetadataList) {
+    const find = findClassMetadata(
+      <Class<any>>metadata.constructor,
+      TargetCls,
+      upward - 1
+    );
+    if (find) {
+      return find;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * 返回包含特定元数据类的所有field
  * @param Cls 指定类
  * @param MetadataCls 要包含的元数据类
  * @param includeCompound 是否也返回包含了MetadataCls的元数据
  */
-function getFields(
+function listFieldByMetadataCls(
   Cls: Class<any>,
   MetadataCls: Class<any>,
   includeCompound: boolean = false
@@ -129,87 +213,10 @@ function getFields(
   }
   return fields;
 }
-register(NAME.getFields, getFields);
-
-// 获取特定field的所有元数据
-function getFieldMetadata(
-  Cls: Class<any>,
-  field: Field,
-  MetadataCls: Class<any>
-) {
-  const def = metadataForBizClass.get(Cls);
-  if (!def) {
-    return [];
-  }
-  return def.fieldMetadata.get(field).filter((i) => i instanceof MetadataCls);
-}
-
-function getClassMetadata(Cls: Class<any>, MetadataCls: Class<any>) {
-  const def = metadataForBizClass.get(Cls);
-  if (!def) {
-    return [];
-  }
-  return def.classMetadata.filter((i) => i instanceof MetadataCls);
-}
-
-/**
- * 找到Cls上面的所有类元数据
- */
-function getClsMetadata(Cls: Class<any>): Metadata[] | null {
-  const configs =
-    Object.getPrototypeOf(Cls) === Metadata
-      ? metadataForMetadata.get(Cls)
-      : metadataForBizClass.get(Cls);
-  if (!configs) {
-    if (__DEV__) {
-      console.error(
-        `未注册的组件：`,
-        Cls,
-        Object.getPrototypeOf(Cls),
-        Metadata,
-        metadataForMetadata,
-        metadataForBizClass
-      );
-    }
-    return null;
-  }
-  return configs.classMetadata;
-}
-
-// 找到component元数据，同样也找元数据对应的类是否包含component元数据
-function findComponentMetadata(Cls: Class<any>): Component | null {
-  return doFindComponentMetadata(Cls, 3);
-}
-function doFindComponentMetadata(
-  Cls: Class<any>,
-  level: number = 0
-): Component | null {
-  if (level <= 0) {
-    return null;
-  }
-  const classMetadataList = getClsMetadata(Cls);
-  if (!classMetadataList) {
-    return null;
-  }
-  const component = classMetadataList.find((i) => i instanceof Component);
-  if (component) {
-    return component as Component;
-  }
-  for (const metadata of classMetadataList) {
-    const find = doFindComponentMetadata(
-      <Class<any>>metadata.constructor,
-      level - 1
-    );
-    if (find) {
-      return find;
-    }
-  }
-
-  return null;
-}
+register(NAME.getFields, listFieldByMetadataCls);
 
 // 找到特定类装饰器
-function getByClassMetadata(
+function listBeDecoratedClsByClassMetadata(
   MetadataCls: Class<any>
 ): Map<Class<any>, Metadata> {
   const rlt = new Map<Class<any>, Metadata>();
@@ -226,7 +233,7 @@ function getByClassMetadata(
 }
 
 // 指定一个元数据类，找到所有在field上装饰的类
-function getByFieldMetadata(
+function listBeDecoratedClsByFieldMetadata(
   MetadataCls: Class<any>
 ): Map<Class<any>, { field: Field; metadata: Metadata }> {
   const rlt = new Map<Class<any>, { field: Field; metadata: Metadata }>();
@@ -287,13 +294,13 @@ function getAllMetadata() {
 
 export {
   addClassMetadata,
-  addFieldMethodMetadata,
-  findComponentMetadata,
-  getFields,
-  getFieldMetadata,
-  getClassMetadata,
-  getByClassMetadata,
-  getByFieldMetadata,
+  addFieldOrMethodMetadata,
+  listClassMetadata,
+  listFieldMetadata,
+  findClassMetadata,
+  listFieldByMetadataCls,
+  listBeDecoratedClsByClassMetadata,
+  listBeDecoratedClsByFieldMetadata,
   clear,
   getMetadata,
   getAllMetadata,
