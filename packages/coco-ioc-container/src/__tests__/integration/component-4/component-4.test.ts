@@ -4,7 +4,7 @@ const { pkgPath, cocoIdxStr } = _test_helper.iocContainer.pkgPath;
 
 let ApplicationContext;
 let throwError;
-describe('不能同时添加一个component装饰器和一个component的复合装饰器', () => {
+describe('不能同时添加一个component装饰器和一个component的复合装饰器的复合装饰器', () => {
   beforeEach(async () => {
     try {
       cli_helper.prepareBuild(pkgPath(__dirname));
@@ -20,7 +20,7 @@ describe('不能同时添加一个component装饰器和一个component的复合�
     throwError = false;
   });
 
-  test('不能同时添加一个component装饰器和一个component的复合装饰器', async () => {
+  test('不能同时添加一个component的复合装饰器和一个component的复合装饰器的复合装饰器', async () => {
     expect(throwError).toBe(true);
   });
 });

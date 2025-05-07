@@ -79,7 +79,7 @@ describe('decorator-params', () => {
     expect(f2).toBe(false);
   });
 
-  test('isIncludesClassDecorator通过通过设置查找装饰器对应的元数据的类装饰器', async () => {
+  test('isIncludesClassDecorator通过设置查找装饰器对应的元数据的类装饰器', async () => {
     const create = createDecoratorExpFactory(addDecoratorParams);
 
     class MetaMetaMeta {}

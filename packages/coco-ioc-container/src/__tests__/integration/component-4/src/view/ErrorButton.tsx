@@ -1,7 +1,7 @@
-import { component, view } from 'coco-mvc';
+import { page, view } from 'coco-mvc';
 
+@page()
 @view()
-@component()
 class ErrorButton {
   name;
 }

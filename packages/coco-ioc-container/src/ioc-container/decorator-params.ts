@@ -1,11 +1,7 @@
 import type { PostConstructFn } from './ioc-component-definition.ts';
-import {
-  type Field,
-  type Kind,
-  KindClass,
-  KindField,
-} from './decorator-context.ts';
+import { type Field, type Kind, KindClass } from './decorator-context.ts';
 import { isClass } from '../share/util.ts';
+import { get as getFromShare, NAME } from 'shared';
 
 type params = {
   decoratorName?: string;
@@ -22,6 +18,18 @@ type params = {
 };
 const decoratorParamMap: Map<Class<any>, params[]> = new Map();
 
+function isComponentSubMetadata(p: params, upward: number = 2) {
+  if (upward < 0) {
+    return false;
+  }
+  const Component = getFromShare(NAME.Component);
+  if (p.metadataKind === KindClass && p.metadataClass === Component) {
+    return true;
+  } else {
+    const params = decoratorParamMap.get(p.metadataClass) || [];
+    return !!params.find((p) => isComponentSubMetadata(p, upward - 1));
+  }
+}
 /**
  * 保存装饰器参数
  * @param beDecoratedCls 被装饰的类
@@ -39,6 +47,13 @@ export function addDecoratorParams(beDecoratedCls: Class<any>, params: params) {
     decoratorParamMap.set(beDecoratedCls, []);
   }
   const paramsList = decoratorParamMap.get(beDecoratedCls);
+  const isComponent = isComponentSubMetadata(params);
+  const hadComponent = !!paramsList.find((p) => isComponentSubMetadata(p));
+  if (isComponent && hadComponent) {
+    throw new Error(
+      '一个类只能添加一个component装饰器，包含component复合装饰器！'
+    );
+  }
   paramsList.push(params);
 }
 
