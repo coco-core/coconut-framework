@@ -16,21 +16,24 @@ function genRollupConfig (inputConfig) {
         __DEV__: false,
         __TEST__: process.env.NODE_ENV === 'test',
       }),
-      babel({
-        plugins: [
-          ["@babel/plugin-proposal-decorators", { version: "2023-11" }]
-        ]
-      }),
       typescript({
         compilerOptions: {
-          "target": "es2015",
-          "lib": ["dom", "es2015"],
+          "target": "ESNext",
+          "lib": ["dom"],
+          "module": 'ESNext',
           "declaration": true,
           "declarationDir": "./types",
           "plugins": [
             { transform: "@cocojs/typescript-transformer", transformProgram: true }
           ]
       }}),
+      babel({
+        extensions: ['.js', '.ts', '.tsx'],
+        presets: ['@babel/preset-env'],
+        plugins: [
+          ["@babel/plugin-proposal-decorators", { version: "2023-11" }]
+        ]
+      }),
       aliasPlugin({
         entries: genEntries(alias)
       }),

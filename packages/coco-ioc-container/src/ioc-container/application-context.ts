@@ -45,7 +45,7 @@ class ApplicationContext {
   constructor(jsonConfig: Record<string, any> = {}) {
     this.propertiesConfig = new PropertiesConfig(jsonConfig);
     {
-      this.recordFieldOrMethodDecoratorParams();
+      this.addFieldOrMethodDecoratorParams();
       this.addAtComponentDecoratorParams();
       this.validateTarget();
       this.buildMetadata();
@@ -105,7 +105,7 @@ class ApplicationContext {
    * 实例化所有业务类（非元数据类），拿到field和method装饰器参数
    * @private
    */
-  private recordFieldOrMethodDecoratorParams() {
+  private addFieldOrMethodDecoratorParams() {
     for (const Cls of get().keys()) {
       if (Object.getPrototypeOf(Cls) !== Metadata) {
         new Cls();

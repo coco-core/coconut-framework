@@ -6,7 +6,7 @@ module.exports = {
     if (filename.endsWith('.ts') || filename.endsWith('.tsx')) {
       const { outputText } = ts.transpileModule(src, {
         compilerOptions: {
-          target: 'ESNext',
+          target: 'es2015',
           lib: ['dom'],
           module: 'ESNext',
           moduleResolution: 'node',
@@ -24,7 +24,7 @@ module.exports = {
       });
 
       const transformer = babelJest.createTransformer({
-        presets: ['@babel/preset-env', '@babel/preset-typescript'],
+        presets: [['@babel/preset-env']],
         plugins: [
           ['@babel/plugin-proposal-decorators', { version: '2023-11' }],
           [

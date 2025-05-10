@@ -48,7 +48,6 @@ describe('metadata/metadata', () => {
     }
     const m = createMetadata(M, '李四');
     expect(m).toBeInstanceOf(M);
-    const m1 = new M();
     expect(m['name']).toBe('李四');
   });
 
@@ -58,7 +57,6 @@ describe('metadata/metadata', () => {
     }
     const m = createMetadata(M, '李四');
     expect(m).toBeInstanceOf(M);
-    const m1 = new M();
     expect(m['name']).toBe('李四');
   });
 

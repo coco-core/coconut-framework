@@ -48,16 +48,23 @@ function addPostConstruct(cls: Class<any>, pc: PostConstruct) {
   }
   switch (pc.kind) {
     case KindClass:
-      if (definition.postConstruct.find((i) => i.fn === pc.fn)) {
+      if (
+        definition.postConstruct.find((i) => i.metadataCls === pc.metadataCls)
+      ) {
         if (__TEST__) {
-          throw new Error('重复的postConstruct');
+          throw new Error('一个类装饰器只能有一个对应的postConstruct');
         }
       }
       break;
     case KindField: {
       const pcs = definition.postConstruct as FieldPostConstruct[];
       const fieldPc = pc as FieldPostConstruct;
-      if (pcs.find((i) => i.fn === fieldPc.fn && i.field === fieldPc.field)) {
+      if (
+        pcs.find(
+          (i) =>
+            i.metadataCls === fieldPc.metadataCls && i.field === fieldPc.field
+        )
+      ) {
         if (__TEST__) {
           throw new Error('重复的postConstruct');
         }
@@ -67,7 +74,12 @@ function addPostConstruct(cls: Class<any>, pc: PostConstruct) {
     case KindMethod: {
       const pcs = definition.postConstruct as MethodPostConstruct[];
       const fieldPc = pc as MethodPostConstruct;
-      if (pcs.find((i) => i.fn === fieldPc.fn && i.field === fieldPc.field)) {
+      if (
+        pcs.find(
+          (i) =>
+            i.metadataCls === fieldPc.metadataCls && i.field === fieldPc.field
+        )
+      ) {
         if (__TEST__) {
           throw new Error('重复的postConstruct');
         }
