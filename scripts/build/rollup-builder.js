@@ -5,6 +5,7 @@ const typescript = require('@rollup/plugin-typescript');
 const aliasPlugin = require('@rollup/plugin-alias');
 const genEntries = require('./rollup-alias').genEntries;
 const modifyDeclareImport = require('./modify-declare-import');
+const { typescriptOptions, babelOptions } = require('../shared/common-compiler-option')
 
 function genRollupConfig (inputConfig) {
   const { input, alias } = inputConfig
@@ -18,21 +19,13 @@ function genRollupConfig (inputConfig) {
       }),
       typescript({
         compilerOptions: {
-          "target": "ESNext",
-          "lib": ["dom"],
-          "module": 'ESNext',
-          "declaration": true,
-          "declarationDir": "./types",
-          "plugins": [
-            { transform: "@cocojs/typescript-transformer", transformProgram: true }
-          ]
+          declaration: true,
+          declarationDir: "./types",
+          ...typescriptOptions
       }}),
       babel({
         extensions: ['.js', '.ts', '.tsx'],
-        presets: ['@babel/preset-env'],
-        plugins: [
-          ["@babel/plugin-proposal-decorators", { version: "2023-11" }]
-        ]
+        ...babelOptions,
       }),
       aliasPlugin({
         entries: genEntries(alias)
