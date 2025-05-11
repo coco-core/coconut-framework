@@ -1,6 +1,6 @@
-import { genDecorator } from 'coco-ioc-container';
+import { createDecoratorExp } from 'coco-ioc-container';
 import View from '../metadata/view.ts';
 
-export default genDecorator<string, ClassDecoratorContext>(View, {
+export default createDecoratorExp<string, ClassDecoratorContext>(View, {
   optional: true,
 });

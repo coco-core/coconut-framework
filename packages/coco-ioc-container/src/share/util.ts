@@ -72,3 +72,8 @@ export function once(fn?: () => void): (THIS: any) => void {
   onceFn.fn = fn;
   return onceFn;
 }
+
+// 判断入参是否是类
+export function isClass(v: any) {
+  return typeof v === 'function' && v.toString().includes('class');
+}

@@ -5,14 +5,10 @@ import IocComponentDefinition, {
   PostConstruct,
   PostConstructFn,
 } from './ioc-component-definition.ts';
-import { Scope } from '../metadata/component.ts';
-import { findComponentMetadata } from './metadata.ts';
+import Component, { Scope } from '../metadata/component.ts';
+import { findClassMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
-import {
-  KindClass,
-  KindField,
-  KindMethod,
-} from '../decorator/decorator-context.ts';
+import { KindClass, KindField, KindMethod } from './decorator-context.ts';
 import { isChildClass, uppercaseFirstLetter } from '../share/util.ts';
 
 type Id = string;
@@ -52,16 +48,23 @@ function addPostConstruct(cls: Class<any>, pc: PostConstruct) {
   }
   switch (pc.kind) {
     case KindClass:
-      if (definition.postConstruct.find((i) => i.fn === pc.fn)) {
+      if (
+        definition.postConstruct.find((i) => i.metadataCls === pc.metadataCls)
+      ) {
         if (__TEST__) {
-          throw new Error('重复的postConstruct');
+          throw new Error('一个类装饰器只能有一个对应的postConstruct');
         }
       }
       break;
     case KindField: {
       const pcs = definition.postConstruct as FieldPostConstruct[];
       const fieldPc = pc as FieldPostConstruct;
-      if (pcs.find((i) => i.fn === fieldPc.fn && i.field === fieldPc.field)) {
+      if (
+        pcs.find(
+          (i) =>
+            i.metadataCls === fieldPc.metadataCls && i.field === fieldPc.field
+        )
+      ) {
         if (__TEST__) {
           throw new Error('重复的postConstruct');
         }
@@ -71,7 +74,12 @@ function addPostConstruct(cls: Class<any>, pc: PostConstruct) {
     case KindMethod: {
       const pcs = definition.postConstruct as MethodPostConstruct[];
       const fieldPc = pc as MethodPostConstruct;
-      if (pcs.find((i) => i.fn === fieldPc.fn && i.field === fieldPc.field)) {
+      if (
+        pcs.find(
+          (i) =>
+            i.metadataCls === fieldPc.metadataCls && i.field === fieldPc.field
+        )
+      ) {
         if (__TEST__) {
           throw new Error('重复的postConstruct');
         }
@@ -174,7 +182,7 @@ function getComponent<T>(
     }
   }
   const cls = definition.cls;
-  const metadata = findComponentMetadata(cls);
+  const metadata = findClassMetadata(cls, Component, 2);
   const isSingleton = metadata.scope === Scope.Singleton;
   if (isSingleton && singletonInstances.has(cls)) {
     return singletonInstances.get(cls);

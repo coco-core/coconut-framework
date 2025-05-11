@@ -1,6 +1,6 @@
-import { genDecorator } from 'coco-ioc-container';
+import { createDecoratorExp } from 'coco-ioc-container';
 import Router from '../metadata/router.ts';
 
-export default genDecorator<string, ClassDecoratorContext>(Router, {
+export default createDecoratorExp<string, ClassDecoratorContext>(Router, {
   optional: true,
 });

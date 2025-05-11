@@ -1,4 +1,4 @@
-import genDecorator from './gen-decorator-exp.ts';
+import { createDecoratorExp } from '../ioc-container/create-decorator-exp.ts';
 import type ApplicationContext from '../ioc-container/application-context.ts';
 import Value from '../metadata/value.ts';
 
@@ -14,6 +14,6 @@ function postConstruct(
   this[name] = appCtx.propertiesConfig.getValue(path);
 }
 
-export default genDecorator<string, ClassFieldDecoratorContext>(Value, {
+export default createDecoratorExp<string, ClassFieldDecoratorContext>(Value, {
   postConstruct,
 });

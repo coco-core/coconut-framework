@@ -4,7 +4,7 @@ const { pkgPath, cocoIdxStr } = _test_helper.iocContainer.pkgPath;
 
 let ApplicationContext;
 let throwError;
-describe('decorator', () => {
+describe('不能同时添加一个component装饰器和一个component的复合装饰器', () => {
   beforeEach(async () => {
     try {
       cli_helper.prepareBuild(pkgPath(__dirname));
@@ -20,8 +20,7 @@ describe('decorator', () => {
     throwError = false;
   });
 
-  // todo 对target的校验
-  xtest('component作用到field上会报错', async () => {
+  test('不能同时添加一个component装饰器和一个component的复合装饰器', async () => {
     expect(throwError).toBe(true);
   });
 });

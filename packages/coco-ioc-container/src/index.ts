@@ -1,4 +1,4 @@
-export { default as Metadata } from './metadata/metadata.ts';
+export { default as Metadata } from './metadata/abstract/metadata.ts';
 export { default as Autowired } from './metadata/autowired.ts';
 export { default as autowired } from './decorator/autowired.ts';
 export { default as Component } from './metadata/component.ts';
@@ -17,5 +17,8 @@ export { default as Start } from './metadata/start.ts';
 export { default as start } from './decorator/start.ts';
 export { default as Value } from './metadata/value.ts';
 export { default as value } from './decorator/value.ts';
-export { default as genDecorator } from './decorator/gen-decorator-exp.ts';
+export {
+  createDecoratorExp,
+  createDecoratorExpByName,
+} from './ioc-container/create-decorator-exp.ts';
 export { default as ApplicationContext } from './ioc-container/application-context.ts';

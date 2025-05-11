@@ -3,8 +3,8 @@ import {
   KindClass,
   KindField,
   KindMethod,
-} from './decorator-context.ts';
-import genDecorator from './gen-decorator-exp.ts';
+} from '../ioc-container/decorator-context.ts';
+import { createDecoratorExpByName } from '../ioc-container/create-decorator-exp.ts';
 
 export enum Type {
   Class = KindClass,
@@ -14,5 +14,5 @@ export enum Type {
 
 type DecoratorArg = Type[];
 
-const target = genDecorator<DecoratorArg, Context>('target');
+const target = createDecoratorExpByName<DecoratorArg, Context>('target');
 export default target;

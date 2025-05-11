@@ -1,11 +1,7 @@
 import type { PostConstructFn } from './ioc-component-definition.ts';
-import {
-  type Field,
-  type Kind,
-  KindClass,
-  KindField,
-} from '../decorator/decorator-context.ts';
-import Metadata from '../metadata/metadata.ts';
+import { type Field, type Kind, KindClass } from './decorator-context.ts';
+import { isClass } from '../share/util.ts';
+import { get as getFromShare, NAME } from 'shared';
 
 type params = {
   decoratorName?: string;
@@ -22,14 +18,28 @@ type params = {
 };
 const decoratorParamMap: Map<Class<any>, params[]> = new Map();
 
+function isComponentSubMetadata(p: params, upward: number = 2) {
+  if (upward < 0) {
+    return false;
+  }
+  const Component = getFromShare(NAME.Component);
+  if (p.metadataKind === KindClass && p.metadataClass === Component) {
+    return true;
+  } else {
+    const params = decoratorParamMap.get(p.metadataClass) || [];
+    return !!params.find((p) => isComponentSubMetadata(p, upward - 1));
+  }
+}
 /**
  * 保存装饰器参数
  * @param beDecoratedCls 被装饰的类
  * @param params
  */
 export function addDecoratorParams(beDecoratedCls: Class<any>, params: params) {
-  if (!beDecoratedCls) {
-    console.error('错误的装饰目标类', beDecoratedCls);
+  if (!isClass(beDecoratedCls)) {
+    if (__DEV__) {
+      console.error('错误的装饰目标类', beDecoratedCls);
+    }
     return;
   }
 
@@ -37,21 +47,32 @@ export function addDecoratorParams(beDecoratedCls: Class<any>, params: params) {
     decoratorParamMap.set(beDecoratedCls, []);
   }
   const paramsList = decoratorParamMap.get(beDecoratedCls);
+  const isComponent = isComponentSubMetadata(params);
+  const hadComponent = !!paramsList.find((p) => isComponentSubMetadata(p));
+  if (isComponent && hadComponent) {
+    throw new Error(
+      '一个类只能添加一个component装饰器，包含component复合装饰器！'
+    );
+  }
   paramsList.push(params);
 }
 
 /**
- * 查看被装饰类的是否包含了某元类
+ * 被装饰类的类装饰器是否包含了某元数据类
  * @param beDecoratedCls
  * @param targetMetadataCls
- * @param level
+ * @param upward 用于设置继续在类装饰器的元数据的类装饰器上继续查找
+ * 如果设置0（默认），表示只查找 beDecoratedCls的类装饰器
+ * 如果设置1，表示还会查找beDecoratedCls的类装饰器 的元数据的类装饰器
+ * 如果设置2，表示还会查找beDecoratedCls的类装饰器 的元数据的类装饰器 的元数据的类装饰器
+ * 数字+1，即继续查找元数据的类装饰器
  */
-export function getClassAndClasClassDecorator(
+export function isIncludesClassDecorator(
   beDecoratedCls: Class<any>,
   targetMetadataCls: Class<any>,
-  level: number
+  upward: number = 0
 ): boolean {
-  if (level <= 0) {
+  if (upward < 0) {
     return false;
   }
 
@@ -59,49 +80,29 @@ export function getClassAndClasClassDecorator(
   if (!allDecoratorParams) {
     return false;
   }
-  // 找到所有类装饰器
+  // 当前类装饰器
   const classDecoratorParams = allDecoratorParams.filter(
     (i) => i.metadataKind === KindClass
   );
-  const find = classDecoratorParams.find(
-    (params) => params.metadataClass === targetMetadataCls
-  );
-  if (find) {
+  if (
+    classDecoratorParams.find(
+      (params) => params.metadataClass === targetMetadataCls
+    )
+  ) {
     return true;
   }
-  // 继续向上一层查找
+  // 元数据的类装饰器
   for (const classDecoratorParam of classDecoratorParams) {
-    const find = getClassAndClasClassDecorator(
+    const find = isIncludesClassDecorator(
       classDecoratorParam.metadataClass,
       targetMetadataCls,
-      level - 1
+      upward - 1
     );
     if (find) {
       return true;
     }
   }
   return false;
-}
-
-/**
- * 返回指定字段的装饰器参数，返回装饰器参数数组
- * @param Cls 指定组件
- * @param field 指定字段
- * @param decoratorCls 装饰器类，如果传入此参数，则查找字段的所有装饰器，能找到就返回1个元素的数组，没有找到就返回空数组；如果没有传入参数，则返回field所有的装饰器参数
- */
-export function getFieldDecorator(
-  Cls: Class<any>,
-  field: string,
-  decoratorCls?: Class<any>
-) {
-  const fieldDecorators = (decoratorParamMap.get(Cls) || []).filter(
-    (i) => i.metadataKind === KindField && i.field === field
-  );
-  if (decoratorCls) {
-    return fieldDecorators.filter((i) => i.metadataClass === decoratorCls);
-  } else {
-    return fieldDecorators;
-  }
 }
 
 export function get() {

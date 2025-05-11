@@ -1,6 +1,9 @@
-import genDecorator from './gen-decorator-exp.ts';
+import { createDecoratorExp } from '../ioc-container/create-decorator-exp.ts';
 import Init from '../metadata/init.ts';
 
-export default genDecorator<undefined, ClassMethodDecoratorContext>(Init, {
-  optional: true,
-});
+export default createDecoratorExp<undefined, ClassMethodDecoratorContext>(
+  Init,
+  {
+    optional: true,
+  }
+);

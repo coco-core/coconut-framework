@@ -6,18 +6,17 @@ import {
 } from './component-factory.ts';
 import {
   addClassMetadata,
-  addFieldMethodMetadata,
+  addFieldOrMethodMetadata,
   getAllMetadata,
-  getByClassMetadata,
-  getByFieldMetadata,
-  getFieldMetadata,
+  listBeDecoratedClsByClassMetadata,
+  listBeDecoratedClsByFieldMetadata,
+  listFieldMetadata,
 } from './metadata.ts';
 import {
   get,
   clear as clearDecoratorParams,
-  getClassAndClasClassDecorator,
+  isIncludesClassDecorator,
   addDecoratorParams,
-  getFieldDecorator,
 } from './decorator-params.ts';
 import {
   ClassPostConstructFn,
@@ -25,12 +24,8 @@ import {
   genFieldPostConstruct,
   genMethodPostConstruct,
 } from './ioc-component-definition.ts';
-import Metadata from '../metadata/metadata.ts';
-import {
-  KindClass,
-  KindField,
-  KindMethod,
-} from '../decorator/decorator-context.ts';
+import Metadata from '../metadata/abstract/metadata.ts';
+import { KindClass, KindField, KindMethod } from './decorator-context.ts';
 import Component from '../metadata/component.ts';
 import type { Scope } from '../metadata/component.ts';
 import {
@@ -50,7 +45,7 @@ class ApplicationContext {
   constructor(jsonConfig: Record<string, any> = {}) {
     this.propertiesConfig = new PropertiesConfig(jsonConfig);
     {
-      this.recordFieldOrMethodDecoratorParams();
+      this.addFieldOrMethodDecoratorParams();
       this.addAtComponentDecoratorParams();
       this.validateTarget();
       this.buildMetadata();
@@ -90,7 +85,7 @@ class ApplicationContext {
     deDecoratedCls: Class<T>,
     autowiredField: string
   ): T {
-    const qualifierMetadata = getFieldMetadata(
+    const qualifierMetadata = listFieldMetadata(
       deDecoratedCls,
       autowiredField,
       Qualifier
@@ -103,14 +98,14 @@ class ApplicationContext {
   }
 
   public getByClassMetadata(metadataClass: Class<any>) {
-    return getByClassMetadata(metadataClass);
+    return listBeDecoratedClsByClassMetadata(metadataClass);
   }
 
   /**
-   * 实例化所有业务类（非元数据类），拿到field和method装饰器对应的参数
+   * 实例化所有业务类（非元数据类），拿到field和method装饰器参数
    * @private
    */
-  private recordFieldOrMethodDecoratorParams() {
+  private addFieldOrMethodDecoratorParams() {
     for (const Cls of get().keys()) {
       if (Object.getPrototypeOf(Cls) !== Metadata) {
         new Cls();
@@ -118,6 +113,13 @@ class ApplicationContext {
     }
   }
 
+  /**
+   * todo 这里有一个疑问，为什么要把装饰器记录的参数转换成元数据？
+   * 粗略一看，装饰器参数和元数据是一一对应关系，没有必要做这层转换
+   * 1. 部分装饰器，例如@component装饰在函数上面，会添加额外的装饰器信息，不过这还是可以一一对应关系
+   * 2. 业务使用元数据类，方便ts推导类型
+   * 3. 从装饰器 -> 元数据，方便框架做一些自定义操作，例如target不符合则不生成对应的元数据
+   */
   // 根据装饰器的参数，构建对应的元数据实例
   private buildMetadata() {
     for (const [beDecoratedCls, list] of get().entries()) {
@@ -133,7 +135,7 @@ class ApplicationContext {
             break;
           case KindField:
           case KindMethod:
-            addFieldMethodMetadata(
+            addFieldOrMethodMetadata(
               beDecoratedCls,
               field,
               metadataClass,
@@ -145,28 +147,12 @@ class ApplicationContext {
     }
   }
 
-  /**
-   * 被装饰类是否被特定元数据类装饰；或者被特定元数据类的复合元数据装饰
-   * 直接装饰@component
-   * 被component装饰的通用层，例如view controller api
-   * 还有被通用层装饰的一层，例如page(view), httpAip(api)等
-   * @param beDecoratedCls 被装饰的类
-   * @param Target
-   * @private
-   */
-  private isDecoratedByOrCompoundDecorated(
-    beDecoratedCls: Class<any>,
-    Target: Class<any>
-  ) {
-    return getClassAndClasClassDecorator(beDecoratedCls, Target, 3);
-  }
-
   private buildIocComponentDefinition() {
     const bizMetadata = getAllMetadata()[1];
     // 处理@component和带有@component的元数据类
     for (const [beDecoratedCls, params] of get().entries()) {
       if (bizMetadata.has(beDecoratedCls)) {
-        if (this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Component)) {
+        if (isIncludesClassDecorator(beDecoratedCls, Component, 2)) {
           addDefinition(beDecoratedCls);
           params.forEach(
             ({ metadataClass, metadataKind, postConstruct, field }) => {
@@ -209,9 +195,7 @@ class ApplicationContext {
   // 为@component添加装饰器参数
   private addAtComponentDecoratorParams() {
     for (const [beDecoratedCls, params] of get().entries()) {
-      if (
-        !this.isDecoratedByOrCompoundDecorated(beDecoratedCls, Configuration)
-      ) {
+      if (!isIncludesClassDecorator(beDecoratedCls, Configuration, 1)) {
         continue;
       }
       const componentDecorateParams = params.filter(
@@ -244,7 +228,8 @@ class ApplicationContext {
     // 1. 所有配置boot的组件集合
     const bootComponents = this.propertiesConfig.getAllBootComponents();
     // 2. boot的组件可能会有@inject，也可能实例化子组件，那么判断一下，找到真正需要实例化的组件的集合
-    const constructorParamMetadata = getByClassMetadata(ConstructorParam);
+    const constructorParamMetadata =
+      listBeDecoratedClsByClassMetadata(ConstructorParam);
     const instantiateCls: Set<Class<any>> = new Set(); // 需要实例化的组件集合
     const doFindInstantiateComponent = (clsOrId: Class<any> | string) => {
       const Cls = findInstantiateComponent(this, clsOrId);
@@ -271,7 +256,7 @@ class ApplicationContext {
   }
 
   private instantiateComponentRecursively(bootComponent: Set<Class<any>>) {
-    const map = getByClassMetadata(ConstructorParam);
+    const map = listBeDecoratedClsByClassMetadata(ConstructorParam);
     const realInitiatedCls: Set<Class<any>> = new Set();
     for (const beDecoratedCls of map.keys()) {
       // 只初始化配置boot的组件
@@ -299,7 +284,7 @@ class ApplicationContext {
   }
 
   private initComponent(bootComponent: Set<Class<any>>) {
-    const map = getByFieldMetadata(Init);
+    const map = listBeDecoratedClsByFieldMetadata(Init);
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
       if (bootComponent.has(beDecoratedCls)) {
         const component = getComponent(this, beDecoratedCls);
@@ -309,7 +294,7 @@ class ApplicationContext {
   }
 
   private startComponent(bootComponent: Set<Class<any>>) {
-    const map = getByFieldMetadata(Start);
+    const map = listBeDecoratedClsByFieldMetadata(Start);
     for (const [beDecoratedCls, { field, metadata }] of map.entries()) {
       if (bootComponent.has(beDecoratedCls)) {
         const component = getComponent(this, beDecoratedCls);

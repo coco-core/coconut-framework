@@ -1,9 +1,8 @@
-import { component } from 'coco-mvc';
+import { component, view } from 'coco-mvc';
 
+@view()
 @component()
 class ErrorButton {
-  // @ts-ignore
-  @component()
   name;
 }
 

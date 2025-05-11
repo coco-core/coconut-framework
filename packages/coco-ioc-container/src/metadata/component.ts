@@ -1,6 +1,7 @@
-import Metadata from '../metadata/metadata.ts';
+import Metadata from './abstract/metadata.ts';
 import Target from './target.ts';
 import target from '../decorator/target.ts';
+import { register, NAME } from 'shared';
 
 export enum Scope {
   // 单例模式
@@ -17,3 +18,4 @@ class Component extends Metadata {
 }
 
 export default Component;
+register(NAME.Component, Component);

@@ -11,6 +11,7 @@ export const NAME = {
   apply: 'apply',
   exec: 'exec',
   getFields: 'getFields',
+  Component: 'Component',
 };
 
 export function register(name: string, fn: any) {
