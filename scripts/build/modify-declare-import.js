@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 function modifyDeclareImport () {
-  const mvcDts = path.resolve(__dirname, "../../packages/coco-mvc/dist/types/packages/coco-mvc/src/index.d.ts");
+  const mvcDts = path.resolve(__dirname, "../../packages/coco-mvc/dist/types/coco-mvc/src/index.d.ts");
   if (fs.existsSync(mvcDts)) {
     const content = fs.readFileSync(mvcDts, "utf8");
     const replaced = content.replaceAll(/from '(coco-ioc-container|coco-reactive|coco-router)'/g, "from '../../$1/src/index'");
