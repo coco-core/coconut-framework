@@ -1,6 +1,7 @@
 export * from 'coco-ioc-container';
 export * from 'coco-reactive';
 export * from 'coco-router';
+export * from 'coco-render';
 export { default as Api } from './metadata/api.ts';
 export { default as api } from './decorator/api.ts';
 export { default as Bind } from './metadata/bind.ts';
@@ -21,5 +22,3 @@ export { default as View } from './metadata/view.ts';
 export { default as view } from './decorator/view.ts';
 export { default as WebApplication } from './metadata/web-application.ts';
 export { default as webApplication } from './decorator/web-application.ts';
-export { default as Render } from './component/render.ts';
-export { default as WebRender } from './render/web-render.ts';

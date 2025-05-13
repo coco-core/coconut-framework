@@ -5,7 +5,6 @@
     "lib": ["dom", "esnext"],
     "paths": {
       "coco-ioc-container": ["../coco-ioc-container/src"],
-      "coco-render": ["../coco-render/src"],
       "shared": ["../shared"]
     },
     "composite": true,
@@ -20,9 +19,5 @@
   },
   "include": ["src"],
   "exclude": ["src/__tests__"],
-  "references": [
-    { "path": "../coco-ioc-container" },
-    { "path": "../coco-render" },
-    { "path": "../shared" }
-  ]
+  "references": [{ "path": "../coco-ioc-container" }, { "path": "../shared" }]
 }

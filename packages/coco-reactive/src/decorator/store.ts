@@ -1,6 +1,7 @@
 import {
   createDecoratorExp,
   type ApplicationContext,
+  type Decorator,
 } from 'coco-ioc-container';
 import Remote from '../reactive-autowired/remote.ts';
 import Store from '../metadata/store.ts';
@@ -15,4 +16,4 @@ function postConstruct(metadata: Store, appCtx: ApplicationContext) {
 export default createDecoratorExp<string, ClassDecoratorContext>(Store, {
   optional: true,
   postConstruct,
-});
+}) as () => Decorator<ClassDecoratorContext>;

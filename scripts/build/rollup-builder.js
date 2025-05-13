@@ -4,7 +4,6 @@ const babel = require('@rollup/plugin-babel');
 const typescript = require('@rollup/plugin-typescript');
 const aliasPlugin = require('@rollup/plugin-alias');
 const genEntries = require('./rollup-alias').genEntries;
-const modifyDeclareImport = require('./modify-declare-import');
 const { typescriptOptions, babelOptions } = require('../shared/common-compiler-option')
 
 function genRollupConfig (inputConfig) {
@@ -19,8 +18,6 @@ function genRollupConfig (inputConfig) {
       }),
       typescript({
         compilerOptions: {
-          declaration: true,
-          declarationDir: "./types",
           ...typescriptOptions
       }}),
       babel({
@@ -46,8 +43,6 @@ async function build(targets) {
       const result = await rollup.rollup(rollupConfig)
       await result.write(output)
     }
-
-    modifyDeclareImport();
   } catch (e) {
     console.error('rollup rollup error', e);
     throw e;

@@ -6,7 +6,7 @@ import {
 } from './decorator-context.ts';
 import { listClassMetadata, listFieldMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
-import type { Metadata } from 'coco-ioc-container';
+import type Metadata from '../metadata/abstract/metadata.ts';
 
 /**
  * @param metada 元数据实例对象

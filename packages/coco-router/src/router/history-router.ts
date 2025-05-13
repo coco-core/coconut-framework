@@ -8,7 +8,7 @@ import {
 } from 'coco-ioc-container';
 import RouteComponentMapper from './route-component-mapper.ts';
 import Router from './router.ts';
-import { Render } from 'coco-mvc/component';
+import { Render } from 'coco-render';
 
 @router()
 @constructorParam()

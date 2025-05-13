@@ -10,6 +10,9 @@ export type Kind = typeof KindClass | typeof KindField | typeof KindMethod;
 export type Context =
   | ClassDecoratorContext
   | ClassFieldDecoratorContext
-  | ClassMethodDecoratorContext;
+  | ClassMethodDecoratorContext
+  | ClassSetterDecoratorContext
+  | ClassGetterDecoratorContext
+  | ClassAccessorDecoratorContext;
 
 export type Decorator<C> = (value: any, context: C) => any;

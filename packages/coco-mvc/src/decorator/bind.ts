@@ -1,4 +1,4 @@
-import { createDecoratorExp } from 'coco-ioc-container';
+import { createDecoratorExp, type Decorator } from 'coco-ioc-container';
 import type { ApplicationContext } from 'coco-ioc-container';
 import Bind from '../metadata/bind.ts';
 
@@ -13,4 +13,4 @@ function postConstruct(
 export default createDecoratorExp<void, ClassMethodDecoratorContext>(Bind, {
   postConstruct,
   optional: true,
-});
+}) as () => Decorator<ClassMethodDecoratorContext>;

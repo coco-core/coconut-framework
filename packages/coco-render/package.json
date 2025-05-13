@@ -1,8 +1,7 @@
 {
   "private": true,
-  "name": "coco-reactive",
-  "description": "响应式。",
-  "types": "dist/index.d.ts",
+  "name": "coco-render",
+  "description": "渲染器",
   "version": "0.0.0",
   "scripts": {},
   "author": "jiangchenguang",

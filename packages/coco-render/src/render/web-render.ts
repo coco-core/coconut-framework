@@ -1,7 +1,7 @@
 // @ts-ignore todo fix it
 import { render as renderApp } from 'coconut-web';
 import { init } from 'coco-ioc-container';
-import render from '../decorator/render';
+import render from '../decorator/render.ts';
 import { jsx } from '../jsx-runtime';
 import Render from '../component/render.ts';
 

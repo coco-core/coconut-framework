@@ -15,7 +15,7 @@
         "packages/coco-reactive/src/metadata/index.ts"
       ],
       "coco-router": ["packages/coco-router/src/index.ts"],
-      "shared": ["packages/shared/index.ts"]
+      "shared": ["packages/shared/src"]
     },
     "typeRoots": ["types", "./node_modules/@types"]
   }

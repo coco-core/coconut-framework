@@ -1,5 +1,6 @@
 import {
   Context,
+  Decorator,
   KindClass,
   KindField,
   KindMethod,
@@ -14,5 +15,11 @@ export enum Type {
 
 type DecoratorArg = Type[];
 
-const target = createDecoratorExpByName<DecoratorArg, Context>('target');
+const target: (
+  type: DecoratorArg,
+  decoratorSelf?: boolean
+) => Decorator<ClassDecoratorContext> = createDecoratorExpByName<
+  DecoratorArg,
+  ClassDecoratorContext
+>('target');
 export default target;

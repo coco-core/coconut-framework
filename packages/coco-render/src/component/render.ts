@@ -1,4 +1,4 @@
-import render from '../decorator/render';
+import render from '../decorator/render.ts';
 
 @render()
 abstract class Render {

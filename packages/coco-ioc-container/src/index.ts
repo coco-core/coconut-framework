@@ -22,3 +22,4 @@ export {
   createDecoratorExpByName,
 } from './ioc-container/create-decorator-exp.ts';
 export { default as ApplicationContext } from './ioc-container/application-context.ts';
+export type { Decorator } from './ioc-container/decorator-context.ts';

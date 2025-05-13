@@ -5,7 +5,8 @@ const cocoMvc = path.join(packages, './coco-mvc');
 const cocoMvcInput = path.join(cocoMvc, './src/index.ts');
 const cocoMvcTestInput = path.join(cocoMvc, './src/__tests__/index.ts');
 const cocoMvcOutput = path.join(cocoMvc, './dist/coco-mvc.cjs.js');
-const jsxInput = path.join(cocoMvc, './src/jsx-runtime/index.ts');
+const cocoRender = path.join(packages, './coco-render');
+const jsxInput = path.join(cocoRender, './src/jsx-runtime/index.ts');
 const jsxOutput = `${path.join(cocoMvc, './dist')}/jsx.cjs.js`;
 
 const cocoCli = path.join(packages, './coco-cli');
@@ -22,8 +23,7 @@ module.exports.rollupTargets = [
     },
     alias: [
       PACKAGE.MVC,
-      PACKAGE.MVC_COMPONENT,
-      PACKAGE.MVC_METADATA,
+      PACKAGE.MVC_RENDER,
       PACKAGE.REACTIVE,
       PACKAGE.REACTIVE_METADATA,
       PACKAGE.ROUTER,

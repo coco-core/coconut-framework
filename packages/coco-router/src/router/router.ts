@@ -1,4 +1,4 @@
-import type { Render } from 'coco-mvc';
+import type { Render } from 'coco-render';
 import type RouteComponentMapper from './route-component-mapper.ts';
 import router from '../decorator/router.ts';
 

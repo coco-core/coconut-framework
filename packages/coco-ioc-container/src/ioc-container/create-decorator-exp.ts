@@ -1,6 +1,6 @@
 import {
-  Context,
-  Decorator,
+  type Context,
+  type Decorator,
   KindClass,
   KindField,
   KindMethod,
@@ -8,6 +8,7 @@ import {
   KindSetter,
   KindAccessor,
 } from './decorator-context.ts';
+export type { Decorator };
 import { get, NAME } from 'shared';
 import { isClass, lowercaseFirstLetter, once } from '../share/util.ts';
 import type { PostConstructFn } from './ioc-component-definition.ts';
@@ -61,11 +62,8 @@ function createDecoratorExpFactory(fn: any) {
               });
             }
             break;
-          // @ts-ignore
           case KindGetter:
-          // @ts-ignore
           case KindSetter:
-          // @ts-ignore
           case KindAccessor:
             throw new Error(`暂不支持装饰${context.kind}类型。`);
           case KindMethod:

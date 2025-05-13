@@ -1,4 +1,4 @@
-import { REACT_ELEMENT_TYPE } from 'shared';
+import { REACT_ELEMENT_TYPE } from '../../../shared/src';
 
 const RESERVED_PROPS = {
   ref: true,

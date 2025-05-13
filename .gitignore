@@ -131,6 +131,7 @@ dist
 
 # coco-mvc
 **/.coco
+**/dist-dts
 
 # ide
 .idea

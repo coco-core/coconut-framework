@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
+  "mainEntryPointFilePath": "./dist-dts/index.d.ts",
+  "dtsRollup": {
+    "enabled": true,
+    "untrimmedFilePath": "./dist/index.d.ts"
+  },
+  "apiReport": {
+    "enabled": false
+  },
+  "docModel": {
+    "enabled": false
+  },
+  "compiler": {
+    "tsconfigFilePath": "./tsconfig.api.json"
+  },
+  "bundledPackages": [
+    "coco-ioc-container",
+    "coco-reactive",
+    "coco-router",
+    "coco-render"
+  ]
+}
