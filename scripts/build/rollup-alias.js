@@ -25,7 +25,7 @@ const PACKAGE = {
   IOC_CONTAINER: 'coco-ioc-container',
   IOC_CONTAINER_TEST_HELPER: 'coco-ioc-container-test-helper',
   REACTIVE: 'coco-reactive',
-  REACTIVE_METADATA: 'coco-reactive/metadata',
+  REACTIVE_METADATA: 'coco-reactive-metadata',
   ROUTER: 'coco-router',
   HOST_CONFIG: 'ReactFiberHostConfig',
   SHARED: 'shared',

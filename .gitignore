@@ -132,6 +132,7 @@ dist
 # coco-mvc
 **/.coco
 **/dist-dts
+.rollup.cache
 
 # ide
 .idea

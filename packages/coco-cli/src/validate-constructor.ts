@@ -42,6 +42,8 @@ function validate(filePath: string) {
               }
               let fnName;
               if (statement.expression.callee.type === 'MemberExpression') {
+                // todo fix it
+                // @ts-ignore
                 fnName = statement.expression.callee.property.name;
               } else if (statement.expression.callee.type === 'Identifier') {
                 fnName = statement.expression.callee.name;

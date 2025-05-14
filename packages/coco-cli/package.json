@@ -3,6 +3,7 @@
   "description": "命令行工具（脚手架、开发、构建）。",
   "version": "0.0.1-alpha202505111512",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "coco": "bin/coco.js"
   },
@@ -13,7 +14,7 @@
     "dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "api-extractor": "api-extractor run --local --diagnostics"
   },
   "keywords": [],
   "author": "",
@@ -52,7 +53,8 @@
     "webpack-merge": "^6.0.1"
   },
   "devDependencies": {
-    "@cocojs/typescript-transformer": "^0.0.10"
+    "@cocojs/typescript-transformer": "^0.0.10",
+    "@types/node": "^22.15.18"
   },
   "peerDependencies": {
     "@cocojs/typescript-transformer": "^0.0.10"

@@ -12,12 +12,6 @@
     "enabled": false
   },
   "compiler": {
-    "tsconfigFilePath": "./tsconfig.api-extractor.json"
-  },
-  "bundledPackages": [
-    "coco-ioc-container",
-    "coco-reactive",
-    "coco-router",
-    "coco-render"
-  ]
+    "tsconfigFilePath": "./tsconfig.json"
+  }
 }
