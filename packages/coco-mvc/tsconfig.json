@@ -1,25 +1,15 @@
 {
+  "extends": ["../../tsconfig.json"],
   "compilerOptions": {
-    "baseUrl": ".",
-    "composite": true,
-    "declaration": true,
-    "declarationMap": false,
     "rootDir": "src",
     "outDir": "dist-dts",
-    "target": "es2015",
-    "lib": ["dom", "es2015"],
     "paths": {
       "coco-ioc-container": ["../coco-ioc-container/src"],
       "coco-router": ["../coco-router/src"],
       "coco-reactive": ["../coco-reactive/src"],
       "coco-render": ["../coco-render/src"],
       "shared": ["../shared"]
-    },
-    "moduleResolution": "node",
-    "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": true,
-    "typeRoots": ["../../types"]
-    // 禁止放开 "paths": {}
+    }
   },
   "include": ["src"],
   "exclude": ["src/__tests__"],

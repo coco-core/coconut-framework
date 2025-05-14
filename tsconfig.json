@@ -1,22 +1,12 @@
 {
   "compilerOptions": {
-    "paths": {
-      "coco-mvc": ["packages/coco-mvc/src/index.ts"],
-      "coco-mvc/component": ["packages/coco-mvc/src/component/index.ts"],
-      "coco-mvc/metadata": ["packages/coco-mvc/src/metadata/index.ts"],
-      "coconut-web": ["packages/coconut-web/src/index.js"],
-      "coconut-reconciler": ["packages/coconut-reconciler/src/index.js"],
-      "coco-ioc-container": ["packages/coco-ioc-container/src/index.ts"],
-      "coco-ioc-container-test-helper": [
-        "packages/coco-ioc-container/src/__tests__/index.ts"
-      ],
-      "coco-reactive": ["packages/coco-reactive/src/index.ts"],
-      "coco-reactive/metadata": [
-        "packages/coco-reactive/src/metadata/index.ts"
-      ],
-      "coco-router": ["packages/coco-router/src/index.ts"],
-      "shared": ["packages/shared/src"]
-    },
+    "target": "ES2015",
+    "lib": ["dom", "esnext"],
+    "composite": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": true,
     "typeRoots": ["types", "./node_modules/@types"]
   }
 }

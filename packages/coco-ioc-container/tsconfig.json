@@ -1,19 +1,11 @@
 {
+  "extends": ["../../tsconfig.json"],
   "compilerOptions": {
-    "baseUrl": ".",
-    "target": "ES2015",
-    "lib": ["dom", "esnext"],
-    "paths": {
-      "shared": ["../shared"]
-    },
-    "composite": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
     "rootDir": "src",
     "outDir": "dist-dts",
-    "moduleResolution": "node",
-    "allowImportingTsExtensions": true,
-    "typeRoots": ["../../types"]
+    "paths": {
+      "shared": ["../shared"]
+    }
   },
   "include": ["src"],
   "exclude": ["src/__tests__"],
