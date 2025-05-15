@@ -2,6 +2,7 @@ import {
   createDecoratorExp,
   createDecoratorExpByName,
   createDecoratorExpFactory,
+  type Decorator,
 } from '../../ioc-container/create-decorator-exp.ts';
 import {
   KindClass,
@@ -173,7 +174,9 @@ describe('create-decorator-exp:createDecoratorExpFactory', () => {
       const create = createDecoratorExpFactory(fn);
 
       class Meta {}
-      const m = create(Meta, { optional: true });
+      const m: () => Decorator<ClassGetterDecoratorContext> = create(Meta, {
+        optional: true,
+      });
 
       class A {
         @m()

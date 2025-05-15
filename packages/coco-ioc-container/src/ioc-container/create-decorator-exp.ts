@@ -24,7 +24,7 @@ function createDecoratorExpFactory(fn: any) {
   return function <UserParam, C extends Context>(
     metadataClsOrName: Class<any> | string,
     { postConstruct }: Option = {}
-  ): (userParam: UserParam, decorateSelf?: true) => Decorator<C> {
+  ): (userParam?: UserParam, decorateSelf?: true) => Decorator<C> {
     const decoratorName =
       typeof metadataClsOrName === 'string'
         ? metadataClsOrName
@@ -107,7 +107,7 @@ const doCreateDecoratorExp = createDecoratorExpFactory(addDecoratorParams);
 function createDecoratorExp<UserParam, C extends Context>(
   metadataCls: Class<any>,
   option?: { postConstruct?: PostConstructFn }
-): (userParam: UserParam) => Decorator<C>;
+): (userParam?: UserParam) => Decorator<C>;
 // 适用于装饰器不装饰自己元数据类，且useParams是可选的场景
 function createDecoratorExp<UserParam, C extends Context>(
   metadataCls: Class<any>,

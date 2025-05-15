@@ -10,7 +10,10 @@ import {
   listFieldMetadata,
 } from '../../ioc-container/metadata.ts';
 import Metadata, { createMetadata } from '../../metadata/abstract/metadata.ts';
-import { createDecoratorExp } from '../../ioc-container/create-decorator-exp.ts';
+import {
+  createDecoratorExp,
+  Decorator,
+} from '../../ioc-container/create-decorator-exp.ts';
 
 describe('metadata/metadata', () => {
   test('纯对象类型会取自身的prop，全部浅赋值，不管元数据如何定义', () => {
@@ -185,7 +188,8 @@ describe('findClassMetadata', () => {
   test('可以找到直接注解对应的元数据的注解的元数据', async () => {
     class T {}
     class Parent extends Metadata {}
-    const p = createDecoratorExp(Parent);
+    const p: () => Decorator<ClassDecoratorContext> =
+      createDecoratorExp(Parent);
 
     @p()
     class Child {}

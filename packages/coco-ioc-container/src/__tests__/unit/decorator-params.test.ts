@@ -18,12 +18,14 @@ describe('decorator-params', () => {
   test('如果不是装饰类，那么不会被收集到装饰器参数中', async () => {
     class A {}
     class Meta {}
+    // @ts-ignore
     addDecoratorParams(1, {
       decoratorName: 'meta',
       metadataKind: KindClass,
       metadataClass: Meta,
       metadataParam: undefined,
     });
+    // @ts-ignore
     addDecoratorParams('str', {
       decoratorName: 'meta',
       metadataKind: KindClass,
@@ -31,6 +33,7 @@ describe('decorator-params', () => {
       metadataParam: undefined,
     });
     addDecoratorParams(
+      // @ts-ignore
       {},
       {
         decoratorName: 'meta',
@@ -39,12 +42,14 @@ describe('decorator-params', () => {
         metadataParam: undefined,
       }
     );
+    // @ts-ignore
     addDecoratorParams([], {
       decoratorName: 'meta',
       metadataKind: KindClass,
       metadataClass: Meta,
       metadataParam: undefined,
     });
+    // @ts-ignore
     addDecoratorParams(() => {}, {
       decoratorName: 'meta',
       metadataKind: KindClass,

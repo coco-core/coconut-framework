@@ -23,3 +23,36 @@ export {
 } from './ioc-container/create-decorator-exp.ts';
 export { default as ApplicationContext } from './ioc-container/application-context.ts';
 export type { Decorator } from './ioc-container/decorator-context.ts';
+
+import {
+  expectInOrder,
+  checkClassMetadataAsExpected,
+  checkMetadataForMetadataAsExpected,
+  getMetadata,
+  getAllMetadata,
+  clear,
+} from './__tests__';
+
+let _test_helper:
+  | {
+      expectInOrder: typeof expectInOrder;
+      checkClassMetadataAsExpected: typeof checkClassMetadataAsExpected;
+      checkMetadataForMetadataAsExpected: typeof checkMetadataForMetadataAsExpected;
+      getMetadata: typeof getMetadata;
+      getAllMetadata: typeof getAllMetadata;
+      clear: typeof clear;
+    }
+  | undefined = undefined;
+
+if (__TEST__) {
+  _test_helper = {
+    expectInOrder,
+    checkClassMetadataAsExpected,
+    checkMetadataForMetadataAsExpected,
+    getMetadata,
+    getAllMetadata,
+    clear,
+  };
+}
+
+export { _test_helper };

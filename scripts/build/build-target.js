@@ -3,7 +3,6 @@ const { PACKAGE } = require("./rollup-alias");
 const packages = path.join(__dirname, '../../packages');
 const cocoMvc = path.join(packages, './coco-mvc');
 const cocoMvcInput = path.join(cocoMvc, './src/index.ts');
-const cocoMvcTestInput = path.join(cocoMvc, './src/__tests__/index.ts');
 const cocoMvcOutput = path.join(cocoMvc, './dist/coco-mvc.cjs.js');
 const cocoRender = path.join(packages, './coco-render');
 const jsxInput = path.join(cocoRender, './src/jsx-runtime/index.ts');
@@ -16,7 +15,7 @@ const cliDist = path.join(cocoCli, './dist');
 
 module.exports.rollupTargets = [
   {
-    input: process.env.NODE_ENV === 'test' ? cocoMvcTestInput : cocoMvcInput,
+    input: cocoMvcInput,
     output: {
       file: cocoMvcOutput,
       format: 'cjs',
