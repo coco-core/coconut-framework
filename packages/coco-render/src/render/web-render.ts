@@ -5,6 +5,9 @@ import render from '../decorator/render.ts';
 import { jsx } from '../jsx-runtime';
 import Render from '../component/render.ts';
 
+/**
+ * @public
+ */
 @render()
 class WebRender extends Render {
   container: HTMLElement;

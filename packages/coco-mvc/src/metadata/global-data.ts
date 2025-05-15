@@ -6,6 +6,9 @@ import {
   Target,
 } from 'coco-ioc-container';
 
+/**
+ * @public
+ */
 @target([Target.Type.Class])
 @component(Component.Scope.Singleton)
 class GlobalData extends Metadata {}

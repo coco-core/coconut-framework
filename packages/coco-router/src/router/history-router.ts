@@ -10,6 +10,9 @@ import RouteComponentMapper from './route-component-mapper.ts';
 import Router from './router.ts';
 import { Render } from 'coco-render';
 
+/**
+ * @public
+ */
 @router()
 @constructorParam()
 class HistoryRouter extends Router {

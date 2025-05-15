@@ -7,6 +7,9 @@ import {
 } from '../ioc-container/decorator-context.ts';
 import { createDecoratorExpByName } from '../ioc-container/create-decorator-exp.ts';
 
+/**
+ * @public
+ */
 export enum Type {
   Class = KindClass,
   Field = KindField,
@@ -15,6 +18,9 @@ export enum Type {
 
 type DecoratorArg = Type[];
 
+/**
+ * @public
+ */
 const target: (
   type: DecoratorArg,
   decoratorSelf?: true

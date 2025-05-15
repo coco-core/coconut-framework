@@ -39,6 +39,9 @@ import ConstructorParam, { ClassList } from '../metadata/constructor-param.ts';
 import { Init, Start, Target, Qualifier } from '../metadata/index.ts';
 import PropertiesConfig from './properties-config.ts';
 
+/**
+ * @public
+ */
 class ApplicationContext {
   propertiesConfig: PropertiesConfig;
 
@@ -64,8 +67,8 @@ class ApplicationContext {
 
   /**
    * 根据组件定义返回组件实例，如果存在多个子组件，需要通过qualify指定子组件id
-   * @param cls 类定义
-   * @param qualifier 如果cls存在多个子类，需要通过qualifier指定子类id
+   * @param cls - 类定义
+   * @param qualifier - 如果cls存在多个子类，需要通过qualifier指定子类id
    */
   public getComponent<T>(cls: Class<T>, qualifier?: string): T;
   // 根据组件id返回组件实例
@@ -76,9 +79,9 @@ class ApplicationContext {
 
   /**
    * 为@autowired装饰器的字段，返回字段类型的组件实例
-   * @param Cls
-   * @param deDecoratedCls 被装饰器的类定义
-   * @param autowiredField 被装饰器的字段
+   * @param Cls - 类定义
+   * @param deDecoratedCls - 被装饰器的类定义
+   * @param autowiredField - 被装饰器的字段
    */
   public getComponentForAutowired<T>(
     Cls: Class<T>,

@@ -1,14 +1,14 @@
 export { default as Metadata } from './metadata/abstract/metadata.ts';
 export { default as Autowired } from './metadata/autowired.ts';
 export { default as autowired } from './decorator/autowired.ts';
-export { default as Component } from './metadata/component.ts';
+export { default as Component, type Scope } from './metadata/component.ts';
 export { default as component } from './decorator/component.ts';
 export { default as Configuration } from './metadata/configuration.ts';
 export { default as configuration } from './decorator/configuration.ts';
 export { default as ConstructorParam } from './metadata/constructor-param.ts';
 export { default as constructorParam } from './decorator/constructor-param.ts';
 export { default as Target } from './metadata/target.ts';
-export { default as target } from './decorator/target.ts';
+export { default as target, type Type } from './decorator/target.ts';
 export { default as Init } from './metadata/init.ts';
 export { default as init } from './decorator/init.ts';
 export { default as Qualifier } from './metadata/qualifier.ts';

@@ -9,17 +9,17 @@ import type ApplicationContext from './application-context.ts';
 import type Metadata from '../metadata/abstract/metadata.ts';
 
 /**
- * @param metada 元数据实例对象
- * @param appCtx 全局的applicationContext对象
+ * @param metadata - 元数据实例对象
+ * @param appCtx - 全局的applicationContext对象
  */
 export type ClassPostConstructFn = (
   metadata: Metadata,
   appCtx: ApplicationContext
 ) => void;
 /**
- * @param metada 元数据实例对象
- * @param appCtx 全局的applicationContext对象
- * @param field 被装饰的字段名
+ * @param metadata - 元数据实例对象
+ * @param appCtx - 全局的applicationContext对象
+ * @param field - 被装饰的字段名
  */
 export type FieldPostConstructFn = (
   metadata: Metadata,

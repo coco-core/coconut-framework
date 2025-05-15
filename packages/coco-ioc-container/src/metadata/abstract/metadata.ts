@@ -3,6 +3,7 @@ import { isPlainObject } from '../../share/util.ts';
 const defaultProp = 'value';
 /**
  * 元信息基类
+ * @public
  */
 export default abstract class Metadata {}
 

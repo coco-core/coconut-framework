@@ -3,6 +3,9 @@ import Target from './target.ts';
 import target from '../decorator/target.ts';
 import { register, NAME } from 'shared';
 
+/**
+ * @public
+ */
 export enum Scope {
   // 单例模式
   Singleton = 0,
@@ -10,6 +13,9 @@ export enum Scope {
   Prototype = 1,
 }
 
+/**
+ * @public
+ */
 @target([Target.Type.Class, Target.Type.Method])
 class Component extends Metadata {
   static Scope = Scope;

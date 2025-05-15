@@ -4,6 +4,9 @@ import Metadata from './abstract/metadata.ts';
 
 export type Args = Class<any>;
 
+/**
+ * @public
+ */
 @target([Target.Type.Field])
 class Autowired extends Metadata {
   value: Class<any>;
