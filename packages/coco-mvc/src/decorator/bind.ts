@@ -10,7 +10,6 @@ function postConstruct(
   this[name] = this[name].bind(this);
 }
 
-export default createDecoratorExp<void, ClassMethodDecoratorContext>(Bind, {
+export default createDecoratorExp(Bind, {
   postConstruct,
-  optional: true,
 }) as () => Decorator<ClassMethodDecoratorContext>;

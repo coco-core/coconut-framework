@@ -7,7 +7,6 @@ import Route from '../metadata/route.ts';
 
 function postConstruct(metadata: Route, appCtx: ApplicationContext) {}
 
-export default createDecoratorExp<string, ClassDecoratorContext>(Route, {
-  optional: true,
+export default createDecoratorExp(Route, {
   postConstruct,
 }) as (url: string) => Decorator<ClassDecoratorContext>;

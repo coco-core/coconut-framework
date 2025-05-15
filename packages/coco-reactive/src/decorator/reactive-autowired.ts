@@ -19,10 +19,6 @@ const postConstruct = customPostConstruct({
   },
 });
 
-export default createDecoratorExp<void, ClassFieldDecoratorContext>(
-  ReactiveAutowired,
-  {
-    postConstruct,
-    optional: true,
-  }
-) as () => Decorator<ClassFieldDecoratorContext>;
+export default createDecoratorExp(ReactiveAutowired, {
+  postConstruct,
+}) as () => Decorator<ClassFieldDecoratorContext>;

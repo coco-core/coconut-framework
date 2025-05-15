@@ -70,11 +70,11 @@ describe('decorator-params', () => {
     const create = createDecoratorExpFactory(addDecoratorParams);
 
     class MetaMeta {}
-    const dd = create(MetaMeta, { optional: true });
+    const dd = create(MetaMeta);
 
     @dd()
     class Meta {}
-    const d = create(Meta, { optional: true });
+    const d = create(Meta);
 
     @d()
     class A {}
@@ -88,15 +88,15 @@ describe('decorator-params', () => {
     const create = createDecoratorExpFactory(addDecoratorParams);
 
     class MetaMetaMeta {}
-    const ddd = create(MetaMetaMeta, { optional: true });
+    const ddd = create(MetaMetaMeta);
 
     @ddd()
     class MetaMeta {}
-    const dd = create(MetaMeta, { optional: true });
+    const dd = create(MetaMeta);
 
     @dd()
     class Meta {}
-    const d = create(Meta, { optional: true });
+    const d = create(Meta);
 
     @d()
     class A {}

@@ -15,7 +15,6 @@ import type { PostConstructFn } from './ioc-component-definition.ts';
 import { addDecoratorParams } from './decorator-params.ts';
 
 interface Option {
-  optional?: true;
   // 实例化组件后立刻执行
   postConstruct?: PostConstructFn;
 }
@@ -103,39 +102,21 @@ function createDecoratorExpFactory(fn: any) {
 
 const doCreateDecoratorExp = createDecoratorExpFactory(addDecoratorParams);
 
-// 适用于装饰器不装饰自己元数据类，且useParams是必填的场景
-function createDecoratorExp<UserParam, C extends Context>(
-  metadataCls: Class<any>,
-  option?: { postConstruct?: PostConstructFn }
-): (userParam?: UserParam) => Decorator<C>;
-// 适用于装饰器不装饰自己元数据类，且useParams是可选的场景
-function createDecoratorExp<UserParam, C extends Context>(
-  metadataCls: Class<any>,
-  option: { optional: true; postConstruct?: PostConstructFn }
-): (userParam?: UserParam) => Decorator<C>;
-function createDecoratorExp<UserParam, C extends Context>(
+// 适用于装饰器不装饰自己元数据类的场景
+function createDecoratorExp(
   metadataCls: Class<any>,
   option: Option = {}
-): (userParam: UserParam) => Decorator<C> {
+): (userParam?: any) => Decorator<DecoratorContext> {
   if (!isClass(metadataCls)) {
     throw new Error('createDecoratorExp的第一个参数类型是类');
   }
   return doCreateDecoratorExp(metadataCls, option);
 }
-// 适用于装饰器装饰自己元数据类，且useParams是必填的场景
-function createDecoratorExpByName<UserParam, C extends Context>(
-  decoratorName: string,
-  option?: { postConstruct?: PostConstructFn }
-): (userParam: UserParam, decorateSelf?: true) => Decorator<C>;
-// 适用于装饰器装饰自己元数据类，且useParams是可选的的场景
-function createDecoratorExpByName<UserParam, C extends Context>(
-  decoratorName: string,
-  option: { optional: true; postConstruct?: PostConstructFn }
-): (userParam?: UserParam, decorateSelf?: true) => Decorator<C>;
-function createDecoratorExpByName<UserParam, C extends Context>(
+// 适用于装饰器装饰自己元数据类的场景
+function createDecoratorExpByName(
   decoratorName: string,
   option: Option = {}
-): (userParam: UserParam, decorateSelf?: true) => Decorator<C> {
+): (userParam?: any, decorateSelf?: true) => Decorator<DecoratorContext> {
   if (typeof decoratorName !== 'string') {
     throw new Error(
       'createDecoratorExpByName的第一个参数类型是字符串，表示装饰器的名字'

@@ -17,9 +17,6 @@ type DecoratorArg = Type[];
 
 const target: (
   type: DecoratorArg,
-  decoratorSelf?: boolean
-) => Decorator<ClassDecoratorContext> = createDecoratorExpByName<
-  DecoratorArg,
-  ClassDecoratorContext
->('target');
+  decoratorSelf?: true
+) => Decorator<ClassDecoratorContext> = createDecoratorExpByName('target');
 export default target;

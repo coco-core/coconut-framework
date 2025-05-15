@@ -66,10 +66,6 @@ export function customPostConstruct(hooks?: {
 
 const postConstruct = customPostConstruct();
 
-export default createDecoratorExp<
-  void,
-  ClassFieldDecoratorContext | ClassDecoratorContext
->(Reactive, {
+export default createDecoratorExp(Reactive, {
   postConstruct,
-  optional: true,
 }) as () => Decorator<ClassFieldDecoratorContext | ClassDecoratorContext>;

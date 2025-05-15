@@ -13,7 +13,6 @@ function postConstruct(
   this[name] = { current: null };
 }
 
-export default createDecoratorExp<void, ClassFieldDecoratorContext>(Ref, {
+export default createDecoratorExp(Ref, {
   postConstruct,
-  optional: true,
 }) as () => Decorator<ClassFieldDecoratorContext>;

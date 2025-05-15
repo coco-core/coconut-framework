@@ -17,7 +17,6 @@ function postConstruct(
   );
 }
 
-export default createDecoratorExp<Args, ClassFieldDecoratorContext>(Autowired, {
-  optional: true,
+export default createDecoratorExp(Autowired, {
   postConstruct,
 }) as (cls: Args) => Decorator<ClassFieldDecoratorContext>;

@@ -8,11 +8,6 @@ import {
 } from '../ioc-container/create-decorator-exp.ts';
 import Component, { Scope } from '../metadata/component.ts';
 
-export default createDecoratorExp<
-  Scope,
-  ClassDecoratorContext | ClassMethodDecoratorContext
->(Component, {
-  optional: true,
-}) as (
+export default createDecoratorExp(Component) as (
   scope?: Scope
 ) => Decorator<ClassDecoratorContext | ClassMethodDecoratorContext>;

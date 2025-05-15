@@ -17,6 +17,6 @@ function postConstruct(
   this[name] = appCtx.propertiesConfig.getValue(path);
 }
 
-export default createDecoratorExp<string, ClassFieldDecoratorContext>(Value, {
-  postConstruct,
-}) as (path: string) => Decorator<ClassFieldDecoratorContext>;
+export default createDecoratorExp(Value, { postConstruct }) as (
+  path: string
+) => Decorator<ClassFieldDecoratorContext>;

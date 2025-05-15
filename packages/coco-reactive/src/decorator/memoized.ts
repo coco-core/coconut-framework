@@ -13,7 +13,6 @@ function postConstruct(
   this[name] = subscriber.memoizedFn;
 }
 
-export default createDecoratorExp<void, ClassMethodDecoratorContext>(Memoized, {
+export default createDecoratorExp(Memoized, {
   postConstruct,
-  optional: true,
 }) as () => Decorator<ClassMethodDecoratorContext>;

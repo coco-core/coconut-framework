@@ -3,7 +3,7 @@
   "scripts": {
     "build": "pnpm run run-build-script && pnpm run build-dts && pnpm run build-cli-dts",
     "run-build-script": "node ./scripts/build/index.js",
-    "build-dts": "tsc --build packages/coco-ioc-container packages/coco-reactive packages/coco-router packages/coco-mvc packages/coco-render && pnpm --filter coco-mvc api-extractor ",
+    "build-dts": "tsc --build packages/coco-ioc-container packages/coco-reactive packages/coco-router packages/coco-mvc packages/coco-render && pnpm --filter coco-mvc api-extractor",
     "build-cli-dts": "tsc --build packages/coco-cli && pnpm --filter @cocojs/cli api-extractor ",
     "build:test": "cross-env NODE_ENV=test node ./scripts/build/index.js",
     "jest": "jest -c ./scripts/jest/jest.config.js",
