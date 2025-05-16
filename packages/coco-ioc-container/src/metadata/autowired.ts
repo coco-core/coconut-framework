@@ -2,8 +2,6 @@ import Target from './target.ts';
 import target from '../decorator/target.ts';
 import Metadata from './abstract/metadata.ts';
 
-export type Args = Class<any>;
-
 /**
  * @public
  */

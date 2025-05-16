@@ -71,4 +71,4 @@ function cleanRender() {
   renderIns = undefined;
 }
 
-export { render, start, cleanRender };
+export const _test_helper = { render, start, cleanRender };

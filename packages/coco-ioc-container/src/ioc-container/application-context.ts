@@ -35,7 +35,7 @@ import {
 } from '../share/util.ts';
 import Configuration from '../metadata/configuration.ts';
 import { register, NAME } from 'shared';
-import ConstructorParam, { ClassList } from '../metadata/constructor-param.ts';
+import ConstructorParam from '../metadata/constructor-param.ts';
 import { Init, Start, Target, Qualifier } from '../metadata/index.ts';
 import PropertiesConfig from './properties-config.ts';
 
@@ -78,7 +78,7 @@ class ApplicationContext {
   }
 
   /**
-   * 为@autowired装饰器的字段，返回字段类型的组件实例
+   * 为\@autowired装饰器的字段，返回字段类型的组件实例
    * @param Cls - 类定义
    * @param deDecoratedCls - 被装饰器的类定义
    * @param autowiredField - 被装饰器的字段
@@ -106,7 +106,6 @@ class ApplicationContext {
 
   /**
    * 实例化所有业务类（非元数据类），拿到field和method装饰器参数
-   * @private
    */
   private addFieldOrMethodDecoratorParams() {
     for (const Cls of get().keys()) {
@@ -119,9 +118,9 @@ class ApplicationContext {
   /**
    * todo 这里有一个疑问，为什么要把装饰器记录的参数转换成元数据？
    * 粗略一看，装饰器参数和元数据是一一对应关系，没有必要做这层转换
-   * 1. 部分装饰器，例如@component装饰在函数上面，会添加额外的装饰器信息，不过这还是可以一一对应关系
+   * 1. 部分装饰器，例如\@component装饰在函数上面，会添加额外的装饰器信息，不过这还是可以一一对应关系
    * 2. 业务使用元数据类，方便ts推导类型
-   * 3. 从装饰器 -> 元数据，方便框架做一些自定义操作，例如target不符合则不生成对应的元数据
+   * 3. 从装饰器 -\> 元数据，方便框架做一些自定义操作，例如target不符合则不生成对应的元数据
    */
   // 根据装饰器的参数，构建对应的元数据实例
   private buildMetadata() {
@@ -225,7 +224,6 @@ class ApplicationContext {
 
   /**
    * 启动所有配置boot的组件
-   * @private
    */
   private bootComponent() {
     // 1. 所有配置boot的组件集合
@@ -272,7 +270,7 @@ class ApplicationContext {
       if (!map.has(beDecorated)) {
         return getComponent(this, beDecorated);
       } else {
-        const metadata = map.get(beDecorated) as { value: ClassList };
+        const metadata = map.get(beDecorated) as { value: Class<any>[] };
         const ParameterList = metadata.value;
         const parameterList = ParameterList.map(doInstantiateComponent);
         return getComponent(this, beDecorated, {

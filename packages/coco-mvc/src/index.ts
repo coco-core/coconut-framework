@@ -22,8 +22,15 @@ export {
   value,
   createDecoratorExp,
   createDecoratorExpByName,
+  type Option,
+  type PostConstructFn,
+  type ClassPostConstructFn,
+  type MethodPostConstructFn,
+  type FieldPostConstructFn,
   ApplicationContext,
+  PropertiesConfig,
   type Decorator,
+  type Field,
 } from 'coco-ioc-container';
 export * from 'coco-reactive';
 export * from 'coco-router';
@@ -49,26 +56,25 @@ export { default as view } from './decorator/view.ts';
 export { default as WebApplication } from './metadata/web-application.ts';
 export { default as webApplication } from './decorator/web-application.ts';
 
-import { render, start, cleanRender } from './__tests__';
-import { _test_helper as iocContainer } from 'coco-ioc-container';
-import { _test_helper as renderHelper } from 'coco-render';
+import { _test_helper as _test_helper_mvc } from './__tests__';
+import { _test_helper as _test_helper_iocContainer } from 'coco-ioc-container';
+import { _test_helper as _test_helper_render } from 'coco-render';
 
+/**
+ * @public
+ */
 let _test_helper:
   | {
-      iocContainer: typeof iocContainer;
-      mvc: {
-        render: typeof render;
-        start: typeof start;
-        cleanRender: typeof cleanRender;
-      };
-      render: typeof renderHelper;
+      iocContainer: typeof _test_helper_iocContainer;
+      mvc: typeof _test_helper_mvc;
+      render: typeof _test_helper_render;
     }
   | undefined = undefined;
 if (__TEST__) {
   _test_helper = {
-    iocContainer,
-    mvc: { render, start, cleanRender },
-    render: renderHelper,
+    iocContainer: _test_helper_iocContainer,
+    mvc: _test_helper_mvc,
+    render: _test_helper_render,
   };
 }
 

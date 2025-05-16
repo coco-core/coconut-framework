@@ -9,6 +9,7 @@ import type ApplicationContext from './application-context.ts';
 import type Metadata from '../metadata/abstract/metadata.ts';
 
 /**
+ * @public
  * @param metadata - 元数据实例对象
  * @param appCtx - 全局的applicationContext对象
  */
@@ -17,6 +18,7 @@ export type ClassPostConstructFn = (
   appCtx: ApplicationContext
 ) => void;
 /**
+ * @public
  * @param metadata - 元数据实例对象
  * @param appCtx - 全局的applicationContext对象
  * @param field - 被装饰的字段名
@@ -26,11 +28,17 @@ export type FieldPostConstructFn = (
   appCtx: ApplicationContext,
   field: Field
 ) => void;
+/**
+ * @public
+ */
 export type MethodPostConstructFn = (
   metadata: Metadata,
   appCtx: ApplicationContext,
   field: Field
 ) => void;
+/**
+ * @public
+ */
 export type PostConstructFn =
   | ClassPostConstructFn
   | FieldPostConstructFn

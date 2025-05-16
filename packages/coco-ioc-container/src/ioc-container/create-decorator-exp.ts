@@ -14,7 +14,10 @@ import { isClass, lowercaseFirstLetter, once } from '../share/util.ts';
 import type { PostConstructFn } from './ioc-component-definition.ts';
 import { addDecoratorParams } from './decorator-params.ts';
 
-interface Option {
+/**
+ * @public
+ */
+export interface Option {
   // 实例化组件后立刻执行
   postConstruct?: PostConstructFn;
 }
@@ -102,7 +105,11 @@ function createDecoratorExpFactory(fn: any) {
 
 const doCreateDecoratorExp = createDecoratorExpFactory(addDecoratorParams);
 
-// 适用于装饰器不装饰自己元数据类的场景
+/**
+ * 使用元数据类创建一个装饰器函数
+ * 适用于装饰器不装饰自己元数据类的场景
+ * @public
+ */
 function createDecoratorExp(
   metadataCls: Class<any>,
   option: Option = {}
@@ -112,7 +119,12 @@ function createDecoratorExp(
   }
   return doCreateDecoratorExp(metadataCls, option);
 }
-// 适用于装饰器装饰自己元数据类的场景
+
+/**
+ * 使用装饰器名字创建一个装饰器函数
+ * 适用于装饰器装饰自己元数据类的场景
+ * @public
+ */
 function createDecoratorExpByName(
   decoratorName: string,
   option: Option = {}

@@ -20,9 +20,17 @@ export { default as value } from './decorator/value.ts';
 export {
   createDecoratorExp,
   createDecoratorExpByName,
+  type Option,
 } from './ioc-container/create-decorator-exp.ts';
+export {
+  type PostConstructFn,
+  type ClassPostConstructFn,
+  type MethodPostConstructFn,
+  type FieldPostConstructFn,
+} from './ioc-container/ioc-component-definition.ts';
 export { default as ApplicationContext } from './ioc-container/application-context.ts';
-export type { Decorator } from './ioc-container/decorator-context.ts';
+export { default as PropertiesConfig } from './ioc-container/properties-config.ts';
+export type { Decorator, Field } from './ioc-container/decorator-context.ts';
 
 import {
   expectInOrder,

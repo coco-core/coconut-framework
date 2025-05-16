@@ -2,6 +2,10 @@ import RouteClass from '../metadata/route.ts';
 import DynamicRoute from './dynamic-route.ts';
 
 type Route = string | DynamicRoute;
+
+/**
+ * @public
+ */
 class RouteComponentMapper {
   mapper: Map<Route, Class<any>> = new Map();
 

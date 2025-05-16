@@ -28,7 +28,6 @@ export function get() {
 
 /**
  * 期望list的每一项都存在于order中，且每一项的前后位置和order是一样的
- * @param list
  */
 export function expectInOrder(
   list: {

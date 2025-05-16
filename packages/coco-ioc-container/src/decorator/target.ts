@@ -16,13 +16,11 @@ export enum Type {
   Method = KindMethod,
 }
 
-type DecoratorArg = Type[];
-
 /**
  * @public
  */
 const target: (
-  type: DecoratorArg,
+  type: Type[],
   decoratorSelf?: true
 ) => Decorator<ClassDecoratorContext> = createDecoratorExpByName('target');
 export default target;
