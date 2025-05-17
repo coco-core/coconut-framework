@@ -1,6 +1,6 @@
 {
   "name": "coco-mvc",
-  "version": "0.0.1-alpha202505171629",
+  "version": "0.0.1-alpha202505171646",
   "description": "使用@装饰器构建web应用。",
   "main": "dist/coco-mvc.cjs.js",
   "types": "dist/index.d.ts",
@@ -11,7 +11,7 @@
     ".": {
       "import": "./dist/coco-mvc.cjs.js",
       "require": "./dist/coco-mvc.cjs.js",
-      "types": "./dist/types/coco-mvc/src/index.d.ts"
+      "types": "./dist/index.d.ts"
     },
     "./jsx-runtime": {
       "import": "./dist/jsx.cjs.js",
