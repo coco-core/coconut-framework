@@ -10,7 +10,9 @@ const jsxOutput = `${path.join(cocoMvc, './dist')}/jsx.cjs.js`;
 
 const cocoCli = path.join(packages, './coco-cli');
 const cliSrc = path.join(cocoCli, './src/index.ts');
-const cliDist = path.join(cocoCli, '/dist/index.cjs.js');
+const cliDist = path.join(cocoCli, '/dist/index.js');
+const cliPrepareBuildSrc = path.join(cocoCli, './src/prepare-build.ts');
+const cliPrepareBuildDist = path.join(cocoCli, '/dist/prepare-build.js');
 
 module.exports.rollupTargets = [
   {
@@ -44,6 +46,13 @@ module.exports.rollupTargets = [
     input: cliSrc,
     output: {
       file: cliDist,
+      format: 'cjs'
+    }
+  },
+  {
+    input: cliPrepareBuildSrc,
+    output: {
+      file: cliPrepareBuildDist,
       format: 'cjs'
     },
   }

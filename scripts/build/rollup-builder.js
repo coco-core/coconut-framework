@@ -7,10 +7,11 @@ const genEntries = require('./rollup-alias').genEntries;
 const { typescriptOptions, babelOptions } = require('../shared/common-compiler-option')
 
 function genRollupConfig (inputConfig) {
-  const { input, alias } = inputConfig
+  const { input, alias, external } = inputConfig
 
   return {
     input,
+    external,
     plugins: [
       replace({
         __DEV__: false,

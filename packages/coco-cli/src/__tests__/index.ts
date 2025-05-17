@@ -1,6 +1,5 @@
-import Watcher from '../prepare-build';
-
 function prepareBuild(monorepoProjPath: string) {
+  const Watcher = require('./prepare-build');
   const watch = new Watcher(monorepoProjPath);
   watch.doPrepareWork('build');
 }
