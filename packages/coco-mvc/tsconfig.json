@@ -1,13 +1,24 @@
 {
   "extends": ["../../tsconfig.json"],
   "compilerOptions": {
-    "baseUrl": "../../",
-    "target": "es2015",
-    "lib": ["dom", "es2015"],
-    "moduleResolution": "Node16",
-    "module": "Node16",
-    "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": true
-    // 禁止放开 "paths": {}
-  }
+    "rootDir": "src",
+    "outDir": "dist-dts",
+    "composite": true,
+    "declaration": true,
+    "paths": {
+      "coco-ioc-container": ["../coco-ioc-container/src"],
+      "coco-router": ["../coco-router/src"],
+      "coco-reactive": ["../coco-reactive/src"],
+      "coco-render": ["../coco-render/src"],
+      "shared": ["../shared"]
+    }
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../coco-ioc-container" },
+    { "path": "../coco-router" },
+    { "path": "../coco-reactive" },
+    { "path": "../coco-render" },
+    { "path": "../shared" }
+  ]
 }

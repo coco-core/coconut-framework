@@ -1,6 +1,8 @@
 {
   "private": true,
+  "type": "module",
   "description": "ReactSymbols。还包含所有包公共依赖。",
-  "name": "shared",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "version": "0.0.0"
 }

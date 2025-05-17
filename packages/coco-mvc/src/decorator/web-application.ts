@@ -1,6 +1,6 @@
-import { createDecoratorExp } from 'coco-ioc-container';
+import { createDecoratorExp, type Decorator } from 'coco-ioc-container';
 import WebApplication from '../metadata/web-application.ts';
 
-export default createDecoratorExp<void, ClassDecoratorContext>(WebApplication, {
-  optional: true,
-});
+export default createDecoratorExp(
+  WebApplication
+) as () => Decorator<ClassDecoratorContext>;

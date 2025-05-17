@@ -1,11 +1,20 @@
 {
   "extends": ["../../tsconfig.json"],
   "compilerOptions": {
-    "target": "es2015",
-    "lib": ["dom", "es2016"],
-    "moduleResolution": "Node16",
-    "allowImportingTsExtensions": true,
-    "emitDeclarationOnly": true
-    // 禁止放开   "paths": {}
-  }
+    "composite": true,
+    "declaration": true,
+    "rootDir": "src",
+    "outDir": "dist-dts",
+    "paths": {
+      "coco-ioc-container": ["../coco-ioc-container/src"],
+      "coco-render": ["../coco-render/src"],
+      "shared": ["../shared"]
+    }
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../coco-ioc-container" },
+    { "path": "../coco-render" },
+    { "path": "../shared" }
+  ]
 }

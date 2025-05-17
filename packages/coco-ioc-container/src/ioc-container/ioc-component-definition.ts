@@ -6,31 +6,39 @@ import {
 } from './decorator-context.ts';
 import { listClassMetadata, listFieldMetadata } from './metadata.ts';
 import type ApplicationContext from './application-context.ts';
-import type { Metadata } from 'coco-ioc-container';
+import type Metadata from '../metadata/abstract/metadata.ts';
 
 /**
- * @param metada 元数据实例对象
- * @param appCtx 全局的applicationContext对象
+ * @public
+ * @param metadata - 元数据实例对象
+ * @param appCtx - 全局的applicationContext对象
  */
 export type ClassPostConstructFn = (
   metadata: Metadata,
   appCtx: ApplicationContext
 ) => void;
 /**
- * @param metada 元数据实例对象
- * @param appCtx 全局的applicationContext对象
- * @param field 被装饰的字段名
+ * @public
+ * @param metadata - 元数据实例对象
+ * @param appCtx - 全局的applicationContext对象
+ * @param field - 被装饰的字段名
  */
 export type FieldPostConstructFn = (
   metadata: Metadata,
   appCtx: ApplicationContext,
   field: Field
 ) => void;
+/**
+ * @public
+ */
 export type MethodPostConstructFn = (
   metadata: Metadata,
   appCtx: ApplicationContext,
   field: Field
 ) => void;
+/**
+ * @public
+ */
 export type PostConstructFn =
   | ClassPostConstructFn
   | FieldPostConstructFn

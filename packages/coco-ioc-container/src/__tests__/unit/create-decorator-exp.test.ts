@@ -2,6 +2,7 @@ import {
   createDecoratorExp,
   createDecoratorExpByName,
   createDecoratorExpFactory,
+  type Decorator,
 } from '../../ioc-container/create-decorator-exp.ts';
 import {
   KindClass,
@@ -21,7 +22,7 @@ describe('create-decorator-exp:createDecoratorExpFactory', () => {
     const create = createDecoratorExpFactory(fn);
 
     class Meta {}
-    const m = create(Meta, { optional: true });
+    const m = create(Meta);
     const param = 22;
     @m(param)
     class A {}
@@ -39,7 +40,7 @@ describe('create-decorator-exp:createDecoratorExpFactory', () => {
     const fn = jest.fn();
     const createDE = createDecoratorExpFactory(fn);
     class Meta {}
-    const m = createDE(Meta, { optional: true });
+    const m = createDE(Meta);
     const param = 22;
     @m(param)
     class A {}
@@ -63,7 +64,7 @@ describe('create-decorator-exp:createDecoratorExpFactory', () => {
     const create = createDecoratorExpFactory(fn);
 
     class Meta {}
-    const m = create(Meta, { optional: true });
+    const m = create(Meta);
     const param = 22;
     class A {
       @m(param)
@@ -87,7 +88,7 @@ describe('create-decorator-exp:createDecoratorExpFactory', () => {
     const create = createDecoratorExpFactory(fn);
 
     class Meta {}
-    const m = create(Meta, { optional: true });
+    const m = create(Meta);
     const param = 22;
     class A {
       @m(param)
@@ -111,7 +112,7 @@ describe('create-decorator-exp:createDecoratorExpFactory', () => {
     const create = createDecoratorExpFactory(fn);
 
     class Meta {}
-    const m = create(Meta, { optional: true });
+    const m = create(Meta);
     const param = 22;
     class A {
       @m(param)
@@ -141,7 +142,7 @@ describe('create-decorator-exp:createDecoratorExpFactory', () => {
     const create = createDecoratorExpFactory(fn);
 
     class Meta {}
-    const m = create(Meta, { optional: true });
+    const m = create(Meta);
     const param = 22;
     class A {
       @m(param)
@@ -173,7 +174,7 @@ describe('create-decorator-exp:createDecoratorExpFactory', () => {
       const create = createDecoratorExpFactory(fn);
 
       class Meta {}
-      const m = create(Meta, { optional: true });
+      const m: () => Decorator<ClassGetterDecoratorContext> = create(Meta);
 
       class A {
         @m()
@@ -194,7 +195,7 @@ describe('create-decorator-exp:createDecoratorExpFactory', () => {
       const create = createDecoratorExpFactory(fn);
 
       class Meta {}
-      const m = create(Meta, { optional: true });
+      const m = create(Meta);
 
       class A {
         @m()

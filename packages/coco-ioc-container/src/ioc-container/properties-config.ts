@@ -1,7 +1,7 @@
 /**
  * 动态配置操作类
+ * @public
  */
-
 class PropertiesConfig {
   beanConfig: Record<string, any>;
 

@@ -2,6 +2,7 @@ import { get, NAME } from 'shared';
 import {
   createDecoratorExp,
   type ApplicationContext,
+  type Decorator,
 } from 'coco-ioc-container';
 import Publisher from '../memoized/publisher.ts';
 import Subscriber from '../memoized/subscriber.ts';
@@ -65,10 +66,6 @@ export function customPostConstruct(hooks?: {
 
 const postConstruct = customPostConstruct();
 
-export default createDecoratorExp<
-  void,
-  ClassFieldDecoratorContext | ClassDecoratorContext
->(Reactive, {
+export default createDecoratorExp(Reactive, {
   postConstruct,
-  optional: true,
-});
+}) as () => Decorator<ClassFieldDecoratorContext | ClassDecoratorContext>;

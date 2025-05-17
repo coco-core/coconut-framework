@@ -3,7 +3,7 @@ import { type Field, type Kind, KindClass } from './decorator-context.ts';
 import { isClass } from '../share/util.ts';
 import { get as getFromShare, NAME } from 'shared';
 
-type params = {
+export type params = {
   decoratorName?: string;
   metadataKind: Kind;
   metadataClass: Class<any>;
@@ -105,7 +105,7 @@ export function isIncludesClassDecorator(
   return false;
 }
 
-export function get() {
+export function get(): Map<any, params[]> {
   return decoratorParamMap;
 }
 

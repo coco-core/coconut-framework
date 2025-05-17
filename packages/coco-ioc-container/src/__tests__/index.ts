@@ -12,7 +12,6 @@ import {
 import { clear as clearComponentDefinition } from '../ioc-container/component-factory.ts';
 
 import { clear as clearPreventCircularDependency } from 'shared';
-import * as pkgPath from './pkg-path.ts';
 
 function clear() {
   clearMetadata();
@@ -27,5 +26,4 @@ export {
   getMetadata,
   getAllMetadata,
   clear,
-  pkgPath,
 };

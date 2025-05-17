@@ -1,4 +1,3 @@
-import path from 'path';
 import Project from './project';
 import { scan } from './scanner';
 import fs from 'fs';
@@ -26,7 +25,7 @@ function validate(filePath: string) {
     plugins: ['jsx', 'typescript', 'decorators-legacy', 'classProperties'],
   });
 
-  traverse(ast, {
+  traverse.default(ast, {
     ClassDeclaration(path) {
       const body = path.node.body.body;
       body.forEach((method) => {
@@ -42,6 +41,8 @@ function validate(filePath: string) {
               }
               let fnName;
               if (statement.expression.callee.type === 'MemberExpression') {
+                // todo fix it
+                // @ts-ignore
                 fnName = statement.expression.callee.property.name;
               } else if (statement.expression.callee.type === 'Identifier') {
                 fnName = statement.expression.callee.name;

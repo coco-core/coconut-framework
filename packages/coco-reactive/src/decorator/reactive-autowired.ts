@@ -1,4 +1,4 @@
-import { createDecoratorExp } from 'coco-ioc-container';
+import { createDecoratorExp, type Decorator } from 'coco-ioc-container';
 import Remote from '../reactive-autowired/remote.ts';
 import { sym_remote } from './store.ts';
 import { customPostConstruct } from './reactive.ts';
@@ -19,10 +19,6 @@ const postConstruct = customPostConstruct({
   },
 });
 
-export default createDecoratorExp<void, ClassFieldDecoratorContext>(
-  ReactiveAutowired,
-  {
-    postConstruct,
-    optional: true,
-  }
-);
+export default createDecoratorExp(ReactiveAutowired, {
+  postConstruct,
+}) as () => Decorator<ClassFieldDecoratorContext>;

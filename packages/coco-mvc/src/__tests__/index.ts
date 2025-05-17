@@ -1,7 +1,4 @@
-export * from '../index';
-import * as iocContainerTestHelper from 'coco-ioc-container-test-helper';
 import { type ApplicationContext } from 'coco-ioc-container';
-import TestWebRender from './test-web-render.ts';
 
 let ctx: ApplicationContext;
 let container: HTMLDivElement;
@@ -73,9 +70,5 @@ function cleanRender() {
   container = undefined;
   renderIns = undefined;
 }
-const _test_helper = {
-  iocContainer: iocContainerTestHelper,
-  mvc: { render, start, cleanRender, TestWebRender },
-};
 
-export { _test_helper };
+export const _test_helper = { render, start, cleanRender };

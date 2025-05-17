@@ -3,27 +3,27 @@ const { PACKAGE } = require("./rollup-alias");
 const packages = path.join(__dirname, '../../packages');
 const cocoMvc = path.join(packages, './coco-mvc');
 const cocoMvcInput = path.join(cocoMvc, './src/index.ts');
-const cocoMvcTestInput = path.join(cocoMvc, './src/__tests__/index.ts');
 const cocoMvcOutput = path.join(cocoMvc, './dist/coco-mvc.cjs.js');
-const jsxInput = path.join(cocoMvc, './src/jsx-runtime/index.ts');
+const cocoRender = path.join(packages, './coco-render');
+const jsxInput = path.join(cocoRender, './src/jsx-runtime/index.ts');
 const jsxOutput = `${path.join(cocoMvc, './dist')}/jsx.cjs.js`;
 
 const cocoCli = path.join(packages, './coco-cli');
-const cliSrc = path.join(cocoCli, './src');
-const cliDist = path.join(cocoCli, './dist');
-
+const cliSrc = path.join(cocoCli, './src/index.ts');
+const cliDist = path.join(cocoCli, '/dist/index.js');
+const cliPrepareBuildSrc = path.join(cocoCli, './src/prepare-build.ts');
+const cliPrepareBuildDist = path.join(cocoCli, '/dist/prepare-build.js');
 
 module.exports.rollupTargets = [
   {
-    input: process.env.NODE_ENV === 'test' ? cocoMvcTestInput : cocoMvcInput,
+    input: cocoMvcInput,
     output: {
       file: cocoMvcOutput,
       format: 'cjs',
     },
     alias: [
       PACKAGE.MVC,
-      PACKAGE.MVC_COMPONENT,
-      PACKAGE.MVC_METADATA,
+      PACKAGE.MVC_RENDER,
       PACKAGE.REACTIVE,
       PACKAGE.REACTIVE_METADATA,
       PACKAGE.ROUTER,
@@ -42,12 +42,18 @@ module.exports.rollupTargets = [
       format: 'cjs',
     },
   },
-];
-
-module.exports.tsTargets = [
   {
     input: cliSrc,
-    output: cliDist,
-    ignore: process.env.NODE_ENV === 'test' ? undefined : `${cliSrc}/__tests__/**`
+    output: {
+      file: cliDist,
+      format: 'cjs'
+    }
+  },
+  {
+    input: cliPrepareBuildSrc,
+    output: {
+      file: cliPrepareBuildDist,
+      format: 'cjs'
+    },
   }
-]
+];

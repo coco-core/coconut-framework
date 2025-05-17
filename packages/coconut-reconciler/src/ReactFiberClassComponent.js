@@ -1,6 +1,7 @@
 import {createUpdate, enqueueUpdate, initializeUpdateQueue, processUpdateQueue} from "./ReactFiberClassUpdateQueue";
 import {get, NAME} from "shared";
-import { Reactive } from "coco-reactive/metadata";
+// todo coco-reactive-metadata这个引入太丑陋了，fix it
+import { Reactive } from "coco-reactive-metadata";
 import {flushSyncCallbacks} from "./ReactFiberSyncTaskQueue";
 import { Update } from "./ReactFiberFlags";
 

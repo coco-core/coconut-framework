@@ -1,6 +1,6 @@
-import { createDecoratorExp } from 'coco-ioc-container';
+import { createDecoratorExp, type Decorator } from 'coco-ioc-container';
 import GlobalData from '../metadata/global-data.ts';
 
-export default createDecoratorExp<string, ClassDecoratorContext>(GlobalData, {
-  optional: true,
-});
+export default createDecoratorExp(
+  GlobalData
+) as () => Decorator<ClassDecoratorContext>;
