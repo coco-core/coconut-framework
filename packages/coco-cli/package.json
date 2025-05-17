@@ -14,7 +14,7 @@
     "dist"
   ],
   "scripts": {
-    "api-extractor": "api-extractor run --local --diagnostics"
+    "api-extractor": "api-extractor run --local"
   },
   "keywords": [],
   "author": "",

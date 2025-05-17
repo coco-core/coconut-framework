@@ -5,7 +5,7 @@
   "main": "dist/coco-mvc.cjs.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "api-extractor": "api-extractor run --local --diagnostics"
+    "api-extractor": "api-extractor run --local"
   },
   "exports": {
     ".": {

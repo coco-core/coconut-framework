@@ -31,5 +31,6 @@ function cli(command: string, ...args: string[]) {
       break;
   }
 }
+import { _test_helper } from './__tests__';
 
-export { cli };
+export { cli, _test_helper };

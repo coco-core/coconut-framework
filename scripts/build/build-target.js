@@ -9,9 +9,8 @@ const jsxInput = path.join(cocoRender, './src/jsx-runtime/index.ts');
 const jsxOutput = `${path.join(cocoMvc, './dist')}/jsx.cjs.js`;
 
 const cocoCli = path.join(packages, './coco-cli');
-const cliSrc = path.join(cocoCli, './src');
-const cliDist = path.join(cocoCli, './dist');
-
+const cliSrc = path.join(cocoCli, './src/index.ts');
+const cliDist = path.join(cocoCli, '/dist/index.cjs.js');
 
 module.exports.rollupTargets = [
   {
@@ -41,12 +40,11 @@ module.exports.rollupTargets = [
       format: 'cjs',
     },
   },
-];
-
-module.exports.tsTargets = [
   {
     input: cliSrc,
-    output: cliDist,
-    ignore: process.env.NODE_ENV === 'test' ? undefined : `${cliSrc}/__tests__/**`
+    output: {
+      file: cliDist,
+      format: 'cjs'
+    },
   }
-]
+];
